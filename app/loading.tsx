@@ -1,6 +1,13 @@
-import { PageLoadingSkeleton } from "@/components/skeleton"
+import { AnimatedLogoSvg } from "@/components/svg"
 
-export default function Loading() {
-  // You can add any UI inside Loading, including a Skeleton.
-  return <PageLoadingSkeleton />
+const Loading = () => {
+  return (
+    <div className="h-full flex items-center justify-center">
+      <div className="w-24 sm:w-32">
+        <AnimatedLogoSvg />
+      </div>
+    </div>
+  )
 }
+
+export default Loading

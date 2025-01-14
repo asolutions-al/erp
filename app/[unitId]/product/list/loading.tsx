@@ -1,6 +1,6 @@
-import { AnimatedLogoSvg } from "../svg"
+import { AnimatedLogoSvg } from "@/components/svg"
 
-export function PageLoadingSkeleton() {
+const Loading = () => {
   return (
     <div className="h-full flex items-center justify-center">
       <div className="w-24 sm:w-32">
@@ -9,3 +9,5 @@ export function PageLoadingSkeleton() {
     </div>
   )
 }
+
+export default Loading
