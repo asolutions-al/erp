@@ -1,13 +1,19 @@
 "use client"
 
-import { CheckCircle2Icon, Eraser } from "lucide-react"
+import { CheckCircle2Icon, Eraser, LoaderIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useFormState } from "react-hook-form"
 import { Button } from "../ui/button"
 
 const FormActionBtns = ({ formId }: { formId: FormId }) => {
   const t = useTranslations()
   const form = useFormContext()
+  const { isSubmitting, isValidating } = useFormState({
+    control: form.control,
+  })
+
+  const isProcessing = isSubmitting || isValidating
+
   return (
     <div className="flex items-center justify-end gap-2">
       <Button
@@ -15,12 +21,17 @@ const FormActionBtns = ({ formId }: { formId: FormId }) => {
         size="sm"
         type="button"
         onClick={() => form.reset()}
+        disabled={isProcessing}
       >
         <Eraser size={15} className="mr-1" />
         {t("Discard")}
       </Button>
-      <Button size="sm" type="submit" form={formId}>
-        <CheckCircle2Icon size={15} className="mr-1" />
+      <Button size="sm" type="submit" form={formId} disabled={isProcessing}>
+        {isProcessing ? (
+          <LoaderIcon size={15} className="mr-1 animate-spin" />
+        ) : (
+          <CheckCircle2Icon size={15} className="mr-1" />
+        )}
         {t("Save")}
       </Button>
     </div>
