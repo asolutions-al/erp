@@ -1,4 +1,4 @@
-import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, numeric } from "drizzle-orm/pg-core"
+import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, doublePrecision } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 export const aal_level = pgEnum("aal_level", ['aal1', 'aal2', 'aal3'])
@@ -55,8 +55,8 @@ export const product = pgTable("product", {
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	name: text("name").notNull(),
-	price: numeric("price").notNull(),
-	satus: status("satus").notNull(),
+	price: doublePrecision("price").notNull(),
+	status: status("status").notNull(),
 	barcode: text("barcode"),
 	description: text("description"),
 });

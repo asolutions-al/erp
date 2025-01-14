@@ -1,6 +1,6 @@
+import { createAuthClient } from "@/db/(auth)/client"
 import { db } from "@/db/(inv)/instance"
 import { getAuthUrl } from "@/lib/utils"
-import { createAuthClient } from "@/orm/(auth)/client"
 import { member, organization, user as schUser, unit } from "@/orm/(inv)/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"

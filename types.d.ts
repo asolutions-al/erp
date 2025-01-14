@@ -1,0 +1,1 @@
+type FormId = "product"

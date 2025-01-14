@@ -4,7 +4,6 @@ type Props = {
 
 const Page = async ({ params }: Props) => {
   const { unitId } = await params
-  console.log("unitId", unitId)
   return <div>Product List</div>
 }
 
