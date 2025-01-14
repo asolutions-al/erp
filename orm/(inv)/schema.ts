@@ -40,7 +40,7 @@ export const member = pgTable("member", {
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	userId: uuid("userId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	role: role("role").notNull(),
+	role: text("role").notNull(),
 });
 
 export const invitation = pgTable("invitation", {
@@ -51,13 +51,12 @@ export const invitation = pgTable("invitation", {
 });
 
 export const product = pgTable("product", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	name: text("name").notNull(),
 	price: numeric("price").notNull(),
 	satus: status("satus").notNull(),
 	barcode: text("barcode"),
 	description: text("description"),
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
 });

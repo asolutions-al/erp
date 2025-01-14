@@ -51,13 +51,13 @@ export async function GET(request: Request) {
       })
 
       /**
-       * 2. Create shop
+       * 2. Create organization
        */
       const [orgRes] = await tx
         .insert(organization)
         .values({
-          name: t("My Shop"),
-          description: t("My First Shop"),
+          name: t("My Organization"),
+          description: t("My First Organization"),
         })
         .returning({
           id: organization.id,

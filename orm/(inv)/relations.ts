@@ -13,7 +13,6 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 
 export const organizationRelations = relations(organization, ({many}) => ({
 	units: many(unit),
-	products: many(product),
 }));
 
 export const memberRelations = relations(member, ({one}) => ({
@@ -44,10 +43,6 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 }));
 
 export const productRelations = relations(product, ({one}) => ({
-	organization: one(organization, {
-		fields: [product.orgId],
-		references: [organization.id]
-	}),
 	unit: one(unit, {
 		fields: [product.unitId],
 		references: [unit.id]

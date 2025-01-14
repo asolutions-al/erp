@@ -23,7 +23,7 @@ const UnitValidator = async ({ unitId }: { unitId: string }) => {
     with: { unit: true },
   })
   const unitsList = members.map((member) => member.unit)
-  const unitIsValid = unitsList.some((shop) => shop.id === unitId)
+  const unitIsValid = unitsList.some((unit) => unit.id === unitId)
 
   if (!unitIsValid) return redirect(`/units`)
 
