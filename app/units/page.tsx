@@ -1,4 +1,4 @@
-import { UnitCard } from "@/components/card/unit"
+import { UnitCard } from "@/components/cards"
 import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { createAuthClient } from "@/db/(auth)/client"

@@ -2,7 +2,7 @@ import { Messages } from "@/global"
 import { cn } from "@/lib/utils"
 import { getTranslations } from "next-intl/server"
 import { ReactNode } from "react"
-import { BackButton } from "../button"
+import { BackButton } from "../buttons"
 
 const PageHeader = async ({
   title,

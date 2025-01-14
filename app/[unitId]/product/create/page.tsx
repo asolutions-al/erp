@@ -1,5 +1,5 @@
-import { FormActionBtns } from "@/components/button"
-import { ProductForm } from "@/components/form"
+import { FormActionBtns } from "@/components/buttons"
+import { ProductForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { createProduct } from "@/db/(inv)/actions"
 import { ProductFormProvider } from "@/providers/product-form"
