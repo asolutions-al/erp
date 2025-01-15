@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { useFieldArray, useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
@@ -61,12 +61,28 @@ const Form = ({ performAction, products }: Props) => {
                   {t("Information about the invoice")}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent className="flex flex-row gap-2 flex-wrap">
                 {products.map((product) => (
                   <SaleProductCard
                     key={product.id}
                     data={product}
                     onSelect={() => {
+                      const existingRows = form.getValues().rows || []
+
+                      const existingProductIdx = existingRows.findIndex(
+                        (row) => row.productId === product.id
+                      )
+
+                      const existingProduct = existingRows[existingProductIdx]
+
+                      if (existingProduct) {
+                        form.setValue(
+                          `rows.${existingProductIdx}.quantity`,
+                          existingProduct.quantity + 1
+                        )
+                        return
+                      }
+
                       form.setValue("rows", [
                         ...(form.getValues().rows || []),
                         {
@@ -104,25 +120,32 @@ const Form = ({ performAction, products }: Props) => {
 
 const Checkout = () => {
   const form = useFormContext<InvoiceFormSchemaT>()
-  const rows = useFieldArray({ name: "rows", control: form.control })
+  const rows = useWatch({ name: "rows", control: form.control })
 
-  return rows.fields.map((row, index) => (
-    <CheckoutProductCard
-      key={row.id}
-      id={row.id}
-      name={row.name}
-      description={row.notes || ""}
-      price={row.unitPrice}
-      quantity={row.quantity}
-      image=""
-      onQuantityChange={(id, newQuantity) => {
-        rows.update(index, { ...row, quantity: newQuantity })
-      }}
-      onRemove={(id) => {
-        rows.remove(index)
-      }}
-    />
-  ))
+  return (
+    <div className="space-y-2">
+      {(rows || []).map((row, index) => (
+        <CheckoutProductCard
+          key={row.productId}
+          id={row.productId}
+          name={row.name}
+          description={row.notes || ""}
+          price={row.unitPrice}
+          quantity={row.quantity}
+          image="https://bundui-images.netlify.app/products/04.jpeg"
+          onQuantityChange={(id, newQuantity) => {
+            form.setValue(`rows.${index}.quantity`, newQuantity)
+          }}
+          onRemove={(id) => {
+            form.setValue(
+              "rows",
+              (rows || []).filter((_, i) => i !== index)
+            )
+          }}
+        />
+      ))}
+    </div>
+  )
 }
 
 export { Form as InvoiceForm }
