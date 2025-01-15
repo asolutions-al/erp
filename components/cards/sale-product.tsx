@@ -3,7 +3,6 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { HeartIcon, PlusIcon } from "lucide-react"
 import Image from "next/image"
-import Link from "next/link"
 
 const product = {
   name: "Red Hat",
@@ -45,10 +44,10 @@ const Component = ({
         <div className="flex justify-between">
           <div>
             <h3 className="text-lg">
-              <Link href={product.href}>
-                <span aria-hidden="true" className="absolute inset-0" />
-                {data.name}
-              </Link>
+              {/* <Link href={product.href}> */}
+              <span aria-hidden="true" className="absolute inset-0" />
+              {data.name}
+              {/* </Link> */}
             </h3>
             <p className="text-sm text-muted-foreground">{product.category}</p>
           </div>
