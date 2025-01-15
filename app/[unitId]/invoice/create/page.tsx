@@ -1,8 +1,10 @@
 import { FormActionBtns } from "@/components/buttons"
-import { ProductForm } from "@/components/forms"
+import { InvoiceForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createProduct } from "@/db/(inv)/actions"
+import { db } from "@/db/(inv)/instance"
+import { product } from "@/orm/(inv)/schema"
 import { ProductFormProvider } from "@/providers/product-form"
+import { eq } from "drizzle-orm"
 
 type Props = {
   params: Promise<{ unitId: string }>
@@ -10,18 +12,22 @@ type Props = {
 
 const Page = async ({ params }: Props) => {
   const { unitId } = await params
+  const products = await db.query.product.findMany({
+    where: eq(product.unitId, unitId),
+  })
 
   return (
     <ProductFormProvider>
       <PageHeader
-        title={"Create product"}
+        title={"Create invoice"}
         className="mb-2"
-        renderRight={() => <FormActionBtns formId="product" />}
+        renderRight={() => <FormActionBtns formId="invoice" />}
       />
-      <ProductForm
+      <InvoiceForm
+        products={products}
         performAction={async (values) => {
           "use server"
-          await createProduct({ values, unitId })
+          console.log("values", values)
         }}
       />
     </ProductFormProvider>

@@ -11,6 +11,9 @@ const nextConfig = {
       {
         hostname: "xczxozyteslsqdxtljzq.supabase.co",
       },
+      {
+        hostname: "bundui-images.netlify.app",
+      },
     ],
   },
   experimental: {

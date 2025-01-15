@@ -56,8 +56,8 @@ export async function GET(request: Request) {
       const [orgRes] = await tx
         .insert(organization)
         .values({
-          name: t("My Organization"),
-          description: t("My First Organization"),
+          name: t("My organization"),
+          description: t("My first organization"),
         })
         .returning({
           id: organization.id,
@@ -66,8 +66,8 @@ export async function GET(request: Request) {
       const [unitRes] = await tx
         .insert(unit)
         .values({
-          name: t("My Unit"),
-          description: t("My First Unit"),
+          name: t("My unit"),
+          description: t("My first unit"),
           orgId: orgRes.id,
         })
         .returning({

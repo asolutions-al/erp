@@ -1,4 +1,4 @@
-import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, doublePrecision } from "drizzle-orm/pg-core"
+import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, doublePrecision, real } from "drizzle-orm/pg-core"
   import { sql } from "drizzle-orm"
 
 export const aal_level = pgEnum("aal_level", ['aal1', 'aal2', 'aal3'])
@@ -18,6 +18,12 @@ export const user = pgTable("user", {
 	id: uuid("id").primaryKey().notNull(),
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	email: text("email").notNull(),
+});
+
+export const invoice = pgTable("invoice", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const organization = pgTable("organization", {
@@ -59,4 +65,15 @@ export const product = pgTable("product", {
 	status: status("status").notNull(),
 	barcode: text("barcode"),
 	description: text("description"),
+});
+
+export const invoiceRow = pgTable("invoiceRow", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	productId: uuid("productId").notNull().references(() => product.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	name: text("name").notNull(),
+	quantity: doublePrecision("quantity").notNull(),
+	unitPrice: real("unitPrice").notNull(),
+	notes: text("notes"),
+	invoiceId: uuid("invoiceId").notNull().references(() => invoice.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });

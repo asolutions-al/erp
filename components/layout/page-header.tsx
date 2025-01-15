@@ -1,5 +1,5 @@
-import { Messages } from "@/global"
 import { cn } from "@/lib/utils"
+import { Messages } from "next-intl"
 import { getTranslations } from "next-intl/server"
 import { ReactNode } from "react"
 import { BackButton } from "../buttons"

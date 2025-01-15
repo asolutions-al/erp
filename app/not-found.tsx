@@ -35,7 +35,7 @@ const NotFound = async () => {
         </CardContent>
         <CardFooter className="flex justify-center">
           <Button asChild>
-            <Link href="/">{t("Return to Homepage")}</Link>
+            <Link href="/">{t("Return to homepage")}</Link>
           </Button>
         </CardFooter>
       </Card>

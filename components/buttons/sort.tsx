@@ -1,8 +1,7 @@
 import { Button } from "@/components/ui/button"
-import { Messages } from "@/global"
 import { Column } from "@tanstack/react-table"
 import { ArrowUpDownIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
+import { Messages, useTranslations } from "next-intl"
 
 export const SortBtn = ({
   text,
