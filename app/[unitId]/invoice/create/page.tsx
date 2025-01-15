@@ -20,7 +20,7 @@ const Page = async ({ params }: Props) => {
     <ProductFormProvider>
       <PageHeader
         title={"Create invoice"}
-        className="mb-2"
+        className="mb-2 max-w-none"
         renderRight={() => <FormActionBtns formId="invoice" />}
       />
       <InvoiceForm

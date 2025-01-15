@@ -20,10 +20,7 @@ const Component = ({
   onSelect: () => void
 }) => {
   return (
-    <Card
-      className="w-[300px] group relative space-y-4 overflow-hidden"
-      onClick={() => onSelect()}
-    >
+    <Card className="w-[300px] group relative space-y-4 overflow-hidden">
       <figure className="group-hover:opacity-90">
         <Button
           variant="ghost"
@@ -45,7 +42,7 @@ const Component = ({
           <div>
             <h3 className="text-lg">
               {/* <Link href={product.href}> */}
-              <span aria-hidden="true" className="absolute inset-0" />
+              {/* <span aria-hidden="true" className="absolute inset-0" /> */}
               {data.name}
               {/* </Link> */}
             </h3>
@@ -55,7 +52,12 @@ const Component = ({
         </div>
       </CardContent>
       <CardFooter className="p-0 border-t">
-        <Button variant="ghost" className="w-full">
+        <Button
+          variant="ghost"
+          className="w-full"
+          type="button"
+          onClick={() => onSelect()}
+        >
           <PlusIcon className="size-4 me-1" /> Add to Card
         </Button>
       </CardFooter>
