@@ -1,24 +1,25 @@
 "use client"
 
+import { SortBtn } from "@/components/buttons"
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { ColumnDef } from "@tanstack/react-table"
 
 const columns: ColumnDef<ProductSchemaT>[] = [
   {
     accessorKey: "name",
-    header: "Name",
+    header: ({ column }) => <SortBtn text="Name" column={column} />,
   },
   {
     accessorKey: "barcode",
-    header: "Barcode",
+    header: ({ column }) => <SortBtn text="Barcode" column={column} />,
   },
   {
     accessorKey: "price",
-    header: "Price",
+    header: ({ column }) => <SortBtn text="Price" column={column} />,
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: ({ column }) => <SortBtn text="Status" column={column} />,
   },
 ]
 

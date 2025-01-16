@@ -1,14 +1,14 @@
 import { Button } from "@/components/ui/button"
-import { Column } from "@tanstack/react-table"
+import { Column, RowData } from "@tanstack/react-table"
 import { ArrowUpDownIcon } from "lucide-react"
 import { Messages, useTranslations } from "next-intl"
 
-export const SortBtn = ({
+export const SortBtn = <TData extends RowData>({
   text,
   column,
 }: {
   text: keyof Messages
-  column: Column<any>
+  column: Column<TData>
 }) => {
   const t = useTranslations()
 
