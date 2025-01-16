@@ -40,5 +40,10 @@
   "Information about the invoice": "Information about the invoice",
   "Checkout": "Checkout",
   "Payment, customer and other details": "Payment, customer and other details",
-  "New product": "New product"
+  "New product": "New product",
+  "Edit": "Edit",
+  "Duplicate": "Duplicate",
+  "Delete": "Delete",
+  "Duplicate product": "Duplicate product",
+  "Update product": "Update product"
 }

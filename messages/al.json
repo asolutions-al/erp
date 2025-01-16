@@ -40,5 +40,10 @@
   "Information about the invoice": "Informacion rreth faturës",
   "Checkout": "Checkout",
   "Payment, customer and other details": "Pagesa, klienti dhe detajet e tjera",
-  "New product": "Produkt i ri"
+  "New product": "Produkt i ri",
+  "Edit": "Ndrysho",
+  "Duplicate": "Dubliko",
+  "Delete": "Fshij",
+  "Duplicate product": "Dubliko produktin",
+  "Update product": "Përditëso produktin"
 }

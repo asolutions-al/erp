@@ -1,5 +1,6 @@
 import { product } from "@/orm/(inv)/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
+import { eq } from "drizzle-orm"
 import { db } from "../instance"
 
 export const createProduct = async ({
@@ -10,13 +11,19 @@ export const createProduct = async ({
   unitId: string
 }) => {
   "use server"
-  const [res] = await db
-    .insert(product)
-    .values({
-      ...values,
-      unitId,
-    })
-    .returning({ id: product.id })
+  await db.insert(product).values({
+    ...values,
+    unitId,
+  })
+}
 
-  return res
+export const updateProduct = async ({
+  values,
+  id,
+}: {
+  values: ProductFormSchemaT
+  id: string
+}) => {
+  "use server"
+  await db.update(product).set(values).where(eq(product.id, id))
 }
