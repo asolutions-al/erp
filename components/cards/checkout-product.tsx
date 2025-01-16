@@ -22,7 +22,6 @@ export function CheckoutProductCard({
   name,
   description,
   price,
-  image,
   quantity,
   onQuantityChange,
   onRemove,
@@ -38,7 +37,7 @@ export function CheckoutProductCard({
         <div className="flex flex-col sm:flex-row">
           <div className="relative h-48 w-full sm:h-auto sm:w-48 flex-shrink-0">
             <Image
-              src={image || "/placeholder.svg"}
+              src={"/placeholder.svg"}
               alt={name}
               layout="fill"
               objectFit="cover"

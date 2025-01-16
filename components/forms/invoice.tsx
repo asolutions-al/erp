@@ -52,8 +52,8 @@ const Form = ({ performAction, products }: Props) => {
         className="mx-auto"
         id={formId}
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+        <div className="grid gap-4 lg:grid-cols-2">
+          <div>
             <Card>
               <CardHeader>
                 <CardTitle>{t("Details")}</CardTitle>
@@ -61,7 +61,7 @@ const Form = ({ performAction, products }: Props) => {
                   {t("Information about the invoice")}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="flex flex-row gap-2 flex-wrap">
+              <CardContent className="grid gap-2 grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
                 {products.map((product) => (
                   <SaleProductCard
                     key={product.id}
