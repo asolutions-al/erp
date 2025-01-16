@@ -3,32 +3,23 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { Minus, Plus, X } from "lucide-react"
 import Image from "next/image"
 
-interface ProductCardProps {
-  id: string
-  name: string
-  description: string
-  price: number
-  image: string
-  quantity: number
-  onQuantityChange: (id: string, newQuantity: number) => void
-  onRemove: (id: string) => void
-}
-
-export function CheckoutProductCard({
-  id,
-  name,
-  description,
-  price,
-  quantity,
-  onQuantityChange,
+const CheckoutProductCard = ({
+  data,
+  onQtyChange,
   onRemove,
-}: ProductCardProps) {
+}: {
+  data: InvoiceFormSchemaT["rows"][0]
+  onRemove: () => void
+  onQtyChange: (qty: number) => void
+}) => {
+  const { name, unitPrice, quantity } = data
   const handleQuantityChange = (change: number) => {
-    const newQuantity = Math.max(1, quantity + change)
-    onQuantityChange(id, newQuantity)
+    const newQty = Math.max(1, quantity + change)
+    onQtyChange(newQty)
   }
 
   return (
@@ -47,10 +38,8 @@ export function CheckoutProductCard({
           <div className="flex-grow p-4 flex flex-col justify-between">
             <div>
               <h3 className="text-lg font-semibold">{name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                {description}
-              </p>
-              <p className="text-lg font-bold mt-2">${price.toFixed(2)}</p>
+              <p className="text-sm text-muted-foreground mt-1">description</p>
+              <p className="text-lg font-bold mt-2">${unitPrice}</p>
             </div>
             <div className="flex items-center justify-between mt-4">
               <div className="flex items-center space-x-2">
@@ -66,7 +55,7 @@ export function CheckoutProductCard({
                   type="number"
                   value={quantity}
                   onChange={(e) =>
-                    onQuantityChange(id, parseInt(e.target.value, 10) || 1)
+                    onQtyChange(parseInt(e.target.value, 10) || 1)
                   }
                   className="w-16 text-center"
                   min="1"
@@ -83,7 +72,7 @@ export function CheckoutProductCard({
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => onRemove(id)}
+                onClick={() => onRemove()}
                 className="text-destructive"
                 aria-label="Remove item"
               >
@@ -97,3 +86,5 @@ export function CheckoutProductCard({
     </Card>
   )
 }
+
+export { CheckoutProductCard }

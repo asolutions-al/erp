@@ -8,7 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 
-import { useFormContext, useWatch } from "react-hook-form"
+import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
@@ -41,7 +41,8 @@ const Form = ({ performAction, products }: Props) => {
     }
   }
 
-  const onInvalid = () => {
+  const onInvalid = (errors: FieldErrors<InvoiceFormSchemaT>) => {
+    console.log("errors", errors)
     toast.error(t("Please fill in all required fields"))
   }
 
@@ -123,20 +124,15 @@ const Checkout = () => {
   const rows = useWatch({ name: "rows", control: form.control })
 
   return (
-    <div className="space-y-2">
+    <div className="flex flex-col gap-2">
       {(rows || []).map((row, index) => (
         <CheckoutProductCard
           key={row.productId}
-          id={row.productId}
-          name={row.name}
-          description={row.notes || ""}
-          price={row.unitPrice}
-          quantity={row.quantity}
-          image="https://bundui-images.netlify.app/products/04.jpeg"
-          onQuantityChange={(id, newQuantity) => {
-            form.setValue(`rows.${index}.quantity`, newQuantity)
+          data={row}
+          onQtyChange={(qty) => {
+            form.setValue(`rows.${index}.quantity`, qty)
           }}
-          onRemove={(id) => {
+          onRemove={() => {
             form.setValue(
               "rows",
               (rows || []).filter((_, i) => i !== index)
