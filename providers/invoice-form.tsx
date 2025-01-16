@@ -17,6 +17,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
   id: true,
   createdAt: true,
   invoiceId: true,
+  total: true,
 })
 
 const schema = createInsertSchema(invoice, {})
@@ -24,6 +25,7 @@ const schema = createInsertSchema(invoice, {})
     id: true,
     unitId: true,
     createdAt: true,
+    total: true,
   })
   .extend({
     rows: z.array(rowSchema),

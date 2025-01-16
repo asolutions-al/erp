@@ -15,6 +15,10 @@ export const createInvoice = async ({
       .insert(invoice)
       .values({
         unitId,
+        total: values.rows.reduce(
+          (acc, row) => acc + row.quantity * row.unitPrice,
+          0
+        ),
       })
       .returning({
         id: invoice.id,
@@ -24,6 +28,7 @@ export const createInvoice = async ({
       await tx.insert(invoiceRow).values({
         ...row,
         invoiceId: res.id,
+        total: row.quantity * row.unitPrice,
       })
     }
   })

@@ -24,6 +24,7 @@ export const invoice = pgTable("invoice", {
 	id: uuid("id").defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	total: doublePrecision("total").notNull(),
 });
 
 export const organization = pgTable("organization", {
@@ -76,4 +77,5 @@ export const invoiceRow = pgTable("invoiceRow", {
 	unitPrice: real("unitPrice").notNull(),
 	notes: text("notes"),
 	invoiceId: uuid("invoiceId").notNull().references(() => invoice.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	total: doublePrecision("total").notNull(),
 });

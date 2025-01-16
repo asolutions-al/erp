@@ -2,19 +2,16 @@
 
 import { InvoiceSchemaT } from "@/db/(inv)/schema"
 import { ColumnDef } from "@tanstack/react-table"
+import { SortBtn } from "../buttons"
 
 const columns: ColumnDef<InvoiceSchemaT>[] = [
   {
     accessorKey: "createdAt",
-    header: "Name",
+    header: ({ column }) => <SortBtn text="Date" column={column} />,
   },
   {
-    accessorKey: "id",
-    header: "Barcode",
-  },
-  {
-    accessorKey: "unitId",
-    header: "Price",
+    accessorKey: "total",
+    header: ({ column }) => <SortBtn text="Total" column={column} />,
   },
 ]
 

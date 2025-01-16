@@ -45,5 +45,8 @@
   "Duplicate": "Duplicate",
   "Delete": "Delete",
   "Duplicate product": "Duplicate product",
-  "Update product": "Update product"
+  "Update product": "Update product",
+  "New invoice": "New invoice",
+  "Total": "Total",
+  "Date": "Date"
 }
