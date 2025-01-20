@@ -1,7 +1,7 @@
 "use client"
+import { Button } from "@/components/ui/button"
 import { ChevronLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
-import { Button } from "../ui/button"
 
 export function BackButton() {
   const router = useRouter()

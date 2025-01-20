@@ -1,6 +1,6 @@
+import { Separator } from "@/components/ui/separator"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import Image from "next/image"
-import { Separator } from "../ui/separator"
-import { SidebarTrigger } from "../ui/sidebar"
 
 const AppHeader = async () => {
   return (

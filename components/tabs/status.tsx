@@ -1,10 +1,10 @@
 "use client"
 
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { status } from "@/orm/(inv)/schema"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
 const LIST = status.enumValues
 const StatusTabs = ({

@@ -48,6 +48,7 @@ const CheckoutProductCard = ({
                   size="icon"
                   onClick={() => handleQuantityChange(-1)}
                   aria-label="Decrease quantity"
+                  type="button"
                 >
                   <Minus className="h-4 w-4" />
                 </Button>
@@ -65,6 +66,7 @@ const CheckoutProductCard = ({
                   size="icon"
                   onClick={() => handleQuantityChange(1)}
                   aria-label="Increase quantity"
+                  type="button"
                 >
                   <Plus className="h-4 w-4" />
                 </Button>

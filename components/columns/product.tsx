@@ -1,6 +1,15 @@
 "use client"
 
 import { SortBtn } from "@/components/buttons"
+import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import {
@@ -12,15 +21,6 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { Button } from "../ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu"
 
 const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
   const t = useTranslations()

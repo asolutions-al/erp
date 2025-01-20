@@ -1,9 +1,9 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import { CheckCircle2Icon, Eraser, LoaderIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useFormContext, useFormState } from "react-hook-form"
-import { Button } from "../ui/button"
 
 const FormActionBtns = ({ formId }: { formId: FormId }) => {
   const t = useTranslations()

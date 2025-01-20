@@ -10,19 +10,54 @@ import {
 
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { ProductSchemaT } from "@/db/(inv)/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { toast } from "sonner"
 import { CheckoutProductCard } from "../cards/checkout-product"
 import { SaleProductCard } from "../cards/sale-product"
+import { InvoiceReceipt } from "../invoice-receipt"
 
 type Props = {
   performAction: (values: InvoiceFormSchemaT) => Promise<void>
   products: ProductSchemaT[]
 }
 
+// Dummy data for the invoice
+const invoiceData = {
+  invoiceNumber: "INV-2023-001",
+  date: "2023-05-15",
+  dueDate: "2023-06-14",
+  customerName: "John Doe",
+  customerEmail: "john.doe@example.com",
+  items: [
+    {
+      description: "Web Development Services",
+      quantity: 1,
+      unitPrice: 1000,
+      total: 1000,
+    },
+    { description: "UI/UX Design", quantity: 2, unitPrice: 500, total: 1000 },
+    {
+      description: "Content Creation",
+      quantity: 5,
+      unitPrice: 100,
+      total: 500,
+    },
+  ],
+  subtotal: 2500,
+  tax: 250,
+  total: 2750,
+}
 const formId: FormId = "invoice"
 
 const Form = ({ performAction, products }: Props) => {
@@ -30,11 +65,17 @@ const Form = ({ performAction, products }: Props) => {
   const router = useRouter()
   const form = useFormContext<InvoiceFormSchemaT>()
 
+  const [receiptDialog, setReceiptDialog] = useState<{
+    open: boolean
+    data: InvoiceFormSchemaT
+  }>()
+
   const onValid = async (values: InvoiceFormSchemaT) => {
     try {
       await performAction(values)
       toast.success(t("Invoice saved successfully"))
-      router.back()
+      setReceiptDialog({ open: true, data: values })
+      form.reset()
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
@@ -115,6 +156,22 @@ const Form = ({ performAction, products }: Props) => {
           </div>
         </div>
       </form>
+
+      <Dialog
+        open={receiptDialog?.open}
+        onOpenChange={(open) =>
+          setReceiptDialog((prev) => (prev ? { ...prev, open } : prev))
+        }
+      >
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle>Invoice Receipt</DialogTitle>
+          </DialogHeader>
+          <ScrollArea className="max-h-[80vh] overflow-auto">
+            <InvoiceReceipt data={receiptDialog?.data!} />
+          </ScrollArea>
+        </DialogContent>
+      </Dialog>
     </>
   )
 }
