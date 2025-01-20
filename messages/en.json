@@ -48,5 +48,12 @@
   "Update product": "Update product",
   "New invoice": "New invoice",
   "Total": "Total",
-  "Date": "Date"
+  "Date": "Date",
+  "Currency": "Currency",
+  "Payment method": "Payment method",
+  "Customer name": "Customer name",
+  "cash": "cash",
+  "card": "card",
+  "bank": "bank",
+  "other": "other"
 }

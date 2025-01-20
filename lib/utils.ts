@@ -6,11 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-type Params = {
-  searchParams?: URLSearchParams
-}
-
-export const getAuthUrl = (args?: Params) => {
+// TODO: remove this function, seems pointless
+export const getAuthUrl = (args?: { searchParams?: URLSearchParams }) => {
   const { searchParams } = args || {}
 
   const url = new URL(accountsUrl)
@@ -31,4 +28,12 @@ export const getAuthUrl = (args?: Params) => {
   url.searchParams.set("redirectUrl", redirectUrl.href)
 
   return url.toString()
+}
+
+export const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  }).format(date)
 }

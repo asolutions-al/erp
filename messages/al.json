@@ -48,5 +48,12 @@
   "Update product": "Përditëso produktin",
   "New invoice": "Faturë e re",
   "Total": "Totali",
-  "Date": "Data"
+  "Date": "Data",
+  "Currency": "Monedha",
+  "Payment method": "Metoda e pagesës",
+  "Customer name": "Emri i klientit",
+  "cash": "cash",
+  "card": "kartë",
+  "bank": "bankë",
+  "other": "tjetër"
 }

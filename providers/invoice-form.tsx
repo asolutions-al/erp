@@ -35,8 +35,8 @@ type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   rows: [],
-  customerId: "4d0572b6-e208-4352-8b17-0222788bee93", // TODO:implement customers
-  customerName: "",
+  customerId: "4d0572b6-e208-4352-8b17-0222788bee93", // TODO: implement customers
+  customerName: "Demo", // TODO: implement customers
   discountType: "value",
   discountValue: 0,
   exchangeRate: 1,
