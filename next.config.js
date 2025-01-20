@@ -19,7 +19,7 @@ const nextConfig = {
   experimental: {
     typedRoutes: true,
     dynamicIO: true,
-    ppr: true,
+    ppr: "incremental",
   },
 }
 
