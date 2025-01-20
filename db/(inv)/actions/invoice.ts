@@ -19,6 +19,7 @@ export const createInvoice = async ({
           (acc, row) => acc + row.quantity * row.unitPrice,
           0
         ),
+        ...values,
       })
       .returning({
         id: invoice.id,

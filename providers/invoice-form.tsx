@@ -35,6 +35,13 @@ type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   rows: [],
+  customerId: "4d0572b6-e208-4352-8b17-0222788bee93", // TODO:implement customers
+  customerName: "",
+  discountType: "value",
+  discountValue: 0,
+  exchangeRate: 1,
+  currency: "ALL",
+  payMethod: "cash",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
