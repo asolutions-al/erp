@@ -40,7 +40,7 @@ const Page = async () => {
       />
       <div className="max-w-4xl mx-auto grid items-center sm:grid-cols-2 gap-4">
         {unitsList.map((unit) => (
-          <Link href={`/${unit.id}/dashboard`}>
+          <Link key={unit.id} href={`/${unit.id}/dashboard`}>
             <UnitCard data={unit} />
           </Link>
         ))}
