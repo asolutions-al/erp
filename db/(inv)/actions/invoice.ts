@@ -24,12 +24,12 @@ export const createInvoice = async ({
         id: invoice.id,
       })
 
-    for (const row of values.rows) {
-      await tx.insert(invoiceRow).values({
+    await tx.insert(invoiceRow).values(
+      values.rows.map((row) => ({
         ...row,
         invoiceId: res.id,
         total: row.quantity * row.unitPrice,
-      })
-    }
+      }))
+    )
   })
 }
