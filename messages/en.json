@@ -55,5 +55,8 @@
   "cash": "cash",
   "card": "card",
   "bank": "bank",
-  "other": "other"
+  "other": "other",
+  "Information about the unit": "Information about the unit",
+  "Secondary unit": "Secondary unit",
+  "Unit saved successfully": "Unit saved successfully"
 }

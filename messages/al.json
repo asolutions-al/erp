@@ -55,5 +55,8 @@
   "cash": "cash",
   "card": "kartë",
   "bank": "bankë",
-  "other": "tjetër"
+  "other": "tjetër",
+  "Information about the unit": "Informacion rreth njësisë",
+  "Secondary unit": "Njësia e dytë",
+  "Unit saved successfully": "Njësia u ruajt me sukses"
 }

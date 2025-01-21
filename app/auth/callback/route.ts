@@ -35,7 +35,7 @@ export async function GET(request: Request) {
     where: eq(schUser.id, userId),
   })
 
-  if (existingUser) return NextResponse.redirect(`${origin}/units`)
+  if (existingUser) return NextResponse.redirect(`${origin}/unit/list`)
 
   /**
    * Start onboarding process
@@ -89,5 +89,5 @@ export async function GET(request: Request) {
     return NextResponse.redirect(origin)
   }
 
-  return NextResponse.redirect(`${origin}/units`)
+  return NextResponse.redirect(`${origin}/unit/list`)
 }
