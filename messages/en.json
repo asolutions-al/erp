@@ -58,5 +58,10 @@
   "other": "other",
   "Information about the unit": "Information about the unit",
   "Secondary unit": "Secondary unit",
-  "Unit saved successfully": "Unit saved successfully"
+  "Unit saved successfully": "Unit saved successfully",
+  "Create a new organization": "Create a new organization",
+  "Choose organization": "Choose organization",
+  "Create new unit": "Create new unit",
+  "New unit": "New unit",
+  "Create new invoice": "Create new invoice"
 }

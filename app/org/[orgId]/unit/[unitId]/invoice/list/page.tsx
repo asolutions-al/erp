@@ -9,12 +9,12 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 type Props = {
-  params: Promise<{ unitId: string }>
+  params: Promise<{ orgId: string; unitId: string }>
 }
 
 const Page = async ({ params }: Props) => {
   const t = await getTranslations()
-  const { unitId } = await params
+  const { orgId, unitId } = await params
   const data = await db.query.invoice.findMany({
     where: eq(invoice.unitId, unitId),
   })
@@ -23,10 +23,12 @@ const Page = async ({ params }: Props) => {
     <>
       <div className="flex flex-row justify-between mb-3">
         <div />
-        <Link href={`/${unitId}/invoice/create`} passHref>
+        <Link href={`/org/${orgId}/unit/${unitId}/invoice/create`} passHref>
           <Button>
             <PlusCircleIcon />
-            <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
+            <span className="sr-only sm:not-sr-only">
+              {t("Create new invoice")}
+            </span>
           </Button>
         </Link>
       </div>

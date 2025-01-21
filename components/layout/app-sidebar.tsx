@@ -3,20 +3,15 @@
 import { BookOpen, Package, ReceiptTextIcon } from "lucide-react"
 
 import { NavMain } from "@/components/layout/nav-main"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarRail,
-} from "@/components/ui/sidebar"
+import { Sidebar, SidebarContent, SidebarRail } from "@/components/ui/sidebar"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"
-import { Suspense } from "react"
-import { UnitSwitcher } from "../switchers/unit"
 
 const AppSidebar = () => {
   const t = useTranslations()
-  const { unitId } = useParams()
+  const { orgId, unitId } = useParams<{ orgId: string; unitId?: string }>()
+
+  if (!unitId) return null // TODO: add org sidebar
 
   const data = {
     navMain: [
@@ -28,7 +23,7 @@ const AppSidebar = () => {
         items: [
           {
             title: t("Dashboard"),
-            url: `/${unitId}/dashboard`,
+            url: `/org/${orgId}/unit/${unitId}/dashboard`,
           },
         ],
       },
@@ -40,11 +35,11 @@ const AppSidebar = () => {
         items: [
           {
             title: t("List"),
-            url: `/${unitId}/product/list`,
+            url: `/org/${orgId}/unit/${unitId}/product/list`,
           },
           {
             title: t("Create"),
-            url: `/${unitId}/product/create`,
+            url: `/org/${orgId}/unit/${unitId}/product/create`,
           },
         ],
       },
@@ -56,11 +51,11 @@ const AppSidebar = () => {
         items: [
           {
             title: t("List"),
-            url: `/${unitId}/invoice/list`,
+            url: `/org/${orgId}/unit/${unitId}/invoice/list`,
           },
           {
             title: t("Create"),
-            url: `/${unitId}/invoice/create`,
+            url: `/org/${orgId}/unit/${unitId}/invoice/create`,
           },
         ],
       },
@@ -68,21 +63,6 @@ const AppSidebar = () => {
   }
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <Suspense>
-          <UnitSwitcher
-            units={[
-              {
-                createdAt: "2022-01-01",
-                description: "Description",
-                id: "5b6d8543-89ed-4335-9f4c-0538362b811a",
-                name: "Name",
-                orgId: "1",
-              },
-            ]}
-          />
-        </Suspense>
-      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

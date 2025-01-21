@@ -23,8 +23,9 @@ import { useParams } from "next/navigation"
 const UnitSwitcher = ({ units }: { units: UnitSchemaT[] }) => {
   const t = useTranslations()
   const { isMobile } = useSidebar()
-  const params = useParams<{ unitId: string }>()
-  const activeTeam = units.find((team) => team.id === params.unitId)!
+  const params = useParams()
+  const { orgId, unitId } = params
+  const activeTeam = units.find((team) => team.id === unitId)!
 
   return (
     <SidebarMenu>
@@ -59,7 +60,10 @@ const UnitSwitcher = ({ units }: { units: UnitSchemaT[] }) => {
               {t("Units")}
             </DropdownMenuLabel>
             {units.map((unit, index) => (
-              <Link href={`/${unit.id}/dashboard`} key={unit.name}>
+              <Link
+                href={`/org/${orgId}/unit/${unit.id}/dashboard`}
+                key={unit.name}
+              >
                 <DropdownMenuItem
                   className="gap-2 p-2"
                   onClick={() => {

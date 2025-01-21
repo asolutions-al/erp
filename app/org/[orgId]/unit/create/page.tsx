@@ -1,23 +1,26 @@
 import { FormActionBtns } from "@/components/buttons"
 import { UnitForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
+import { createUnit } from "@/db/(inv)/actions"
 import { UnitFormProvider } from "@/providers/unit-form"
 
-type Props = {}
+type Props = {
+  params: Promise<{ orgId: string }>
+}
 
 const Page = async (props: Props) => {
+  const { orgId } = await props.params
   return (
     <UnitFormProvider>
       <PageHeader
-        title={"Create unit"}
+        title={"New unit"}
         className="my-2"
         renderRight={() => <FormActionBtns formId="unit" />}
       />
       <UnitForm
         performAction={async (values) => {
           "use server"
-          console.log("values", values)
-          // TODO: create but orgId is necessary
+          createUnit({ values, orgId })
         }}
       />
     </UnitFormProvider>

@@ -43,6 +43,7 @@ export const organization = pgTable("organization", {
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	name: text("name").notNull(),
 	description: text("description"),
+	ownerId: uuid("ownerId").references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const unit = pgTable("unit", {

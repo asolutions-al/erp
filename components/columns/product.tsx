@@ -24,7 +24,7 @@ import { useParams } from "next/navigation"
 
 const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
   const t = useTranslations()
-  const { unitId } = useParams()
+  const { unitId, orgId } = useParams()
   const { original } = row
   return (
     <DropdownMenu>
@@ -36,13 +36,19 @@ const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <Link href={`/${unitId}/product/update/${original.id}`} passHref>
+        <Link
+          href={`/org/${orgId}/unit/${unitId}/product/update/${original.id}`}
+          passHref
+        >
           <DropdownMenuItem>
             <EditIcon />
             {t("Edit")}
           </DropdownMenuItem>
         </Link>
-        <Link href={`/${unitId}/product/duplicate/${original.id}`} passHref>
+        <Link
+          href={`/org/${orgId}/unit/${unitId}/product/duplicate/${original.id}`}
+          passHref
+        >
           <DropdownMenuItem>
             <CopyPlusIcon />
             {t("Duplicate")}

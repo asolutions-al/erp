@@ -10,7 +10,7 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 type Props = {
-  params: Promise<{ unitId: string }>
+  params: Promise<{ orgId: string; unitId: string }>
   searchParams: Promise<{
     status?: (typeof status.enumValues)[number]
   }>
@@ -18,7 +18,7 @@ type Props = {
 
 const Page = async ({ params, searchParams }: Props) => {
   const t = await getTranslations()
-  const { unitId } = await params
+  const { orgId, unitId } = await params
   const { status = "active" } = await searchParams
 
   const data = await db.query.product.findMany({
@@ -29,7 +29,7 @@ const Page = async ({ params, searchParams }: Props) => {
     <>
       <div className="flex flex-row justify-between mb-3">
         <StatusTabs defaultValue={status} />
-        <Link href={`/${unitId}/product/create`} passHref>
+        <Link href={`/org/${orgId}/unit/${unitId}/product/create`} passHref>
           <Button>
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only">{t("New product")}</span>

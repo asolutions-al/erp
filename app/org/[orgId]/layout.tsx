@@ -1,11 +1,18 @@
 import { AppHeader } from "@/components/layout/app-header"
 import { AppSidebarNew } from "@/components/layout/app-sidebar"
 import { SidebarProvider } from "@/components/ui/sidebar"
+import { getTranslations } from "next-intl/server"
 import { PropsWithChildren } from "react"
 
-type Props = PropsWithChildren<{}>
+type Props = PropsWithChildren<{
+  params: Promise<{ orgId: string }>
+}>
 
-const Layout = async ({ children }: Props) => {
+const Layout = async (props: Props) => {
+  const { children, params } = props
+  const t = await getTranslations()
+  const { orgId } = await params
+
   return (
     <SidebarProvider>
       <AppSidebarNew />
