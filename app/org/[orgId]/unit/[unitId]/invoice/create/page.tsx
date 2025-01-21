@@ -1,9 +1,9 @@
 import { FormActionBtns } from "@/components/buttons"
 import { InvoiceForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createInvoice } from "@/db/(inv)/actions"
-import { db } from "@/db/(inv)/instance"
-import { product } from "@/orm/(inv)/schema"
+import { createInvoice } from "@/db/app/actions"
+import { db } from "@/db/app/instance"
+import { product } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { eq } from "drizzle-orm"
 

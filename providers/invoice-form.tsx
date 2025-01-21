@@ -1,7 +1,7 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { invoice, invoiceRow } from "@/orm/(inv)/schema"
+import { invoice, invoiceRow } from "@/orm/app/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { PropsWithChildren } from "react"

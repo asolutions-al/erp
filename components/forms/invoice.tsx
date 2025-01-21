@@ -17,7 +17,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { ProductSchemaT } from "@/db/(inv)/schema"
+import { ProductSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"

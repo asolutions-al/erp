@@ -1,6 +1,6 @@
-import { invoice, invoiceRow } from "@/orm/(inv)/schema"
+import { db } from "@/db/app/instance"
+import { invoice, invoiceRow } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
-import { db } from "../instance"
 
 export const createInvoice = async ({
   values,

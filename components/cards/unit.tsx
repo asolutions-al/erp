@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { UnitSchemaT } from "@/db/(inv)/schema"
+import { UnitSchemaT } from "@/db/app/schema"
 
 const UnitCard = ({ data }: { data: UnitSchemaT }) => {
   return (

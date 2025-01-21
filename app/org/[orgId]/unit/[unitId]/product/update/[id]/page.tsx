@@ -1,9 +1,9 @@
 import { FormActionBtns } from "@/components/buttons"
 import { ProductForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { updateProduct } from "@/db/(inv)/actions"
-import { db } from "@/db/(inv)/instance"
-import { product } from "@/orm/(inv)/schema"
+import { updateProduct } from "@/db/app/actions"
+import { db } from "@/db/app/instance"
+import { product } from "@/orm/app/schema"
 import { ProductFormProvider } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
 

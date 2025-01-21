@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { status } from "@/orm/(inv)/schema"
+import { status } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"

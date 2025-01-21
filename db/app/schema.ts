@@ -1,4 +1,4 @@
-import { invoice, organization, product, unit } from "@/orm/(inv)/schema"
+import { invoice, organization, product, unit } from "@/orm/app/schema"
 import { createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
 

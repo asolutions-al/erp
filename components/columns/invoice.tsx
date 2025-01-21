@@ -1,6 +1,6 @@
 "use client"
 
-import { InvoiceSchemaT } from "@/db/(inv)/schema"
+import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"

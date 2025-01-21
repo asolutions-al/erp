@@ -6,9 +6,9 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { createAuthClient } from "@/db/(auth)/client"
-import { db } from "@/db/(inv)/instance"
-import { organization } from "@/orm/(inv)/schema"
+import { db } from "@/db/app/instance"
+import { createAuthClient } from "@/db/auth/client"
+import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"

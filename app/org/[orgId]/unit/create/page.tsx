@@ -1,7 +1,7 @@
 import { FormActionBtns } from "@/components/buttons"
 import { UnitForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createUnit } from "@/db/(inv)/actions"
+import { createUnit } from "@/db/app/actions"
 import { UnitFormProvider } from "@/providers/unit-form"
 
 type Props = {

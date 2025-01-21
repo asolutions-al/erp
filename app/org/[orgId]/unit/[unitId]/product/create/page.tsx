@@ -1,7 +1,7 @@
 import { FormActionBtns } from "@/components/buttons"
 import { ProductForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createProduct } from "@/db/(inv)/actions"
+import { createProduct } from "@/db/app/actions"
 import { ProductFormProvider } from "@/providers/product-form"
 
 type Props = {

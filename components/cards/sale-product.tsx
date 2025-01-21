@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { ProductSchemaT } from "@/db/(inv)/schema"
+import { ProductSchemaT } from "@/db/app/schema"
 import { PlusIcon } from "lucide-react"
 import Image from "next/image"
 

@@ -4,7 +4,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { OrgSchemaT } from "@/db/(inv)/schema"
+import { OrgSchemaT } from "@/db/app/schema"
 
 const OrgCard = ({ data }: { data: OrgSchemaT }) => {
   return (

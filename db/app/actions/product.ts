@@ -1,7 +1,7 @@
-import { product } from "@/orm/(inv)/schema"
+import { db } from "@/db/app/instance"
+import { product } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
-import { db } from "../instance"
 
 export const createProduct = async ({
   values,
