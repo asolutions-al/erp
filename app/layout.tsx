@@ -21,7 +21,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
           <body>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
+              defaultTheme="light"
               enableSystem
               disableTransitionOnChange
             >
