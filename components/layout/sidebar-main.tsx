@@ -1,4 +1,8 @@
-"use client"
+"use client" // TODO: convert to "server" component
+
+import { BookOpenIcon, PackageIcon, ReceiptTextIcon } from "lucide-react"
+import { useTranslations } from "next-intl"
+import { useParams } from "next/navigation"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
@@ -83,3 +87,95 @@ export function NavMain({
     </SidebarGroup>
   )
 }
+
+const OrgNav = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<{ orgId: string; unitId?: string }>()
+
+  return (
+    <NavMain
+      items={[
+        {
+          title: t("Unit"),
+          url: "#",
+          icon: BookOpenIcon,
+          isActive: true,
+          items: [
+            {
+              title: t("List"),
+              url: `/org/${orgId}/unit/list`,
+            },
+            {
+              title: t("Create"),
+              url: `/org/${orgId}/unit/create`,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const UnitNav = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<{ orgId: string; unitId?: string }>()
+
+  return (
+    <NavMain
+      items={[
+        {
+          title: t("History"),
+          url: "#",
+          icon: BookOpenIcon,
+          isActive: true,
+          items: [
+            {
+              title: t("Dashboard"),
+              url: `/org/${orgId}/unit/${unitId}/dashboard`,
+            },
+          ],
+        },
+        {
+          title: t("Product"),
+          url: "#",
+          icon: PackageIcon,
+          isActive: true,
+          items: [
+            {
+              title: t("List"),
+              url: `/org/${orgId}/unit/${unitId}/product/list`,
+            },
+            {
+              title: t("Create"),
+              url: `/org/${orgId}/unit/${unitId}/product/create`,
+            },
+          ],
+        },
+        {
+          title: t("Invoice"),
+          url: "#",
+          icon: ReceiptTextIcon,
+          isActive: true,
+          items: [
+            {
+              title: t("List"),
+              url: `/org/${orgId}/unit/${unitId}/invoice/list`,
+            },
+            {
+              title: t("Create"),
+              url: `/org/${orgId}/unit/${unitId}/invoice/create`,
+            },
+          ],
+        },
+      ]}
+    />
+  )
+}
+
+const SidebarMain = () => {
+  const { unitId } = useParams<{ unitId?: string }>()
+
+  return unitId ? <UnitNav /> : <OrgNav />
+}
+
+export { SidebarMain }
