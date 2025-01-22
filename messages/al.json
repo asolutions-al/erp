@@ -79,5 +79,20 @@
   "List of products to sell": "Lista e produkteve për shitje",
   "Products": "Produktet",
   "The person that will receive the invoice": "Persona që do të marrë faturën",
-  "Party": "Partia"
+  "Party": "Partia",
+  "Settings": "Konfigurimet",
+  "Account": "Llogaria",
+  "Appearance": "Pamja",
+  "Customize the appearance of the app": "Përshtat pamjen e aplikacionit",
+  "Automatically switch between day and night themes": "Ndërroni automatikisht midis temave të ditës dhe natës",
+  "Language": "Gjuha",
+  "Select language": "Zgjidh gjuhën",
+  "No language found": "Gjuha nuk u gjet",
+  "en": "Anglisht",
+  "al": "Shqip",
+  "This is the language that will be used in the app": "Kjo është gjuha që do të përdoret në aplikacion",
+  "Theme": "Tema",
+  "Pick a theme that suits you best": "Zgjidh një temë që të përshtatet më mirë",
+  "Light": "E bardhë",
+  "Dark": "E errët"
 }

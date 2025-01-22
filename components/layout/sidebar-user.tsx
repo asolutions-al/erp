@@ -15,14 +15,8 @@ import {
 } from "@/components/ui/sidebar"
 import { signOut } from "@/db/auth/actions"
 import { createAuthClient } from "@/db/auth/client"
-import {
-  BadgeCheck,
-  Bell,
-  ChevronsUpDown,
-  CreditCard,
-  LogOut,
-  Sparkles,
-} from "lucide-react"
+import { ChevronsUpDown, LogOut, SettingsIcon, Sparkles } from "lucide-react"
+import Link from "next/link"
 
 const SidebarUser = async () => {
   const client = await createAuthClient()
@@ -78,18 +72,12 @@ const SidebarUser = async () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCard />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem>
+              <Link href="/settings/account">
+                <DropdownMenuItem>
+                  <SettingsIcon />
+                  Settings
+                </DropdownMenuItem>
+              </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>
