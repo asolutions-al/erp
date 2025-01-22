@@ -128,11 +128,10 @@ const Form = ({ performAction, products }: Props) => {
                       form.setValue("rows", [
                         ...(form.getValues().rows || []),
                         {
+                          ...product,
                           productId: product.id,
-                          name: product.name,
                           quantity: 1,
                           unitPrice: product.price,
-                          notes: "",
                         },
                       ])
                     }}

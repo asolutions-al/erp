@@ -11,7 +11,7 @@ import { z } from "zod"
 const rowSchema = createInsertSchema(invoiceRow, {
   productId: (sch) => sch.productId.min(1),
   name: (sch) => sch.name.min(1),
-  unitPrice: (sch) => sch.unitPrice.positive(),
+  unitPrice: (sch) => sch.unitPrice.min(0),
   quantity: (sch) => sch.quantity.positive(),
 }).omit({
   id: true,

@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
+import { publicStorageUrl } from "@/contants/consts"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { Minus, Plus, X } from "lucide-react"
 import Image from "next/image"
@@ -16,7 +17,7 @@ const CheckoutProductCard = ({
   onRemove: () => void
   onQtyChange: (qty: number) => void
 }) => {
-  const { name, unitPrice, quantity } = data
+  const { name, unitPrice, quantity, imageBucketPath } = data
   const handleQuantityChange = (change: number) => {
     const newQty = Math.max(1, quantity + change)
     onQtyChange(newQty)
@@ -28,7 +29,11 @@ const CheckoutProductCard = ({
         <div className="flex flex-col sm:flex-row">
           <div className="relative h-48 w-full sm:h-auto sm:w-48 flex-shrink-0">
             <Image
-              src={"/placeholder.svg"}
+              src={
+                imageBucketPath
+                  ? `${publicStorageUrl}/productImages/${imageBucketPath}`
+                  : "/placeholder.svg"
+              }
               alt={name}
               layout="fill"
               objectFit="cover"

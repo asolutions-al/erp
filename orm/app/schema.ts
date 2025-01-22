@@ -91,4 +91,7 @@ export const invoiceRow = pgTable("invoiceRow", {
 	notes: text("notes"),
 	invoiceId: uuid("invoiceId").notNull().references(() => invoice.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	total: doublePrecision("total").notNull(),
+	imageBucketPath: text("imageBucketPath"),
+	barcode: text("barcode"),
+	description: text("description"),
 });

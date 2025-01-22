@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
 import { PlusIcon } from "lucide-react"
 import Image from "next/image"
@@ -12,8 +13,10 @@ const Component = ({
   data: ProductSchemaT
   onSelect: () => void
 }) => {
+  const { imageBucketPath } = data
   const category = "Clothing"
   const unit = "pcs"
+
   return (
     <Card className="group relative space-y-4 overflow-hidden">
       <figure className="group-hover:opacity-90">
@@ -22,7 +25,11 @@ const Component = ({
         </Badge>
         <Image
           className="aspect-square w-full"
-          src="/placeholder.svg"
+          src={
+            imageBucketPath
+              ? `${publicStorageUrl}/productImages/${imageBucketPath}`
+              : "/placeholder.svg"
+          }
           width={300}
           height={300}
           alt={data.name}
