@@ -72,5 +72,12 @@
   "Increase quantity": "Rrit sasinë",
   "Remove product": "Hiq produktin",
   "Remove": "Hiq",
-  "Invoice receipt": "Marrëveshja e faturës"
+  "Invoice receipt": "Marrëveshja e faturës",
+  "Review the invoice and proceed to checkout": "Rishikoni faturën dhe vazhdoni me checkout",
+  "Method of payment": "Metoda e pagesës",
+  "Payment": "Pagesa",
+  "List of products to sell": "Lista e produkteve për shitje",
+  "Products": "Produktet",
+  "The person that will receive the invoice": "Persona që do të marrë faturën",
+  "Party": "Partia"
 }

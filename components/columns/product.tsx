@@ -1,6 +1,7 @@
 "use client"
 
 import { SortBtn } from "@/components/buttons"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -22,7 +23,6 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
   const t = useTranslations()

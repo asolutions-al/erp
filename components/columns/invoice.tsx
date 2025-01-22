@@ -1,10 +1,10 @@
 "use client"
 
+import { SortBtn } from "@/components/buttons"
 import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
-import { SortBtn } from "../buttons"
 
 const PayMethodCell = ({ row }: CellContext<InvoiceSchemaT, unknown>) => {
   const t = useTranslations()

@@ -11,17 +11,17 @@ import { Input } from "@/components/ui/input"
 
 import { useFormContext } from "react-hook-form"
 
-import { UnitFormSchemaT } from "@/providers/unit-form"
-import { useTranslations } from "next-intl"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "../ui/card"
+} from "@/components/ui/card"
+import { UnitFormSchemaT } from "@/providers/unit-form"
+import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type Props = {
   performAction: (values: UnitFormSchemaT) => Promise<void>

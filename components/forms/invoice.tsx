@@ -10,12 +10,18 @@ import {
 
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
+import { SaleProductCard } from "@/components/cards"
+import { PartyComboBox } from "@/components/combobox"
+import { InvoiceReceipt } from "@/components/invoice-receipt"
+import { PayMethodTabs } from "@/components/tabs"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
@@ -25,10 +31,6 @@ import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
-import { SaleProductCard } from "../cards/sale-product"
-import { InvoiceReceipt } from "../invoice-receipt"
-import { Button } from "../ui/button"
-import { Input } from "../ui/input"
 
 type Props = {
   performAction: (values: InvoiceFormSchemaT) => Promise<void>
@@ -70,13 +72,24 @@ const Form = ({ performAction, products }: Props) => {
         className="mx-auto"
         id={formId}
       >
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div>
+        <div className="grid gap-3 lg:grid-cols-2">
+          <div className="space-y-3">
             <Card>
               <CardHeader>
-                <CardTitle>{t("Details")}</CardTitle>
+                <CardTitle>{t("Party")}</CardTitle>
                 <CardDescription>
-                  {t("Information about the invoice")}
+                  {t("The person that will receive the invoice")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PartyComboBox />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Products")}</CardTitle>
+                <CardDescription>
+                  {t("List of products to sell")}
                 </CardDescription>
               </CardHeader>
               <CardContent className="grid gap-2 grid-cols-2 sm:grid-cols-3 xl:grid-cols-4">
@@ -116,12 +129,22 @@ const Form = ({ performAction, products }: Props) => {
               </CardContent>
             </Card>
           </div>
-          <div>
+          <div className="space-y-3">
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Payment")}</CardTitle>
+                <CardDescription>{t("Method of payment")}</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <PayMethodTabs defaultValue="cash" />
+              </CardContent>
+            </Card>
+
             <Card>
               <CardHeader>
                 <CardTitle>{t("Checkout")}</CardTitle>
                 <CardDescription>
-                  {t("Payment, customer and other details")}
+                  {t("Review the invoice and proceed to checkout")}
                 </CardDescription>
               </CardHeader>
               <CardContent>

@@ -72,5 +72,12 @@
   "Increase quantity": "Increase quantity",
   "Remove product": "Remove product",
   "Remove": "Remove",
-  "Invoice receipt": "Invoice receipt"
+  "Invoice receipt": "Invoice receipt",
+  "Review the invoice and proceed to checkout": "Review the invoice and proceed to checkout",
+  "Method of payment": "Method of payment",
+  "Payment": "Payment",
+  "List of products to sell": "List of products to sell",
+  "Products": "Products",
+  "The person that will receive the invoice": "The person that will receive the invoice",
+  "Party": "Party"
 }
