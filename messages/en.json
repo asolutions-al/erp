@@ -67,5 +67,10 @@
   "Unit": "Unit",
   "Product images": "Product images",
   "Manage images of the product": "Manage images of the product",
-  "Product image": "Product image"
+  "Product image": "Product image",
+  "Decrease quantity": "Decrease quantity",
+  "Increase quantity": "Increase quantity",
+  "Remove product": "Remove product",
+  "Remove": "Remove",
+  "Invoice receipt": "Invoice receipt"
 }

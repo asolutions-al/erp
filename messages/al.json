@@ -67,5 +67,10 @@
   "Unit": "Njësi",
   "Product images": "Imazhet e produktit",
   "Manage images of the product": "Menaxho imazhet e produktit",
-  "Product image": "Imazhi i produktit"
+  "Product image": "Imazhi i produktit",
+  "Decrease quantity": "Zvogëlo sasinë",
+  "Increase quantity": "Rrit sasinë",
+  "Remove product": "Hiq produktin",
+  "Remove": "Hiq",
+  "Invoice receipt": "Marrëveshja e faturës"
 }

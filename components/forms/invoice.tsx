@@ -23,7 +23,6 @@ import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { MinusIcon, PlusIcon, XIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 import { SaleProductCard } from "../cards/sale-product"
@@ -36,37 +35,10 @@ type Props = {
   products: ProductSchemaT[]
 }
 
-// Dummy data for the invoice
-const invoiceData = {
-  invoiceNumber: "INV-2023-001",
-  date: "2023-05-15",
-  dueDate: "2023-06-14",
-  customerName: "John Doe",
-  customerEmail: "john.doe@example.com",
-  items: [
-    {
-      description: "Web Development Services",
-      quantity: 1,
-      unitPrice: 1000,
-      total: 1000,
-    },
-    { description: "UI/UX Design", quantity: 2, unitPrice: 500, total: 1000 },
-    {
-      description: "Content Creation",
-      quantity: 5,
-      unitPrice: 100,
-      total: 500,
-    },
-  ],
-  subtotal: 2500,
-  tax: 250,
-  total: 2750,
-}
 const formId: FormId = "invoice"
 
 const Form = ({ performAction, products }: Props) => {
   const t = useTranslations()
-  const router = useRouter()
   const form = useFormContext<InvoiceFormSchemaT>()
 
   const [receiptDialog, setReceiptDialog] = useState<{
@@ -168,7 +140,7 @@ const Form = ({ performAction, products }: Props) => {
       >
         <DialogContent className="sm:max-w-[625px]">
           <DialogHeader>
-            <DialogTitle>Invoice Receipt</DialogTitle>
+            <DialogTitle>{t("Invoice receipt")}</DialogTitle>
           </DialogHeader>
           <ScrollArea className="max-h-[80vh] overflow-auto">
             <InvoiceReceipt data={receiptDialog?.data!} />
@@ -180,13 +152,21 @@ const Form = ({ performAction, products }: Props) => {
 }
 
 const Checkout = () => {
+  const t = useTranslations()
   const form = useFormContext<InvoiceFormSchemaT>()
   const rows = useWatch({ name: "rows", control: form.control })
 
   return (
     <div className="flex flex-col gap-2">
       {(rows || []).map((row, index) => {
-        const { name, unitPrice, quantity, imageBucketPath, productId } = row
+        const {
+          name,
+          unitPrice,
+          quantity,
+          imageBucketPath,
+          productId,
+          description,
+        } = row
 
         const changeQty = (value: number) => {
           form.setValue(`rows.${index}.quantity`, value)
@@ -220,7 +200,7 @@ const Checkout = () => {
                     <div>
                       <h3 className="text-lg font-semibold">{name}</h3>
                       <p className="text-sm text-muted-foreground">
-                        description
+                        {description}
                       </p>
                     </div>
                     <p className="text-lg font-bold">${unitPrice}</p>
@@ -232,7 +212,7 @@ const Checkout = () => {
                         size="icon"
                         disabled={quantity === 1}
                         onClick={() => changeQty(quantity - 1)}
-                        aria-label="Decrease quantity"
+                        aria-label={t("Decrease quantity")}
                         type="button"
                       >
                         <MinusIcon />
@@ -250,7 +230,7 @@ const Checkout = () => {
                         variant="outline"
                         size="icon"
                         onClick={() => changeQty(quantity + 1)}
-                        aria-label="Increase quantity"
+                        aria-label={t("Increase quantity")}
                         type="button"
                       >
                         <PlusIcon />
@@ -261,10 +241,10 @@ const Checkout = () => {
                       size="sm"
                       onClick={() => remove()}
                       className="text-destructive"
-                      aria-label="Remove item"
+                      aria-label={t("Remove product")}
                     >
                       <XIcon className="h-4 w-4 mr-2" />
-                      Remove
+                      {t("Remove")}
                     </Button>
                   </div>
                 </div>
