@@ -17,15 +17,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { MinusIcon, PlusIcon, XIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
-import { CheckoutProductCard } from "../cards/checkout-product"
 import { SaleProductCard } from "../cards/sale-product"
 import { InvoiceReceipt } from "../invoice-receipt"
+import { Button } from "../ui/button"
+import { Input } from "../ui/input"
 
 type Props = {
   performAction: (values: InvoiceFormSchemaT) => Promise<void>
@@ -181,21 +185,94 @@ const Checkout = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      {(rows || []).map((row, index) => (
-        <CheckoutProductCard
-          key={row.productId}
-          data={row}
-          onQtyChange={(qty) => {
-            form.setValue(`rows.${index}.quantity`, qty)
-          }}
-          onRemove={() => {
-            form.setValue(
-              "rows",
-              (rows || []).filter((_, i) => i !== index)
-            )
-          }}
-        />
-      ))}
+      {(rows || []).map((row, index) => {
+        const { name, unitPrice, quantity, imageBucketPath, productId } = row
+
+        const changeQty = (value: number) => {
+          form.setValue(`rows.${index}.quantity`, value)
+        }
+
+        const remove = () => {
+          form.setValue(
+            "rows",
+            (rows || []).filter((_, i) => i !== index)
+          )
+        }
+
+        return (
+          <Card className="overflow-hidden" key={productId}>
+            <CardContent className="p-0">
+              <div className="flex flex-col sm:flex-row">
+                <div className="relative h-32 w-full sm:w-32 flex-shrink-0">
+                  <Image
+                    src={
+                      imageBucketPath
+                        ? `${publicStorageUrl}/productImages/${imageBucketPath}`
+                        : "/placeholder.svg"
+                    }
+                    alt={name}
+                    layout="fill"
+                    objectFit="cover"
+                  />
+                </div>
+                <div className="flex-grow p-2 flex flex-col justify-between">
+                  <div className="flex justify-between">
+                    <div>
+                      <h3 className="text-lg font-semibold">{name}</h3>
+                      <p className="text-sm text-muted-foreground">
+                        description
+                      </p>
+                    </div>
+                    <p className="text-lg font-bold">${unitPrice}</p>
+                  </div>
+                  <div className="flex items-center justify-between mt-2">
+                    <div className="flex gap-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        disabled={quantity === 1}
+                        onClick={() => changeQty(quantity - 1)}
+                        aria-label="Decrease quantity"
+                        type="button"
+                      >
+                        <MinusIcon />
+                      </Button>
+                      <Input
+                        type="number"
+                        value={quantity}
+                        onChange={(e) =>
+                          changeQty(parseInt(e.target.value, 10) || 1)
+                        }
+                        className="w-20 text-center"
+                        min="1"
+                      />
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => changeQty(quantity + 1)}
+                        aria-label="Increase quantity"
+                        type="button"
+                      >
+                        <PlusIcon />
+                      </Button>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => remove()}
+                      className="text-destructive"
+                      aria-label="Remove item"
+                    >
+                      <XIcon className="h-4 w-4 mr-2" />
+                      Remove
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
     </div>
   )
 }
