@@ -9,10 +9,7 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "xczxozyteslsqdxtljzq.supabase.co",
-      },
-      {
-        hostname: "bundui-images.netlify.app",
+        hostname: "sgiuwqvbmszlqxbfajwl.supabase.co",
       },
     ],
   },

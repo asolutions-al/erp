@@ -83,7 +83,7 @@ const Form = ({ performAction, products }: Props) => {
   }
 
   const onInvalid = (errors: FieldErrors<InvoiceFormSchemaT>) => {
-    console.log("errors", errors)
+    console.error("errors", errors)
     toast.error(t("Please fill in all required fields"))
   }
 

@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import {
@@ -21,6 +22,7 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 
 const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
   const t = useTranslations()
@@ -68,6 +70,24 @@ const columns: ColumnDef<ProductSchemaT>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <SortBtn text="Name" column={column} />,
+    cell: ({ row }) => {
+      const { imageBucketPath, name } = row.original
+      return (
+        <div className="flex items-center gap-4">
+          <Avatar>
+            {imageBucketPath ? (
+              <AvatarImage
+                src={`${publicStorageUrl}/productImages/${imageBucketPath}`}
+                alt={name}
+              />
+            ) : (
+              <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            )}
+          </Avatar>
+          {name}
+        </div>
+      )
+    },
   },
   {
     accessorKey: "barcode",

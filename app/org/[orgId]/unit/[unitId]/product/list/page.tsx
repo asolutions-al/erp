@@ -23,6 +23,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
   const data = await db.query.product.findMany({
     where: and(eq(product.unitId, unitId), eq(product.status, status)),
+    orderBy: product.name,
   })
 
   return (

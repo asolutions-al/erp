@@ -26,10 +26,16 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { publicStorageUrl } from "@/contants/consts"
+import { createClient } from "@/db/app/client"
 import { status } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
+import { UploadIcon } from "lucide-react"
+import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
+import { useState } from "react"
 import { toast } from "sonner"
 
 type Props = {
@@ -43,9 +49,26 @@ export function ProductForm({ performAction }: Props) {
   const router = useRouter()
   const form = useFormContext<ProductFormSchemaT>()
 
+  const [imgFile, setImgFile] = useState<File>()
+
+  const defaultImgBucketPath = form.formState.defaultValues?.imageBucketPath
+
   const onValid = async (values: ProductFormSchemaT) => {
     try {
-      await performAction(values)
+      let imgPath: ProductFormSchemaT["imageBucketPath"]
+
+      if (imgFile) {
+        imgPath = nanoid() // new path
+        const client = createClient()
+        client.storage.from("productImages").upload(imgPath, imgFile) // optimistic
+      } else {
+        imgPath = defaultImgBucketPath // keep the same path
+      }
+
+      await performAction({
+        ...values,
+        imageBucketPath: imgPath,
+      })
       toast.success(t("Product saved successfully"))
       router.back()
     } catch (error) {
@@ -151,7 +174,7 @@ export function ProductForm({ performAction }: Props) {
               </CardContent>
             </Card>
           </div>
-          <div>
+          <div className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle>{t("Status")}</CardTitle>
@@ -184,6 +207,66 @@ export function ProductForm({ performAction }: Props) {
                     </FormItem>
                   )}
                 />
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Product images")}</CardTitle>
+                <CardDescription>
+                  {t("Manage images of the product")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-2">
+                  <Image
+                    alt={t("Product image")}
+                    className="aspect-square w-full rounded-md object-cover"
+                    height="300"
+                    src={
+                      imgFile
+                        ? URL.createObjectURL(imgFile)
+                        : defaultImgBucketPath
+                          ? `${publicStorageUrl}/productImages/${defaultImgBucketPath}`
+                          : "/placeholder.svg"
+                    }
+                    width="300"
+                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    <Image
+                      alt="Product image"
+                      className="aspect-square w-full rounded-md object-cover"
+                      height="84"
+                      src="/placeholder.svg"
+                      width="84"
+                    />
+                    <Image
+                      alt="Product image"
+                      className="aspect-square w-full rounded-md object-cover"
+                      height="84"
+                      src="/placeholder.svg"
+                      width="84"
+                    />
+                    <button
+                      className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed"
+                      onClick={(e) => {
+                        e.preventDefault()
+                        const input = document.createElement("input")
+                        input.type = "file"
+                        input.accept = "image/*"
+                        input.onchange = (e) => {
+                          const files = (e.target as HTMLInputElement).files
+                          const file = files?.[0]
+                          if (!file) return
+                          setImgFile(file)
+                        }
+                        input.click()
+                      }}
+                    >
+                      <UploadIcon className="h-4 w-4 text-muted-foreground" />
+                      <span className="sr-only">Upload</span>
+                    </button>
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>

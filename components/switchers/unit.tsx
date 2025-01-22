@@ -64,12 +64,7 @@ const UnitSwitcher = ({ units }: { units: UnitSchemaT[] }) => {
                 href={`/org/${orgId}/unit/${unit.id}/dashboard`}
                 key={unit.name}
               >
-                <DropdownMenuItem
-                  className="gap-2 p-2"
-                  onClick={() => {
-                    console.log("Switching to shop", unit.name)
-                  }}
-                >
+                <DropdownMenuItem className="gap-2 p-2" onClick={() => {}}>
                   <div className="flex size-6 items-center justify-center rounded-sm border">
                     <AudioWaveformIcon className="size-4 shrink-0" />
                   </div>

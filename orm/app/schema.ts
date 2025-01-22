@@ -78,6 +78,7 @@ export const product = pgTable("product", {
 	status: status("status").notNull(),
 	barcode: text("barcode"),
 	description: text("description"),
+	imageBucketPath: text("imageBucketPath"),
 });
 
 export const invoiceRow = pgTable("invoiceRow", {
