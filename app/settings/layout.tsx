@@ -14,7 +14,6 @@ import { Collapsible } from "@/components/ui/collapsible"
 import { SidebarGroup } from "@/components/ui/sidebar"
 
 import {
-  ActivityIcon,
   ChevronRight,
   CircleUserIcon,
   PaletteIcon,
@@ -61,11 +60,11 @@ const Layout = async (props: Props) => {
           icon: StoreIcon,
           url: "/settings/orgs",
         },
-        {
-          title: t("Activity"),
-          icon: ActivityIcon,
-          url: "/settings/activity",
-        },
+        // {
+        //   title: t("Activity"),
+        //   icon: ActivityIcon,
+        //   url: "/settings/activity",
+        // },
       ],
     },
     {
@@ -86,7 +85,7 @@ const Layout = async (props: Props) => {
       <Sidebar collapsible="icon">
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarGroupLabel>{t("Settings")}</SidebarGroupLabel>
             <SidebarMenu>
               {items.map((item) => (
                 <Collapsible
