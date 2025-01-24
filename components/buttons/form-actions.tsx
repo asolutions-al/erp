@@ -8,7 +8,7 @@ import { useFormContext, useFormState } from "react-hook-form"
 const FormActionBtns = ({ formId }: { formId: FormId }) => {
   const t = useTranslations()
   const form = useFormContext()
-  const { isSubmitting, isValidating } = useFormState({
+  const { isSubmitting, isValidating, isDirty } = useFormState({
     control: form.control,
   })
 
@@ -21,7 +21,7 @@ const FormActionBtns = ({ formId }: { formId: FormId }) => {
         size="sm"
         type="button"
         onClick={() => form.reset()}
-        disabled={isProcessing}
+        disabled={isProcessing || !isDirty}
       >
         <Eraser size={15} className="mr-1" />
         {t("Discard")}

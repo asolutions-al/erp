@@ -26,15 +26,17 @@ const List = async () => {
 const Page = async () => {
   const t = await getTranslations()
   return (
-    <>
-      <h3 className="text-lg font-medium">{t("Organizations")}</h3>
-      <p className="text-sm text-muted-foreground mb-2">
-        {t("Organizations that are associated with your account")}.
-      </p>
+    <div className="space-y-6 m-4">
+      <div>
+        <h3 className="text-lg font-medium">{t("Organizations")}</h3>
+        <p className="text-sm text-muted-foreground">
+          {t("Organizations that are associated with your account")}.
+        </p>
+      </div>
       <Suspense fallback={<Loading />}>
         <List />
       </Suspense>
-    </>
+    </div>
   )
 }
 

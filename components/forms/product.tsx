@@ -38,24 +38,26 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
+type SchemaT = ProductFormSchemaT
+
 type Props = {
-  performAction: (values: ProductFormSchemaT) => Promise<void>
+  performAction: (values: SchemaT) => Promise<void>
 }
 
 const formId: FormId = "product"
 
-export function ProductForm({ performAction }: Props) {
+const Form = ({ performAction }: Props) => {
   const t = useTranslations()
   const router = useRouter()
-  const form = useFormContext<ProductFormSchemaT>()
+  const form = useFormContext<SchemaT>()
 
   const [imgFile, setImgFile] = useState<File>()
 
   const defaultImgBucketPath = form.formState.defaultValues?.imageBucketPath
 
-  const onValid = async (values: ProductFormSchemaT) => {
+  const onValid = async (values: SchemaT) => {
     try {
-      let imgPath: ProductFormSchemaT["imageBucketPath"]
+      let imgPath: SchemaT["imageBucketPath"]
 
       if (imgFile) {
         imgPath = nanoid() // new path
@@ -275,3 +277,5 @@ export function ProductForm({ performAction }: Props) {
     </>
   )
 }
+
+export { Form as ProductForm }

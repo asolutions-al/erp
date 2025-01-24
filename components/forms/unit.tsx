@@ -23,8 +23,10 @@ import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
+type SchemaT = UnitFormSchemaT
+
 type Props = {
-  performAction: (values: UnitFormSchemaT) => Promise<void>
+  performAction: (values: SchemaT) => Promise<void>
 }
 
 const formId: FormId = "unit"
@@ -32,9 +34,9 @@ const formId: FormId = "unit"
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()
   const router = useRouter()
-  const form = useFormContext<UnitFormSchemaT>()
+  const form = useFormContext<SchemaT>()
 
-  const onValid = async (values: UnitFormSchemaT) => {
+  const onValid = async (values: SchemaT) => {
     try {
       await performAction(values)
       toast.success(t("Unit saved successfully"))

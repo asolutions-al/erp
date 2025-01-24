@@ -32,8 +32,10 @@ import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
 
+type SchemaT = InvoiceFormSchemaT
+
 type Props = {
-  performAction: (values: InvoiceFormSchemaT) => Promise<void>
+  performAction: (values: SchemaT) => Promise<void>
   products: ProductSchemaT[]
 }
 
@@ -41,14 +43,14 @@ const formId: FormId = "invoice"
 
 const Form = ({ performAction, products }: Props) => {
   const t = useTranslations()
-  const form = useFormContext<InvoiceFormSchemaT>()
+  const form = useFormContext<SchemaT>()
 
   const [receiptDialog, setReceiptDialog] = useState<{
     open: boolean
-    data: InvoiceFormSchemaT
+    data: SchemaT
   }>()
 
-  const onValid = async (values: InvoiceFormSchemaT) => {
+  const onValid = async (values: SchemaT) => {
     try {
       await performAction(values)
       toast.success(t("Invoice saved successfully"))
@@ -60,7 +62,7 @@ const Form = ({ performAction, products }: Props) => {
     }
   }
 
-  const onInvalid = (errors: FieldErrors<InvoiceFormSchemaT>) => {
+  const onInvalid = (errors: FieldErrors<SchemaT>) => {
     console.error("errors", errors)
     toast.error(t("Please fill in all required fields"))
   }
@@ -176,7 +178,7 @@ const Form = ({ performAction, products }: Props) => {
 
 const Checkout = () => {
   const t = useTranslations()
-  const form = useFormContext<InvoiceFormSchemaT>()
+  const form = useFormContext<SchemaT>()
   const rows = useWatch({ name: "rows", control: form.control })
 
   return (

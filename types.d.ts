@@ -1,1 +1,1 @@
-type FormId = "product" | "invoice" | "unit"
+type FormId = "product" | "invoice" | "unit" | "user"

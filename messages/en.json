@@ -99,5 +99,12 @@
   "Organizations": "Organizations",
   "Activity": "Activity",
   "Organizations that are associated with your account": "Organizations that are associated with your account",
-  "Manage": "Manage"
+  "Manage": "Manage",
+  "General settings for your account": "General settings for your account",
+  "Email": "Email",
+  "This is the email associated with your account": "This is the email associated with your account",
+  "Account settings": "Account settings",
+  "Display name": "Display name",
+  "Your full name, or a display name you are comfortable with": "Your full name, or a display name you are comfortable with",
+  "User saved successfully": "User saved successfully"
 }

@@ -21,6 +21,7 @@ export const user = pgTable("user", {
 	id: uuid("id").primaryKey().notNull(),
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	email: text("email").notNull(),
+	displayName: text("displayName"),
 });
 
 export const invoice = pgTable("invoice", {

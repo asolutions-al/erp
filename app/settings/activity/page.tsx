@@ -1,5 +1,5 @@
 const Page = async () => {
-  return <div>Activity</div>
+  return <div>Comming Soon</div>
 }
 
 export default Page
