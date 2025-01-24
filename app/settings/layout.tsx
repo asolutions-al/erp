@@ -1,6 +1,8 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarGroupLabel,
+  SidebarMenu,
   SidebarProvider,
   SidebarRail,
 } from "@/components/ui/sidebar"
@@ -12,9 +14,12 @@ import { Collapsible } from "@/components/ui/collapsible"
 import { SidebarGroup } from "@/components/ui/sidebar"
 
 import {
+  ActivityIcon,
   ChevronRight,
   CircleUserIcon,
+  PaletteIcon,
   SettingsIcon,
+  StoreIcon,
   SunMoonIcon,
 } from "lucide-react"
 
@@ -43,14 +48,30 @@ const Layout = async (props: Props) => {
   const t = await getTranslations()
   const items = [
     {
-      title: t("Settings"),
-      icon: SettingsIcon,
+      title: t("Account"),
+      icon: CircleUserIcon,
       items: [
         {
-          title: t("Account"),
-          icon: CircleUserIcon,
-          url: "/settings/account",
+          title: t("General"),
+          icon: SettingsIcon,
+          url: "/settings/general",
         },
+        {
+          title: t("Organizations"),
+          icon: StoreIcon,
+          url: "/settings/orgs",
+        },
+        {
+          title: t("Activity"),
+          icon: ActivityIcon,
+          url: "/settings/activity",
+        },
+      ],
+    },
+    {
+      title: t("Theme"),
+      icon: PaletteIcon,
+      items: [
         {
           title: t("Appearance"),
           icon: SunMoonIcon,
@@ -65,43 +86,46 @@ const Layout = async (props: Props) => {
       <Sidebar collapsible="icon">
         <SidebarContent>
           <SidebarGroup>
-            {items.map((item) => (
-              <Collapsible
-                key={item.title}
-                asChild
-                defaultOpen
-                className="group/collapsible"
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger asChild>
-                    <SidebarMenuButton tooltip={item.title}>
-                      {item.icon && <item.icon />}
-                      <span>{item.title}</span>
-                      <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      {item.items?.map((subItem) => {
-                        return (
-                          <SidebarMenuSubItem key={subItem.title}>
-                            <SidebarMenuSubButton asChild>
-                              <Link
-                                // @ts-ignore
-                                href={subItem.url}
-                              >
-                                {subItem.icon && <subItem.icon />}
-                                <span>{subItem.title}</span>
-                              </Link>
-                            </SidebarMenuSubButton>
-                          </SidebarMenuSubItem>
-                        )
-                      })}
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            ))}
+            <SidebarGroupLabel>Platform</SidebarGroupLabel>
+            <SidebarMenu>
+              {items.map((item) => (
+                <Collapsible
+                  key={item.title}
+                  asChild
+                  defaultOpen
+                  className="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger asChild>
+                      <SidebarMenuButton tooltip={item.title}>
+                        {item.icon && <item.icon />}
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        {item.items?.map((subItem) => {
+                          return (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton asChild>
+                                <Link
+                                  // @ts-ignore
+                                  href={subItem.url}
+                                >
+                                  {subItem.icon && <subItem.icon />}
+                                  <span>{subItem.title}</span>
+                                </Link>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          )
+                        })}
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              ))}
+            </SidebarMenu>
           </SidebarGroup>
         </SidebarContent>
         <Suspense>

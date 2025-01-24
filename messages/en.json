@@ -94,5 +94,10 @@
   "Theme": "Theme",
   "Pick a theme that suits you best": "Pick a theme that suits you best",
   "Light": "Light",
-  "Dark": "Dark"
+  "Dark": "Dark",
+  "General": "General",
+  "Organizations": "Organizations",
+  "Activity": "Activity",
+  "Organizations that are associated with your account": "Organizations that are associated with your account",
+  "Manage": "Manage"
 }

@@ -1,29 +1,10 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Command } from "@/components/ui/command"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { useTheme } from "next-themes"
 
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-
-import {
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import { cn } from "@/lib/utils"
-
 import { Label } from "@/components/ui/label"
-import { Locale, locales } from "@/i18n"
-import { setUserLocale } from "@/services/locale"
+import { Locale } from "@/i18n"
 import { useLocale, useTranslations } from "next-intl"
 
 export function AppearanceForm() {
@@ -33,55 +14,6 @@ export function AppearanceForm() {
 
   return (
     <div className="space-y-8">
-      <div className="flex flex-col space-y-2">
-        <Label>{t("Language")}</Label>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              role="combobox"
-              className={cn(
-                "w-[200px] justify-between",
-                !locale && "text-muted-foreground"
-              )}
-            >
-              {t(locale || "Select language")}
-              <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-[200px] p-0">
-            <Command onValueChange={(value) => {}}>
-              <CommandInput placeholder="Search language..." />
-              <CommandList>
-                <CommandEmpty>{t("No language found")}.</CommandEmpty>
-                <CommandGroup>
-                  {locales.map((lang) => (
-                    <CommandItem
-                      value={lang}
-                      key={lang}
-                      onSelect={() => {
-                        setUserLocale(lang)
-                      }}
-                    >
-                      <CheckIcon
-                        className={cn(
-                          "mr-2 h-4 w-4",
-                          lang === locale ? "opacity-100" : "opacity-0"
-                        )}
-                      />
-                      {t(lang)}
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              </CommandList>
-            </Command>
-          </PopoverContent>
-        </Popover>
-        <div className="text-sm text-muted-foreground">
-          {t("This is the language that will be used in the app")}
-        </div>
-      </div>
-
       <div className="space-y-1">
         <Label>{t("Theme")}</Label>
         <div className="text-sm text-muted-foreground">
