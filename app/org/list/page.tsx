@@ -51,7 +51,7 @@ const Page = async () => {
       />
       <div className="max-w-4xl mx-auto grid items-center sm:grid-cols-2 gap-4">
         {orgs.map((org) => (
-          <Link key={org.id} href={`/org/${org.id}/unit/list`}>
+          <Link key={org.id} href={`/org/${org.id}/~/list`}>
             <OrgCard data={org} />
           </Link>
         ))}

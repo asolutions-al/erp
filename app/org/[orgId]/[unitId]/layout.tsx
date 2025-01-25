@@ -1,4 +1,3 @@
-import { SidebarMain } from "@/components/layout/sidebar-main"
 import {
   Sidebar,
   SidebarContent,
@@ -8,12 +7,13 @@ import {
 } from "@/components/ui/sidebar"
 import { PropsWithChildren, Suspense } from "react"
 
+import { SidebarMain } from "@/components/layout/sidebar-main"
 import { SidebarUser } from "@/components/layout/sidebar-user"
 import { Separator } from "@/components/ui/separator"
 import Image from "next/image"
 
 type Props = PropsWithChildren<{
-  params: Promise<{ orgId: string }>
+  params: Promise<{ orgId: string; unitId: string }>
 }>
 
 export const experimental_ppr = true
@@ -21,11 +21,20 @@ export const experimental_ppr = true
 const Layout = async (props: Props) => {
   const { children } = props
 
+  const { orgId, unitId } = await props.params
+
+  const hasUnitId = unitId !== "~"
+
+  console.log({ orgId, unitId, hasUnitId })
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
         <SidebarContent>
-          <SidebarMain />
+          <SidebarMain
+            orgId={orgId}
+            unitId={unitId === "~" ? undefined : unitId}
+          />
         </SidebarContent>
         <Suspense>
           <SidebarUser />

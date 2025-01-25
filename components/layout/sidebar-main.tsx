@@ -1,8 +1,4 @@
-"use client" // TODO: convert to "server" component
-
 import { BookOpenIcon, PackageIcon, ReceiptTextIcon } from "lucide-react"
-import { useTranslations } from "next-intl"
-import { useParams } from "next/navigation"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
@@ -20,10 +16,9 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
 
 export function NavMain({
   items,
@@ -39,8 +34,6 @@ export function NavMain({
     }[]
   }[]
 }) {
-  const pathname = usePathname()
-  const { setOpenMobile } = useSidebar()
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -63,14 +56,12 @@ export function NavMain({
               <CollapsibleContent>
                 <SidebarMenuSub>
                   {item.items?.map((subItem) => {
-                    const isActive = pathname === subItem.url
                     return (
                       <SidebarMenuSubItem key={subItem.title}>
-                        <SidebarMenuSubButton asChild isActive={isActive}>
+                        <SidebarMenuSubButton asChild>
                           <Link
                             // @ts-ignore
                             href={subItem.url}
-                            onClick={() => setOpenMobile(false)}
                           >
                             <span>{subItem.title}</span>
                           </Link>
@@ -88,10 +79,8 @@ export function NavMain({
   )
 }
 
-const OrgNav = () => {
-  const t = useTranslations()
-  const { orgId, unitId } = useParams<{ orgId: string; unitId?: string }>()
-
+const OrgNav = async ({ orgId }: { orgId: string }) => {
+  const t = await getTranslations()
   return (
     <NavMain
       items={[
@@ -103,11 +92,11 @@ const OrgNav = () => {
           items: [
             {
               title: t("List"),
-              url: `/org/${orgId}/unit/list`,
+              url: `/org/${orgId}/~/list`,
             },
             {
               title: t("Create"),
-              url: `/org/${orgId}/unit/create`,
+              url: `/org/${orgId}/~/create`,
             },
           ],
         },
@@ -116,9 +105,14 @@ const OrgNav = () => {
   )
 }
 
-const UnitNav = () => {
-  const t = useTranslations()
-  const { orgId, unitId } = useParams<{ orgId: string; unitId?: string }>()
+const UnitNav = async ({
+  orgId,
+  unitId,
+}: {
+  orgId: string
+  unitId: string
+}) => {
+  const t = await getTranslations()
 
   return (
     <NavMain
@@ -131,7 +125,7 @@ const UnitNav = () => {
           items: [
             {
               title: t("Dashboard"),
-              url: `/org/${orgId}/unit/${unitId}/dashboard`,
+              url: `/org/${orgId}/${unitId}/dashboard`,
             },
           ],
         },
@@ -143,11 +137,11 @@ const UnitNav = () => {
           items: [
             {
               title: t("List"),
-              url: `/org/${orgId}/unit/${unitId}/product/list`,
+              url: `/org/${orgId}/${unitId}/product/list`,
             },
             {
               title: t("Create"),
-              url: `/org/${orgId}/unit/${unitId}/product/create`,
+              url: `/org/${orgId}/${unitId}/product/create`,
             },
           ],
         },
@@ -159,11 +153,11 @@ const UnitNav = () => {
           items: [
             {
               title: t("List"),
-              url: `/org/${orgId}/unit/${unitId}/invoice/list`,
+              url: `/org/${orgId}/${unitId}/invoice/list`,
             },
             {
               title: t("Create"),
-              url: `/org/${orgId}/unit/${unitId}/invoice/create`,
+              url: `/org/${orgId}/${unitId}/invoice/create`,
             },
           ],
         },
@@ -172,10 +166,12 @@ const UnitNav = () => {
   )
 }
 
-const SidebarMain = () => {
-  const { unitId } = useParams<{ unitId?: string }>()
-
-  return unitId ? <UnitNav /> : <OrgNav />
+const SidebarMain = ({ orgId, unitId }: { orgId: string; unitId?: string }) => {
+  return unitId ? (
+    <UnitNav orgId={orgId} unitId={unitId} />
+  ) : (
+    <OrgNav orgId={orgId} />
+  )
 }
 
 export { SidebarMain }

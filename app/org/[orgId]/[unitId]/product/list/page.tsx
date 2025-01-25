@@ -30,7 +30,7 @@ const Page = async ({ params, searchParams }: Props) => {
     <>
       <div className="flex flex-row justify-between mb-3">
         <StatusTabs defaultValue={status} />
-        <Link href={`/org/${orgId}/unit/${unitId}/product/create`} passHref>
+        <Link href={`/org/${orgId}/${unitId}/product/create`} passHref>
           <Button>
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only">{t("New product")}</span>

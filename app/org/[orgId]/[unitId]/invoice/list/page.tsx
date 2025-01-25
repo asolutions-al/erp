@@ -23,7 +23,7 @@ const Page = async ({ params }: Props) => {
     <>
       <div className="flex flex-row justify-between mb-3">
         <div />
-        <Link href={`/org/${orgId}/unit/${unitId}/invoice/create`} passHref>
+        <Link href={`/org/${orgId}/${unitId}/invoice/create`} passHref>
           <Button>
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only">

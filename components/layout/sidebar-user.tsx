@@ -72,7 +72,7 @@ const SidebarUser = async () => {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href="/settings/account">
+              <Link href="/settings/general">
                 <DropdownMenuItem>
                   <SettingsIcon />
                   Settings

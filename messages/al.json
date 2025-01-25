@@ -94,5 +94,17 @@
   "Theme": "Tema",
   "Pick a theme that suits you best": "Zgjidh një temë që të përshtatet më mirë",
   "Light": "E bardhë",
-  "Dark": "E errët"
+  "Dark": "E errët",
+  "General": "Përgjithshme",
+  "Organizations": "Organizatat",
+  "Activity": "Aktiviteti",
+  "Organizations that are associated with your account": "Organizatat që janë të lidhura me llogarinë tuaj",
+  "Manage": "Menaxho",
+  "General settings for your account": "Konfigurimet e përgjithshme për llogarinë tuaj",
+  "Email": "Email",
+  "This is the email associated with your account": "Ky është emaili i lidhur me llogarinë tuaj",
+  "Account settings": "Konfigurimet e llogarisë",
+  "Display name": "Emri i shfaqur",
+  "Your full name, or a display name you are comfortable with": "Emri juaj i plotë, ose një emër shfaqjeje me të cilin jeni të rehatshëm",
+  "User saved successfully": "Përdoruesi u ruajt me sukses"
 }

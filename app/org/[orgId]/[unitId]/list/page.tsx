@@ -33,7 +33,7 @@ const Page = async ({ params }: Props) => {
       <PageHeader
         title="Select unit"
         renderRight={() => (
-          <Link href={`/org/${orgId}/unit/create`}>
+          <Link href={`/org/${orgId}/~/create`}>
             <Button size="sm" className="h-8 gap-1">
               <PlusCircle className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
@@ -46,7 +46,7 @@ const Page = async ({ params }: Props) => {
       />
       <div className="max-w-4xl mx-auto grid items-center sm:grid-cols-2 gap-4">
         {unitsList.map((unit) => (
-          <Link key={unit.id} href={`/org/${orgId}/unit/${unit.id}/dashboard`}>
+          <Link key={unit.id} href={`/org/${orgId}/${unit.id}/dashboard`}>
             <UnitCard data={unit} />
           </Link>
         ))}

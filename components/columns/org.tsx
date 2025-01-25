@@ -15,7 +15,6 @@ import {
 import { CellContext } from "@tanstack/react-table"
 import { EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 
 const Actions = ({ row }: CellContext<OrgSchemaT, unknown>) => {
   const t = useTranslations()
@@ -29,12 +28,10 @@ const Actions = ({ row }: CellContext<OrgSchemaT, unknown>) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <Link href={`/org/${row.original.id}/settings`} passHref>
-          <DropdownMenuItem>
-            <EditIcon />
-            {t("Manage")}
-          </DropdownMenuItem>
-        </Link>
+        <DropdownMenuItem>
+          <EditIcon />
+          {t("Manage")}
+        </DropdownMenuItem>
         {/* <DropdownMenuSeparator />
         <DropdownMenuItem>
           <TrashIcon />
