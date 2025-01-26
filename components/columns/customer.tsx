@@ -8,18 +8,12 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
-import {
-  CopyPlusIcon,
-  EditIcon,
-  MoreHorizontalIcon,
-  TrashIcon,
-} from "lucide-react"
+import { CopyPlusIcon, EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
@@ -56,11 +50,6 @@ const Actions = ({ row }: CellContext<CustomerSchemaT, unknown>) => {
             {t("Duplicate")}
           </DropdownMenuItem>
         </Link>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <TrashIcon />
-          {t("Delete")}
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

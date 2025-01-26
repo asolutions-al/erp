@@ -32,11 +32,6 @@ const Actions = ({ row }: CellContext<OrgSchemaT, unknown>) => {
           <EditIcon />
           {t("Manage")}
         </DropdownMenuItem>
-        {/* <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <TrashIcon />
-          {t("Delete")}
-        </DropdownMenuItem> */}
       </DropdownMenuContent>
     </DropdownMenu>
   )
