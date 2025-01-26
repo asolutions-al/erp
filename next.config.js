@@ -15,8 +15,10 @@ const nextConfig = {
   },
   experimental: {
     typedRoutes: true,
-    // dynamicIO: true,
     ppr: "incremental",
+    staleTimes: {
+      dynamic: 0,
+    },
   },
 }
 
