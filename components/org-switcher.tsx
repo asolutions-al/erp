@@ -55,7 +55,7 @@ const OrgSwitcher = ({
           <DropdownMenuContent
             className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
             align="start"
-            side={isMobile ? "bottom" : "right"}
+            side={"bottom"}
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
