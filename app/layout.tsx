@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip"
 import { appUrl } from "@/contants/consts"
 import { ThemeProvider } from "@/providers/theme-provider"
 import { TranslationProvider } from "@/providers/translation"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GeistSans } from "geist/font/sans"
 import { PropsWithChildren } from "react"
 import "./globals.css"
@@ -28,6 +29,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               {children}
               <Toaster className="print:hidden" />
             </ThemeProvider>
+            <SpeedInsights />
           </body>
         </TooltipProvider>
       </TranslationProvider>
