@@ -26,11 +26,11 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { productImagesBucket } from "@/contants/bucket"
+import { customerImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
-import { status } from "@/orm/app/schema"
-import { ProductFormSchemaT } from "@/providers/product-form"
+import { IdType, status } from "@/orm/app/schema"
+import { CustomerFormSchemaT } from "@/providers/customer-form"
 import { UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
@@ -39,13 +39,13 @@ import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
-type SchemaT = ProductFormSchemaT
+type SchemaT = CustomerFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
 }
 
-const formId: FormId = "product"
+const formId: FormId = "customer"
 
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()
@@ -63,7 +63,7 @@ const Form = ({ performAction }: Props) => {
       if (imgFile) {
         imgPath = nanoid() // new path
         const client = createClient()
-        client.storage.from(productImagesBucket).upload(imgPath, imgFile) // optimistic
+        client.storage.from("customerImages").upload(imgPath, imgFile) // optimistic
       } else {
         imgPath = defaultImgBucketPath // keep the same path
       }
@@ -72,7 +72,7 @@ const Form = ({ performAction }: Props) => {
         ...values,
         imageBucketPath: imgPath,
       })
-      toast.success(t("Product saved successfully"))
+      toast.success(t("Customer saved successfully"))
       router.back()
     } catch (error) {
       console.error("error", error)
@@ -92,15 +92,15 @@ const Form = ({ performAction }: Props) => {
         id={formId}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-2 space-y-2">
             <Card>
               <CardHeader>
-                <CardTitle>{t("Details")}</CardTitle>
+                <CardTitle>{t("Identity")}</CardTitle>
                 <CardDescription>
-                  {t("Information about the product")}
+                  {t("Basic information about the customer")}
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-2">
+              <CardContent>
                 <FormField
                   control={form.control}
                   name="name"
@@ -108,21 +108,77 @@ const Form = ({ performAction }: Props) => {
                     <FormItem>
                       <FormLabel>{t("Name")}</FormLabel>
                       <FormControl>
-                        <Input placeholder="Pizza" {...field} />
+                        <Input placeholder="John Doe" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+                <div className="grid grid-cols-3 gap-2">
+                  <FormField
+                    control={form.control}
+                    name="idType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("Id type")}</FormLabel>
+                        <Select
+                          value={field.value || ""}
+                          onValueChange={field.onChange}
+                        >
+                          <FormControl>
+                            <SelectTrigger aria-label={t("Select id type")}>
+                              <SelectValue placeholder={t("Select id type")} />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            {IdType.enumValues.map((item) => (
+                              <SelectItem key={item} value={item}>
+                                {t(item)}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="idValue"
+                    render={({ field }) => (
+                      <FormItem className="col-span-2">
+                        <FormLabel>{t("Id")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="1234567890"
+                            {...field}
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Details")}</CardTitle>
+                <CardDescription>
+                  {t("Additional information about the customer")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-2">
                 <FormField
                   control={form.control}
-                  name="barcode"
+                  name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("Barcode")}</FormLabel>
+                      <FormLabel>{t("Email")}</FormLabel>
                       <FormControl>
                         <Input
-                          placeholder="1234567890"
+                          placeholder="demo@example.com"
                           {...field}
                           value={field.value || ""}
                         />
@@ -131,23 +187,35 @@ const Form = ({ performAction }: Props) => {
                     </FormItem>
                   )}
                 />
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-2">
                   <FormField
                     control={form.control}
-                    name="price"
+                    name="city"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>{t("Price")}</FormLabel>
+                        <FormLabel>{t("City")}</FormLabel>
                         <FormControl>
                           <Input
-                            type="number"
-                            placeholder="0.00"
+                            placeholder="San Francisco"
                             {...field}
-                            onChange={(e) =>
-                              field.onChange(parseFloat(e.target.value))
-                            }
-                            onFocus={(e) => e.target.select()}
-                            min="0"
+                            value={field.value || ""}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t("Address")}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="1234 Main St"
+                            {...field}
+                            value={field.value || ""}
                           />
                         </FormControl>
                         <FormMessage />
@@ -155,6 +223,7 @@ const Form = ({ performAction }: Props) => {
                     )}
                   />
                 </div>
+
                 <FormField
                   control={form.control}
                   name="description"
@@ -181,6 +250,9 @@ const Form = ({ performAction }: Props) => {
             <Card>
               <CardHeader>
                 <CardTitle>{t("Status")}</CardTitle>
+                <CardDescription>
+                  {t("Current status of the customer")}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <FormField
@@ -188,7 +260,6 @@ const Form = ({ performAction }: Props) => {
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{t("Status")}</FormLabel>
                       <Select
                         value={field.value || ""}
                         onValueChange={field.onChange}
@@ -214,36 +285,36 @@ const Form = ({ performAction }: Props) => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>{t("Product images")}</CardTitle>
+                <CardTitle>{t("Images")}</CardTitle>
                 <CardDescription>
-                  {t("Manage images of the product")}
+                  {t("Appealing images of the customer")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-2">
                   <Image
-                    alt={t("Product image")}
+                    alt={t("Customer image")}
                     className="aspect-square w-full rounded-md object-cover"
                     height="300"
                     src={
                       imgFile
                         ? URL.createObjectURL(imgFile)
                         : defaultImgBucketPath
-                          ? `${publicStorageUrl}/${productImagesBucket}/${defaultImgBucketPath}`
+                          ? `${publicStorageUrl}/${customerImagesBucket}/${defaultImgBucketPath}`
                           : "/placeholder.svg"
                     }
                     width="300"
                   />
                   <div className="grid grid-cols-3 gap-2">
                     <Image
-                      alt="Product image"
+                      alt={t("Customer image")}
                       className="aspect-square w-full rounded-md object-cover"
                       height="84"
                       src="/placeholder.svg"
                       width="84"
                     />
                     <Image
-                      alt="Product image"
+                      alt={t("Customer image")}
                       className="aspect-square w-full rounded-md object-cover"
                       height="84"
                       src="/placeholder.svg"
@@ -266,7 +337,7 @@ const Form = ({ performAction }: Props) => {
                       }}
                     >
                       <UploadIcon className="h-4 w-4 text-muted-foreground" />
-                      <span className="sr-only">Upload</span>
+                      <span className="sr-only">{t("Upload")}</span>
                     </button>
                   </div>
                 </div>
@@ -279,4 +350,4 @@ const Form = ({ performAction }: Props) => {
   )
 }
 
-export { Form as ProductForm }
+export { Form as CustomerForm }

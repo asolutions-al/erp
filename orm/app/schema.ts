@@ -8,6 +8,7 @@ export const factor_type = pgEnum("factor_type", ['totp', 'webauthn', 'phone'])
 export const one_time_token_type = pgEnum("one_time_token_type", ['confirmation_token', 'reauthentication_token', 'recovery_token', 'email_change_token_new', 'email_change_token_current', 'phone_change_token'])
 export const key_status = pgEnum("key_status", ['default', 'valid', 'invalid', 'expired'])
 export const key_type = pgEnum("key_type", ['aead-ietf', 'aead-det', 'hmacsha512', 'hmacsha256', 'auth', 'shorthash', 'generichash', 'kdf', 'secretbox', 'secretstream', 'stream_xchacha20'])
+export const IdType = pgEnum("IdType", ['tin', 'id'])
 export const currency = pgEnum("currency", ['ALL', 'EUR', 'USD'])
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const payMethod = pgEnum("payMethod", ['cash', 'card', 'bank', 'other'])
@@ -45,6 +46,21 @@ export const organization = pgTable("organization", {
 	name: text("name").notNull(),
 	description: text("description"),
 	ownerId: uuid("ownerId").references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+});
+
+export const customer = pgTable("customer", {
+	id: uuid("id").defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	name: text("name").notNull(),
+	status: status("status").notNull(),
+	description: text("description"),
+	imageBucketPath: text("imageBucketPath"),
+	idType: IdType("idType"),
+	email: text("email"),
+	address: text("address"),
+	city: text("city"),
+	idValue: text("idValue"),
 });
 
 export const unit = pgTable("unit", {

@@ -1,4 +1,9 @@
-import { BookOpenIcon, PackageIcon, ReceiptTextIcon } from "lucide-react"
+import {
+  BookOpenIcon,
+  ContactIcon,
+  PackageIcon,
+  ReceiptTextIcon,
+} from "lucide-react"
 
 import { ChevronRight, type LucideIcon } from "lucide-react"
 
@@ -142,6 +147,22 @@ const UnitNav = async ({
             {
               title: t("Create"),
               url: `/org/${orgId}/${unitId}/product/create`,
+            },
+          ],
+        },
+        {
+          title: t("Customer"),
+          url: "#",
+          icon: ContactIcon,
+          isActive: true,
+          items: [
+            {
+              title: t("List"),
+              url: `/org/${orgId}/${unitId}/customer/list`,
+            },
+            {
+              title: t("Create"),
+              url: `/org/${orgId}/${unitId}/customer/create`,
             },
           ],
         },

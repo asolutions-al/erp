@@ -2,11 +2,13 @@ import { db } from "@/db/app/instance"
 import { invoice, invoiceRow } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 
-export const createInvoice = async ({
+type FormSchemaT = InvoiceFormSchemaT
+
+const create = async ({
   values,
   unitId,
 }: {
-  values: InvoiceFormSchemaT
+  values: FormSchemaT
   unitId: string
 }) => {
   "use server"
@@ -34,3 +36,5 @@ export const createInvoice = async ({
     )
   })
 }
+
+export { create as createInvoice }

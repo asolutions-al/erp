@@ -11,9 +11,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
-import { ProductSchemaT } from "@/db/app/schema"
+import { CustomerSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
@@ -25,7 +24,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
+const Actions = ({ row }: CellContext<CustomerSchemaT, unknown>) => {
   const t = useTranslations()
   const { unitId, orgId } = useParams()
   const { original } = row
@@ -40,7 +39,7 @@ const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <Link
-          href={`/org/${orgId}/${unitId}/product/update/${original.id}`}
+          href={`/org/${orgId}/${unitId}/customer/update/${original.id}`}
           passHref
         >
           <DropdownMenuItem>
@@ -49,7 +48,7 @@ const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
           </DropdownMenuItem>
         </Link>
         <Link
-          href={`/org/${orgId}/${unitId}/product/duplicate/${original.id}`}
+          href={`/org/${orgId}/${unitId}/customer/duplicate/${original.id}`}
           passHref
         >
           <DropdownMenuItem>
@@ -67,7 +66,7 @@ const Actions = ({ row }: CellContext<ProductSchemaT, unknown>) => {
   )
 }
 
-const columns: ColumnDef<ProductSchemaT>[] = [
+const columns: ColumnDef<CustomerSchemaT>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <SortBtn text="Name" column={column} />,
@@ -78,7 +77,7 @@ const columns: ColumnDef<ProductSchemaT>[] = [
           <Avatar>
             {imageBucketPath ? (
               <AvatarImage
-                src={`${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`}
+                src={`${publicStorageUrl}/customerImages/${imageBucketPath}`}
                 alt={name}
               />
             ) : (
@@ -91,16 +90,16 @@ const columns: ColumnDef<ProductSchemaT>[] = [
     },
   },
   {
-    accessorKey: "barcode",
-    header: ({ column }) => <SortBtn text="Barcode" column={column} />,
+    accessorKey: "idValue",
+    header: ({ column }) => <SortBtn text="Id" column={column} />,
   },
   {
-    accessorKey: "price",
-    header: ({ column }) => <SortBtn text="Price" column={column} />,
+    accessorKey: "address",
+    header: ({ column }) => <SortBtn text="Address" column={column} />,
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => <SortBtn text="Status" column={column} />,
+    accessorKey: "email",
+    header: ({ column }) => <SortBtn text="Email" column={column} />,
   },
   {
     id: "actions",
@@ -108,4 +107,4 @@ const columns: ColumnDef<ProductSchemaT>[] = [
   },
 ]
 
-export { columns as productColumns }
+export { columns as customerColumns }

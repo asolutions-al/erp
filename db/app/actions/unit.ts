@@ -3,11 +3,13 @@ import { createAuthClient } from "@/db/auth/client"
 import { member, unit } from "@/orm/app/schema"
 import { UnitFormSchemaT } from "@/providers/unit-form"
 
-export const createUnit = async ({
+type FormSchemaT = UnitFormSchemaT
+
+const create = async ({
   values,
   orgId,
 }: {
-  values: UnitFormSchemaT
+  values: FormSchemaT
   orgId: string
 }) => {
   "use server"
@@ -35,3 +37,5 @@ export const createUnit = async ({
     })
   })
 }
+
+export { create as createUnit }

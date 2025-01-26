@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
+import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
 import { PlusIcon } from "lucide-react"
@@ -27,7 +28,7 @@ const Component = ({
           className="aspect-square w-full"
           src={
             imageBucketPath
-              ? `${publicStorageUrl}/productImages/${imageBucketPath}`
+              ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
               : "/placeholder.svg"
           }
           width={300}

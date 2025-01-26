@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
@@ -212,7 +213,7 @@ const Checkout = () => {
                   <Image
                     src={
                       imageBucketPath
-                        ? `${publicStorageUrl}/productImages/${imageBucketPath}`
+                        ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
                         : "/placeholder.svg"
                     }
                     alt={name}
