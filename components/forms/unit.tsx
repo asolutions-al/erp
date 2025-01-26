@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/card"
 import { UnitFormSchemaT } from "@/providers/unit-form"
 import { useTranslations } from "next-intl"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 type SchemaT = UnitFormSchemaT
@@ -34,13 +34,15 @@ const formId: FormId = "unit"
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()
   const router = useRouter()
+  const { orgId } = useParams<{ orgId: string }>()
+
   const form = useFormContext<SchemaT>()
 
   const onValid = async (values: SchemaT) => {
     try {
       await performAction(values)
       toast.success(t("Unit saved successfully"))
-      router.back()
+      router.push(`/org/${orgId}/unit/~/list`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))

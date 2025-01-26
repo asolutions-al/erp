@@ -35,7 +35,7 @@ import { UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -50,6 +50,7 @@ const formId: FormId = "customer"
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()
   const router = useRouter()
+  const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
   const form = useFormContext<SchemaT>()
 
   const [imgFile, setImgFile] = useState<File>()
@@ -73,7 +74,7 @@ const Form = ({ performAction }: Props) => {
         imageBucketPath: imgPath,
       })
       toast.success(t("Customer saved successfully"))
-      router.back()
+      router.push(`/org/${orgId}/${unitId}/customer/list`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
