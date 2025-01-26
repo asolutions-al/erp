@@ -1,6 +1,7 @@
 import {
   Sidebar,
   SidebarContent,
+  SidebarInset,
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
@@ -39,7 +40,7 @@ const Layout = async (props: Props) => {
         </Suspense>
         <SidebarRail />
       </Sidebar>
-      <div className="flex-1">
+      <SidebarInset>
         <header className="sticky top-0 z-10 flex h-16 items-center border-b px-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <Link href={`/org/${orgId}/~/list`}>
             <Image src="/logo.png" alt="logo" width={30} height={30} />
@@ -49,8 +50,8 @@ const Layout = async (props: Props) => {
             <SidebarTrigger />
           </div>
         </header>
-        <main className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</main>
-      </div>
+        <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
+      </SidebarInset>
     </SidebarProvider>
   )
 }
