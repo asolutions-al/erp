@@ -19,7 +19,6 @@ const List = async () => {
     where: eq(organization.ownerId, user.id),
   })
 
-  console.log("data", data)
   return <DataTable columns={orgColumns} data={data} />
 }
 

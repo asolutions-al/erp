@@ -20,7 +20,10 @@ const rowSchema = createInsertSchema(invoiceRow, {
   total: true,
 })
 
-const schema = createInsertSchema(invoice, {})
+const schema = createInsertSchema(invoice, {
+  customerId: (sch) => sch.customerId.min(1),
+  customerName: (sch) => sch.customerName.min(1),
+})
   .omit({
     id: true,
     unitId: true,
@@ -28,15 +31,15 @@ const schema = createInsertSchema(invoice, {})
     total: true,
   })
   .extend({
-    rows: z.array(rowSchema),
+    rows: z.array(rowSchema).min(1),
   })
 
 type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   rows: [],
-  customerId: "4d0572b6-e208-4352-8b17-0222788bee93", // TODO: implement customers
-  customerName: "Demo", // TODO: implement customers
+  customerId: "",
+  customerName: "",
   discountType: "value",
   discountValue: 0,
   exchangeRate: 1,

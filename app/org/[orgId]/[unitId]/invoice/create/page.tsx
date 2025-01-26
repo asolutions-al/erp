@@ -13,9 +13,14 @@ type Props = {
 
 const Page = async ({ params }: Props) => {
   const { unitId } = await params
-  const products = await db.query.product.findMany({
-    where: eq(product.unitId, unitId),
-  })
+  const [products, customers] = await Promise.all([
+    db.query.product.findMany({
+      where: eq(product.unitId, unitId),
+    }),
+    db.query.customer.findMany({
+      where: eq(product.unitId, unitId),
+    }),
+  ])
 
   return (
     <InvoiceFormProvider>
@@ -26,6 +31,7 @@ const Page = async ({ params }: Props) => {
       />
       <InvoiceForm
         products={products}
+        customers={customers}
         performAction={async (values) => {
           "use server"
           await createInvoice({ values, unitId })

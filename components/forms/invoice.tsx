@@ -11,7 +11,6 @@ import {
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
 import { SaleProductCard } from "@/components/cards"
-import { PartyComboBox } from "@/components/combobox"
 import { InvoiceReceipt } from "@/components/invoice-receipt"
 import { PayMethodTabs } from "@/components/tabs"
 import { Button } from "@/components/ui/button"
@@ -25,24 +24,43 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
-import { ProductSchemaT } from "@/db/app/schema"
+import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
-import { MinusIcon, PlusIcon, XIcon } from "lucide-react"
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  MinusIcon,
+  PlusIcon,
+  XIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
+import { Command } from "../ui/command"
+import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+
+import {
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
+import { cn } from "@/lib/utils"
 
 type SchemaT = InvoiceFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
   products: ProductSchemaT[]
+  customers: CustomerSchemaT[]
 }
 
 const formId: FormId = "invoice"
 
-const Form = ({ performAction, products }: Props) => {
+const Form = ({ performAction, products, customers }: Props) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
@@ -68,6 +86,8 @@ const Form = ({ performAction, products }: Props) => {
     toast.error(t("Please fill in all required fields"))
   }
 
+  const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
+
   return (
     <>
       <form
@@ -79,13 +99,78 @@ const Form = ({ performAction, products }: Props) => {
           <div className="space-y-3">
             <Card>
               <CardHeader>
-                <CardTitle>{t("Party")}</CardTitle>
+                <CardTitle>{t("Customer")}</CardTitle>
                 <CardDescription>
                   {t("The person that will receive the invoice")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <PartyComboBox />
+                <FormField
+                  control={form.control}
+                  name="customerId"
+                  render={({ field, fieldState }) => {
+                    return (
+                      <FormItem className="flex flex-col">
+                        <FormLabel>{t("Customer")}</FormLabel>
+                        <Popover
+                          open={customerPopOverOpen}
+                          onOpenChange={setCustomerPopOverOpen}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={customerPopOverOpen}
+                              className="w-60 justify-between"
+                            >
+                              {field.value
+                                ? customers.find((li) => li.id === field.value)
+                                    ?.name
+                                : `${t("Select customer")}...`}
+                              <ChevronsUpDownIcon className="opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-60 p-0">
+                            <Command>
+                              <CommandInput
+                                placeholder={t("Search customer") + "..."}
+                              />
+                              <CommandList>
+                                <CommandEmpty>
+                                  {t("No customer found")}.
+                                </CommandEmpty>
+                                <CommandGroup>
+                                  {customers.map((li) => (
+                                    <CommandItem
+                                      key={li.id}
+                                      value={li.id}
+                                      onSelect={(currentValue) => {
+                                        field.onChange(currentValue)
+                                        form.setValue("customerName", li.name)
+                                        setCustomerPopOverOpen(false)
+                                      }}
+                                    >
+                                      {li.name}
+                                      <CheckIcon
+                                        className={cn(
+                                          "ml-auto",
+                                          field.value === li.id
+                                            ? "opacity-100"
+                                            : "opacity-0"
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                        <FormMessage />
+                      </FormItem>
+                    )
+                  }}
+                />
               </CardContent>
             </Card>
             <Card>

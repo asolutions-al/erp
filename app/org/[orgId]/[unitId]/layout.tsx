@@ -25,8 +25,6 @@ const Layout = async (props: Props) => {
 
   const hasUnitId = unitId !== "~"
 
-  console.log({ orgId, unitId, hasUnitId })
-
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
