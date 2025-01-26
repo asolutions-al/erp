@@ -5,7 +5,7 @@ import { AppearanceForm } from "./appearance-form"
 const Page = async () => {
   const t = await getTranslations()
   return (
-    <div className="space-y-6 m-4">
+    <div className="m-4 space-y-6">
       <div>
         <h3 className="text-lg font-medium">{t("Appearance")}</h3>
         <p className="text-sm text-muted-foreground">

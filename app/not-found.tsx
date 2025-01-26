@@ -13,11 +13,11 @@ import { getTranslations } from "next-intl/server"
 const NotFound = async () => {
   const t = await getTranslations()
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle className="flex items-center justify-center text-4xl font-extrabold text-gray-900">
-            <FileQuestion className="h-12 w-12 text-primary mr-2" />
+            <FileQuestion className="mr-2 h-12 w-12 text-primary" />
             404
           </CardTitle>
         </CardHeader>

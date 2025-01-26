@@ -21,7 +21,7 @@ const Component = ({
   return (
     <Card className="group relative space-y-4 overflow-hidden">
       <figure className="group-hover:opacity-90">
-        <Badge className="absolute top-3 right-3" variant="secondary">
+        <Badge className="absolute right-3 top-3" variant="secondary">
           {category}
         </Badge>
         <Image
@@ -45,14 +45,14 @@ const Component = ({
           <p className="text-lg font-semibold">{data.price}</p>
         </div>
       </CardContent>
-      <CardFooter className="p-0 border-t">
+      <CardFooter className="border-t p-0">
         <Button
           variant="ghost"
           className="w-full"
           type="button"
           onClick={() => onSelect()}
         >
-          <PlusIcon className="size-4 me-1" /> Add to Card
+          <PlusIcon className="me-1 size-4" /> Add to Card
         </Button>
       </CardFooter>
     </Card>

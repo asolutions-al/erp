@@ -133,7 +133,7 @@ const Layout = async (props: Props) => {
         <SidebarRail />
       </Sidebar>
       <main className="relative flex min-h-svh flex-1 flex-col overflow-x-auto">
-        <div className="flex-1 m-1.5 md:m-2 lg:m-2.5">{children}</div>
+        <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </main>
     </SidebarProvider>
   )

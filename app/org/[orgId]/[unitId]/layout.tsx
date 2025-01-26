@@ -40,14 +40,14 @@ const Layout = async (props: Props) => {
         <SidebarRail />
       </Sidebar>
       <main className="relative flex min-h-svh flex-1 flex-col overflow-x-auto">
-        <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+        <header className="sticky top-0 flex h-16 shrink-0 items-center gap-2 border-b bg-background px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
           <Image src="/logo.png" alt="logo" width={30} height={30} />
           <Separator orientation="vertical" className="mx-2 h-4" />
         </header>
 
-        <div className="flex-1 m-1.5 md:m-2 lg:m-2.5">{children}</div>
+        <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </main>
     </SidebarProvider>
   )

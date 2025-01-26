@@ -15,9 +15,9 @@ const PageHeader = async ({
 }) => {
   const t = await getTranslations()
   return (
-    <div className={cn("flex items-center gap-4 mx-auto max-w-4xl", className)}>
+    <div className={cn("mx-auto flex max-w-4xl items-center gap-4", className)}>
       <BackButton />
-      <h1 className="font-semibold text-xl">{t(title)}</h1>
+      <h1 className="text-xl font-semibold">{t(title)}</h1>
 
       {renderRight && <div className="ml-auto">{renderRight()}</div>}
     </div>

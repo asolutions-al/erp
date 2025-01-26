@@ -93,7 +93,7 @@ const Form = ({ performAction }: Props) => {
         id={formId}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="lg:col-span-2 space-y-2">
+          <div className="space-y-2 lg:col-span-2">
             <Card>
               <CardHeader>
                 <CardTitle>{t("Identity")}</CardTitle>

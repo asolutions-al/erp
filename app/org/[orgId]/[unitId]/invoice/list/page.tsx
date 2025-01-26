@@ -21,7 +21,7 @@ const Page = async ({ params }: Props) => {
 
   return (
     <>
-      <div className="flex flex-row justify-between mb-3">
+      <div className="mb-3 flex flex-row justify-between">
         <div />
         <Link href={`/org/${orgId}/${unitId}/invoice/create`} passHref>
           <Button>

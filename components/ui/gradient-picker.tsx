@@ -78,16 +78,16 @@ export function GradientPicker({
             className
           )}
         >
-          <div className="w-full flex items-center gap-2">
+          <div className="flex w-full items-center gap-2">
             {background ? (
               <div
-                className="h-4 w-4 rounded !bg-center !bg-cover transition-all"
+                className="h-4 w-4 rounded !bg-cover !bg-center transition-all"
                 style={{ background }}
               ></div>
             ) : (
               <Paintbrush className="h-4 w-4" />
             )}
-            <div className="truncate flex-1">
+            <div className="flex-1 truncate">
               {background ? background : t("Pick a color")}
             </div>
           </div>
@@ -95,7 +95,7 @@ export function GradientPicker({
       </PopoverTrigger>
       <PopoverContent className="w-64">
         <Tabs defaultValue={defaultTab} className="w-full">
-          <TabsList className="w-full mb-4">
+          <TabsList className="mb-4 w-full">
             <TabsTrigger className="flex-1" value="solid">
               Solid
             </TabsTrigger>
@@ -107,24 +107,24 @@ export function GradientPicker({
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="solid" className="flex flex-wrap gap-1 mt-0">
+          <TabsContent value="solid" className="mt-0 flex flex-wrap gap-1">
             {solids.map((s) => (
               <div
                 key={s}
                 style={{ background: s }}
-                className="rounded-md h-6 w-6 cursor-pointer active:scale-105"
+                className="h-6 w-6 cursor-pointer rounded-md active:scale-105"
                 onClick={() => setBackground(s)}
               />
             ))}
           </TabsContent>
 
           <TabsContent value="gradient" className="mt-0">
-            <div className="flex flex-wrap gap-1 mb-2">
+            <div className="mb-2 flex flex-wrap gap-1">
               {gradients.map((s) => (
                 <div
                   key={s}
                   style={{ background: s }}
-                  className="rounded-md h-6 w-6 cursor-pointer active:scale-105"
+                  className="h-6 w-6 cursor-pointer rounded-md active:scale-105"
                   onClick={() => setBackground(s)}
                 />
               ))}
@@ -134,7 +134,7 @@ export function GradientPicker({
               💡 Get more with{" "}
               <Link
                 href="https://www.asolutions.al/pricing"
-                className="hover:underline font-bold"
+                className="font-bold hover:underline"
                 target="_blank"
               >
                 Premium
@@ -143,12 +143,12 @@ export function GradientPicker({
           </TabsContent>
 
           <TabsContent value="image" className="mt-0">
-            <div className="grid grid-cols-2 gap-1 mb-2">
+            <div className="mb-2 grid grid-cols-2 gap-1">
               {images.map((s) => (
                 <div
                   key={s}
                   style={{ backgroundImage: s }}
-                  className="rounded-md bg-cover bg-center h-12 w-full cursor-pointer active:scale-105"
+                  className="h-12 w-full cursor-pointer rounded-md bg-cover bg-center active:scale-105"
                   onClick={() => setBackground(s)}
                 />
               ))}
@@ -158,7 +158,7 @@ export function GradientPicker({
               🎁 Get more with{" "}
               <Link
                 href="https://www.asolutions.al/pricing"
-                className="hover:underline font-bold"
+                className="font-bold hover:underline"
                 target="_blank"
               >
                 Premium
@@ -172,7 +172,7 @@ export function GradientPicker({
         <Input
           id="custom"
           value={background}
-          className="col-span-2 h-8 mt-4"
+          className="col-span-2 mt-4 h-8"
           onChange={(e) => setBackground(e.currentTarget.value)}
         />
       </PopoverContent>
@@ -189,10 +189,10 @@ const GradientButton = ({
 }) => {
   return (
     <div
-      className="p-0.5 rounded-md relative !bg-cover !bg-center transition-all"
+      className="relative rounded-md !bg-cover !bg-center p-0.5 transition-all"
       style={{ background }}
     >
-      <div className="bg-popover/80 rounded-md p-1 text-xs text-center">
+      <div className="rounded-md bg-popover/80 p-1 text-center text-xs">
         {children}
       </div>
     </div>

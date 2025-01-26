@@ -28,7 +28,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
   return (
     <>
-      <div className="flex flex-row justify-between mb-3">
+      <div className="mb-3 flex flex-row justify-between">
         <StatusTabs defaultValue={status} />
         <Link href={`/org/${orgId}/${unitId}/product/create`} passHref>
           <Button>

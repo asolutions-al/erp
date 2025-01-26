@@ -35,7 +35,7 @@ const invoiceData = {
 const InvoiceReceipt = ({ data }: Props) => {
   return (
     <div className="p-6">
-      <div className="mb-8 flex flex-col sm:flex-row justify-between">
+      <div className="mb-8 flex flex-col justify-between sm:flex-row">
         <div>
           <h2 className="text-2xl font-bold">Invoice</h2>
           <p>Invoice Number: {invoiceData.invoiceNumber}</p>
@@ -49,7 +49,7 @@ const InvoiceReceipt = ({ data }: Props) => {
         </div>
       </div>
       <div className="mb-6">
-        <div className="grid grid-cols-5 font-semibold mb-2">
+        <div className="mb-2 grid grid-cols-5 font-semibold">
           <div className="col-span-2">Description</div>
           <div className="text-right">Quantity</div>
           <div className="text-right">Unit Price</div>
@@ -57,22 +57,22 @@ const InvoiceReceipt = ({ data }: Props) => {
         </div>
         <Separator className="mb-2" />
         {invoiceData.items.map((item, index) => (
-          <div key={index} className="grid grid-cols-5 mb-2">
+          <div key={index} className="mb-2 grid grid-cols-5">
             <div className="col-span-2">{item.description}</div>
             <div className="text-right">{item.quantity}</div>
             <div className="text-right">${item.unitPrice.toFixed(2)}</div>
             <div className="text-right">${item.total.toFixed(2)}</div>
           </div>
         ))}
-        <Separator className="mt-2 mb-4" />
+        <Separator className="mb-4 mt-2" />
       </div>
       <div className="flex justify-end">
         <div className="w-full sm:w-1/2">
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <span>Subtotal:</span>
             <span>${invoiceData.subtotal.toFixed(2)}</span>
           </div>
-          <div className="flex justify-between mb-2">
+          <div className="mb-2 flex justify-between">
             <span>Tax:</span>
             <span>${invoiceData.tax.toFixed(2)}</span>
           </div>

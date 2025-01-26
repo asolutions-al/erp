@@ -6,13 +6,13 @@ export default function Error() {
   return (
     <html>
       <body>
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-          <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full text-center">
-            <h1 className="text-4xl font-bold text-red-600 mb-4">Oops!</h1>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+        <div className="flex min-h-screen items-center justify-center bg-gray-100">
+          <div className="w-full max-w-md rounded-lg bg-white p-8 text-center shadow-md">
+            <h1 className="mb-4 text-4xl font-bold text-red-600">Oops!</h1>
+            <h2 className="mb-4 text-2xl font-semibold text-gray-800">
               Something went wrong
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="mb-6 text-gray-600">
               We're sorry, but it seems there was an error. Our team has been
               notified and we're working to fix it.
             </p>
