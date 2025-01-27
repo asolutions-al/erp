@@ -35,5 +35,8 @@ export const formatDate = (date: Date) => {
     year: "numeric",
     month: "short",
     day: "numeric",
+    hour: "2-digit",
+    minute: "numeric",
+    hourCycle: "h23",
   }).format(date)
 }

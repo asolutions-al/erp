@@ -45,6 +45,7 @@ const defaultValues: SchemaT = {
   exchangeRate: 1,
   currency: "ALL",
   payMethod: "cash",
+  status: "completed",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

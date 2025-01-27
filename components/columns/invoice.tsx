@@ -35,6 +35,10 @@ const columns: ColumnDef<InvoiceSchemaT>[] = [
     accessorKey: "customerName",
     header: ({ column }) => <SortBtn text="Customer name" column={column} />,
   },
+  {
+    accessorKey: "status",
+    header: ({ column }) => <SortBtn text="Status" column={column} />,
+  },
 ]
 
 export { columns as invoiceColumns }

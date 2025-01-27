@@ -38,7 +38,13 @@ import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Command } from "../ui/command"
-import { FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 import {
@@ -49,6 +55,14 @@ import {
   CommandList,
 } from "@/components/ui/command"
 import { cn } from "@/lib/utils"
+import { recordStatus } from "@/orm/app/schema"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -225,6 +239,43 @@ const Form = ({ performAction, products, customers }: Props) => {
               </CardHeader>
               <CardContent>
                 <PayMethodTabs defaultValue="cash" />
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>{t("Status")}</CardTitle>
+                <CardDescription>
+                  {t("Current status of the invoice")}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <FormField
+                  control={form.control}
+                  name="status"
+                  render={({ field }) => (
+                    <FormItem>
+                      <Select
+                        value={field.value || ""}
+                        onValueChange={field.onChange}
+                      >
+                        <FormControl>
+                          <SelectTrigger aria-label={t("Select status")}>
+                            <SelectValue placeholder={t("Select status")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {recordStatus.enumValues.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {t(item)}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </CardContent>
             </Card>
 
