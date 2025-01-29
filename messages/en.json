@@ -133,5 +133,14 @@
   "Search customer": "Search customer",
   "completed": "Completed",
   "Current status of the invoice": "Current status of the invoice",
-  "Organization": "Organization"
+  "Organization": "Organization",
+  "ALL": "ALL",
+  "EUR": "EUR",
+  "USD": "USD",
+  "Unit price": "Unit price",
+  "Quantity": "Quantity",
+  "Subtotal": "Subtotal",
+  "Tax": "Tax",
+  "Invoice number": "Invoice number",
+  "Customer details": "Customer details"
 }

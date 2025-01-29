@@ -1,5 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { calcInvoiceFormRowTotal, calcInvoiceFormTotal } from "@/utils/calc"
+import { useTranslations } from "next-intl"
 
 type Props = {
   data: InvoiceFormSchemaT
@@ -33,53 +35,60 @@ const invoiceData = {
 }
 
 const InvoiceReceipt = ({ data }: Props) => {
+  const t = useTranslations()
   return (
     <div className="p-6">
       <div className="mb-8 flex flex-col justify-between sm:flex-row">
         <div>
-          <h2 className="text-2xl font-bold">Invoice</h2>
-          <p>Invoice Number: {invoiceData.invoiceNumber}</p>
-          <p>Date: {invoiceData.date}</p>
-          <p>Due Date: {invoiceData.dueDate}</p>
+          <h2 className="text-2xl font-bold">{t("Invoice")}</h2>
+          <p>
+            {t("Invoice number")}: {invoiceData.invoiceNumber}
+          </p>
+          <p>
+            {t("Date")}: {invoiceData.date}
+          </p>
+          <p>
+            {t("Currency")}: {t(data.currency)}
+          </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:text-right">
-          <h3 className="font-semibold">Customer Details</h3>
+          <h3 className="font-semibold">{t("Customer details")}</h3>
           <p>{data.customerName}</p>
           <p>{invoiceData.customerEmail}</p>
         </div>
       </div>
-      <div className="mb-6">
-        <div className="mb-2 grid grid-cols-5 font-semibold">
-          <div className="col-span-2">Description</div>
-          <div className="text-right">Quantity</div>
-          <div className="text-right">Unit Price</div>
-          <div className="text-right">Total</div>
+      <div>
+        <div className="grid grid-cols-5 font-semibold">
+          <div className="col-span-2">{t("Name")}</div>
+          <div className="text-right">{t("Quantity")}</div>
+          <div className="text-right">{t("Unit price")}</div>
+          <div className="text-right">{t("Total")}</div>
         </div>
-        <Separator className="mb-2" />
-        {invoiceData.items.map((item, index) => (
-          <div key={index} className="mb-2 grid grid-cols-5">
-            <div className="col-span-2">{item.description}</div>
-            <div className="text-right">{item.quantity}</div>
-            <div className="text-right">${item.unitPrice.toFixed(2)}</div>
-            <div className="text-right">${item.total.toFixed(2)}</div>
+        <Separator className="my-2" />
+        {data.rows.map((row, index) => (
+          <div key={index} className="grid grid-cols-5">
+            <div className="col-span-2">{row.name}</div>
+            <div className="text-right">{row.quantity}</div>
+            <div className="text-right">{row.unitPrice}</div>
+            <div className="text-right">{calcInvoiceFormRowTotal(row)}</div>
           </div>
         ))}
-        <Separator className="mb-4 mt-2" />
+        <Separator className="my-2" />
       </div>
       <div className="flex justify-end">
         <div className="w-full sm:w-1/2">
           <div className="mb-2 flex justify-between">
-            <span>Subtotal:</span>
-            <span>${invoiceData.subtotal.toFixed(2)}</span>
+            <span>{t("Subtotal")}:</span>
+            <span>{invoiceData.subtotal}</span>
           </div>
           <div className="mb-2 flex justify-between">
-            <span>Tax:</span>
-            <span>${invoiceData.tax.toFixed(2)}</span>
+            <span>{t("Tax")}:</span>
+            <span>{invoiceData.tax}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between font-bold">
-            <span>Total:</span>
-            <span>${invoiceData.total.toFixed(2)}</span>
+            <span>{t("Total")}:</span>
+            <span>{calcInvoiceFormTotal(data)}</span>
           </div>
         </div>
       </div>
