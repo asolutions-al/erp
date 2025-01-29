@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
@@ -29,8 +30,11 @@ import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import {
   CheckIcon,
   ChevronsUpDownIcon,
+  DownloadIcon,
   MinusIcon,
   PlusIcon,
+  PrinterIcon,
+  Share2Icon,
   XIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -82,6 +86,7 @@ const Form = ({ performAction, products, customers }: Props) => {
     open: boolean
     data: SchemaT
   }>()
+  const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
 
   const onValid = async (values: SchemaT) => {
     try {
@@ -100,7 +105,18 @@ const Form = ({ performAction, products, customers }: Props) => {
     toast.error(t("Please fill in all required fields"))
   }
 
-  const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
+  const handlePrint = () => {
+    console.log("Print invoice")
+    window.print()
+  }
+
+  const handleShare = () => {
+    console.log("Share invoice")
+  }
+
+  const handleDownload = () => {
+    console.log("Download invoice PDF")
+  }
 
   return (
     <>
@@ -301,13 +317,37 @@ const Form = ({ performAction, products, customers }: Props) => {
           setReceiptDialog((prev) => (prev ? { ...prev, open } : prev))
         }
       >
-        <DialogContent className="sm:max-w-[625px]">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[625px] print:border-none print:shadow-none print:[&>button]:hidden">
+          <DialogHeader className="print:hidden">
             <DialogTitle>{t("Invoice receipt")}</DialogTitle>
           </DialogHeader>
-          <ScrollArea className="max-h-[80vh] overflow-auto">
+          <ScrollArea className="max-h-[calc(80vh-120px)] overflow-auto">
             <InvoiceReceipt data={receiptDialog?.data!} />
           </ScrollArea>
+          <DialogFooter className="sm:justify-between print:hidden">
+            <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+              <Button
+                variant="outline"
+                onClick={handleDownload}
+                className="mt-2 w-full sm:mt-0 sm:w-auto"
+              >
+                <DownloadIcon className="mr-2 h-4 w-4" />
+                {t("Pdf")}
+              </Button>
+              <Button
+                variant="outline"
+                onClick={handleShare}
+                className="w-full sm:w-auto"
+              >
+                <Share2Icon className="mr-2 h-4 w-4" />
+                {t("Share")}
+              </Button>
+            </div>
+            <Button onClick={handlePrint} className="w-full sm:w-auto">
+              <PrinterIcon className="mr-2 h-4 w-4" />
+              {t("Print")}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
