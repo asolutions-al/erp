@@ -70,7 +70,7 @@ const OrgSwitcher = async (props: Props) => {
             sideOffset={4}
           >
             <DropdownMenuLabel className="text-xs text-muted-foreground">
-              {t("Units")}
+              {t("Organizations")}
             </DropdownMenuLabel>
             {orgs.map((unit, index) => (
               <DropdownMenuItem key={unit.name} className="gap-2 p-2">
@@ -88,7 +88,7 @@ const OrgSwitcher = async (props: Props) => {
                   <Plus className="size-4" />
                 </div>
                 <div className="font-medium text-muted-foreground">
-                  {t("Add unit")}
+                  {t("Add organization")}
                 </div>
               </DropdownMenuItem>
             </Link>

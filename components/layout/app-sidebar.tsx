@@ -16,7 +16,13 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BookOpenIcon, BuildingIcon, ChevronRight } from "lucide-react"
+import {
+  BuildingIcon,
+  ChevronRight,
+  ContactIcon,
+  PackageIcon,
+  ReceiptTextIcon,
+} from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
@@ -81,7 +87,7 @@ const UnitContent = async ({
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Product")}>
-                <BookOpenIcon />
+                <PackageIcon />
                 <span>{t("Product")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
@@ -110,7 +116,7 @@ const UnitContent = async ({
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Customer")}>
-                <BookOpenIcon />
+                <ContactIcon />
                 <span>{t("Customer")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
@@ -139,7 +145,7 @@ const UnitContent = async ({
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Invoice")}>
-                <BookOpenIcon />
+                <ReceiptTextIcon />
                 <span>{t("Invoice")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
