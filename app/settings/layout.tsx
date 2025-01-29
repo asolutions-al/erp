@@ -27,6 +27,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import { Separator } from "@/components/ui/separator"
 import {
   SidebarMenuButton,
   SidebarMenuItem,
@@ -135,13 +136,13 @@ const Layout = async (props: Props) => {
         <SidebarRail />
       </Sidebar>
       <main className="relative flex min-h-svh flex-1 flex-col overflow-x-auto">
-        <header className="sticky top-0 z-10 flex h-16 items-center border-b px-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <Link href={`/org/list`}>
-            <Image src="/logo.png" alt="logo" width={30} height={30} />
-          </Link>
-
-          <div className="ml-auto md:hidden">
-            <SidebarTrigger />
+        <header className="sticky top-0 z-10 flex h-16 items-center border-b backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Link href={`/org/list`}>
+              <Image src="/logo.png" alt="logo" width={30} height={30} />
+            </Link>
           </div>
         </header>
         <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
