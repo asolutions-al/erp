@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { customerImagesBucket } from "@/contants/bucket"
+import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
 import { IdType, status } from "@/orm/app/schema"
@@ -64,7 +64,7 @@ const Form = ({ performAction }: Props) => {
       if (imgFile) {
         imgPath = nanoid() // new path
         const client = createClient()
-        client.storage.from("customerImages").upload(imgPath, imgFile) // optimistic
+        client.storage.from(customerImageBucket).upload(imgPath, imgFile) // optimistic
       } else {
         imgPath = defaultImgBucketPath // keep the same path
       }
@@ -301,7 +301,7 @@ const Form = ({ performAction }: Props) => {
                       imgFile
                         ? URL.createObjectURL(imgFile)
                         : defaultImgBucketPath
-                          ? `${publicStorageUrl}/${customerImagesBucket}/${defaultImgBucketPath}`
+                          ? `${publicStorageUrl}/${customerImageBucket}/${defaultImgBucketPath}`
                           : "/placeholder.svg"
                     }
                     width="300"

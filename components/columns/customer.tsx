@@ -10,6 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
@@ -66,7 +67,7 @@ const columns: ColumnDef<CustomerSchemaT>[] = [
           <Avatar>
             {imageBucketPath ? (
               <AvatarImage
-                src={`${publicStorageUrl}/customerImages/${imageBucketPath}`}
+                src={`${publicStorageUrl}/${customerImageBucket}/${imageBucketPath}`}
                 alt={name}
               />
             ) : (

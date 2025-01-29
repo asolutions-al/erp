@@ -1,4 +1,4 @@
 const productImagesBucket = "productImages"
-const customerImagesBucket = "customerImage"
+const customerImageBucket = "customerImage"
 
-export { customerImagesBucket, productImagesBucket }
+export { customerImageBucket, productImagesBucket }
