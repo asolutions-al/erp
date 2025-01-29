@@ -17,10 +17,6 @@ const nextConfig = {
     typedRoutes: true,
     reactCompiler: true,
     ppr: "incremental",
-    staleTimes: {
-      dynamic: 0,
-      static: 0,
-    },
   },
 }
 

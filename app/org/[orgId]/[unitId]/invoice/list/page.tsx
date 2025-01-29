@@ -12,6 +12,8 @@ type Props = {
   params: Promise<{ orgId: string; unitId: string }>
 }
 
+export const dynamic = "force-dynamic"
+
 const Page = async ({ params }: Props) => {
   const t = await getTranslations()
   const { orgId, unitId } = await params
