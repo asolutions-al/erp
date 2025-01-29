@@ -10,13 +10,14 @@ import Link from "next/link"
 
 type Props = {
   params: Promise<{ orgId: string; unitId: string }>
+  searchParams: Promise<{}>
 }
 
-export const dynamic = "force-dynamic"
-
-const Page = async ({ params }: Props) => {
+const Page = async (props: Props) => {
   const t = await getTranslations()
-  const { orgId, unitId } = await params
+  const { orgId, unitId } = await props.params
+  await props.searchParams
+
   const data = await db.query.invoice.findMany({
     where: eq(invoice.unitId, unitId),
   })
