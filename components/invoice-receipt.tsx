@@ -1,7 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { formatDate } from "@/lib/utils"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
-import { calcInvoiceFormRowTotal, calcInvoiceFormTotal } from "@/utils/calc"
+import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 
@@ -45,7 +45,7 @@ const InvoiceReceipt = ({ data }: Props) => {
             <div className="col-span-2">{row.name}</div>
             <div className="text-right">{row.quantity}</div>
             <div className="text-right">{row.unitPrice}</div>
-            <div className="text-right">{calcInvoiceFormRowTotal(row)}</div>
+            <div className="text-right">{calcInvoiceFormRow(row).total}</div>
           </div>
         ))}
         <Separator className="my-2" />
@@ -54,7 +54,7 @@ const InvoiceReceipt = ({ data }: Props) => {
         <div className="w-full sm:w-1/2">
           <div className="mb-2 flex justify-between">
             <span>{t("Subtotal")}:</span>
-            <span>{calcInvoiceFormTotal(data)}</span>
+            <span>{calcInvoiceForm(data).subtotal}</span>
           </div>
           <div className="mb-2 flex justify-between">
             <span>{t("Tax")}:</span>
@@ -63,7 +63,7 @@ const InvoiceReceipt = ({ data }: Props) => {
           <Separator className="my-2" />
           <div className="flex justify-between font-bold">
             <span>{t("Total")}:</span>
-            <span>{calcInvoiceFormTotal(data)}</span>
+            <span>{calcInvoiceForm(data).total}</span>
           </div>
         </div>
       </div>

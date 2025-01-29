@@ -41,6 +41,8 @@ export const invoice = pgTable("invoice", {
 	notes: text("notes"),
 	status: recordStatus("status").notNull(),
 	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	subtotal: doublePrecision("subtotal").notNull(),
+	tax: doublePrecision("tax").notNull(),
 });
 
 export const organization = pgTable("organization", {
@@ -119,4 +121,6 @@ export const invoiceRow = pgTable("invoiceRow", {
 	description: text("description"),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	subtotal: doublePrecision("subtotal").notNull(),
+	tax: doublePrecision("tax").notNull(),
 });

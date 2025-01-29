@@ -223,6 +223,7 @@ const Form = ({ performAction, products, customers }: Props) => {
                           productId: product.id,
                           quantity: 1,
                           unitPrice: product.price,
+                          tax: 0,
                         },
                       ])
                     }}

@@ -1,9 +1,32 @@
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 
-const calcInvoiceFormRowTotal = (row: InvoiceFormSchemaT["rows"][0]) =>
-  row.quantity * row.unitPrice
+type CalcResultT = {
+  total: number
+  subtotal: number
+  tax: number
+}
 
-const calcInvoiceFormTotal = (values: InvoiceFormSchemaT) =>
-  values.rows.reduce((acc, row) => acc + calcInvoiceFormRowTotal(row), 0)
+const calcInvoiceFormRow = (
+  row: InvoiceFormSchemaT["rows"][0]
+): CalcResultT => {
+  const total = row.quantity * row.unitPrice
+  return {
+    total,
+    subtotal: total, //TODO:
+    tax: 0, // TODO:
+  }
+}
 
-export { calcInvoiceFormRowTotal, calcInvoiceFormTotal }
+const calcInvoiceForm = (values: InvoiceFormSchemaT): CalcResultT => {
+  const total = values.rows.reduce(
+    (acc, row) => acc + calcInvoiceFormRow(row).total,
+    0
+  )
+  return {
+    total,
+    subtotal: total, //TODO:
+    tax: 0, // TODO:
+  }
+}
+
+export { calcInvoiceForm, calcInvoiceFormRow }

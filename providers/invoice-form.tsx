@@ -18,6 +18,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
   createdAt: true,
   invoiceId: true,
   total: true,
+  subtotal: true,
 })
 
 const schema = createInsertSchema(invoice, {
@@ -30,6 +31,8 @@ const schema = createInsertSchema(invoice, {
     createdAt: true,
     total: true,
     orgId: true,
+    subtotal: true,
+    tax: true,
   })
   .extend({
     rows: z.array(rowSchema).min(1),
