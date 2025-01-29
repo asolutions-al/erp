@@ -18,7 +18,7 @@ import { createAuthClient } from "@/db/auth/client"
 import { ChevronsUpDown, LogOut, SettingsIcon, Sparkles } from "lucide-react"
 import Link from "next/link"
 
-const SidebarUser = async () => {
+const AppSidebarUser = async () => {
   const client = await createAuthClient()
   const { data } = await client.auth.getUser()
 
@@ -91,4 +91,4 @@ const SidebarUser = async () => {
   )
 }
 
-export { SidebarUser }
+export { AppSidebarUser }

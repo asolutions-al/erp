@@ -132,5 +132,6 @@
   "No customer found": "No customer found",
   "Search customer": "Search customer",
   "completed": "Completed",
-  "Current status of the invoice": "Current status of the invoice"
+  "Current status of the invoice": "Current status of the invoice",
+  "Organization": "Organization"
 }

@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/sidebar"
 import { PropsWithChildren, Suspense } from "react"
 
-import { SidebarUser } from "@/components/layout/sidebar-user"
+import { AppSidebarUser } from "@/components/layout/app-sidebar-user"
 
 import { Collapsible } from "@/components/ui/collapsible"
 import { SidebarGroup } from "@/components/ui/sidebar"
@@ -128,7 +128,7 @@ const Layout = async (props: Props) => {
           </SidebarGroup>
         </SidebarContent>
         <Suspense>
-          <SidebarUser />
+          <AppSidebarUser />
         </Suspense>
         <SidebarRail />
       </Sidebar>
