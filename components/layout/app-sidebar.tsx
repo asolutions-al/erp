@@ -22,7 +22,7 @@ import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
 import { UnitSwitcher } from "../unit-switcher"
-import { AppSidebarUser } from "./app-sidebar-user"
+import { SidebarUser } from "./sidebar-user"
 
 const OrgContent = async ({ orgId }: { orgId: string }) => {
   const t = await getTranslations()
@@ -198,7 +198,7 @@ const AppSidebar = async (props: Props) => {
         <Content orgId={orgId} unitId={unitId === "~" ? undefined : unitId} />
       </SidebarContent>
       <Suspense>
-        <AppSidebarUser />
+        <SidebarUser />
       </Suspense>
       <SidebarRail />
     </Sidebar>
