@@ -5,6 +5,7 @@ import {
   SidebarMenu,
   SidebarProvider,
   SidebarRail,
+  SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { PropsWithChildren, Suspense } from "react"
 
@@ -22,7 +23,6 @@ import {
   SunMoonIcon,
 } from "lucide-react"
 
-import { AppHeader } from "@/components/layout/app-header"
 import {
   CollapsibleContent,
   CollapsibleTrigger,
@@ -35,6 +35,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar"
 import { getTranslations } from "next-intl/server"
+import Image from "next/image"
 import Link from "next/link"
 
 type Props = PropsWithChildren<{
@@ -134,7 +135,15 @@ const Layout = async (props: Props) => {
         <SidebarRail />
       </Sidebar>
       <main className="relative flex min-h-svh flex-1 flex-col overflow-x-auto">
-        <AppHeader />
+        <header className="sticky top-0 z-10 flex h-16 items-center border-b px-2 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+          <Link href={`/org/list`}>
+            <Image src="/logo.png" alt="logo" width={30} height={30} />
+          </Link>
+
+          <div className="ml-auto md:hidden">
+            <SidebarTrigger />
+          </div>
+        </header>
         <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </main>
     </SidebarProvider>

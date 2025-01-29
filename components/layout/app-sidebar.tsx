@@ -7,7 +7,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
-  SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -16,23 +16,25 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BookOpenIcon, ChevronRight } from "lucide-react"
+import { BookOpenIcon, BuildingIcon, ChevronRight } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
-import { Suspense } from "react"
+import { PropsWithChildren, Suspense } from "react"
+import { OrgSwitcher } from "../org-switcher"
+import { UnitSwitcher } from "../unit-switcher"
 import { AppSidebarUser } from "./app-sidebar-user"
 
 const OrgContent = async ({ orgId }: { orgId: string }) => {
   const t = await getTranslations()
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{t("Organization")}</SidebarGroupLabel>
+      {/* <SidebarGroupLabel>{t("Organization")}</SidebarGroupLabel> */}
       <SidebarMenu>
         <Collapsible asChild defaultOpen className="group/collapsible">
           <SidebarMenuItem>
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Unit")}>
-                <BookOpenIcon />
+                <BuildingIcon />
                 <span>{t("Unit")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
@@ -73,7 +75,7 @@ const UnitContent = async ({
 
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>{t("Unit")}</SidebarGroupLabel>
+      {/* <SidebarGroupLabel>{t("Unit")}</SidebarGroupLabel> */}
       <SidebarMenu>
         <Collapsible asChild defaultOpen className="group/collapsible">
           <SidebarMenuItem>
@@ -175,14 +177,23 @@ const Content = ({ orgId, unitId }: { orgId: string; unitId?: string }) => {
   )
 }
 
-type Props = {
-  orgId: string
-  unitId?: string
-}
+type Props = PropsWithChildren<{
+  params: Promise<GlobalParams>
+}>
 
-const AppSidebar = ({ orgId, unitId }: Props) => {
+const AppSidebar = async (props: Props) => {
+  const { orgId, unitId } = await props.params
+
   return (
     <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <Suspense>
+          <OrgSwitcher {...props} />
+        </Suspense>
+        <Suspense>
+          <UnitSwitcher {...props} />
+        </Suspense>
+      </SidebarHeader>
       <SidebarContent>
         <Content orgId={orgId} unitId={unitId === "~" ? undefined : unitId} />
       </SidebarContent>

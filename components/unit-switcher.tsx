@@ -15,8 +15,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
-import { organization } from "@/orm/app/schema"
+import { unit } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -25,22 +24,16 @@ type Props = {
   params: Promise<GlobalParams>
 }
 
-const OrgSwitcher = async (props: Props) => {
+const UnitSwitcher = async (props: Props) => {
   const t = await getTranslations()
-  const { orgId } = await props.params
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  const userId = user!.id
-
-  const orgs = await db.query.organization.findMany({
-    where: eq(organization.ownerId, userId),
+  const { orgId, unitId } = await props.params
+  const units = await db.query.unit.findMany({
+    where: eq(unit.orgId, orgId),
   })
 
-  const activeOrg = orgs.find((org) => org.id === orgId)
+  const activeUnit = units.find((unit) => unit.id === unitId)
 
-  if (!activeOrg) return null
+  if (!activeUnit) return null
 
   return (
     <SidebarMenu>
@@ -55,9 +48,11 @@ const OrgSwitcher = async (props: Props) => {
                 <BuildingIcon />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{activeOrg.name}</span>
+                <span className="truncate font-semibold">
+                  {activeUnit.name}
+                </span>
                 <span className="truncate text-xs">
-                  {activeOrg.description}
+                  {activeUnit.description}
                 </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
@@ -72,7 +67,7 @@ const OrgSwitcher = async (props: Props) => {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               {t("Units")}
             </DropdownMenuLabel>
-            {orgs.map((unit, index) => (
+            {units.map((unit, index) => (
               <DropdownMenuItem key={unit.name} className="gap-2 p-2">
                 <div className="flex size-6 items-center justify-center rounded-sm border">
                   <BuildingIcon />
@@ -99,4 +94,4 @@ const OrgSwitcher = async (props: Props) => {
   )
 }
 
-export { OrgSwitcher }
+export { UnitSwitcher }
