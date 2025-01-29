@@ -1,37 +1,12 @@
 import { Separator } from "@/components/ui/separator"
+import { formatDate } from "@/lib/utils"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceFormRowTotal, calcInvoiceFormTotal } from "@/utils/calc"
 import { useTranslations } from "next-intl"
+import Image from "next/image"
 
 type Props = {
   data: InvoiceFormSchemaT
-}
-
-// Dummy data for the invoice
-const invoiceData = {
-  invoiceNumber: "INV-2023-001",
-  date: "2023-05-15",
-  dueDate: "2023-06-14",
-  customerName: "John Doe",
-  customerEmail: "john.doe@example.com",
-  items: [
-    {
-      description: "Web Development Services",
-      quantity: 1,
-      unitPrice: 1000,
-      total: 1000,
-    },
-    { description: "UI/UX Design", quantity: 2, unitPrice: 500, total: 1000 },
-    {
-      description: "Content Creation",
-      quantity: 5,
-      unitPrice: 100,
-      total: 500,
-    },
-  ],
-  subtotal: 2500,
-  tax: 250,
-  total: 2750,
 }
 
 const InvoiceReceipt = ({ data }: Props) => {
@@ -42,10 +17,10 @@ const InvoiceReceipt = ({ data }: Props) => {
         <div>
           <h2 className="text-2xl font-bold">{t("Invoice")}</h2>
           <p>
-            {t("Invoice number")}: {invoiceData.invoiceNumber}
+            {t("Invoice number")}: {0}
           </p>
           <p>
-            {t("Date")}: {invoiceData.date}
+            {t("Date")}: {formatDate(new Date())}
           </p>
           <p>
             {t("Currency")}: {t(data.currency)}
@@ -54,7 +29,7 @@ const InvoiceReceipt = ({ data }: Props) => {
         <div className="mt-4 sm:mt-0 sm:text-right">
           <h3 className="font-semibold">{t("Customer details")}</h3>
           <p>{data.customerName}</p>
-          <p>{invoiceData.customerEmail}</p>
+          <p>john.doe@example.com</p>
         </div>
       </div>
       <div>
@@ -75,15 +50,15 @@ const InvoiceReceipt = ({ data }: Props) => {
         ))}
         <Separator className="my-2" />
       </div>
-      <div className="flex justify-end">
+      <div className="mb-6 flex justify-end">
         <div className="w-full sm:w-1/2">
           <div className="mb-2 flex justify-between">
             <span>{t("Subtotal")}:</span>
-            <span>{invoiceData.subtotal}</span>
+            <span>{calcInvoiceFormTotal(data)}</span>
           </div>
           <div className="mb-2 flex justify-between">
             <span>{t("Tax")}:</span>
-            <span>{invoiceData.tax}</span>
+            <span>{0}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between font-bold">
@@ -91,6 +66,15 @@ const InvoiceReceipt = ({ data }: Props) => {
             <span>{calcInvoiceFormTotal(data)}</span>
           </div>
         </div>
+      </div>
+
+      <div className="flex justify-center">
+        <Image
+          src="/logo.png"
+          width={40}
+          height={40}
+          alt={t("Invoice footer")}
+        />
       </div>
     </div>
   )

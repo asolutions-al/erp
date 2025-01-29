@@ -142,5 +142,6 @@
   "Subtotal": "Subtotal",
   "Tax": "Tax",
   "Invoice number": "Invoice number",
-  "Customer details": "Customer details"
+  "Customer details": "Customer details",
+  "Invoice footer": "Invoice footer"
 }
