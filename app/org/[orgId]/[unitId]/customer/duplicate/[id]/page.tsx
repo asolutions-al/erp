@@ -8,11 +8,11 @@ import { CustomerFormProvider } from "@/providers/customer-form"
 import { eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string; id: string }>
+  params: Promise<{ orgId: string; unitId: string; id: string }>
 }
 
 const Page = async (props: Props) => {
-  const { unitId, id } = await props.params
+  const { orgId, unitId, id } = await props.params
 
   const data = await db.query.customer.findFirst({
     where: eq(customer.id, id),
@@ -28,7 +28,7 @@ const Page = async (props: Props) => {
       <CustomerForm
         performAction={async (values) => {
           "use server"
-          await createCustomer({ values, unitId })
+          await createCustomer({ values, unitId, orgId })
         }}
       />
     </CustomerFormProvider>

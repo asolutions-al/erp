@@ -8,11 +8,11 @@ import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string }>
+  params: Promise<{ orgId: string; unitId: string }>
 }
 
 const Page = async ({ params }: Props) => {
-  const { unitId } = await params
+  const { orgId, unitId } = await params
   const [products, customers] = await Promise.all([
     db.query.product.findMany({
       where: eq(product.unitId, unitId),
@@ -34,7 +34,7 @@ const Page = async ({ params }: Props) => {
         customers={customers}
         performAction={async (values) => {
           "use server"
-          await createInvoice({ values, unitId })
+          await createInvoice({ values, orgId, unitId })
         }}
       />
     </InvoiceFormProvider>

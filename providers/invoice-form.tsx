@@ -29,6 +29,7 @@ const schema = createInsertSchema(invoice, {
     unitId: true,
     createdAt: true,
     total: true,
+    orgId: true,
   })
   .extend({
     rows: z.array(rowSchema).min(1),

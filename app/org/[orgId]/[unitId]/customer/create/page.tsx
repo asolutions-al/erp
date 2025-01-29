@@ -5,11 +5,11 @@ import { createCustomer } from "@/db/app/actions"
 import { CustomerFormProvider } from "@/providers/customer-form"
 
 type Props = {
-  params: Promise<{ unitId: string }>
+  params: Promise<{ unitId: string; orgId: string }>
 }
 
 const Page = async ({ params }: Props) => {
-  const { unitId } = await params
+  const { unitId, orgId } = await params
 
   return (
     <CustomerFormProvider>
@@ -21,7 +21,7 @@ const Page = async ({ params }: Props) => {
       <CustomerForm
         performAction={async (values) => {
           "use server"
-          await createCustomer({ values, unitId })
+          await createCustomer({ values, unitId, orgId })
         }}
       />
     </CustomerFormProvider>

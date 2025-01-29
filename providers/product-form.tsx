@@ -14,6 +14,7 @@ const schema = createInsertSchema(product, {
   id: true,
   unitId: true,
   createdAt: true,
+  orgId: true,
 })
 
 type SchemaT = z.infer<typeof schema>

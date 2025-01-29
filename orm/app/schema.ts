@@ -40,6 +40,7 @@ export const invoice = pgTable("invoice", {
 	discountType: discountType("discountType").notNull(),
 	notes: text("notes"),
 	status: recordStatus("status").notNull(),
+	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const organization = pgTable("organization", {
@@ -47,7 +48,7 @@ export const organization = pgTable("organization", {
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	name: text("name").notNull(),
 	description: text("description"),
-	ownerId: uuid("ownerId").references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	ownerId: uuid("ownerId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const customer = pgTable("customer", {
@@ -63,6 +64,7 @@ export const customer = pgTable("customer", {
 	address: text("address"),
 	city: text("city"),
 	idValue: text("idValue"),
+	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const unit = pgTable("unit", {
@@ -86,6 +88,7 @@ export const invitation = pgTable("invitation", {
 	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	userId: uuid("userId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const product = pgTable("product", {
@@ -98,6 +101,7 @@ export const product = pgTable("product", {
 	barcode: text("barcode"),
 	description: text("description"),
 	imageBucketPath: text("imageBucketPath"),
+	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });
 
 export const invoiceRow = pgTable("invoiceRow", {
@@ -113,4 +117,6 @@ export const invoiceRow = pgTable("invoiceRow", {
 	imageBucketPath: text("imageBucketPath"),
 	barcode: text("barcode"),
 	description: text("description"),
+	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
+	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 });

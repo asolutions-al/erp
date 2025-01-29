@@ -22,6 +22,7 @@ import {
   SunMoonIcon,
 } from "lucide-react"
 
+import { AppHeader } from "@/components/layout/app-header"
 import {
   CollapsibleContent,
   CollapsibleTrigger,
@@ -133,6 +134,7 @@ const Layout = async (props: Props) => {
         <SidebarRail />
       </Sidebar>
       <main className="relative flex min-h-svh flex-1 flex-col overflow-x-auto">
+        <AppHeader />
         <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </main>
     </SidebarProvider>

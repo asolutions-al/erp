@@ -7,21 +7,24 @@ type FormSchemaT = InvoiceFormSchemaT
 const create = async ({
   values,
   unitId,
+  orgId,
 }: {
   values: FormSchemaT
   unitId: string
+  orgId: string
 }) => {
   "use server"
   await db.transaction(async (tx) => {
     const [res] = await tx
       .insert(invoice)
       .values({
+        ...values,
         unitId,
+        orgId,
         total: values.rows.reduce(
           (acc, row) => acc + row.quantity * row.unitPrice,
           0
         ),
-        ...values,
       })
       .returning({
         id: invoice.id,

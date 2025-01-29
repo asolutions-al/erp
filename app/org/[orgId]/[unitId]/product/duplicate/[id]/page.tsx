@@ -8,11 +8,11 @@ import { ProductFormProvider } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string; id: string }>
+  params: Promise<{ unitId: string; id: string; orgId: string }>
 }
 
 const Page = async (props: Props) => {
-  const { unitId, id } = await props.params
+  const { orgId, unitId, id } = await props.params
 
   const data = await db.query.product.findFirst({
     where: eq(product.id, id),
@@ -28,7 +28,7 @@ const Page = async (props: Props) => {
       <ProductForm
         performAction={async (values) => {
           "use server"
-          await createProduct({ values, unitId })
+          await createProduct({ values, orgId, unitId })
         }}
       />
     </ProductFormProvider>

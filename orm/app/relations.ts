@@ -1,11 +1,28 @@
 import { relations } from "drizzle-orm/relations";
-import { unit, invoice, user, organization, customer, member, invitation, product, invoiceRow } from "./schema";
+import { organization, invoice, unit, user, customer, member, invitation, product, invoiceRow } from "./schema";
 
 export const invoiceRelations = relations(invoice, ({one, many}) => ({
+	organization: one(organization, {
+		fields: [invoice.orgId],
+		references: [organization.id]
+	}),
 	unit: one(unit, {
 		fields: [invoice.unitId],
 		references: [unit.id]
 	}),
+	invoiceRows: many(invoiceRow),
+}));
+
+export const organizationRelations = relations(organization, ({one, many}) => ({
+	invoices: many(invoice),
+	user: one(user, {
+		fields: [organization.ownerId],
+		references: [user.id]
+	}),
+	customers: many(customer),
+	units: many(unit),
+	invitations: many(invitation),
+	products: many(product),
 	invoiceRows: many(invoiceRow),
 }));
 
@@ -19,14 +36,7 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 	members: many(member),
 	invitations: many(invitation),
 	products: many(product),
-}));
-
-export const organizationRelations = relations(organization, ({one, many}) => ({
-	user: one(user, {
-		fields: [organization.ownerId],
-		references: [user.id]
-	}),
-	units: many(unit),
+	invoiceRows: many(invoiceRow),
 }));
 
 export const userRelations = relations(user, ({many}) => ({
@@ -36,6 +46,10 @@ export const userRelations = relations(user, ({many}) => ({
 }));
 
 export const customerRelations = relations(customer, ({one}) => ({
+	organization: one(organization, {
+		fields: [customer.orgId],
+		references: [organization.id]
+	}),
 	unit: one(unit, {
 		fields: [customer.unitId],
 		references: [unit.id]
@@ -54,6 +68,10 @@ export const memberRelations = relations(member, ({one}) => ({
 }));
 
 export const invitationRelations = relations(invitation, ({one}) => ({
+	organization: one(organization, {
+		fields: [invitation.orgId],
+		references: [organization.id]
+	}),
 	unit: one(unit, {
 		fields: [invitation.unitId],
 		references: [unit.id]
@@ -65,6 +83,10 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 }));
 
 export const productRelations = relations(product, ({one, many}) => ({
+	organization: one(organization, {
+		fields: [product.orgId],
+		references: [organization.id]
+	}),
 	unit: one(unit, {
 		fields: [product.unitId],
 		references: [unit.id]
@@ -77,8 +99,16 @@ export const invoiceRowRelations = relations(invoiceRow, ({one}) => ({
 		fields: [invoiceRow.invoiceId],
 		references: [invoice.id]
 	}),
+	organization: one(organization, {
+		fields: [invoiceRow.orgId],
+		references: [organization.id]
+	}),
 	product: one(product, {
 		fields: [invoiceRow.productId],
 		references: [product.id]
+	}),
+	unit: one(unit, {
+		fields: [invoiceRow.unitId],
+		references: [unit.id]
 	}),
 }));

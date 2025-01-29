@@ -8,14 +8,17 @@ type FormSchemaT = CustomerFormSchemaT
 const create = async ({
   values,
   unitId,
+  orgId,
 }: {
   values: FormSchemaT
   unitId: string
+  orgId: string
 }) => {
   "use server"
   await db.insert(customer).values({
     ...values,
     unitId,
+    orgId,
   })
 }
 

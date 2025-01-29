@@ -19,7 +19,7 @@ const Layout = async (props: Props) => {
     <SidebarProvider>
       <AppSidebar orgId={orgId} unitId={unitId} />
       <SidebarInset>
-        <AppHeader orgId={orgId} />
+        <AppHeader />
         <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </SidebarInset>
     </SidebarProvider>

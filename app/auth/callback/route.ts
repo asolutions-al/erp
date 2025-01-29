@@ -58,6 +58,7 @@ export async function GET(request: Request) {
         .values({
           name: t("My organization"),
           description: t("My first organization"),
+          ownerId: userId,
         })
         .returning({
           id: organization.id,
