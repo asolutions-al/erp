@@ -1,32 +1,40 @@
 import { invoiceColumns } from "@/components/columns/invoice"
+import { RangeTabs } from "@/components/tabs/range"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
+import { mapRangeToStartEnd } from "@/contants/maps"
 import { db } from "@/db/app/instance"
 import { invoice } from "@/orm/app/schema"
-import { desc, eq } from "drizzle-orm"
+import { and, desc, eq, gte, lte } from "drizzle-orm"
 import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 type Props = {
   params: Promise<{ orgId: string; unitId: string }>
-  searchParams: Promise<{}>
+  searchParams: Promise<{ range?: RangeT }>
 }
 
 const Page = async (props: Props) => {
+  const { params, searchParams } = props
+  const { orgId, unitId } = await params
+  const { range = "today" } = await searchParams
   const t = await getTranslations()
-  const { orgId, unitId } = await props.params
-  await props.searchParams
+  const [start, end] = mapRangeToStartEnd(range)
 
   const data = await db.query.invoice.findMany({
-    where: eq(invoice.unitId, unitId),
+    where: and(
+      eq(invoice.unitId, unitId),
+      gte(invoice.createdAt, start.toISOString()),
+      lte(invoice.createdAt, end.toISOString())
+    ),
     orderBy: desc(invoice.createdAt),
   })
 
   return (
     <>
       <div className="mb-3 flex flex-row justify-between">
-        <div />
+        <RangeTabs defaultValue={range} />
         <Link href={`/org/${orgId}/${unitId}/invoice/create`} passHref>
           <Button>
             <PlusCircleIcon />

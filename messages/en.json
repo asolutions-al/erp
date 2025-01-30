@@ -162,5 +162,11 @@
   "Notes": "Notes",
   "A short note about the invoice": "A short note about the invoice",
   "Exchange rate": "Exchange rate",
-  "Enter the exchange rate from currency to ALL": "Enter the exchange rate from {currency} to ALL"
+  "Enter the exchange rate from currency to ALL": "Enter the exchange rate from {currency} to ALL",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "this_week": "This week",
+  "last_week": "Last week",
+  "this_month": "This month",
+  "last_month": "Last month"
 }
