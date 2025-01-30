@@ -1,11 +1,10 @@
-import { BuildingIcon, ChevronsUpDown, Plus } from "lucide-react"
+import { BuildingIcon, ChevronsUpDown } from "lucide-react"
 
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
@@ -19,7 +18,6 @@ import { createAuthClient } from "@/db/auth/client"
 import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
-import Link from "next/link"
 
 type Props = {
   params: Promise<GlobalParams>
@@ -81,17 +79,6 @@ const OrgSwitcher = async (props: Props) => {
                 <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
               </DropdownMenuItem>
             ))}
-            <DropdownMenuSeparator />
-            <Link href={`/org/${orgId}/~/create`}>
-              <DropdownMenuItem className="gap-2 p-2">
-                <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                  <Plus className="size-4" />
-                </div>
-                <div className="font-medium text-muted-foreground">
-                  {t("Add organization")}
-                </div>
-              </DropdownMenuItem>
-            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
