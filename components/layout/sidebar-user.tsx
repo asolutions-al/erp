@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,15 +16,18 @@ import {
 import { signOut } from "@/db/auth/actions"
 import { createAuthClient } from "@/db/auth/client"
 import { ChevronsUpDown, LogOut, SettingsIcon } from "lucide-react"
+import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
 const SidebarUser = async () => {
+  const t = await getTranslations()
   const client = await createAuthClient()
   const { data } = await client.auth.getUser()
 
   const email = data.user?.email || ""
   const name = email.split("@")[0]
-  const avatar = "https://123.com"
+
+  const avatarFallback = name.slice(0, 2).toUpperCase()
 
   return (
     <SidebarMenu>
@@ -36,8 +39,10 @@ const SidebarUser = async () => {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={avatar} alt={name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                {/* <AvatarImage src={avatar} alt={name} /> */}
+                <AvatarFallback className="rounded-lg">
+                  {avatarFallback}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{name}</span>
@@ -54,8 +59,10 @@ const SidebarUser = async () => {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={avatar} alt={name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  {/* <AvatarImage src={avatar} alt={name} /> */}
+                  <AvatarFallback className="rounded-lg">
+                    {avatarFallback}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{name}</span>
@@ -69,14 +76,14 @@ const SidebarUser = async () => {
               <Link href="/settings/general">
                 <DropdownMenuItem>
                   <SettingsIcon />
-                  Settings
+                  {t("Settings")}
                 </DropdownMenuItem>
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>
               <LogOut />
-              Log out
+              {t("Log out")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
