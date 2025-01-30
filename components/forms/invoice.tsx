@@ -446,7 +446,7 @@ const PaymentCard = () => {
                   className="flex items-center gap-2"
                   onClick={() => form.setValue("payMethod", item)}
                 >
-                  <Icon />
+                  <Icon size={20} />
                   {t(item)}
                 </TabsTrigger>
               )

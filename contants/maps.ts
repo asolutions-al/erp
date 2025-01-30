@@ -12,6 +12,9 @@ import {
   subWeeks,
 } from "date-fns"
 import {
+  CalendarDaysIcon,
+  CalendarIcon,
+  CalendarRangeIcon,
   CoinsIcon,
   CreditCardIcon,
   HandCoinsIcon,
@@ -20,14 +23,25 @@ import {
 type PayMethodT = (typeof payMethod.enumValues)[number]
 type IconT = typeof LandmarkIcon // temp solution, not sure how to get the type of the icon
 
-const mapPayMethodIcon = (method: PayMethodT) => {
+const mapPayMethodIcon = (value: PayMethodT) => {
   const MAP: Record<PayMethodT, IconT> = {
     bank: LandmarkIcon,
     card: CreditCardIcon,
     cash: HandCoinsIcon,
     other: CoinsIcon,
   }
-  return MAP[method]
+  return MAP[value]
+}
+const mapRangeIcon = (value: RangeT) => {
+  const MAP: Record<RangeT, IconT> = {
+    today: CalendarIcon,
+    yesterday: CalendarDaysIcon,
+    this_week: CalendarIcon, //TODO:
+    last_week: CalendarIcon, // TODO:
+    this_month: CalendarRangeIcon,
+    last_month: CalendarIcon, // TODO:
+  }
+  return MAP[value]
 }
 
 const mapRangeToStartEnd = (range: RangeT) => {
@@ -53,4 +67,4 @@ const mapRangeToStartEnd = (range: RangeT) => {
   return MAP[range]
 }
 
-export { mapPayMethodIcon, mapRangeToStartEnd }
+export { mapPayMethodIcon, mapRangeIcon, mapRangeToStartEnd }
