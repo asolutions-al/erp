@@ -95,7 +95,6 @@ const Form = ({ performAction, products, customers }: Props) => {
   }
 
   const onInvalid = (errors: FieldErrors<SchemaT>) => {
-    console.error("errors", errors)
     toast.error(t("Please fill in all required fields"))
   }
 
