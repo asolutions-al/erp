@@ -3,9 +3,13 @@
 import { Button } from "@/components/ui/button"
 import { CheckCircle2Icon, Eraser, LoaderIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { PropsWithChildren } from "react"
 import { useFormContext, useFormState } from "react-hook-form"
 
-const FormActionBtns = ({ formId }: { formId: FormId }) => {
+const FormActionBtns = ({
+  formId,
+  children,
+}: PropsWithChildren<{ formId: FormId }>) => {
   const t = useTranslations()
   const form = useFormContext()
   const { isSubmitting, isValidating, isDirty } = useFormState({
@@ -16,6 +20,7 @@ const FormActionBtns = ({ formId }: { formId: FormId }) => {
 
   return (
     <div className="flex items-center justify-end gap-2">
+      {children}
       <Button
         variant="outline"
         size="sm"
@@ -23,14 +28,14 @@ const FormActionBtns = ({ formId }: { formId: FormId }) => {
         onClick={() => form.reset()}
         disabled={isProcessing || !isDirty}
       >
-        <Eraser size={15} className="mr-1" />
+        <Eraser />
         {t("Discard")}
       </Button>
       <Button size="sm" type="submit" form={formId} disabled={isProcessing}>
         {isProcessing ? (
-          <LoaderIcon size={15} className="mr-1 animate-spin" />
+          <LoaderIcon className="animate-spin" />
         ) : (
-          <CheckCircle2Icon size={15} className="mr-1" />
+          <CheckCircle2Icon />
         )}
         {t("Save")}
       </Button>

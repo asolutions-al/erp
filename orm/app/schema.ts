@@ -43,6 +43,7 @@ export const invoice = pgTable("invoice", {
 	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
 	subtotal: doublePrecision("subtotal").notNull(),
 	tax: doublePrecision("tax").notNull(),
+	date: timestamp("date", { withTimezone: true, mode: 'string' }),
 });
 
 export const organization = pgTable("organization", {

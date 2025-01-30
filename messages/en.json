@@ -150,5 +150,17 @@
   "Share": "Share",
   "Print": "Print",
   "How the customer will pay": "How the customer will pay",
-  "View receipt": "View receipt"
+  "View receipt": "View receipt",
+  "Failed to load invoice rows": "Failed to load invoice rows",
+  "Additional options": "Additional options",
+  "Invoice options": "Invoice options",
+  "Configure additional invoice settings and preferences": "Configure additional invoice settings and preferences",
+  "Discount percentage": "Discount percentage",
+  "Discount amount": "Discount amount",
+  "Pick a date": "Pick a date",
+  "Select currency": "Select currency",
+  "Notes": "Notes",
+  "A short note about the invoice": "A short note about the invoice",
+  "Exchange rate": "Exchange rate",
+  "Enter the exchange rate from currency to ALL": "Enter the exchange rate from {currency} to ALL"
 }

@@ -13,9 +13,7 @@ import { InvoiceRowSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import {
-  CopyPlusIcon,
   DownloadIcon,
-  EditIcon,
   EyeIcon,
   MoreHorizontalIcon,
   PrinterIcon,
@@ -23,6 +21,7 @@ import {
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
+import { toast } from "sonner"
 import { InvoiceReceipt } from "../invoice-receipt"
 import {
   Dialog,
@@ -67,6 +66,7 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
                 setRows(data)
               } catch (error) {
                 console.error(error)
+                toast.error(t("Failed to load invoice rows"))
               }
             }}
           >
@@ -75,14 +75,6 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
               {t("View receipt")}
             </DropdownMenuItem>
           </DialogTrigger>
-          <DropdownMenuItem>
-            <EditIcon />
-            {t("Edit")}
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CopyPlusIcon />
-            {t("Duplicate")}
-          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
 
