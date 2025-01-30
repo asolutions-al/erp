@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/db/app/instance"
 import { invoice, invoiceRow } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
@@ -14,7 +16,6 @@ const create = async ({
   unitId: string
   orgId: string
 }) => {
-  "use server"
   await db.transaction(async (tx) => {
     const [res] = await tx
       .insert(invoice)

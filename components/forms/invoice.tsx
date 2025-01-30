@@ -41,13 +41,7 @@ import Image from "next/image"
 import { useState } from "react"
 import { toast } from "sonner"
 import { Command } from "../ui/command"
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form"
+import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 import {
@@ -87,7 +81,6 @@ const Form = ({ performAction, products, customers }: Props) => {
     open: boolean
     data: SchemaT
   }>()
-  const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
 
   const onValid = async (values: SchemaT) => {
     try {
@@ -134,7 +127,7 @@ const Form = ({ performAction, products, customers }: Props) => {
           <div className="space-y-3">
             <PaymentCard />
 
-            <StatusCard />
+            {/* <StatusCard /> */}
 
             <CheckoutCard />
           </div>
@@ -201,10 +194,10 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
         <FormField
           control={form.control}
           name="customerId"
-          render={({ field, fieldState }) => {
+          render={({ field }) => {
             return (
               <FormItem className="flex flex-col">
-                <FormLabel>{t("Customer")}</FormLabel>
+                {/* <FormLabel>{t("Customer")}</FormLabel> */}
                 <Popover
                   open={customerPopOverOpen}
                   onOpenChange={setCustomerPopOverOpen}

@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/db/app/instance"
 import { product } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
@@ -13,18 +15,14 @@ const create = async ({
   values: FormSchemaT
   unitId: string
   orgId: string
-}) => {
-  "use server"
+}) =>
   await db.insert(product).values({
     ...values,
     unitId,
     orgId,
   })
-}
 
-const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
-  "use server"
+const update = async ({ values, id }: { values: FormSchemaT; id: string }) =>
   await db.update(product).set(values).where(eq(product.id, id))
-}
 
 export { create as createProduct, update as updateProduct }

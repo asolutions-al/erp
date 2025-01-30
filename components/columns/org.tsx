@@ -16,7 +16,9 @@ import { CellContext } from "@tanstack/react-table"
 import { EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-const Actions = ({ row }: CellContext<OrgSchemaT, unknown>) => {
+type SchemaT = OrgSchemaT
+
+const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   return (
     <DropdownMenu>
@@ -37,7 +39,7 @@ const Actions = ({ row }: CellContext<OrgSchemaT, unknown>) => {
   )
 }
 
-const columns: ColumnDef<OrgSchemaT>[] = [
+const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <SortBtn text="Name" column={column} />,

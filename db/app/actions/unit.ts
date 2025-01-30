@@ -1,3 +1,5 @@
+"use server"
+
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { member, unit } from "@/orm/app/schema"
@@ -12,8 +14,6 @@ const create = async ({
   values: FormSchemaT
   orgId: string
 }) => {
-  "use server"
-
   const client = await createAuthClient()
   const {
     data: { user },

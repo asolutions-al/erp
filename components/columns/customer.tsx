@@ -19,7 +19,9 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-const Actions = ({ row }: CellContext<CustomerSchemaT, unknown>) => {
+type SchemaT = CustomerSchemaT
+
+const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { unitId, orgId } = useParams()
   const { original } = row
@@ -56,7 +58,7 @@ const Actions = ({ row }: CellContext<CustomerSchemaT, unknown>) => {
   )
 }
 
-const columns: ColumnDef<CustomerSchemaT>[] = [
+const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <SortBtn text="Name" column={column} />,
