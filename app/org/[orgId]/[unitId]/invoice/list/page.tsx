@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { invoice } from "@/orm/app/schema"
-import { eq } from "drizzle-orm"
+import { desc, eq } from "drizzle-orm"
 import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -20,6 +20,7 @@ const Page = async (props: Props) => {
 
   const data = await db.query.invoice.findMany({
     where: eq(invoice.unitId, unitId),
+    orderBy: desc(invoice.createdAt),
   })
 
   return (
