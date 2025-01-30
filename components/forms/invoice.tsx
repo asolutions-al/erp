@@ -12,7 +12,6 @@ import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
 import { SaleProductCard } from "@/components/cards"
 import { InvoiceReceipt } from "@/components/invoice-receipt"
-import { PayMethodTabs } from "@/components/tabs"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -58,8 +57,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import { mapPayMethodIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
-import { recordStatus } from "@/orm/app/schema"
+import { payMethod, recordStatus } from "@/orm/app/schema"
 import {
   Select,
   SelectContent,
@@ -67,6 +67,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
+import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -127,186 +128,15 @@ const Form = ({ performAction, products, customers }: Props) => {
       >
         <div className="grid gap-3 lg:grid-cols-2">
           <div className="space-y-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Customer")}</CardTitle>
-                <CardDescription>
-                  {t("The person that will receive the invoice")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="customerId"
-                  render={({ field, fieldState }) => {
-                    return (
-                      <FormItem className="flex flex-col">
-                        <FormLabel>{t("Customer")}</FormLabel>
-                        <Popover
-                          open={customerPopOverOpen}
-                          onOpenChange={setCustomerPopOverOpen}
-                        >
-                          <PopoverTrigger asChild>
-                            <Button
-                              variant="outline"
-                              role="combobox"
-                              aria-expanded={customerPopOverOpen}
-                              className="w-60 justify-between"
-                            >
-                              {field.value
-                                ? customers.find((li) => li.id === field.value)
-                                    ?.name
-                                : `${t("Select customer")}...`}
-                              <ChevronsUpDownIcon className="opacity-50" />
-                            </Button>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-60 p-0">
-                            <Command>
-                              <CommandInput
-                                placeholder={t("Search customer") + "..."}
-                              />
-                              <CommandList>
-                                <CommandEmpty>
-                                  {t("No customer found")}.
-                                </CommandEmpty>
-                                <CommandGroup>
-                                  {customers.map((li) => (
-                                    <CommandItem
-                                      key={li.id}
-                                      value={li.id}
-                                      onSelect={(currentValue) => {
-                                        field.onChange(currentValue)
-                                        form.setValue("customerName", li.name)
-                                        setCustomerPopOverOpen(false)
-                                      }}
-                                    >
-                                      {li.name}
-                                      <CheckIcon
-                                        className={cn(
-                                          "ml-auto",
-                                          field.value === li.id
-                                            ? "opacity-100"
-                                            : "opacity-0"
-                                        )}
-                                      />
-                                    </CommandItem>
-                                  ))}
-                                </CommandGroup>
-                              </CommandList>
-                            </Command>
-                          </PopoverContent>
-                        </Popover>
-                        <FormMessage />
-                      </FormItem>
-                    )
-                  }}
-                />
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Products")}</CardTitle>
-                <CardDescription>
-                  {t("List of products to sell")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
-                {products.map((product) => (
-                  <SaleProductCard
-                    key={product.id}
-                    data={product}
-                    onSelect={() => {
-                      const existingRows = form.getValues().rows || []
-
-                      const existingProductIdx = existingRows.findIndex(
-                        (row) => row.productId === product.id
-                      )
-
-                      const existingProduct = existingRows[existingProductIdx]
-
-                      if (existingProduct) {
-                        form.setValue(
-                          `rows.${existingProductIdx}.quantity`,
-                          existingProduct.quantity + 1
-                        )
-                        return
-                      }
-
-                      form.setValue("rows", [
-                        ...(form.getValues().rows || []),
-                        {
-                          ...product,
-                          productId: product.id,
-                          quantity: 1,
-                          unitPrice: product.price,
-                          tax: 0,
-                        },
-                      ])
-                    }}
-                  />
-                ))}
-              </CardContent>
-            </Card>
+            <CustomerCard customers={customers} />
+            <ProductsCard products={products} />
           </div>
           <div className="space-y-3">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Payment")}</CardTitle>
-                <CardDescription>{t("Method of payment")}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <PayMethodTabs defaultValue="cash" />
-              </CardContent>
-            </Card>
+            <PaymentCard />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Status")}</CardTitle>
-                <CardDescription>
-                  {t("Current status of the invoice")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <Select
-                        value={field.value || ""}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger aria-label={t("Select status")}>
-                            <SelectValue placeholder={t("Select status")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {recordStatus.enumValues.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {t(item)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+            <StatusCard />
 
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Checkout")}</CardTitle>
-                <CardDescription>
-                  {t("Review the invoice and proceed to checkout")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Checkout />
-              </CardContent>
-            </Card>
+            <CheckoutCard />
           </div>
         </div>
       </form>
@@ -354,109 +184,324 @@ const Form = ({ performAction, products, customers }: Props) => {
   )
 }
 
-const Checkout = () => {
+const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Customer")}</CardTitle>
+        <CardDescription>
+          {t("The person that will receive the invoice")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="customerId"
+          render={({ field, fieldState }) => {
+            return (
+              <FormItem className="flex flex-col">
+                <FormLabel>{t("Customer")}</FormLabel>
+                <Popover
+                  open={customerPopOverOpen}
+                  onOpenChange={setCustomerPopOverOpen}
+                >
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={customerPopOverOpen}
+                      className="w-60 justify-between"
+                    >
+                      {field.value
+                        ? customers.find((li) => li.id === field.value)?.name
+                        : `${t("Select customer")}...`}
+                      <ChevronsUpDownIcon className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-60 p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("Search customer") + "..."}
+                      />
+                      <CommandList>
+                        <CommandEmpty>{t("No customer found")}.</CommandEmpty>
+                        <CommandGroup>
+                          {customers.map((li) => (
+                            <CommandItem
+                              key={li.id}
+                              value={li.id}
+                              onSelect={(currentValue) => {
+                                field.onChange(currentValue)
+                                form.setValue("customerName", li.name)
+                                setCustomerPopOverOpen(false)
+                              }}
+                            >
+                              {li.name}
+                              <CheckIcon
+                                className={cn(
+                                  "ml-auto",
+                                  field.value === li.id
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Products")}</CardTitle>
+        <CardDescription>{t("List of products to sell")}</CardDescription>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
+        {products.map((product) => (
+          <SaleProductCard
+            key={product.id}
+            data={product}
+            onSelect={() => {
+              const existingRows = form.getValues().rows || []
+
+              const existingProductIdx = existingRows.findIndex(
+                (row) => row.productId === product.id
+              )
+
+              const existingProduct = existingRows[existingProductIdx]
+
+              if (existingProduct) {
+                form.setValue(
+                  `rows.${existingProductIdx}.quantity`,
+                  existingProduct.quantity + 1
+                )
+                return
+              }
+
+              form.setValue("rows", [
+                ...(form.getValues().rows || []),
+                {
+                  ...product,
+                  productId: product.id,
+                  quantity: 1,
+                  unitPrice: product.price,
+                  tax: 0,
+                },
+              ])
+            }}
+          />
+        ))}
+      </CardContent>
+    </Card>
+  )
+}
+
+const CheckoutCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const rows = useWatch({ name: "rows", control: form.control })
 
   return (
-    <div className="flex flex-col gap-2">
-      {(rows || []).map((row, index) => {
-        const {
-          name,
-          unitPrice,
-          quantity,
-          imageBucketPath,
-          productId,
-          description,
-        } = row
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Checkout")}</CardTitle>
+        <CardDescription>
+          {t("Review the invoice and proceed to checkout")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-2">
+          {(rows || []).map((row, index) => {
+            const {
+              name,
+              unitPrice,
+              quantity,
+              imageBucketPath,
+              productId,
+              description,
+            } = row
 
-        const changeQty = (value: number) => {
-          form.setValue(`rows.${index}.quantity`, value)
-        }
+            const changeQty = (value: number) => {
+              form.setValue(`rows.${index}.quantity`, value)
+            }
 
-        const remove = () => {
-          form.setValue(
-            "rows",
-            (rows || []).filter((_, i) => i !== index)
-          )
-        }
+            const remove = () => {
+              form.setValue(
+                "rows",
+                (rows || []).filter((_, i) => i !== index)
+              )
+            }
 
-        return (
-          <Card className="overflow-hidden" key={productId}>
-            <CardContent className="p-0">
-              <div className="flex flex-col sm:flex-row">
-                <div className="relative h-32 w-full flex-shrink-0 sm:w-32">
-                  <Image
-                    src={
-                      imageBucketPath
-                        ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
-                        : "/placeholder.svg"
-                    }
-                    alt={name}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="flex flex-grow flex-col justify-between p-2">
-                  <div className="flex justify-between">
-                    <div>
-                      <h3 className="text-lg font-semibold">{name}</h3>
-                      <p className="text-sm text-muted-foreground">
-                        {description}
-                      </p>
-                    </div>
-                    <p className="text-lg font-bold">${unitPrice}</p>
-                  </div>
-                  <div className="mt-2 flex items-center justify-between">
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        disabled={quantity === 1}
-                        onClick={() => changeQty(quantity - 1)}
-                        aria-label={t("Decrease quantity")}
-                        type="button"
-                      >
-                        <MinusIcon />
-                      </Button>
-                      <Input
-                        type="number"
-                        value={quantity}
-                        onChange={(e) =>
-                          changeQty(parseInt(e.target.value, 10) || 1)
+            return (
+              <Card className="overflow-hidden" key={productId}>
+                <CardContent className="p-0">
+                  <div className="flex flex-col sm:flex-row">
+                    <div className="relative h-32 w-full flex-shrink-0 sm:w-32">
+                      <Image
+                        src={
+                          imageBucketPath
+                            ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
+                            : "/placeholder.svg"
                         }
-                        className="w-20 text-center"
-                        min="1"
+                        alt={name}
+                        layout="fill"
+                        objectFit="cover"
                       />
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() => changeQty(quantity + 1)}
-                        aria-label={t("Increase quantity")}
-                        type="button"
-                      >
-                        <PlusIcon />
-                      </Button>
                     </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={() => remove()}
-                      className="text-destructive"
-                      aria-label={t("Remove product")}
-                    >
-                      <XIcon className="mr-2 h-4 w-4" />
-                      {t("Remove")}
-                    </Button>
+                    <div className="flex flex-grow flex-col justify-between p-2">
+                      <div className="flex justify-between">
+                        <div>
+                          <h3 className="text-lg font-semibold">{name}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            {description}
+                          </p>
+                        </div>
+                        <p className="text-lg font-bold">${unitPrice}</p>
+                      </div>
+                      <div className="mt-2 flex items-center justify-between">
+                        <div className="flex gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            disabled={quantity === 1}
+                            onClick={() => changeQty(quantity - 1)}
+                            aria-label={t("Decrease quantity")}
+                            type="button"
+                          >
+                            <MinusIcon />
+                          </Button>
+                          <Input
+                            type="number"
+                            value={quantity}
+                            onChange={(e) =>
+                              changeQty(parseInt(e.target.value, 10) || 1)
+                            }
+                            className="w-20 text-center"
+                            min="1"
+                          />
+                          <Button
+                            variant="outline"
+                            size="icon"
+                            onClick={() => changeQty(quantity + 1)}
+                            aria-label={t("Increase quantity")}
+                            type="button"
+                          >
+                            <PlusIcon />
+                          </Button>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => remove()}
+                          className="text-destructive"
+                          aria-label={t("Remove product")}
+                        >
+                          <XIcon className="mr-2 h-4 w-4" />
+                          {t("Remove")}
+                        </Button>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
-    </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+const PaymentCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  const defaultValue = useWatch({ name: "payMethod", control: form.control })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Payment")}</CardTitle>
+        <CardDescription>{t("How the customer will pay")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Tabs defaultValue={defaultValue}>
+          <TabsList>
+            {payMethod.enumValues.map((item) => {
+              const Icon = mapPayMethodIcon(item)
+              return (
+                <TabsTrigger
+                  value={item}
+                  key={item}
+                  className="flex items-center gap-2"
+                  onClick={() => form.setValue("payMethod", item)}
+                >
+                  <Icon />
+                  {t(item)}
+                </TabsTrigger>
+              )
+            })}
+          </TabsList>
+        </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
+
+const StatusCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Status")}</CardTitle>
+        <CardDescription>{t("Current status of the invoice")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <Select value={field.value || ""} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger aria-label={t("Select status")}>
+                    <SelectValue placeholder={t("Select status")} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {recordStatus.enumValues.map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {t(item)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
   )
 }
 
