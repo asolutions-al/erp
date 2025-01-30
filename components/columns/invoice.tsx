@@ -41,6 +41,16 @@ const PayMethodCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   return t(original.payMethod)
 }
+const CurrencyCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.currency)
+}
+const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.status)
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
@@ -127,6 +137,7 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "currency",
     header: ({ column }) => <SortBtn text="Currency" column={column} />,
+    cell: CurrencyCell,
   },
   {
     accessorKey: "payMethod",
@@ -140,6 +151,7 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,
+    cell: StatusCell,
   },
   {
     id: "actions",

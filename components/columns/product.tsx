@@ -21,6 +21,12 @@ import { useParams } from "next/navigation"
 
 type SchemaT = ProductSchemaT
 
+const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.status)
+}
+
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { unitId, orgId } = useParams()
@@ -92,6 +98,7 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,
+    cell: StatusCell,
   },
   {
     id: "actions",
