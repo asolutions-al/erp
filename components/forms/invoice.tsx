@@ -407,13 +407,14 @@ const CheckoutCard = () => {
                         </div>
                         <Button
                           variant="ghost"
-                          size="sm"
                           onClick={() => remove()}
                           className="text-destructive"
                           aria-label={t("Remove product")}
                         >
-                          <XIcon className="mr-2 h-4 w-4" />
-                          {t("Remove")}
+                          <XIcon />
+                          <span className="sr-only sm:not-sr-only">
+                            {t("Remove")}
+                          </span>
                         </Button>
                       </div>
                     </div>
@@ -444,6 +445,7 @@ const PaymentCard = () => {
           <TabsList>
             {payMethod.enumValues.map((item) => {
               const Icon = mapPayMethodIcon(item)
+              const isActive = defaultValue === item
               return (
                 <TabsTrigger
                   value={item}
@@ -452,7 +454,14 @@ const PaymentCard = () => {
                   onClick={() => form.setValue("payMethod", item)}
                 >
                   <Icon size={20} />
-                  {t(item)}
+                  <span
+                    className={cn(
+                      "sr-only sm:not-sr-only",
+                      isActive && "not-sr-only"
+                    )}
+                  >
+                    {t(item)}
+                  </span>
                 </TabsTrigger>
               )
             })}
