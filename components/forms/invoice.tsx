@@ -196,7 +196,6 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
           render={({ field }) => {
             return (
               <FormItem className="flex flex-col">
-                {/* <FormLabel>{t("Customer")}</FormLabel> */}
                 <Popover
                   open={customerPopOverOpen}
                   onOpenChange={setCustomerPopOverOpen}
@@ -222,27 +221,38 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                       <CommandList>
                         <CommandEmpty>{t("No customer found")}.</CommandEmpty>
                         <CommandGroup>
-                          {customers.map((li) => (
-                            <CommandItem
-                              key={li.id}
-                              value={li.id}
-                              onSelect={(currentValue) => {
-                                field.onChange(currentValue)
-                                form.setValue("customer", li)
-                                setCustomerPopOverOpen(false)
-                              }}
-                            >
-                              {li.name}
-                              <CheckIcon
-                                className={cn(
-                                  "ml-auto",
-                                  field.value === li.id
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
+                          {customers.map((customer) => {
+                            const { idType, idValue, id, name } = customer
+                            return (
+                              <CommandItem
+                                key={id}
+                                value={name}
+                                onSelect={() => {
+                                  field.onChange(id)
+                                  form.setValue("customer", customer)
+                                  setCustomerPopOverOpen(false)
+                                }}
+                              >
+                                <div className="flex flex-col">
+                                  <span>{name}</span>
+                                  {idValue && (
+                                    <span className="text-sm text-muted-foreground">
+                                      {t(idType)}: {idValue}
+                                    </span>
+                                  )}
+                                </div>
+                                <CheckIcon
+                                  size={16}
+                                  className={cn(
+                                    "ml-auto",
+                                    field.value === id
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            )
+                          })}
                         </CommandGroup>
                       </CommandList>
                     </Command>
@@ -324,12 +334,7 @@ const CheckoutCard = () => {
       <CardContent>
         <div className="flex flex-col gap-2">
           {(rows || []).map((row, index) => {
-            const {
-              name,
-              unitPrice,
-              quantity,
-              productId,
-            } = row
+            const { name, unitPrice, quantity, productId } = row
             const { imageBucketPath, description } = row.product || {}
 
             const changeQty = (value: number) => {
