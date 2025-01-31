@@ -169,5 +169,12 @@
   "last_week": "Last week",
   "this_month": "This month",
   "last_month": "Last month",
-  "Log out": "Log out"
+  "Log out": "Log out",
+  "Rows per page": "Rows per page",
+  "Go to first page": "Go to first page",
+  "Go to previous page": "Go to previous page",
+  "Go to next page": "Go to next page",
+  "Go to last page": "Go to last page",
+  "{selected} of {total} row(s) selected": "{selected} of {total} row(s) selected",
+  "Page {pageIndex} of {pageCount}": "Page {pageIndex} of {pageCount}"
 }

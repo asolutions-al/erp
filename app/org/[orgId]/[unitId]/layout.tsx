@@ -16,7 +16,7 @@ const Layout = async (props: Props) => {
   return (
     <SidebarProvider>
       <AppSidebar {...props} />
-      <SidebarInset>
+      <SidebarInset className="w-full">
         <AppHeader {...props} />
         <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
       </SidebarInset>

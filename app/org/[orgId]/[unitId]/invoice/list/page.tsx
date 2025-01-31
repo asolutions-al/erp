@@ -38,9 +38,7 @@ const Page = async (props: Props) => {
         <Link href={`/org/${orgId}/${unitId}/invoice/create`} passHref>
           <Button>
             <PlusCircleIcon />
-            <span className="sr-only sm:not-sr-only">
-              {t("Create new invoice")}
-            </span>
+            <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
           </Button>
         </Link>
       </div>

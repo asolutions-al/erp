@@ -29,7 +29,7 @@ const FormActionBtns = ({
         disabled={isProcessing || !isDirty}
       >
         <Eraser />
-        {t("Discard")}
+        <span className="sr-only sm:not-sr-only">{t("Discard")}</span>
       </Button>
       <Button size="sm" type="submit" form={formId} disabled={isProcessing}>
         {isProcessing ? (

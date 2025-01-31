@@ -1,4 +1,4 @@
-import { payMethod } from "@/orm/app/schema"
+import { payMethod, status } from "@/orm/app/schema"
 import {
   endOfMonth,
   endOfToday,
@@ -12,16 +12,20 @@ import {
   subWeeks,
 } from "date-fns"
 import {
+  ArchiveIcon,
   CalendarDaysIcon,
   CalendarIcon,
   CalendarRangeIcon,
+  CircleCheckIcon,
   CoinsIcon,
   CreditCardIcon,
+  FileIcon,
   HandCoinsIcon,
   LandmarkIcon,
 } from "lucide-react"
 type PayMethodT = (typeof payMethod.enumValues)[number]
 type IconT = typeof LandmarkIcon // temp solution, not sure how to get the type of the icon
+type StatusT = (typeof status.enumValues)[number]
 
 const mapPayMethodIcon = (value: PayMethodT) => {
   const MAP: Record<PayMethodT, IconT> = {
@@ -40,6 +44,14 @@ const mapRangeIcon = (value: RangeT) => {
     last_week: CalendarIcon, // TODO:
     this_month: CalendarRangeIcon,
     last_month: CalendarIcon, // TODO:
+  }
+  return MAP[value]
+}
+const mapStatusIcon = (value: StatusT) => {
+  const MAP: Record<StatusT, IconT> = {
+    active: CircleCheckIcon,
+    archived: ArchiveIcon,
+    draft: FileIcon,
   }
   return MAP[value]
 }
@@ -67,4 +79,4 @@ const mapRangeToStartEnd = (range: RangeT) => {
   return MAP[range]
 }
 
-export { mapPayMethodIcon, mapRangeIcon, mapRangeToStartEnd }
+export { mapPayMethodIcon, mapRangeIcon, mapRangeToStartEnd, mapStatusIcon }

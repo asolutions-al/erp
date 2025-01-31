@@ -46,7 +46,9 @@ const Page = async ({ params }: Props) => {
               <SheetTrigger asChild>
                 <Button variant="outline" size="sm" className="ml-auto">
                   <Settings2Icon className="mr-2 h-4 w-4" />
-                  {t("Additional options")}
+                  <span className="sr-only sm:not-sr-only">
+                    {t("Additional options")}
+                  </span>
                 </Button>
               </SheetTrigger>
               <SheetContent>
