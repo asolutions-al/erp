@@ -28,8 +28,8 @@ const InvoiceReceipt = ({ data }: Props) => {
         </div>
         <div className="mt-4 sm:mt-0 sm:text-right">
           <h3 className="font-semibold">{t("Customer details")}</h3>
-          <p>{data.customerName}</p>
-          <p>john.doe@example.com</p>
+          <p>{data.customer?.name}</p>
+          <p>{data.customer?.idValue}</p>
         </div>
       </div>
       <div>

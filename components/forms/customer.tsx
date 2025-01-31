@@ -29,7 +29,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
-import { IdType, status } from "@/orm/app/schema"
+import { idType, status } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers/customer-form"
 import { UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
@@ -132,7 +132,7 @@ const Form = ({ performAction }: Props) => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            {IdType.enumValues.map((item) => (
+                            {idType.enumValues.map((item) => (
                               <SelectItem key={item} value={item}>
                                 {t(item)}
                               </SelectItem>

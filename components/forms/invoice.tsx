@@ -228,7 +228,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                               value={li.id}
                               onSelect={(currentValue) => {
                                 field.onChange(currentValue)
-                                form.setValue("customerName", li.name)
+                                form.setValue("customer", li)
                                 setCustomerPopOverOpen(false)
                               }}
                             >
@@ -297,6 +297,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                   quantity: 1,
                   unitPrice: product.price,
                   tax: 0,
+                  product,
                 },
               ])
             }}
@@ -327,10 +328,9 @@ const CheckoutCard = () => {
               name,
               unitPrice,
               quantity,
-              imageBucketPath,
               productId,
-              description,
             } = row
+            const { imageBucketPath, description } = row.product || {}
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)

@@ -1,7 +1,8 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { invoice, invoiceRow } from "@/orm/app/schema"
+import { CustomerSchemaT } from "@/db/app/schema"
+import { customer, invoice, invoiceRow, product } from "@/orm/app/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { PropsWithChildren } from "react"
@@ -13,6 +14,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
   name: (sch) => sch.name.min(1),
   unitPrice: (sch) => sch.unitPrice.min(0),
   quantity: (sch) => sch.quantity.positive(),
+  product: createInsertSchema(product).required()
 }).omit({
   id: true,
   createdAt: true,
@@ -23,7 +25,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
 
 const schema = createInsertSchema(invoice, {
   customerId: (sch) => sch.customerId.min(1),
-  customerName: (sch) => sch.customerName.min(1),
+  customer: createInsertSchema(customer).required(),
 })
   .omit({
     id: true,
@@ -43,7 +45,7 @@ type SchemaT = z.infer<typeof schema>
 const defaultValues: SchemaT = {
   rows: [],
   customerId: "",
-  customerName: "",
+  customer: {} as CustomerSchemaT,
   discountType: "value",
   discountValue: 0,
   exchangeRate: 1,

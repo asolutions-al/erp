@@ -1,127 +1,209 @@
-import { pgTable, pgEnum, uuid, timestamp, text, foreignKey, doublePrecision, real } from "drizzle-orm/pg-core"
-  import { sql } from "drizzle-orm"
+import { pgTable, uuid, timestamp, text, foreignKey, doublePrecision, jsonb, real, pgEnum } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
+import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
 
-export const aal_level = pgEnum("aal_level", ['aal1', 'aal2', 'aal3'])
-export const code_challenge_method = pgEnum("code_challenge_method", ['s256', 'plain'])
-export const factor_status = pgEnum("factor_status", ['unverified', 'verified'])
-export const factor_type = pgEnum("factor_type", ['totp', 'webauthn', 'phone'])
-export const one_time_token_type = pgEnum("one_time_token_type", ['confirmation_token', 'reauthentication_token', 'recovery_token', 'email_change_token_new', 'email_change_token_current', 'phone_change_token'])
-export const key_status = pgEnum("key_status", ['default', 'valid', 'invalid', 'expired'])
-export const key_type = pgEnum("key_type", ['aead-ietf', 'aead-det', 'hmacsha512', 'hmacsha256', 'auth', 'shorthash', 'generichash', 'kdf', 'secretbox', 'secretstream', 'stream_xchacha20'])
-export const IdType = pgEnum("IdType", ['tin', 'id'])
+export const idType = pgEnum("IdType", ['tin', 'id'])
 export const currency = pgEnum("currency", ['ALL', 'EUR', 'USD'])
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const payMethod = pgEnum("payMethod", ['cash', 'card', 'bank', 'other'])
 export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 export const status = pgEnum("status", ['draft', 'active', 'archived'])
-export const action = pgEnum("action", ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'ERROR'])
-export const equality_op = pgEnum("equality_op", ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in'])
 
 
 export const user = pgTable("user", {
-	id: uuid("id").primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	email: text("email").notNull(),
-	displayName: text("displayName"),
+	id: uuid().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	email: text().notNull(),
+	displayName: text(),
 });
 
 export const invoice = pgTable("invoice", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	total: doublePrecision("total").notNull(),
-	payMethod: payMethod("payMethod").notNull(),
-	customerName: text("customerName").notNull(),
-	currency: currency("currency").notNull(),
-	customerId: uuid("customerId").notNull(),
-	exchangeRate: doublePrecision("exchangeRate").notNull(),
-	discountValue: doublePrecision("discountValue").notNull(),
-	discountType: discountType("discountType").notNull(),
-	notes: text("notes"),
-	status: recordStatus("status").notNull(),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	subtotal: doublePrecision("subtotal").notNull(),
-	tax: doublePrecision("tax").notNull(),
-	date: timestamp("date", { withTimezone: true, mode: 'string' }),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	total: doublePrecision().notNull(),
+	payMethod: payMethod().notNull(),
+	currency: currency().notNull(),
+	customerId: uuid().notNull(),
+	exchangeRate: doublePrecision().notNull(),
+	discountValue: doublePrecision().notNull(),
+	discountType: discountType().notNull(),
+	notes: text(),
+	status: recordStatus().notNull(),
+	orgId: uuid().notNull(),
+	subtotal: doublePrecision().notNull(),
+	tax: doublePrecision().notNull(),
+	date: timestamp({ withTimezone: true, mode: 'string' }),
+	customer: jsonb().notNull().$type<CustomerSchemaT>(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invoice_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "invoice_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const organization = pgTable("organization", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	name: text("name").notNull(),
-	description: text("description"),
-	ownerId: uuid("ownerId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	name: text().notNull(),
+	description: text(),
+	ownerId: uuid().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.ownerId],
+			foreignColumns: [user.id],
+			name: "organization_ownerId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const customer = pgTable("customer", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	name: text("name").notNull(),
-	status: status("status").notNull(),
-	description: text("description"),
-	imageBucketPath: text("imageBucketPath"),
-	idType: IdType("idType"),
-	email: text("email"),
-	address: text("address"),
-	city: text("city"),
-	idValue: text("idValue"),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	status: status().notNull(),
+	description: text(),
+	imageBucketPath: text(),
+	idType: idType(),
+	email: text(),
+	address: text(),
+	city: text(),
+	idValue: text(),
+	orgId: uuid().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "customer_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "customer_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const unit = pgTable("unit", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	name: text("name").notNull(),
-	description: text("description"),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	name: text().notNull(),
+	description: text(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "unit_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const member = pgTable("member", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	userId: uuid("userId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	role: text("role").notNull(),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	userId: uuid().notNull(),
+	role: text().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "member_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "member_userId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const invitation = pgTable("invitation", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	userId: uuid("userId").notNull().references(() => user.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	userId: uuid().notNull(),
+	orgId: uuid().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invitation_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "invitation_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "invitation_userId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const product = pgTable("product", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	name: text("name").notNull(),
-	price: doublePrecision("price").notNull(),
-	status: status("status").notNull(),
-	barcode: text("barcode"),
-	description: text("description"),
-	imageBucketPath: text("imageBucketPath"),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	price: doublePrecision().notNull(),
+	status: status().notNull(),
+	barcode: text(),
+	description: text(),
+	imageBucketPath: text(),
+	orgId: uuid().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "product_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "product_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const invoiceRow = pgTable("invoiceRow", {
-	id: uuid("id").defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp("createdAt", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	productId: uuid("productId").notNull().references(() => product.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	name: text("name").notNull(),
-	quantity: doublePrecision("quantity").notNull(),
-	unitPrice: real("unitPrice").notNull(),
-	notes: text("notes"),
-	invoiceId: uuid("invoiceId").notNull().references(() => invoice.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	total: doublePrecision("total").notNull(),
-	imageBucketPath: text("imageBucketPath"),
-	barcode: text("barcode"),
-	description: text("description"),
-	unitId: uuid("unitId").notNull().references(() => unit.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	orgId: uuid("orgId").notNull().references(() => organization.id, { onDelete: "cascade", onUpdate: "cascade" } ),
-	subtotal: doublePrecision("subtotal").notNull(),
-	tax: doublePrecision("tax").notNull(),
-});
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	productId: uuid().notNull(),
+	name: text().notNull(),
+	quantity: doublePrecision().notNull(),
+	unitPrice: real().notNull(),
+	invoiceId: uuid().notNull(),
+	total: doublePrecision().notNull(),
+	unitId: uuid().notNull(),
+	orgId: uuid().notNull(),
+	subtotal: doublePrecision().notNull(),
+	tax: doublePrecision().notNull(),
+	product: jsonb().notNull().$type<ProductSchemaT>(),
+}, (table) => [
+	foreignKey({
+			columns: [table.invoiceId],
+			foreignColumns: [invoice.id],
+			name: "invoiceRow_invoiceId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invoiceRow_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.productId],
+			foreignColumns: [product.id],
+			name: "invoiceRow_productId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "invoiceRow_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
