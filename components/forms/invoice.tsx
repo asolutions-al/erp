@@ -10,7 +10,6 @@ import {
 
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 
-import { SaleProductCard } from "@/components/cards"
 import { InvoiceReceipt } from "@/components/invoice-receipt"
 import { Button } from "@/components/ui/button"
 import {
@@ -54,6 +53,7 @@ import {
 import { mapPayMethodIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
 import { payMethod, recordStatus } from "@/orm/app/schema"
+import { Badge } from "../ui/badge"
 import {
   Select,
   SelectContent,
@@ -271,6 +271,8 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
 const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+
+  const rows = useWatch({ name: "rows", control: form.control })
   return (
     <Card>
       <CardHeader>
@@ -278,41 +280,76 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
         <CardDescription>{t("List of products to sell")}</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <SaleProductCard
-            key={product.id}
-            data={product}
-            onSelect={() => {
-              const existingRows = form.getValues().rows || []
+        {products.map((product) => {
+          const { imageBucketPath, id } = product
+          const category = "Clothing"
+          const unit = "pcs"
 
-              const existingProductIdx = existingRows.findIndex(
-                (row) => row.productId === product.id
-              )
+          const existingIdx = rows.findIndex((row) => row.productId === id)
+          const existing = existingIdx !== -1 ? rows[existingIdx] : null
 
-              const existingProduct = existingRows[existingProductIdx]
+          const quantity = existing?.quantity || 0
 
-              if (existingProduct) {
-                form.setValue(
-                  `rows.${existingProductIdx}.quantity`,
-                  existingProduct.quantity + 1
-                )
-                return
-              }
+          return (
+            <Card
+              className="group relative cursor-pointer select-none space-y-4 overflow-hidden transition-shadow duration-300 hover:shadow-md"
+              onClick={() => {
+                if (existing)
+                  return form.setValue(
+                    `rows.${existingIdx}.quantity`,
+                    existing.quantity + 1
+                  )
 
-              form.setValue("rows", [
-                ...(form.getValues().rows || []),
-                {
-                  ...product,
-                  productId: product.id,
-                  quantity: 1,
-                  unitPrice: product.price,
-                  tax: 0,
-                  product,
-                },
-              ])
-            }}
-          />
-        ))}
+                form.setValue("rows", [
+                  ...rows,
+                  {
+                    ...product,
+                    productId: product.id,
+                    quantity: 1,
+                    unitPrice: product.price,
+                    tax: 0,
+                    product,
+                  },
+                ])
+              }}
+              key={product.id}
+            >
+              <figure className="relative group-hover:opacity-90">
+                <Badge className="absolute right-3 top-3" variant="secondary">
+                  {category}
+                </Badge>
+                {existing && (
+                  <Badge
+                    className="absolute left-3 top-3"
+                    variant="destructive"
+                  >
+                    {quantity} {unit}
+                  </Badge>
+                )}
+                <Image
+                  className="aspect-square w-full"
+                  src={
+                    imageBucketPath
+                      ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
+                      : "/placeholder.svg"
+                  }
+                  width={300}
+                  height={300}
+                  alt={product.name}
+                />
+              </figure>
+              <CardContent>
+                <div className="flex justify-between">
+                  <div>
+                    <h3 className="text-lg font-semibold">{product.name}</h3>
+                    <p className="text-sm text-muted-foreground">{unit}</p>
+                  </div>
+                  <p className="text-lg font-semibold">{product.price}</p>
+                </div>
+              </CardContent>
+            </Card>
+          )
+        })}
       </CardContent>
     </Card>
   )
