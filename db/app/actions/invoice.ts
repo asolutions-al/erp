@@ -17,27 +17,34 @@ const create = async ({
   orgId: string
 }) => {
   await db.transaction(async (tx) => {
+    const calcs = calcInvoiceForm(values)
     const [res] = await tx
       .insert(invoice)
       .values({
         ...values,
         unitId,
         orgId,
-        tax: calcInvoiceForm(values).tax,
-        subtotal: calcInvoiceForm(values).subtotal,
-        total: calcInvoiceForm(values).total,
+        tax: calcs.tax,
+        total: calcs.total,
+        subtotal: calcs.subtotal,
       })
       .returning({
         id: invoice.id,
       })
 
     await tx.insert(invoiceRow).values(
-      values.rows.map((row) => ({
-        ...row,
-        invoiceId: res.id,
-        subtotal: calcInvoiceFormRow(row).subtotal,
-        total: calcInvoiceFormRow(row).total,
-      }))
+      values.rows.map((row) => {
+        const calcs = calcInvoiceFormRow(row)
+        return {
+          ...row,
+          unitId,
+          orgId,
+          invoiceId: res.id,
+          tax: calcs.tax,
+          total: calcs.total,
+          subtotal: calcs.subtotal,
+        }
+      })
     )
   })
 }

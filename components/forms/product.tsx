@@ -30,7 +30,7 @@ import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
 import { cn } from "@/lib/utils"
-import { productUnit, status, tax } from "@/orm/app/schema"
+import { productUnit, status, taxType } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { CheckIcon, ChevronsUpDownIcon, UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
@@ -308,7 +308,7 @@ const PriceCard = () => {
         />
         <FormField
           control={form.control}
-          name="tax"
+          name="taxType"
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("Tax")}</FormLabel>
@@ -319,7 +319,7 @@ const PriceCard = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {tax.enumValues.map((item) => (
+                  {taxType.enumValues.map((item) => (
                     <SelectItem key={item} value={item}>
                       {t(item)}
                     </SelectItem>

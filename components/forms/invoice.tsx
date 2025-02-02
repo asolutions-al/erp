@@ -306,8 +306,6 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                       ...product,
                       productId: product.id,
                       quantity: 1,
-                      unitPrice: product.price,
-                      tax: 0,
                       product,
                     },
                   ],
@@ -379,7 +377,7 @@ const CheckoutCard = () => {
       <CardContent>
         <div className="flex flex-col gap-2">
           {(rows || []).map((row, index) => {
-            const { name, unitPrice, quantity, productId } = row
+            const { name, price, quantity, productId } = row
             const { imageBucketPath, description, unit } = row.product || {}
 
             const changeQty = (value: number) => {
@@ -418,7 +416,7 @@ const CheckoutCard = () => {
                           </p>
                         </div>
                         <div className="flex gap-0.5">
-                          <p className="font-semibold">{unitPrice}</p>
+                          <p className="font-semibold">{price}</p>
                           <p>{t(currency)}</p>
                         </div>
                       </div>

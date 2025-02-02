@@ -34,7 +34,7 @@ const UnitCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const TaxCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { original } = row
-  return t(original.tax)
+  return t(original.taxType)
 }
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -111,7 +111,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => <SortBtn text="Price" column={column} />,
   },
   {
-    accessorKey: "tax",
+    accessorKey: "taxType",
     header: ({ column }) => <SortBtn text="Tax" column={column} />,
     cell: TaxCell,
   },

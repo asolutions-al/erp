@@ -5,7 +5,6 @@ import {
   jsonb,
   pgEnum,
   pgTable,
-  real,
   text,
   timestamp,
   uuid,
@@ -38,7 +37,7 @@ export const productUnit = pgEnum("productUnit", [
 export const recordStatus = pgEnum("recordStatus", ["draft", "completed"])
 export const role = pgEnum("role", ["admin", "owner", "member"])
 export const status = pgEnum("status", ["draft", "active", "archived"])
-export const tax = pgEnum("tax", ["0", "6", "10", "20"])
+export const taxType = pgEnum("taxType", ["0", "6", "10", "20"])
 
 export const user = pgTable("user", {
   id: uuid().primaryKey().notNull(),
@@ -252,7 +251,7 @@ export const product = pgTable(
     imageBucketPath: text(),
     orgId: uuid().notNull(),
     unit: productUnit().notNull(),
-    tax: tax().notNull(),
+    taxType: taxType().notNull(),
   },
   (table) => [
     foreignKey({
@@ -282,14 +281,15 @@ export const invoiceRow = pgTable(
     productId: uuid().notNull(),
     name: text().notNull(),
     quantity: doublePrecision().notNull(),
-    unitPrice: real().notNull(),
     invoiceId: uuid().notNull(),
     total: doublePrecision().notNull(),
     unitId: uuid().notNull(),
     orgId: uuid().notNull(),
     subtotal: doublePrecision().notNull(),
-    tax: doublePrecision().notNull(),
     product: jsonb().notNull().$type<ProductSchemaT>(),
+    price: doublePrecision().notNull(),
+    tax: doublePrecision().notNull(),
+    taxType: taxType().notNull(),
   },
   (table) => [
     foreignKey({

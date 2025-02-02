@@ -44,7 +44,7 @@ const InvoiceReceipt = ({ data }: Props) => {
           <div key={index} className="grid grid-cols-5">
             <div className="col-span-2">{row.name}</div>
             <div className="text-right">{row.quantity}</div>
-            <div className="text-right">{row.unitPrice}</div>
+            <div className="text-right">{row.price}</div>
             <div className="text-right">{calcInvoiceFormRow(row).total}</div>
           </div>
         ))}
