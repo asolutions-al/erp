@@ -113,9 +113,9 @@ const Form = ({ performAction }: Props) => {
             <StatusCard />
             <Card>
               <CardHeader>
-                <CardTitle>{t("Product images")}</CardTitle>
+                <CardTitle>{t("Images")}</CardTitle>
                 <CardDescription>
-                  {t("Manage images of the product")}
+                  {t("Upload and manage product images")}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -191,8 +191,8 @@ const DetailsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Details")}</CardTitle>
-        <CardDescription>{t("Information about the product")}</CardDescription>
+        <CardTitle>{t("Information")}</CardTitle>
+        <CardDescription>{t("Basic details of the product")}</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
         <FormField
@@ -282,10 +282,8 @@ const PriceCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Price")}</CardTitle>
-        <CardDescription>
-          {t("Price information of the product")}
-        </CardDescription>
+        <CardTitle>{t("Pricing")}</CardTitle>
+        <CardDescription>{t("Tax, price and other details")}</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
         <FormField
@@ -344,9 +342,9 @@ const ExtraDetailsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Extra")}</CardTitle>
+        <CardTitle>{t("Additional")}</CardTitle>
         <CardDescription>
-          {t("Extra information about the product")}
+          {t("Extra details to better describe the product")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">

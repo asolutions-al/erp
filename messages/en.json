@@ -205,5 +205,12 @@
   "xbe": "Millisecond",
   "xpp": "Piece",
   "Search unit": "Search unit",
-  "No unit found": "No unit found"
+  "No unit found": "No unit found",
+  "Upload and manage product images": "Upload and manage product images",
+  "Information": "Information",
+  "Basic details of the product": "Basic details of the product",
+  "Pricing": "Pricing",
+  "Tax, price and other details": "Tax, price and other details",
+  "Additional": "Additional",
+  "Extra details to better describe the product": "Extra details to better describe the product"
 }

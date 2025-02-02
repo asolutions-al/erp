@@ -300,17 +300,23 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     existing.quantity + 1
                   )
 
-                form.setValue("rows", [
-                  ...rows,
+                form.setValue(
+                  "rows",
+                  [
+                    ...rows,
+                    {
+                      ...product,
+                      productId: product.id,
+                      quantity: 1,
+                      unitPrice: product.price,
+                      tax: 0,
+                      product,
+                    },
+                  ],
                   {
-                    ...product,
-                    productId: product.id,
-                    quantity: 1,
-                    unitPrice: product.price,
-                    tax: 0,
-                    product,
-                  },
-                ])
+                    shouldDirty: true,
+                  }
+                )
               }}
               key={product.id}
             >
