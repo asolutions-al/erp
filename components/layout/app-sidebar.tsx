@@ -12,8 +12,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarMenuSub,
-  SidebarMenuSubButton,
-  SidebarMenuSubItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
@@ -24,9 +22,9 @@ import {
   ReceiptTextIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
-import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
+import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
@@ -35,7 +33,6 @@ const OrgContent = async ({ orgId }: { orgId: string }) => {
   const t = await getTranslations()
   return (
     <SidebarGroup>
-      {/* <SidebarGroupLabel>{t("Organization")}</SidebarGroupLabel> */}
       <SidebarMenu>
         <Collapsible asChild defaultOpen className="group/collapsible">
           <SidebarMenuItem>
@@ -48,20 +45,8 @@ const OrgContent = async ({ orgId }: { orgId: string }) => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/~/list`}>
-                      <span>{t("List")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/~/create`}>
-                      <span>{t("Create")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
+                <SidebarItem href={`/org/${orgId}/~/list`} text="List" />
+                <SidebarItem href={`/org/${orgId}/~/create`} text="Create" />
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
@@ -82,7 +67,6 @@ const UnitContent = async ({
 
   return (
     <SidebarGroup>
-      {/* <SidebarGroupLabel>{t("Unit")}</SidebarGroupLabel> */}
       <SidebarMenu>
         <Collapsible asChild defaultOpen className="group/collapsible">
           <SidebarMenuItem>
@@ -95,20 +79,14 @@ const UnitContent = async ({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/product/list`}>
-                      <span>{t("List")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/product/create`}>
-                      <span>{t("Create")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/product/list`}
+                  text="List"
+                />
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/product/create`}
+                  text="Create"
+                />
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
@@ -124,20 +102,14 @@ const UnitContent = async ({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/customer/list`}>
-                      <span>{t("List")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/customer/create`}>
-                      <span>{t("Create")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/customer/list`}
+                  text="List"
+                />
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/customer/create`}
+                  text="Create"
+                />
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
@@ -153,20 +125,14 @@ const UnitContent = async ({
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/invoice/list`}>
-                      <span>{t("List")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
-                <SidebarMenuSubItem>
-                  <SidebarMenuSubButton asChild>
-                    <Link href={`/org/${orgId}/${unitId}/invoice/create`}>
-                      <span>{t("Create")}</span>
-                    </Link>
-                  </SidebarMenuSubButton>
-                </SidebarMenuSubItem>
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/invoice/list`}
+                  text="List"
+                />
+                <SidebarItem
+                  href={`/org/${orgId}/${unitId}/invoice/create`}
+                  text="Create"
+                />
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
