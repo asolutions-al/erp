@@ -1,11 +1,9 @@
-import { BuildingIcon, ChevronsUpDown } from "lucide-react"
+import { ChevronsUpDown, StoreIcon } from "lucide-react"
 
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -18,6 +16,7 @@ import { createAuthClient } from "@/db/auth/client"
 import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
+import { OrgSwitcherItem } from "./org-switcher-item"
 
 type Props = {
   params: Promise<GlobalParams>
@@ -49,8 +48,8 @@ const OrgSwitcher = async (props: Props) => {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                <BuildingIcon />
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                <StoreIcon />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{activeOrg.name}</span>
@@ -70,14 +69,8 @@ const OrgSwitcher = async (props: Props) => {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               {t("Organizations")}
             </DropdownMenuLabel>
-            {orgs.map((unit, index) => (
-              <DropdownMenuItem key={unit.name} className="gap-2 p-2">
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <BuildingIcon />
-                </div>
-                {unit.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
+            {orgs.map((org) => (
+              <OrgSwitcherItem key={org.id} data={org} />
             ))}
           </DropdownMenuContent>
         </DropdownMenu>

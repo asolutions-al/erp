@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -19,6 +18,7 @@ import { unit } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
+import { UnitSwitcherItem } from "./unit-switcher-item"
 
 type Props = {
   params: Promise<GlobalParams>
@@ -44,7 +44,7 @@ const UnitSwitcher = async (props: Props) => {
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
                 <BuildingIcon />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -67,14 +67,8 @@ const UnitSwitcher = async (props: Props) => {
             <DropdownMenuLabel className="text-xs text-muted-foreground">
               {t("Units")}
             </DropdownMenuLabel>
-            {units.map((unit, index) => (
-              <DropdownMenuItem key={unit.name} className="gap-2 p-2">
-                <div className="flex size-6 items-center justify-center rounded-sm border">
-                  <BuildingIcon />
-                </div>
-                {unit.name}
-                <DropdownMenuShortcut>⌘{index + 1}</DropdownMenuShortcut>
-              </DropdownMenuItem>
+            {units.map((unit) => (
+              <UnitSwitcherItem key={unit.id} data={unit} />
             ))}
             <DropdownMenuSeparator />
             <Link href={`/org/${orgId}/~/create`}>
