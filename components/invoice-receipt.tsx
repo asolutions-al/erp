@@ -34,20 +34,22 @@ const InvoiceReceipt = ({ data }: Props) => {
         </div>
       </div>
       <div>
-        <div className="grid grid-cols-5 font-semibold">
+        <div className="grid grid-cols-6 font-semibold">
           <div className="col-span-2">{t("Name")}</div>
           <div className="text-right">{t("Quantity")}</div>
           <div className="text-right">{t("Price")}</div>
+          <div className="text-right">{t("Tax")}</div>
           <div className="text-right">{t("Total")}</div>
         </div>
         <Separator className="my-2" />
         {data.rows.map((row, index) => {
           const calc = calcInvoiceFormRow(row)
           return (
-            <div key={index} className="grid grid-cols-5">
+            <div key={index} className="grid grid-cols-6">
               <div className="col-span-2">{row.name}</div>
               <div className="text-right">{row.quantity}</div>
               <div className="text-right">{row.price}</div>
+              <div className="text-right">{calc.tax}</div>
               <div className="text-right">{calcInvoiceFormRow(row).total}</div>
             </div>
           )

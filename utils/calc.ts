@@ -31,12 +31,12 @@ const calcInvoiceFormRow = (
     total,
     subtotal,
     tax,
-    discount: 0, // not yet implemented
+    discount: 0, // row discount is not implemented
   }
 }
 
 const calcInvoiceForm = (values: InvoiceFormSchemaT): CalcResultT => {
-  const total = values.rows.reduce(
+  const productsTotal = values.rows.reduce(
     (acc, row) => acc + calcInvoiceFormRow(row).total,
     0
   )
@@ -47,9 +47,10 @@ const calcInvoiceForm = (values: InvoiceFormSchemaT): CalcResultT => {
   const discount =
     values.discountType === "value"
       ? values.discountValue
-      : total * values.discountValue
+      : productsTotal * values.discountValue
 
-  const subtotal = total - tax - discount
+  const total = productsTotal - discount
+  const subtotal = total - tax
 
   return {
     total,
