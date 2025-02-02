@@ -269,7 +269,10 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
-  const rows = useWatch({ name: "rows", control: form.control })
+  const [rows, currency] = useWatch({
+    name: ["rows", "currency"],
+    control: form.control,
+  })
   return (
     <Card>
       <CardHeader>
@@ -278,9 +281,8 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => {
-          const { imageBucketPath, id } = product
+          const { imageBucketPath, id, unit } = product
           const category = "Clothing"
-          const unit = "pcs"
 
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
@@ -289,6 +291,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
 
           return (
             <Card
+              key={product.id}
               className="group relative cursor-pointer select-none space-y-4 overflow-hidden transition-shadow duration-300 hover:shadow-md"
               onClick={() => {
                 if (existing)
@@ -315,18 +318,20 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                   }
                 )
               }}
-              key={product.id}
             >
               <figure className="relative group-hover:opacity-90">
-                <Badge className="absolute right-3 top-3" variant="secondary">
+                <Badge
+                  className="absolute right-1.5 top-1.5"
+                  variant="secondary"
+                >
                   {category}
                 </Badge>
                 {existing && (
                   <Badge
-                    className="absolute left-3 top-3"
+                    className="absolute left-1.5 top-1.5"
                     variant="destructive"
                   >
-                    {quantity} {unit}
+                    {quantity}
                   </Badge>
                 )}
                 <Image
@@ -341,13 +346,12 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                   alt={product.name}
                 />
               </figure>
-              <CardContent>
-                <div className="flex justify-between">
-                  <div>
-                    <h3 className="text-lg font-semibold">{product.name}</h3>
-                    <p className="text-sm text-muted-foreground">{unit}</p>
-                  </div>
-                  <p className="text-lg font-semibold">{product.price}</p>
+              <CardContent className="!mt-0 p-2">
+                <h3 className="text-lg font-semibold">{product.name}</h3>
+                <p className="text-sm text-muted-foreground">{t(unit)}</p>
+                <div className="flex items-end justify-end gap-0.5">
+                  <p className="font-semibold">{product.price}</p>
+                  <p>{t(currency)}</p>
                 </div>
               </CardContent>
             </Card>
