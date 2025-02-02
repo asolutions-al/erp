@@ -27,6 +27,7 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
+import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
 
@@ -175,6 +176,22 @@ const UnitContent = async ({
   )
 }
 
+const SwitcherSkeleton = () => {
+  return (
+    <SidebarMenu>
+      <SidebarMenuItem>
+        <SidebarMenuButton size="lg" className="w-full justify-start">
+          <Skeleton className="h-8 w-8 rounded-md" />
+          <div className="flex flex-col items-start gap-1">
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-3 w-16" />
+          </div>
+        </SidebarMenuButton>
+      </SidebarMenuItem>
+    </SidebarMenu>
+  )
+}
+
 const Content = ({ orgId, unitId }: { orgId: string; unitId?: string }) => {
   return unitId ? (
     <UnitContent orgId={orgId} unitId={unitId} />
@@ -193,10 +210,10 @@ const AppSidebar = async (props: Props) => {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
-        <Suspense>
+        <Suspense fallback={<SwitcherSkeleton />}>
           <OrgSwitcher {...props} />
         </Suspense>
-        <Suspense>
+        <Suspense fallback={<SwitcherSkeleton />}>
           <UnitSwitcher {...props} />
         </Suspense>
       </SidebarHeader>
