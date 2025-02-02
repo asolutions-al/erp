@@ -183,6 +183,11 @@ const DetailsCard = () => {
   const form = useFormContext<SchemaT>()
   const [popOverOpen, setPopOverOpen] = useState(false)
 
+  const productUnitList = productUnit.enumValues.map((unit) => ({
+    value: unit,
+    label: t(unit),
+  }))
+
   return (
     <Card>
       <CardHeader>
@@ -219,39 +224,37 @@ const DetailsCard = () => {
                       className="justify-between"
                     >
                       {field.value
-                        ? productUnit.enumValues.find(
-                            (unit) => unit === field.value
-                          )
-                        : `${t("Select customer")}...`}
+                        ? productUnitList.find(
+                            (unit) => unit.value === field.value
+                          )?.label
+                        : `${t("Select unit")}...`}
                       <ChevronsUpDownIcon className="opacity-50" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="p-0">
                     <Command>
-                      <CommandInput
-                        placeholder={t("Search customer") + "..."}
-                      />
+                      <CommandInput placeholder={t("Search unit") + "..."} />
                       <CommandList>
-                        <CommandEmpty>{t("No customer found")}.</CommandEmpty>
+                        <CommandEmpty>{t("No unit found")}.</CommandEmpty>
                         <CommandGroup>
-                          {productUnit.enumValues.map((unit) => {
+                          {productUnitList.map((unit) => {
+                            const { value, label } = unit
+                            const isActive = field.value === value
                             return (
                               <CommandItem
-                                key={unit}
-                                value={unit}
+                                key={value}
+                                value={label}
                                 onSelect={() => {
-                                  field.onChange(unit)
+                                  field.onChange(value)
                                   setPopOverOpen(false)
                                 }}
                               >
-                                <span>{unit}</span>
+                                <span>{label}</span>
                                 <CheckIcon
                                   size={16}
                                   className={cn(
                                     "ml-auto",
-                                    field.value === unit
-                                      ? "opacity-100"
-                                      : "opacity-0"
+                                    isActive ? "opacity-100" : "opacity-0"
                                   )}
                                 />
                               </CommandItem>

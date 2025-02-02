@@ -26,6 +26,16 @@ const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   return t(original.status)
 }
+const UnitCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.unit)
+}
+const TaxCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.tax)
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
@@ -88,12 +98,22 @@ const columns: ColumnDef<SchemaT>[] = [
     },
   },
   {
+    accessorKey: "unit",
+    header: ({ column }) => <SortBtn text="Unit" column={column} />,
+    cell: UnitCell,
+  },
+  {
     accessorKey: "barcode",
     header: ({ column }) => <SortBtn text="Barcode" column={column} />,
   },
   {
     accessorKey: "price",
     header: ({ column }) => <SortBtn text="Price" column={column} />,
+  },
+  {
+    accessorKey: "tax",
+    header: ({ column }) => <SortBtn text="Tax" column={column} />,
+    cell: TaxCell,
   },
   {
     accessorKey: "status",
