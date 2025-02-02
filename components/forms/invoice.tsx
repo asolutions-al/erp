@@ -282,8 +282,6 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
       <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => {
           const { imageBucketPath, id, unit } = product
-          const category = "Clothing"
-
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
 
@@ -320,12 +318,12 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
               }}
             >
               <figure className="relative group-hover:opacity-90">
-                <Badge
+                {/* <Badge
                   className="absolute right-1.5 top-1.5"
                   variant="secondary"
                 >
                   {category}
-                </Badge>
+                </Badge> */}
                 {existing && (
                   <Badge
                     className="absolute left-1.5 top-1.5"
@@ -365,7 +363,10 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
 const CheckoutCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
-  const rows = useWatch({ name: "rows", control: form.control })
+  const [rows, currency] = useWatch({
+    name: ["rows", "currency"],
+    control: form.control,
+  })
 
   return (
     <Card>
@@ -379,7 +380,7 @@ const CheckoutCard = () => {
         <div className="flex flex-col gap-2">
           {(rows || []).map((row, index) => {
             const { name, unitPrice, quantity, productId } = row
-            const { imageBucketPath, description } = row.product || {}
+            const { imageBucketPath, description, unit } = row.product || {}
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)
@@ -396,7 +397,7 @@ const CheckoutCard = () => {
               <Card className="overflow-hidden" key={productId}>
                 <CardContent className="p-0">
                   <div className="flex flex-col sm:flex-row">
-                    <div className="relative h-32 w-full flex-shrink-0 sm:w-32">
+                    <div className="relative h-28 w-full flex-shrink-0 sm:w-32">
                       <Image
                         src={
                           imageBucketPath
@@ -413,10 +414,13 @@ const CheckoutCard = () => {
                         <div>
                           <h3 className="text-lg font-semibold">{name}</h3>
                           <p className="text-sm text-muted-foreground">
-                            {description}
+                            {t(unit)}
                           </p>
                         </div>
-                        <p className="text-lg font-bold">${unitPrice}</p>
+                        <div className="flex gap-0.5">
+                          <p className="font-semibold">{unitPrice}</p>
+                          <p>{t(currency)}</p>
+                        </div>
                       </div>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="flex gap-2">
