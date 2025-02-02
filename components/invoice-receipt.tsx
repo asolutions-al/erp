@@ -11,6 +11,7 @@ type Props = {
 
 const InvoiceReceipt = ({ data }: Props) => {
   const t = useTranslations()
+  const calcs = calcInvoiceForm(data)
   return (
     <div>
       <div className="mb-8 flex flex-col justify-between sm:flex-row">
@@ -36,34 +37,41 @@ const InvoiceReceipt = ({ data }: Props) => {
         <div className="grid grid-cols-5 font-semibold">
           <div className="col-span-2">{t("Name")}</div>
           <div className="text-right">{t("Quantity")}</div>
-          <div className="text-right">{t("Unit price")}</div>
+          <div className="text-right">{t("Price")}</div>
           <div className="text-right">{t("Total")}</div>
         </div>
         <Separator className="my-2" />
-        {data.rows.map((row, index) => (
-          <div key={index} className="grid grid-cols-5">
-            <div className="col-span-2">{row.name}</div>
-            <div className="text-right">{row.quantity}</div>
-            <div className="text-right">{row.price}</div>
-            <div className="text-right">{calcInvoiceFormRow(row).total}</div>
-          </div>
-        ))}
+        {data.rows.map((row, index) => {
+          const calc = calcInvoiceFormRow(row)
+          return (
+            <div key={index} className="grid grid-cols-5">
+              <div className="col-span-2">{row.name}</div>
+              <div className="text-right">{row.quantity}</div>
+              <div className="text-right">{row.price}</div>
+              <div className="text-right">{calcInvoiceFormRow(row).total}</div>
+            </div>
+          )
+        })}
         <Separator className="my-2" />
       </div>
       <div className="mb-6 flex justify-end">
         <div className="w-full sm:w-1/2">
           <div className="mb-2 flex justify-between">
             <span>{t("Subtotal")}:</span>
-            <span>{calcInvoiceForm(data).subtotal}</span>
+            <span>{calcs.subtotal}</span>
           </div>
           <div className="mb-2 flex justify-between">
             <span>{t("Tax")}:</span>
-            <span>{0}</span>
+            <span>{calcs.tax}</span>
+          </div>
+          <div className="mb-2 flex justify-between">
+            <span>{t("Discount")}:</span>
+            <span>{calcs.discount}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between font-bold">
             <span>{t("Total")}:</span>
-            <span>{calcInvoiceForm(data).total}</span>
+            <span>{calcs.total}</span>
           </div>
         </div>
       </div>

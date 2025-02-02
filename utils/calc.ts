@@ -17,6 +17,7 @@ type CalcResultT = {
   total: number
   subtotal: number
   tax: number
+  discount: number
 }
 
 const calcInvoiceFormRow = (
@@ -30,6 +31,7 @@ const calcInvoiceFormRow = (
     total,
     subtotal,
     tax,
+    discount: 0, // not yet implemented
   }
 }
 
@@ -38,19 +40,22 @@ const calcInvoiceForm = (values: InvoiceFormSchemaT): CalcResultT => {
     (acc, row) => acc + calcInvoiceFormRow(row).total,
     0
   )
-  const subtotal = values.rows.reduce(
-    (acc, row) => acc + calcInvoiceFormRow(row).subtotal,
-    0
-  )
   const tax = values.rows.reduce(
     (acc, row) => acc + calcInvoiceFormRow(row).tax,
     0
   )
+  const discount =
+    values.discountType === "value"
+      ? values.discountValue
+      : total * values.discountValue
+
+  const subtotal = total - tax - discount
 
   return {
     total,
     subtotal,
     tax,
+    discount,
   }
 }
 
