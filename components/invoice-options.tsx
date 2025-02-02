@@ -60,7 +60,7 @@ const InvoiceOptions = () => {
         )}
       />
 
-      {currencyValue && currencyValue !== "ALL" && (
+      {currencyValue && currencyValue !== "all" && (
         <FormField
           control={form.control}
           name="exchangeRate"

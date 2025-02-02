@@ -12,12 +12,33 @@ import {
 } from "drizzle-orm/pg-core"
 
 export const idType = pgEnum("IdType", ["tin", "id"])
-export const currency = pgEnum("currency", ["ALL", "EUR", "USD"])
+export const currency = pgEnum("currency", ["all", "eur", "usd"])
 export const discountType = pgEnum("discountType", ["value", "percentage"])
 export const payMethod = pgEnum("payMethod", ["cash", "card", "bank", "other"])
+export const productUnit = pgEnum("productUnit", [
+  "e49",
+  "grm",
+  "hur",
+  "kgm",
+  "kmt",
+  "kwh",
+  "lm",
+  "ltr",
+  "m4",
+  "mtk",
+  "mtq",
+  "pr",
+  "sa",
+  "wm",
+  "xam",
+  "xav",
+  "xbe",
+  "xpp",
+])
 export const recordStatus = pgEnum("recordStatus", ["draft", "completed"])
 export const role = pgEnum("role", ["admin", "owner", "member"])
 export const status = pgEnum("status", ["draft", "active", "archived"])
+export const tax = pgEnum("tax", ["0", "6", "10", "20"])
 
 export const user = pgTable("user", {
   id: uuid().primaryKey().notNull(),
@@ -230,6 +251,8 @@ export const product = pgTable(
     description: text(),
     imageBucketPath: text(),
     orgId: uuid().notNull(),
+    unit: productUnit().notNull(),
+    tax: tax().notNull(),
   },
   (table) => [
     foreignKey({

@@ -25,6 +25,8 @@ const defaultValues: SchemaT = {
   price: 0,
   status: "active",
   description: "",
+  unit: "xpp",
+  tax: "0",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

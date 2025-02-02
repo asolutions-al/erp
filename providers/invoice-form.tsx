@@ -14,7 +14,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
   name: (sch) => sch.name.min(1),
   unitPrice: (sch) => sch.unitPrice.min(0),
   quantity: (sch) => sch.quantity.positive(),
-  product: createInsertSchema(product).required()
+  product: createInsertSchema(product).required(),
 }).omit({
   id: true,
   createdAt: true,
@@ -49,7 +49,7 @@ const defaultValues: SchemaT = {
   discountType: "value",
   discountValue: 0,
   exchangeRate: 1,
-  currency: "ALL",
+  currency: "all",
   payMethod: "cash",
   status: "completed",
 }

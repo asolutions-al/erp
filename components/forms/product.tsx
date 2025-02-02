@@ -29,15 +29,26 @@ import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
-import { status } from "@/orm/app/schema"
+import { cn } from "@/lib/utils"
+import { productUnit, status, tax } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
-import { UploadIcon } from "lucide-react"
+import { CheckIcon, ChevronsUpDownIcon, UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
+import { Button } from "../ui/button"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "../ui/command"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 type SchemaT = ProductFormSchemaT
 
@@ -93,126 +104,13 @@ const Form = ({ performAction }: Props) => {
         id={formId}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Details")}</CardTitle>
-                <CardDescription>
-                  {t("Information about the product")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Name")}</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Pizza" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="barcode"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Barcode")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="1234567890"
-                          {...field}
-                          value={field.value || ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid grid-cols-2 gap-4">
-                  <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("Price")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="0.00"
-                            {...field}
-                            onChange={(e) =>
-                              field.onChange(parseFloat(e.target.value))
-                            }
-                            onFocus={(e) => e.target.select()}
-                            min="0"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Description")}</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={t(
-                            "A fancy pizza with pepperoni, mushrooms, and olives"
-                          )}
-                          {...field}
-                          value={field.value || ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+          <div className="space-y-2 lg:col-span-2">
+            <DetailsCard />
+            <PriceCard />
+            <ExtraDetailsCard />
           </div>
           <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Status")}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Status")}</FormLabel>
-                      <Select
-                        value={field.value || ""}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger aria-label={t("Select status")}>
-                            <SelectValue placeholder={t("Select status")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {status.enumValues.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {t(item)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+            <StatusCard />
             <Card>
               <CardHeader>
                 <CardTitle>{t("Product images")}</CardTitle>
@@ -277,6 +175,257 @@ const Form = ({ performAction }: Props) => {
         </div>
       </form>
     </>
+  )
+}
+
+const DetailsCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  const [popOverOpen, setPopOverOpen] = useState(false)
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Details")}</CardTitle>
+        <CardDescription>{t("Information about the product")}</CardDescription>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-2">
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Name")}</FormLabel>
+              <FormControl>
+                <Input placeholder="Pizza" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="unit"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-col justify-end">
+                <FormLabel>{t("Unit")}</FormLabel>
+                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={popOverOpen}
+                      className="justify-between"
+                    >
+                      {field.value
+                        ? productUnit.enumValues.find(
+                            (unit) => unit === field.value
+                          )
+                        : `${t("Select customer")}...`}
+                      <ChevronsUpDownIcon className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("Search customer") + "..."}
+                      />
+                      <CommandList>
+                        <CommandEmpty>{t("No customer found")}.</CommandEmpty>
+                        <CommandGroup>
+                          {productUnit.enumValues.map((unit) => {
+                            return (
+                              <CommandItem
+                                key={unit}
+                                value={unit}
+                                onSelect={() => {
+                                  field.onChange(unit)
+                                  setPopOverOpen(false)
+                                }}
+                              >
+                                <span>{unit}</span>
+                                <CheckIcon
+                                  size={16}
+                                  className={cn(
+                                    "ml-auto",
+                                    field.value === unit
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            )
+                          })}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const PriceCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Price")}</CardTitle>
+        <CardDescription>
+          {t("Price information of the product")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-2">
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Price")}</FormLabel>
+              <FormControl>
+                <Input
+                  type="number"
+                  placeholder="0.00"
+                  {...field}
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onFocus={(e) => e.target.select()}
+                  min="0"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="tax"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Tax")}</FormLabel>
+              <Select value={field.value || ""} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger aria-label={t("Select tax")}>
+                    <SelectValue placeholder={t("Select tax")} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {tax.enumValues.map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {t(item)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const ExtraDetailsCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Extra")}</CardTitle>
+        <CardDescription>
+          {t("Extra information about the product")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <FormField
+          control={form.control}
+          name="barcode"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Barcode")}</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="1234567890"
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-2 gap-4"></div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Description")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t(
+                    "A fancy pizza with pepperoni, mushrooms, and olives"
+                  )}
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const StatusCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Status")}</CardTitle>
+        <CardDescription>{t("Status of the product")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Status")}</FormLabel>
+              <Select value={field.value || ""} onValueChange={field.onChange}>
+                <FormControl>
+                  <SelectTrigger aria-label={t("Select status")}>
+                    <SelectValue placeholder={t("Select status")} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {status.enumValues.map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {t(item)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
   )
 }
 

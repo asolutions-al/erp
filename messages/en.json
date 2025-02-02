@@ -134,9 +134,9 @@
   "completed": "Completed",
   "Current status of the invoice": "Current status of the invoice",
   "Organization": "Organization",
-  "ALL": "ALL",
-  "EUR": "EUR",
-  "USD": "USD",
+  "all": "All",
+  "eur": "Euro",
+  "usd": "Dollar",
   "Unit price": "Unit price",
   "Quantity": "Quantity",
   "Subtotal": "Subtotal",
@@ -176,5 +176,14 @@
   "Go to next page": "Go to next page",
   "Go to last page": "Go to last page",
   "{selected} of {total} row(s) selected": "{selected} of {total} row(s) selected",
-  "Page {pageIndex} of {pageCount}": "Page {pageIndex} of {pageCount}"
+  "Page {pageIndex} of {pageCount}": "Page {pageIndex} of {pageCount}",
+  "Price information of the product": "Price information of the product",
+  "Select tax": "Select tax",
+  "0": "0",
+  "6": "6",
+  "10": "10",
+  "20": "20",
+  "Extra": "Extra",
+  "Extra information about the product": "Extra information about the product",
+  "Status of the product": "Status of the product"
 }
