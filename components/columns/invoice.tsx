@@ -17,7 +17,6 @@ import {
   EyeIcon,
   MoreHorizontalIcon,
   PrinterIcon,
-  Share2Icon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
@@ -104,14 +103,6 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
             >
               <DownloadIcon className="mr-2 h-4 w-4" />
               {t("Pdf")}
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {}}
-              className="w-full sm:w-auto"
-            >
-              <Share2Icon className="mr-2 h-4 w-4" />
-              {t("Share")}
             </Button>
           </div>
           <Button onClick={() => window.print()} className="w-full sm:w-auto">

@@ -12,7 +12,7 @@ type Props = {
 const InvoiceReceipt = ({ data }: Props) => {
   const t = useTranslations()
   return (
-    <div className="p-6">
+    <div>
       <div className="mb-8 flex flex-col justify-between sm:flex-row">
         <div>
           <h2 className="text-2xl font-bold">{t("Invoice")}</h2>

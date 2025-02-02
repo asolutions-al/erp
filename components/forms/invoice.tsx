@@ -32,7 +32,6 @@ import {
   MinusIcon,
   PlusIcon,
   PrinterIcon,
-  Share2Icon,
   XIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -143,14 +142,6 @@ const Form = ({ performAction, products, customers }: Props) => {
               >
                 <DownloadIcon className="mr-2 h-4 w-4" />
                 {t("Pdf")}
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() => {}}
-                className="w-full sm:w-auto"
-              >
-                <Share2Icon className="mr-2 h-4 w-4" />
-                {t("Share")}
               </Button>
             </div>
             <Button onClick={() => window.print()} className="w-full sm:w-auto">
