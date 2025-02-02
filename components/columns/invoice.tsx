@@ -114,7 +114,7 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
               {t("Share")}
             </Button>
           </div>
-          <Button onClick={() => {}} className="w-full sm:w-auto">
+          <Button onClick={() => window.print()} className="w-full sm:w-auto">
             <PrinterIcon className="mr-2 h-4 w-4" />
             {t("Print")}
           </Button>

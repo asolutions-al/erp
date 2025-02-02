@@ -98,19 +98,6 @@ const Form = ({ performAction, products, customers }: Props) => {
     toast.error(t("Please fill in all required fields"))
   }
 
-  const handlePrint = () => {
-    console.log("Print invoice")
-    window.print()
-  }
-
-  const handleShare = () => {
-    console.log("Share invoice")
-  }
-
-  const handleDownload = () => {
-    console.log("Download invoice PDF")
-  }
-
   return (
     <>
       <form
@@ -150,7 +137,7 @@ const Form = ({ performAction, products, customers }: Props) => {
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
               <Button
                 variant="outline"
-                onClick={handleDownload}
+                onClick={() => {}}
                 className="mt-2 w-full sm:mt-0 sm:w-auto"
               >
                 <DownloadIcon className="mr-2 h-4 w-4" />
@@ -158,14 +145,14 @@ const Form = ({ performAction, products, customers }: Props) => {
               </Button>
               <Button
                 variant="outline"
-                onClick={handleShare}
+                onClick={() => {}}
                 className="w-full sm:w-auto"
               >
                 <Share2Icon className="mr-2 h-4 w-4" />
                 {t("Share")}
               </Button>
             </div>
-            <Button onClick={handlePrint} className="w-full sm:w-auto">
+            <Button onClick={() => window.print()} className="w-full sm:w-auto">
               <PrinterIcon className="mr-2 h-4 w-4" />
               {t("Print")}
             </Button>

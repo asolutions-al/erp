@@ -94,158 +94,9 @@ const Form = ({ performAction }: Props) => {
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2 lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Identity")}</CardTitle>
-                <CardDescription>
-                  {t("Basic information about the customer")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Name")}</FormLabel>
-                      <FormControl>
-                        <Input placeholder="John Doe" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid grid-cols-3 gap-2">
-                  <FormField
-                    control={form.control}
-                    name="idType"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("Id type")}</FormLabel>
-                        <Select
-                          value={field.value || ""}
-                          onValueChange={field.onChange}
-                        >
-                          <FormControl>
-                            <SelectTrigger aria-label={t("Select id type")}>
-                              <SelectValue placeholder={t("Select id type")} />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent>
-                            {idType.enumValues.map((item) => (
-                              <SelectItem key={item} value={item}>
-                                {t(item)}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="idValue"
-                    render={({ field }) => (
-                      <FormItem className="col-span-2">
-                        <FormLabel>{t("Id")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="1234567890"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              </CardContent>
-            </Card>
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Details")}</CardTitle>
-                <CardDescription>
-                  {t("Additional information about the customer")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Email")}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="demo@example.com"
-                          {...field}
-                          value={field.value || ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid grid-cols-2 gap-2">
-                  <FormField
-                    control={form.control}
-                    name="city"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("City")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="San Francisco"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="address"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t("Address")}</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="1234 Main St"
-                            {...field}
-                            value={field.value || ""}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t("Description")}</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder={t(
-                            "A fancy pizza with pepperoni, mushrooms, and olives"
-                          )}
-                          {...field}
-                          value={field.value || ""}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+            <IdentityCard />
+            <LocationCard />
+            <AdditionalCard />
           </div>
           <div className="space-y-4">
             <Card>
@@ -348,6 +199,184 @@ const Form = ({ performAction }: Props) => {
         </div>
       </form>
     </>
+  )
+}
+
+const IdentityCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Identity")}</CardTitle>
+        <CardDescription>{t("Basic details of the customer")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="name"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Name")}</FormLabel>
+              <FormControl>
+                <Input placeholder="John Doe" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <div className="grid grid-cols-3 gap-2">
+          <FormField
+            control={form.control}
+            name="idType"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("Id type")}</FormLabel>
+                <Select
+                  value={field.value || ""}
+                  onValueChange={field.onChange}
+                >
+                  <FormControl>
+                    <SelectTrigger aria-label={t("Select id type")}>
+                      <SelectValue placeholder={t("Select id type")} />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {idType.enumValues.map((item) => (
+                      <SelectItem key={item} value={item}>
+                        {t(item)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="idValue"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>{t("Id")}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder="1234567890"
+                    {...field}
+                    value={field.value || ""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+const LocationCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Location")}</CardTitle>
+        <CardDescription>
+          {t("Address details of the customer")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="grid grid-cols-2 gap-2">
+        <FormField
+          control={form.control}
+          name="city"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("City")}</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="San Francisco"
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Address")}</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="1234 Main St"
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const AdditionalCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Additional")}</CardTitle>
+        <CardDescription>{t("Extra details of the customer")}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Email")}</FormLabel>
+              <FormControl>
+                <Input
+                  placeholder="demo@example.com"
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Description")}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t(
+                    "Blue eyes, blond hair, 6 feet tall, likes to play basketball"
+                  )}
+                  {...field}
+                  value={field.value || ""}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
   )
 }
 
