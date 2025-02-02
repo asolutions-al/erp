@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { productImagesBucket } from "@/contants/bucket"
+import { customerImageBucket, productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
@@ -53,6 +53,7 @@ import {
 import { mapPayMethodIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
 import { payMethod, recordStatus } from "@/orm/app/schema"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import {
   Select,
@@ -209,7 +210,13 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                         <CommandEmpty>{t("No customer found")}.</CommandEmpty>
                         <CommandGroup>
                           {customers.map((customer) => {
-                            const { idType, idValue, id, name } = customer
+                            const {
+                              idType,
+                              idValue,
+                              id,
+                              name,
+                              imageBucketPath,
+                            } = customer
                             return (
                               <CommandItem
                                 key={id}
@@ -220,6 +227,18 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                                   setCustomerPopOverOpen(false)
                                 }}
                               >
+                                <Avatar className="mr-2">
+                                  {imageBucketPath ? (
+                                    <AvatarImage
+                                      src={`${publicStorageUrl}/${customerImageBucket}/${imageBucketPath}`}
+                                      alt={name}
+                                    />
+                                  ) : (
+                                    <AvatarFallback>
+                                      {name.charAt(0)}
+                                    </AvatarFallback>
+                                  )}
+                                </Avatar>
                                 <div className="flex flex-col">
                                   <span>{name}</span>
                                   {idValue && (
