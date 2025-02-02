@@ -39,7 +39,7 @@ const OrgContent = async ({ orgId }: { orgId: string }) => {
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Unit")}>
                 <BuildingIcon />
-                <span>{t("Unit")}</span>
+                <span className="font-semibold">{t("Unit")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
             </CollapsibleTrigger>
@@ -73,7 +73,7 @@ const UnitContent = async ({
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Product")}>
                 <PackageIcon />
-                <span>{t("Product")}</span>
+                <span className="font-semibold">{t("Product")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
             </CollapsibleTrigger>
@@ -96,7 +96,7 @@ const UnitContent = async ({
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Customer")}>
                 <ContactIcon />
-                <span>{t("Customer")}</span>
+                <span className="font-semibold">{t("Customer")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
             </CollapsibleTrigger>
@@ -119,7 +119,7 @@ const UnitContent = async ({
             <CollapsibleTrigger asChild>
               <SidebarMenuButton tooltip={t("Invoice")}>
                 <ReceiptTextIcon />
-                <span>{t("Invoice")}</span>
+                <span className="font-semibold">{t("Invoice")}</span>
                 <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
               </SidebarMenuButton>
             </CollapsibleTrigger>
