@@ -288,7 +288,7 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
           const quantity = existing?.quantity || 0
 
-          const finalPrice = price * exchangeRate
+          const finalPrice = price / exchangeRate
 
           return (
             <motion.div
@@ -386,7 +386,7 @@ const CheckoutCard = () => {
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
             const { imageBucketPath, description, unit } = row.product || {}
-            const finalPrice = price * exchangeRate
+            const finalPrice = price / exchangeRate
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)
