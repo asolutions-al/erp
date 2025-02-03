@@ -14,7 +14,7 @@ const AppHeader = async (props: Props) => {
       <div className="flex items-center gap-2">
         <SidebarTrigger className="ml-1" />
         <Separator orientation="vertical" className="mr-2 h-4" />
-        <Link href={`/org/${orgId}/${unitId}/dashboard`}>
+        <Link href={`/org/${orgId}/${unitId}/product/list`}>
           <Image src="/logo.png" alt="logo" width={30} height={30} />
         </Link>
       </div>

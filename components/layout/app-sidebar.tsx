@@ -173,15 +173,19 @@ type Props = PropsWithChildren<{
 const AppSidebar = async (props: Props) => {
   const { orgId, unitId } = await props.params
 
+  const hasUnit = unitId !== "~"
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Suspense fallback={<SwitcherSkeleton />}>
           <OrgSwitcher {...props} />
         </Suspense>
-        <Suspense fallback={<SwitcherSkeleton />}>
-          <UnitSwitcher {...props} />
-        </Suspense>
+        {hasUnit && (
+          <Suspense fallback={<SwitcherSkeleton />}>
+            <UnitSwitcher {...props} />
+          </Suspense>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <Content orgId={orgId} unitId={unitId === "~" ? undefined : unitId} />
