@@ -45,8 +45,8 @@ const OrgContent = async ({ orgId }: { orgId: string }) => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarItem href={`/org/${orgId}/~/list`} text="List" />
-                <SidebarItem href={`/org/${orgId}/~/create`} text="Create" />
+                <SidebarItem href={`/o/${orgId}/u/~/list`} text="List" />
+                <SidebarItem href={`/o/${orgId}/u/~/create`} text="Create" />
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>
@@ -80,11 +80,11 @@ const UnitContent = async ({
             <CollapsibleContent>
               <SidebarMenuSub>
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/product/list`}
+                  href={`/o/${orgId}/u/${unitId}/product/list`}
                   text="List"
                 />
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/product/create`}
+                  href={`/o/${orgId}/u/${unitId}/product/create`}
                   text="Create"
                 />
               </SidebarMenuSub>
@@ -103,11 +103,11 @@ const UnitContent = async ({
             <CollapsibleContent>
               <SidebarMenuSub>
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/customer/list`}
+                  href={`/o/${orgId}/u/${unitId}/customer/list`}
                   text="List"
                 />
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/customer/create`}
+                  href={`/o/${orgId}/u/${unitId}/customer/create`}
                   text="Create"
                 />
               </SidebarMenuSub>
@@ -126,11 +126,11 @@ const UnitContent = async ({
             <CollapsibleContent>
               <SidebarMenuSub>
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/invoice/list`}
+                  href={`/o/${orgId}/u/${unitId}/invoice/list`}
                   text="List"
                 />
                 <SidebarItem
-                  href={`/org/${orgId}/${unitId}/invoice/create`}
+                  href={`/o/${orgId}/u/${unitId}/invoice/create`}
                   text="Create"
                 />
               </SidebarMenuSub>

@@ -42,7 +42,7 @@ const Form = ({ performAction }: Props) => {
     try {
       await performAction(values)
       toast.success(t("Unit saved successfully"))
-      router.push(`/org/${orgId}/~/list`)
+      router.push(`/o/${orgId}/u/~/list`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))

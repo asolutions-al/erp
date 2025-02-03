@@ -71,7 +71,7 @@ const UnitSwitcher = async (props: Props) => {
               <UnitSwitcherItem key={unit.id} data={unit} />
             ))}
             <DropdownMenuSeparator />
-            <Link href={`/org/${orgId}/~/create`}>
+            <Link href={`/o/${orgId}/u/~/create`}>
               <DropdownMenuItem className="gap-2 p-2">
                 <div className="flex size-6 items-center justify-center rounded-md border bg-background">
                   <Plus className="size-4" />

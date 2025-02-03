@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
 
-const Page = () => redirect("/org/list")
+const Page = () => redirect("/o/list")
 
 export default Page

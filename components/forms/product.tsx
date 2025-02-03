@@ -85,7 +85,7 @@ const Form = ({ performAction }: Props) => {
         imageBucketPath: imgPath,
       })
       toast.success(t("Product saved successfully"))
-      router.push(`/org/${orgId}/${unitId}/product/list`)
+      router.push(`/o/${orgId}/u/${unitId}/product/list`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))

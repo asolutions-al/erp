@@ -52,7 +52,7 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>Actions</DropdownMenuLabel>
         <Link
-          href={`/org/${orgId}/${unitId}/product/update/${original.id}`}
+          href={`/o/${orgId}/u/${unitId}/product/update/${original.id}`}
           passHref
         >
           <DropdownMenuItem>
@@ -61,7 +61,7 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
           </DropdownMenuItem>
         </Link>
         <Link
-          href={`/org/${orgId}/${unitId}/product/duplicate/${original.id}`}
+          href={`/o/${orgId}/u/${unitId}/product/duplicate/${original.id}`}
           passHref
         >
           <DropdownMenuItem>

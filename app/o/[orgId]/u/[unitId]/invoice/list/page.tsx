@@ -35,7 +35,7 @@ const Page = async (props: Props) => {
     <>
       <div className="mb-3 flex flex-row justify-between">
         <RangeTabs defaultValue={range} />
-        <Link href={`/org/${orgId}/${unitId}/invoice/create`} passHref>
+        <Link href={`/o/${orgId}/u/${unitId}/invoice/create`} passHref>
           <Button>
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
