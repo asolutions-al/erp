@@ -16,7 +16,9 @@ import { CellContext } from "@tanstack/react-table"
 import { EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 
-type SchemaT = OrgSchemaT
+type SchemaT = OrgSchemaT & {
+  unitsCount: number
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
@@ -49,8 +51,8 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => <SortBtn text="Description" column={column} />,
   },
   {
-    id: "actions",
-    cell: Actions,
+    accessorKey: "unitsCount",
+    header: ({ column }) => <SortBtn text="Number of units" column={column} />,
   },
 ]
 
