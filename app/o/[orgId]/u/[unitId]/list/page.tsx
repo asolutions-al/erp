@@ -42,7 +42,7 @@ const Page = async ({ params }: Props) => {
             </Button>
           </Link>
         )}
-        className="my-4"
+        className="mb-2"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
         {unitsList.map((unit) => (

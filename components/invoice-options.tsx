@@ -24,6 +24,8 @@ import { useFormContext, useWatch } from "react-hook-form"
 
 type SchemaT = InvoiceFormSchemaT
 
+const baseCurrency = "all"
+
 const InvoiceOptions = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
@@ -41,7 +43,13 @@ const InvoiceOptions = () => {
         render={({ field }) => (
           <FormItem>
             <FormLabel>{t("Currency")}</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <Select
+              onValueChange={(value) => {
+                field.onChange(value)
+                if (value === baseCurrency) form.setValue("exchangeRate", 1) // reset exchange rate
+              }}
+              defaultValue={field.value}
+            >
               <FormControl>
                 <SelectTrigger>
                   <SelectValue placeholder={t("Select currency")} />
@@ -50,7 +58,7 @@ const InvoiceOptions = () => {
               <SelectContent>
                 {currency.enumValues.map((currency) => (
                   <SelectItem key={currency} value={currency}>
-                    {currency}
+                    {t(currency)}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -60,7 +68,7 @@ const InvoiceOptions = () => {
         )}
       />
 
-      {currencyValue && currencyValue !== "all" && (
+      {currencyValue && currencyValue !== baseCurrency && (
         <FormField
           control={form.control}
           name="exchangeRate"

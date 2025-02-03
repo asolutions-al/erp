@@ -270,8 +270,8 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
-  const [rows, currency] = useWatch({
-    name: ["rows", "currency"],
+  const [rows, currency, exchangeRate] = useWatch({
+    name: ["rows", "currency", "exchangeRate"],
     control: form.control,
   })
 
@@ -281,12 +281,14 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
         <CardTitle>{t("Products")}</CardTitle>
         <CardDescription>{t("List of products to sell")}</CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
+      <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => {
           const { id, imageBucketPath, name, unit, price } = product
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
           const quantity = existing?.quantity || 0
+
+          const finalPrice = price * exchangeRate
 
           return (
             <motion.div
@@ -350,7 +352,7 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     <p className="text-sm text-muted-foreground">{t(unit)}</p>
                   </div>
                   <div className="flex items-end justify-end gap-0.5">
-                    <p className="font-semibold">{price}</p>
+                    <p className="font-semibold">{finalPrice}</p>
                     <p>{t(currency)}</p>
                   </div>
                 </CardContent>
@@ -366,8 +368,8 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
 const CheckoutCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
-  const [rows, currency] = useWatch({
-    name: ["rows", "currency"],
+  const [rows, currency, exchangeRate] = useWatch({
+    name: ["rows", "currency", "exchangeRate"],
     control: form.control,
   })
 
@@ -384,6 +386,7 @@ const CheckoutCard = () => {
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
             const { imageBucketPath, description, unit } = row.product || {}
+            const finalPrice = price * exchangeRate
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)
@@ -421,7 +424,7 @@ const CheckoutCard = () => {
                           </p>
                         </div>
                         <div className="flex gap-0.5">
-                          <p className="font-semibold">{price}</p>
+                          <p className="font-semibold">{finalPrice}</p>
                           <p>{t(currency)}</p>
                         </div>
                       </div>
