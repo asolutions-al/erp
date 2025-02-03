@@ -52,6 +52,7 @@ import {
 import { mapPayMethodIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
 import { payMethod, recordStatus } from "@/orm/app/schema"
+import { motion } from "framer-motion"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import {
@@ -265,7 +266,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   )
 }
 
-const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
+export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
@@ -273,84 +274,88 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
     name: ["rows", "currency"],
     control: form.control,
   })
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t("Products")}</CardTitle>
         <CardDescription>{t("List of products to sell")}</CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
+      <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => {
-          const { imageBucketPath, id, unit } = product
+          const { id, imageBucketPath, name, unit, price } = product
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
-
           const quantity = existing?.quantity || 0
 
           return (
-            <Card
-              key={product.id}
-              className="group relative cursor-pointer select-none space-y-4 overflow-hidden transition-shadow duration-300 hover:shadow-md"
-              onClick={() => {
-                if (existing)
-                  return form.setValue(
-                    `rows.${existingIdx}.quantity`,
-                    existing.quantity + 1
-                  )
-
-                form.setValue(
-                  "rows",
-                  [
-                    ...rows,
-                    {
-                      ...product,
-                      productId: product.id,
-                      quantity: 1,
-                      product,
-                    },
-                  ],
-                  {
-                    shouldDirty: true,
-                  }
-                )
-              }}
+            <motion.div
+              key={id}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
             >
-              <figure className="relative group-hover:opacity-90">
-                {/* <Badge
-                  className="absolute right-1.5 top-1.5"
-                  variant="secondary"
-                >
-                  {category}
-                </Badge> */}
-                {existing && (
-                  <Badge
-                    className="absolute left-1.5 top-1.5"
-                    variant="destructive"
-                  >
-                    {quantity}
-                  </Badge>
+              <Card
+                className={cn(
+                  "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
+                  quantity > 0 && "bg-primary/5"
                 )}
-                <Image
-                  className="aspect-square w-full"
-                  src={
-                    imageBucketPath
-                      ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
-                      : "/placeholder.svg"
-                  }
-                  width={300}
-                  height={300}
-                  alt={product.name}
-                />
-              </figure>
-              <CardContent className="!mt-0 p-2">
-                <h3 className="text-lg font-semibold">{product.name}</h3>
-                <p className="text-sm text-muted-foreground">{t(unit)}</p>
-                <div className="flex items-end justify-end gap-0.5">
-                  <p className="font-semibold">{product.price}</p>
-                  <p>{t(currency)}</p>
-                </div>
-              </CardContent>
-            </Card>
+                onClick={() => {
+                  if (existing)
+                    return form.setValue(
+                      `rows.${existingIdx}.quantity`,
+                      existing.quantity + 1
+                    )
+
+                  form.setValue(
+                    "rows",
+                    [
+                      ...rows,
+                      {
+                        ...product,
+                        productId: product.id,
+                        quantity: 1,
+                        product,
+                      },
+                    ],
+                    {
+                      shouldDirty: true,
+                    }
+                  )
+                }}
+              >
+                <figure className="relative group-hover:opacity-90">
+                  {quantity > 0 && (
+                    <Badge
+                      className="absolute left-1.5 top-1.5"
+                      variant="destructive"
+                    >
+                      {quantity}
+                    </Badge>
+                  )}
+                  <Image
+                    className="aspect-square w-full object-cover"
+                    src={
+                      imageBucketPath
+                        ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
+                        : "/placeholder.svg"
+                    }
+                    width={200}
+                    height={200}
+                    alt={name}
+                  />
+                </figure>
+                <CardContent className="!mt-0 flex h-24 flex-col justify-between p-2">
+                  <div>
+                    <h3 className="truncate text-lg font-semibold">{name}</h3>
+                    <p className="text-sm text-muted-foreground">{t(unit)}</p>
+                  </div>
+                  <div className="flex items-end justify-end gap-0.5">
+                    <p className="font-semibold">{price}</p>
+                    <p>{t(currency)}</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           )
         })}
       </CardContent>
