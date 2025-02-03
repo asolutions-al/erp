@@ -17,14 +17,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { baseCurrency } from "@/contants/global-configs"
 import { currency } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { useTranslations } from "next-intl"
 import { useFormContext, useWatch } from "react-hook-form"
 
 type SchemaT = InvoiceFormSchemaT
-
-const baseCurrency = "all"
 
 const InvoiceOptions = () => {
   const t = useTranslations()
@@ -86,9 +85,13 @@ const InvoiceOptions = () => {
                 />
               </FormControl>
               <FormDescription>
-                {t("Enter the exchange rate from currency to ALL", {
-                  currency: currencyValue.toUpperCase(),
-                })}
+                {t(
+                  "Enter the exchange rate from {currency} to {baseCurrency}",
+                  {
+                    currency: t(currencyValue),
+                    baseCurrency: t(baseCurrency),
+                  }
+                )}
               </FormDescription>
               <FormMessage />
             </FormItem>

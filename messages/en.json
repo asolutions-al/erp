@@ -161,7 +161,7 @@
   "Notes": "Notes",
   "A short note about the invoice": "A short note about the invoice",
   "Exchange rate": "Exchange rate",
-  "Enter the exchange rate from currency to ALL": "Enter the exchange rate from {currency} to ALL",
+  "Enter the exchange rate from {currency} to {baseCurrency}": "Enter the exchange rate from {currency} to {baseCurrency}",
   "today": "Today",
   "yesterday": "Yesterday",
   "this_week": "This week",
