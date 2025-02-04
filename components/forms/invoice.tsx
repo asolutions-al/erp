@@ -1,5 +1,7 @@
 "use client"
 
+import { InvoiceReceipt } from "@/components/invoice-receipt"
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -7,11 +9,13 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
-import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
-
-import { InvoiceReceipt } from "@/components/invoice-receipt"
-import { Button } from "@/components/ui/button"
+import {
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 import {
   Dialog,
   DialogContent,
@@ -21,10 +25,16 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { Separator } from "@/components/ui/separator"
 import { customerImageBucket, productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
+import { mapPayMethodIcon } from "@/contants/maps"
 import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
+import { cn } from "@/lib/utils"
+import { payMethod, recordStatus } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { calcInvoiceForm } from "@/utils/calc"
+import { motion } from "framer-motion"
 import {
   CheckIcon,
   ChevronsUpDownIcon,
@@ -37,24 +47,14 @@ import {
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useState } from "react"
+import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
+import { Price } from "../price"
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-
-import {
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import { mapPayMethodIcon } from "@/contants/maps"
-import { cn } from "@/lib/utils"
-import { payMethod, recordStatus } from "@/orm/app/schema"
-import { motion } from "framer-motion"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Badge } from "../ui/badge"
 import {
   Select,
   SelectContent,
@@ -117,6 +117,8 @@ const Form = ({ performAction, products, customers }: Props) => {
             {/* <StatusCard /> */}
 
             <CheckoutCard />
+
+            <Summary />
           </div>
         </div>
       </form>
@@ -351,10 +353,11 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     <h3 className="truncate text-lg font-semibold">{name}</h3>
                     <p className="text-sm text-muted-foreground">{t(unit)}</p>
                   </div>
-                  <div className="flex items-end justify-end gap-0.5">
-                    <p className="font-semibold">{finalPrice}</p>
-                    <p>{t(currency)}</p>
-                  </div>
+                  <Price
+                    price={finalPrice}
+                    currency={currency}
+                    className="justify-end"
+                  />
                 </CardContent>
               </Card>
             </motion.div>
@@ -423,10 +426,7 @@ const CheckoutCard = () => {
                             {t(unit)}
                           </p>
                         </div>
-                        <div className="flex gap-0.5">
-                          <p className="font-semibold">{finalPrice}</p>
-                          <p>{t(currency)}</p>
-                        </div>
+                        <Price price={finalPrice} currency={currency} />
                       </div>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="flex gap-2">
@@ -521,6 +521,48 @@ const PaymentCard = () => {
             })}
           </TabsList>
         </Tabs>
+      </CardContent>
+    </Card>
+  )
+}
+
+const Summary = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  const [rows, discountType, discountValue, currency] = useWatch({
+    name: ["rows", "discountType", "discountValue", "currency"],
+    control: form.control,
+  })
+
+  const calcs = calcInvoiceForm({
+    rows,
+    discountType,
+    discountValue,
+  })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Summary")}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <Separator />
+        <div className="space-y-1">
+          <div className="flex justify-between text-sm">
+            <span>{t("Subtotal")}</span>
+            <Price price={calcs.subtotal} currency={currency} />
+          </div>
+          <div className="flex justify-between text-sm">
+            <span>{t("Tax")}</span>
+            <Price price={calcs.tax} currency={currency} />
+          </div>
+        </div>
+        <Separator />
+        <div className="flex items-center justify-between">
+          <span className="text-lg font-semibold">{t("Total")}</span>
+          <Price price={calcs.total} currency={currency} className="text-lg" />
+        </div>
       </CardContent>
     </Card>
   )

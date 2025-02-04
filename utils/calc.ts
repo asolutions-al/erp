@@ -35,7 +35,9 @@ const calcInvoiceFormRow = (
   }
 }
 
-const calcInvoiceForm = (values: InvoiceFormSchemaT): CalcResultT => {
+const calcInvoiceForm = (
+  values: Pick<InvoiceFormSchemaT, "rows" | "discountType" | "discountValue">
+): CalcResultT => {
   const productsTotal = values.rows.reduce(
     (acc, row) => acc + calcInvoiceFormRow(row).total,
     0
