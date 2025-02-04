@@ -46,7 +46,7 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: PayMethodCell,
   },
   {
-    accessorKey: "customerName",
+    accessorKey: "customer.name",
     header: ({ column }) => <SortBtn text="Customer name" column={column} />,
   },
   {
