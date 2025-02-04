@@ -1,8 +1,5 @@
-import { createServerClient } from "@supabase/ssr"
-import { NextRequest, NextResponse } from "next/server"
-import { getAuthUrl } from "./lib/utils"
-
-const isDev = process.env.NODE_ENV === "development"
+import { updateSession } from "@/utils/session-middleware"
+import { type NextRequest } from "next/server"
 
 export const config = {
   matcher: [
@@ -18,47 +15,5 @@ export const config = {
 }
 
 export async function middleware(request: NextRequest) {
-  let response = NextResponse.next({ request })
-  const { pathname, searchParams } = request.nextUrl
-
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_AUTH_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_AUTH_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll: (cookiesToSet) => {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          )
-          response = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, {
-              domain: isDev ? "localhost" : ".asolutions.al", // https://github.com/supabase/supabase/issues/473#issuecomment-2543434925
-              ...options,
-            })
-          )
-        },
-      },
-    }
-  )
-
-  // This will refresh session if expired - required for Server Components
-  // https://supabase.com/docs/guides/auth/server-side/nextjs
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  //// ROUTE PROTECTION
-  const isAtProtectedRoutes = !["/auth", "/invitation"].some((route) =>
-    pathname.startsWith(route)
-  )
-  if (!user && isAtProtectedRoutes) {
-    // user tries to access a protected route
-    response = NextResponse.redirect(getAuthUrl({ searchParams }))
-  }
-
-  return response
+  return await updateSession(request)
 }
