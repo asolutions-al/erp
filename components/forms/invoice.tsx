@@ -283,7 +283,8 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
         <CardTitle>{t("Products")}</CardTitle>
         <CardDescription>{t("List of products to sell")}</CardDescription>
       </CardHeader>
-      <CardContent className="grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-4">
+      {/* TODO: remove hardcoded max height */}
+      <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-scroll sm:grid-cols-3 xl:grid-cols-4">
         {products.map((product) => {
           const { id, imageBucketPath, name, unit, price } = product
           const existingIdx = rows.findIndex((row) => row.productId === id)
@@ -384,7 +385,8 @@ const CheckoutCard = () => {
           {t("Review the invoice and proceed to checkout")}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      {/* TODO: remove hardcoded max height */}
+      <CardContent className="max-h-96 overflow-y-scroll">
         <div className="flex flex-col gap-2">
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
