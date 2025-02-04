@@ -35,6 +35,7 @@ import { payMethod, recordStatus } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm } from "@/utils/calc"
 import { motion } from "framer-motion"
+import Fuse from "fuse.js"
 import {
   CheckIcon,
   ChevronsUpDownIcon,
@@ -46,7 +47,7 @@ import {
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { Price } from "../price"
@@ -272,20 +273,37 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
+  const [search, setSearch] = useState("")
+
   const [rows, currency, exchangeRate] = useWatch({
     name: ["rows", "currency", "exchangeRate"],
     control: form.control,
   })
+
+  const filteredProducts = useMemo(() => {
+    if (!search) return products
+    const fuse = new Fuse<(typeof products)[0]>(products, {
+      keys: ["name", "unit", "price"],
+      threshold: 0.3,
+    })
+    return fuse.search(search).map((result) => result.item)
+  }, [products, search])
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>{t("Products")}</CardTitle>
         <CardDescription>{t("List of products to sell")}</CardDescription>
+        <Input
+          type="text"
+          placeholder={t("Name, price") + "..."}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
       </CardHeader>
       {/* TODO: remove hardcoded max height */}
       <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-scroll sm:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => {
+        {filteredProducts.map((product) => {
           const { id, imageBucketPath, name, unit, price } = product
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
