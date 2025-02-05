@@ -47,7 +47,7 @@ import {
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
-import { useMemo, useState } from "react"
+import { useState } from "react"
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { Price } from "../price"
@@ -280,14 +280,14 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
     control: form.control,
   })
 
-  const filteredProducts = useMemo(() => {
-    if (!search) return products
-    const fuse = new Fuse<(typeof products)[0]>(products, {
-      keys: ["name", "unit", "price"],
-      threshold: 0.3,
-    })
-    return fuse.search(search).map((result) => result.item)
-  }, [products, search])
+  const fuse = new Fuse<(typeof products)[0]>(products, {
+    keys: ["name", "unit", "price"],
+    threshold: 0.3,
+  })
+
+  const filteredProducts = search
+    ? fuse.search(search).map((result) => result.item)
+    : products
 
   return (
     <Card>
