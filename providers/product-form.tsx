@@ -25,7 +25,7 @@ const defaultValues: SchemaT = {
   price: 0,
   status: "active",
   description: "",
-  unit: "xpp",
+  unit: "XPP",
   taxType: "0",
 }
 
