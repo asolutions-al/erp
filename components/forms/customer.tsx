@@ -74,6 +74,7 @@ const Form = ({ performAction }: Props) => {
         imageBucketPath: imgPath,
       })
       toast.success(t("Customer saved successfully"))
+      router.prefetch(`/o/${orgId}/u/${unitId}/customer/list`)
       router.push(`/o/${orgId}/u/${unitId}/customer/list`)
     } catch (error) {
       console.error("error", error)

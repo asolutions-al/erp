@@ -42,6 +42,7 @@ const Form = ({ performAction }: Props) => {
     try {
       await performAction(values)
       toast.success(t("Unit saved successfully"))
+      router.prefetch(`/o/${orgId}/u/~/list`)
       router.push(`/o/${orgId}/u/~/list`)
     } catch (error) {
       console.error("error", error)
