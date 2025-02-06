@@ -7,6 +7,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -28,63 +29,78 @@ import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { SidebarUser } from "./sidebar-user"
 
-const Content = async ({ orgId }: { orgId: string }) => {
+type Props = PropsWithChildren<{
+  params: Promise<GlobalParams>
+}>
+
+const OrgSidebar = async (props: Props) => {
   const t = await getTranslations()
+  const { orgId } = await props.params
+
   return (
-    <SidebarGroup>
-      <SidebarMenu>
-        <Collapsible asChild defaultOpen className="group/collapsible">
-          <SidebarMenuItem>
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton tooltip={t("Unit")}>
-                <BuildingIcon />
-                <span className="font-semibold">{t("Unit")}</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                <SidebarItem
-                  href={`/o/${orgId}/unit/list`}
-                  text="List"
-                  icon={<ListTreeIcon />}
-                />
-                <SidebarItem
-                  href={`/o/${orgId}/unit/create`}
-                  text="Create"
-                  icon={<CirclePlusIcon />}
-                />
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </SidebarMenuItem>
-        </Collapsible>
-        <Collapsible asChild defaultOpen className="group/collapsible">
-          <SidebarMenuItem>
-            <CollapsibleTrigger asChild>
-              <SidebarMenuButton tooltip={t("Member")}>
-                <UsersIcon />
-                <span className="font-semibold">{t("Member")}</span>
-                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-              </SidebarMenuButton>
-            </CollapsibleTrigger>
-            <CollapsibleContent>
-              <SidebarMenuSub>
-                <SidebarItem
-                  href={`/o/${orgId}/member/list`}
-                  text="List"
-                  icon={<ListTreeIcon />}
-                />
-                {/* <SidebarItem
-                  href={`/o/${orgId}/member/create`}
-                  text="Create"
-                  icon={<CirclePlusIcon />}
-                /> */}
-              </SidebarMenuSub>
-            </CollapsibleContent>
-          </SidebarMenuItem>
-        </Collapsible>
-      </SidebarMenu>
-    </SidebarGroup>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <Suspense fallback={<SwitcherSkeleton />}>
+          <OrgSwitcher {...props} />
+        </Suspense>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
+          <SidebarMenu>
+            <Collapsible asChild defaultOpen className="group/collapsible">
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={t("Unit")}>
+                    <BuildingIcon />
+                    <span className="font-semibold">{t("Unit")}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarItem
+                      href={`/o/${orgId}/unit/list`}
+                      text="List"
+                      icon={<ListTreeIcon />}
+                    />
+                    <SidebarItem
+                      href={`/o/${orgId}/unit/create`}
+                      text="Create"
+                      icon={<CirclePlusIcon />}
+                    />
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+            <Collapsible asChild defaultOpen className="group/collapsible">
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={t("Member")}>
+                    <UsersIcon />
+                    <span className="font-semibold">{t("Member")}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarItem
+                      href={`/o/${orgId}/member/list`}
+                      text="List"
+                      icon={<ListTreeIcon />}
+                    />
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+          </SidebarMenu>
+        </SidebarGroup>
+      </SidebarContent>
+      <Suspense>
+        <SidebarUser />
+      </Suspense>
+      <SidebarRail />
+    </Sidebar>
   )
 }
 
@@ -101,31 +117,6 @@ const SwitcherSkeleton = () => {
         </SidebarMenuButton>
       </SidebarMenuItem>
     </SidebarMenu>
-  )
-}
-
-type Props = PropsWithChildren<{
-  params: Promise<GlobalParams>
-}>
-
-const OrgSidebar = async (props: Props) => {
-  const { orgId } = await props.params
-
-  return (
-    <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <Suspense fallback={<SwitcherSkeleton />}>
-          <OrgSwitcher {...props} />
-        </Suspense>
-      </SidebarHeader>
-      <SidebarContent>
-        <Content orgId={orgId} />
-      </SidebarContent>
-      <Suspense>
-        <SidebarUser />
-      </Suspense>
-      <SidebarRail />
-    </Sidebar>
   )
 }
 
