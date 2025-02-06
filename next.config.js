@@ -16,6 +16,14 @@ const nextConfig = {
   experimental: {
     ppr: "incremental",
   },
+  rewrites: async () => {
+    return [
+      {
+        source: "/",
+        destination: "/o/list",
+      },
+    ]
+  },
 }
 
 module.exports = withNextIntl(nextConfig)
