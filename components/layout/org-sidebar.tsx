@@ -14,7 +14,13 @@ import {
   SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import { BuildingIcon, ChevronRight } from "lucide-react"
+import {
+  BuildingIcon,
+  ChevronRight,
+  CirclePlusIcon,
+  ListTreeIcon,
+  UsersIcon,
+} from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
@@ -38,8 +44,41 @@ const Content = async ({ orgId }: { orgId: string }) => {
             </CollapsibleTrigger>
             <CollapsibleContent>
               <SidebarMenuSub>
-                <SidebarItem href={`/o/${orgId}/u/~/list`} text="List" />
-                <SidebarItem href={`/o/${orgId}/u/~/create`} text="Create" />
+                <SidebarItem
+                  href={`/o/${orgId}/unit/list`}
+                  text="List"
+                  icon={<ListTreeIcon />}
+                />
+                <SidebarItem
+                  href={`/o/${orgId}/unit/create`}
+                  text="Create"
+                  icon={<CirclePlusIcon />}
+                />
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+        <Collapsible asChild defaultOpen className="group/collapsible">
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip={t("Member")}>
+                <UsersIcon />
+                <span className="font-semibold">{t("Member")}</span>
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                <SidebarItem
+                  href={`/o/${orgId}/member/list`}
+                  text="List"
+                  icon={<ListTreeIcon />}
+                />
+                {/* <SidebarItem
+                  href={`/o/${orgId}/member/create`}
+                  text="Create"
+                  icon={<CirclePlusIcon />}
+                /> */}
               </SidebarMenuSub>
             </CollapsibleContent>
           </SidebarMenuItem>

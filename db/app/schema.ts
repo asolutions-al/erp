@@ -3,8 +3,10 @@ import {
   invoice,
   invoiceRow,
   organization,
+  orgMember,
   product,
   unit,
+  user,
 } from "@/orm/app/schema"
 import { createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
@@ -31,3 +33,9 @@ const invoiceRowSchema = createSelectSchema(invoiceRow, {
   product: productSchema,
 })
 export type InvoiceRowSchemaT = z.infer<typeof invoiceRowSchema>
+/////////////ORG MEMBER/////////////////////
+const orgMemberSchema = createSelectSchema(orgMember)
+export type OrgMemberSchemaT = z.infer<typeof orgMemberSchema>
+/////////////USER/////////////////////
+const userSchema = createSelectSchema(user)
+export type UserSchemaT = z.infer<typeof userSchema>

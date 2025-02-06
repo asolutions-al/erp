@@ -1,7 +1,13 @@
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { getAuthUrl } from "@/lib/utils"
-import { member, organization, user as schUser, unit } from "@/orm/app/schema"
+import {
+  organization,
+  orgMember,
+  user as schUser,
+  unit,
+  unitMember,
+} from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import { NextResponse } from "next/server"
@@ -76,13 +82,20 @@ export async function GET(request: Request) {
         })
 
       /**
-       * 3. Create member
+       * 3. add members
        */
-      await tx.insert(member).values({
-        userId,
-        role: "owner",
-        unitId: unitRes.id,
-      })
+      await Promise.all([
+        tx.insert(orgMember).values({
+          userId,
+          orgId: orgRes.id,
+          role: "owner",
+        }),
+        tx.insert(unitMember).values({
+          userId,
+          unitId: unitRes.id,
+          role: "owner",
+        }),
+      ])
     })
   } catch (error) {
     console.error(error)

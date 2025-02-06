@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, invoice, unit, user, customer, member, invitation, product, invoiceRow } from "./schema";
+import { organization, invoice, unit, user, customer, invitation, unitMember, orgMember, product, invoiceRow } from "./schema";
 
 export const invoiceRelations = relations(invoice, ({one, many}) => ({
 	organization: one(organization, {
@@ -22,6 +22,7 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 	customers: many(customer),
 	units: many(unit),
 	invitations: many(invitation),
+	orgMembers: many(orgMember),
 	products: many(product),
 	invoiceRows: many(invoiceRow),
 }));
@@ -33,16 +34,17 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 		fields: [unit.orgId],
 		references: [organization.id]
 	}),
-	members: many(member),
 	invitations: many(invitation),
+	unitMembers: many(unitMember),
 	products: many(product),
 	invoiceRows: many(invoiceRow),
 }));
 
 export const userRelations = relations(user, ({many}) => ({
 	organizations: many(organization),
-	members: many(member),
 	invitations: many(invitation),
+	unitMembers: many(unitMember),
+	orgMembers: many(orgMember),
 }));
 
 export const customerRelations = relations(customer, ({one}) => ({
@@ -53,17 +55,6 @@ export const customerRelations = relations(customer, ({one}) => ({
 	unit: one(unit, {
 		fields: [customer.unitId],
 		references: [unit.id]
-	}),
-}));
-
-export const memberRelations = relations(member, ({one}) => ({
-	unit: one(unit, {
-		fields: [member.unitId],
-		references: [unit.id]
-	}),
-	user: one(user, {
-		fields: [member.userId],
-		references: [user.id]
 	}),
 }));
 
@@ -78,6 +69,28 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 	}),
 	user: one(user, {
 		fields: [invitation.userId],
+		references: [user.id]
+	}),
+}));
+
+export const unitMemberRelations = relations(unitMember, ({one}) => ({
+	unit: one(unit, {
+		fields: [unitMember.unitId],
+		references: [unit.id]
+	}),
+	user: one(user, {
+		fields: [unitMember.userId],
+		references: [user.id]
+	}),
+}));
+
+export const orgMemberRelations = relations(orgMember, ({one}) => ({
+	organization: one(organization, {
+		fields: [orgMember.orgId],
+		references: [organization.id]
+	}),
+	user: one(user, {
+		fields: [orgMember.userId],
 		references: [user.id]
 	}),
 }));

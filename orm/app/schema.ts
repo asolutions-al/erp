@@ -170,35 +170,6 @@ export const unit = pgTable(
   ]
 )
 
-export const member = pgTable(
-  "member",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    createdAt: timestamp({ withTimezone: true, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    unitId: uuid().notNull(),
-    userId: uuid().notNull(),
-    role: text().notNull(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.unitId],
-      foreignColumns: [unit.id],
-      name: "member_unitId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-    foreignKey({
-      columns: [table.userId],
-      foreignColumns: [user.id],
-      name: "member_userId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-  ]
-)
-
 export const invitation = pgTable(
   "invitation",
   {
@@ -229,6 +200,64 @@ export const invitation = pgTable(
       columns: [table.userId],
       foreignColumns: [user.id],
       name: "invitation_userId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
+export const unitMember = pgTable(
+  "unitMember",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    unitId: uuid().notNull(),
+    userId: uuid().notNull(),
+    role: role().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.unitId],
+      foreignColumns: [unit.id],
+      name: "unitMember_unitId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.userId],
+      foreignColumns: [user.id],
+      name: "unitMember_userId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
+export const orgMember = pgTable(
+  "orgMember",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    orgId: uuid().notNull(),
+    userId: uuid().notNull(),
+    role: role().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.orgId],
+      foreignColumns: [organization.id],
+      name: "orgMember_orgId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.userId],
+      foreignColumns: [user.id],
+      name: "orgMember_userId_fkey",
     })
       .onUpdate("cascade")
       .onDelete("cascade"),

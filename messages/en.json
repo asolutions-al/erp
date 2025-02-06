@@ -222,5 +222,9 @@
   "Summary": "Summary",
   "Open menu": "Open menu",
   "Actions": "Actions",
-  "Name, price": "Name, price"
+  "Name, price": "Name, price",
+  "Member": "Member",
+  "New member": "New member",
+  "Members": "Members",
+  "Role": "Role"
 }

@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { member } from "@/orm/app/schema"
+import { unitMember } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -21,8 +21,8 @@ const Page = async ({ params }: Props) => {
   } = await client.auth.getUser()
   const userId = user!.id
 
-  const members = await db.query.member.findMany({
-    where: eq(member.userId, userId),
+  const members = await db.query.unitMember.findMany({
+    where: eq(unitMember.userId, userId),
     with: { unit: true },
   })
 
@@ -33,7 +33,7 @@ const Page = async ({ params }: Props) => {
       <PageHeader
         title="Select unit"
         renderRight={() => (
-          <Link href={`/o/${orgId}/u/~/create`}>
+          <Link href={`/o/${orgId}/unit/create`}>
             <Button size="sm" className="h-8 gap-1">
               <PlusCircle className="h-3.5 w-3.5" />
               <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">

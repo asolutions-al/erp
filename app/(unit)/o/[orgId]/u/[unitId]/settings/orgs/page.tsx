@@ -3,7 +3,7 @@ import { Loading } from "@/components/layout/loading"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { member, organization } from "@/orm/app/schema"
+import { organization, unitMember } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import { Suspense } from "react"
@@ -20,8 +20,8 @@ const List = async () => {
     db.query.organization.findMany({
       where: eq(organization.ownerId, user.id),
     }),
-    db.query.member.findMany({
-      where: eq(member.userId, user.id),
+    db.query.unitMember.findMany({
+      where: eq(unitMember.userId, user.id),
       with: { unit: true },
     }),
   ])

@@ -2,7 +2,7 @@
 
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { member, unit } from "@/orm/app/schema"
+import { unit, unitMember } from "@/orm/app/schema"
 import { UnitFormSchemaT } from "@/providers/unit-form"
 
 type FormSchemaT = UnitFormSchemaT
@@ -30,7 +30,7 @@ const create = async ({
         id: unit.id,
       })
 
-    await trx.insert(member).values({
+    await trx.insert(unitMember).values({
       userId: user!.id,
       unitId: unitRes.id,
       role: "owner",
