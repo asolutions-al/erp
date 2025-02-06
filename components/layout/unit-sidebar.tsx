@@ -7,6 +7,7 @@ import {
   Sidebar,
   SidebarContent,
   SidebarGroup,
+  SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -15,10 +16,12 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
+  ArrowLeftIcon,
   BuildingIcon,
   ChevronRight,
   CirclePlusIcon,
   ContactIcon,
+  HomeIcon,
   ListTreeIcon,
   PackageIcon,
   ReceiptTextIcon,
@@ -34,6 +37,7 @@ import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
+import Link from "next/link"
 
 const UnitContent = async ({
   orgId,
@@ -46,6 +50,7 @@ const UnitContent = async ({
 
   return (
     <SidebarGroup>
+      <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
       <SidebarMenu>
         <Collapsible asChild defaultOpen className="group/collapsible">
           <SidebarMenuItem>
@@ -178,6 +183,7 @@ type Props = PropsWithChildren<{
 }>
 
 const UnitSidebar = async (props: Props) => {
+  const t = await getTranslations()
   const { orgId, unitId } = await props.params
 
   return (
@@ -189,6 +195,12 @@ const UnitSidebar = async (props: Props) => {
         <Suspense fallback={<SwitcherSkeleton />}>
           <UnitSwitcher {...props} />
         </Suspense>
+        <Link href={`/o/${orgId}/unit/list`} passHref>
+          <SidebarMenuButton>
+            <ArrowLeftIcon />
+            {t("Back to dashboard")}
+          </SidebarMenuButton>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <UnitContent orgId={orgId} unitId={unitId} />
