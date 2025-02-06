@@ -17,9 +17,15 @@ import {
 import {
   BuildingIcon,
   ChevronRight,
+  CirclePlusIcon,
   ContactIcon,
+  ListTreeIcon,
   PackageIcon,
   ReceiptTextIcon,
+  SettingsIcon,
+  StoreIcon,
+  SunMoonIcon,
+  UserIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import { PropsWithChildren, Suspense } from "react"
@@ -82,10 +88,12 @@ const UnitContent = async ({
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/product/list`}
                   text="List"
+                  icon={<ListTreeIcon />}
                 />
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/product/create`}
                   text="Create"
+                  icon={<CirclePlusIcon />}
                 />
               </SidebarMenuSub>
             </CollapsibleContent>
@@ -105,10 +113,12 @@ const UnitContent = async ({
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/customer/list`}
                   text="List"
+                  icon={<ListTreeIcon />}
                 />
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/customer/create`}
                   text="Create"
+                  icon={<CirclePlusIcon />}
                 />
               </SidebarMenuSub>
             </CollapsibleContent>
@@ -128,10 +138,42 @@ const UnitContent = async ({
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/invoice/list`}
                   text="List"
+                  icon={<ListTreeIcon />}
                 />
                 <SidebarItem
                   href={`/o/${orgId}/u/${unitId}/invoice/create`}
                   text="Create"
+                  icon={<CirclePlusIcon />}
+                />
+              </SidebarMenuSub>
+            </CollapsibleContent>
+          </SidebarMenuItem>
+        </Collapsible>
+        <Collapsible asChild defaultOpen className="group/collapsible">
+          <SidebarMenuItem>
+            <CollapsibleTrigger asChild>
+              <SidebarMenuButton tooltip={t("Settings")}>
+                <SettingsIcon />
+                <span className="font-semibold">{t("Settings")}</span>
+                <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+              </SidebarMenuButton>
+            </CollapsibleTrigger>
+            <CollapsibleContent>
+              <SidebarMenuSub>
+                <SidebarItem
+                  href={`/o/${orgId}/u/${unitId}/settings/account`}
+                  text="Account"
+                  icon={<UserIcon  />}
+                />
+                <SidebarItem
+                  href={`/o/${orgId}/u/${unitId}/settings/orgs`}
+                  text="Organizations"
+                  icon={<StoreIcon  />}
+                />
+                <SidebarItem
+                  href={`/o/${orgId}/u/${unitId}/settings/appearance`}
+                  text="Appearance"
+                  icon={<SunMoonIcon  />}
                 />
               </SidebarMenuSub>
             </CollapsibleContent>

@@ -72,15 +72,6 @@ const SidebarUser = async () => {
             </DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <Link href="/settings/general">
-                <DropdownMenuItem>
-                  <SettingsIcon />
-                  {t("Settings")}
-                </DropdownMenuItem>
-              </Link>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>
               <LogOut />
               {t("Log out")}

@@ -9,10 +9,12 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "./ui/sidebar"
+import { SidebarIcon } from "lucide-react"
 
 type Props = {
   href: string
   text: keyof Messages
+  icon?: React.ReactNode
 }
 
 const SidebarItem = (props: Props) => {
@@ -28,6 +30,7 @@ const SidebarItem = (props: Props) => {
             pathname: props.href,
           }}
         >
+          {props.icon}
           <span>{t(props.text)}</span>
         </Link>
       </SidebarMenuSubButton>

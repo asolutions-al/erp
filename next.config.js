@@ -14,7 +14,6 @@ const nextConfig = {
     ],
   },
   experimental: {
-    typedRoutes: true,
     reactCompiler: true,
     ppr: "incremental",
   },
