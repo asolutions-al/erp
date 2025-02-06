@@ -1,6 +1,6 @@
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { getAuthUrl } from "@/lib/utils"
+import { getAuthRedirectUrl } from "@/lib/utils"
 import {
   organization,
   orgMember,
@@ -30,7 +30,7 @@ export async function GET(request: Request) {
    * 1. User authentication was not successful
    * 2. Trying to access this page directly
    */
-  if (!userId) return NextResponse.redirect(getAuthUrl())
+  if (!userId) return NextResponse.redirect(getAuthRedirectUrl())
 
   /**
    * Being an existing user means:

@@ -1,4 +1,4 @@
-import { getAuthUrl } from "@/lib/utils"
+import { getAuthRedirectUrl } from "@/lib/utils"
 import { createServerClient } from "@supabase/ssr"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -48,7 +48,7 @@ export async function updateSession(request: NextRequest) {
   )
 
   if (!user && isAtProtectedRoutes)
-    return NextResponse.redirect(getAuthUrl({ searchParams }))
+    return NextResponse.redirect(getAuthRedirectUrl())
 
   return response
 }

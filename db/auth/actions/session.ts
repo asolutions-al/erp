@@ -1,7 +1,7 @@
 "use server"
 
 import { createAuthClient } from "@/db/auth/client"
-import { getAuthUrl } from "@/lib/utils"
+import { getAuthRedirectUrl } from "@/lib/utils"
 import { redirect } from "next/navigation"
 
 const signOut = async () => {
@@ -9,7 +9,7 @@ const signOut = async () => {
     const client = await createAuthClient()
     await client.auth.signOut()
 
-    redirect(getAuthUrl())
+    redirect(getAuthRedirectUrl().toString())
   } catch (error) {
     console.error(error)
     throw error
