@@ -47,7 +47,7 @@ export async function GET(request: Request) {
    * Start onboarding process
    */
   try {
-    await db.transaction(async (tx) => {
+    const transRes = await db.transaction(async (tx) => {
       /**
        * 1. Create user
        */
@@ -70,6 +70,9 @@ export async function GET(request: Request) {
           id: organization.id,
         })
 
+      /**
+       * 3. Create unit
+       */
       const [unitRes] = await tx
         .insert(unit)
         .values({
@@ -96,7 +99,33 @@ export async function GET(request: Request) {
           role: "owner",
         }),
       ])
+
+      return {
+        orgId: orgRes.id,
+      }
     })
+
+    /**
+     * Start background tasks
+     */
+
+    try {
+      /**
+       * TODO:
+       * 1. Send welcome email
+       */
+
+      /**
+       * 2. Adjust default settings
+       */
+      db.update(schUser)
+        .set({
+          defaultOrgId: transRes.orgId,
+        })
+        .where(eq(schUser.id, userId))
+    } catch (error) {
+      console.error("Background tasks failed", error)
+    }
   } catch (error) {
     console.error(error)
     // TODO: where to redirect?

@@ -47,7 +47,7 @@ export const user = pgTable("user", {
     .notNull(),
   email: text().notNull(),
   displayName: text(),
-  defaultOrgId: uuid().notNull(),
+  defaultOrgId: uuid(),
   deleted: boolean(),
   deletedAt: timestamp({ withTimezone: true, mode: "string" }),
 })
