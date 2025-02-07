@@ -1,5 +1,6 @@
 import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
 import {
+  boolean,
   doublePrecision,
   foreignKey,
   jsonb,
@@ -46,6 +47,9 @@ export const user = pgTable("user", {
     .notNull(),
   email: text().notNull(),
   displayName: text(),
+  defaultOrgId: uuid().notNull(),
+  deleted: boolean(),
+  deletedAt: timestamp({ withTimezone: true, mode: "string" }),
 })
 
 export const invoice = pgTable(

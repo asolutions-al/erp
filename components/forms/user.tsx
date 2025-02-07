@@ -20,16 +20,26 @@ import { useFormContext } from "react-hook-form"
 import { UserFormSchemaT } from "@/providers/user-form"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
+import { Button } from "../ui/button"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select"
+import { OrgSchemaT } from "@/db/app/schema"
 
 type SchemaT = UserFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
+  orgs: OrgSchemaT[]
 }
 
 const formId: FormId = "user"
 
-const Form = ({ performAction }: Props) => {
+const Form = ({ performAction, orgs }: Props) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
@@ -82,6 +92,67 @@ const Form = ({ performAction }: Props) => {
                   </FormItem>
                 )}
               />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("Default organization")}</CardTitle>
+              <CardDescription>
+                {t(
+                  "The organization selected when you first navigate to the dashboard"
+                )}
+                .
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <FormField
+                control={form.control}
+                name="defaultOrgId"
+                render={({ field }) => (
+                  <FormItem>
+                    <Select
+                      value={field.value || ""}
+                      onValueChange={field.onChange}
+                    >
+                      <FormControl>
+                        <SelectTrigger aria-label={t("Select organization")}>
+                          <SelectValue placeholder={t("Select organization")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {orgs.map((item) => (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("Delete account")}</CardTitle>
+              <CardDescription>
+                {t(
+                  "Permanently remove your Personal Account and all of its contents from our platform"
+                )}
+                .{" "}
+                {t(
+                  "This action is not reversible, so please continue with caution"
+                )}
+                .
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="destructive" type="button">
+                {t("Delete account")}
+              </Button>
             </CardContent>
           </Card>
         </div>

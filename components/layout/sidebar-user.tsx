@@ -5,7 +5,13 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -15,9 +21,17 @@ import {
 } from "@/components/ui/sidebar"
 import { signOut } from "@/db/auth/actions"
 import { createAuthClient } from "@/db/auth/client"
-import { ChevronsUpDown, LogOut, SettingsIcon } from "lucide-react"
+import {
+  ChevronsUpDown,
+  LogOut,
+  SettingsIcon,
+  Sparkles,
+  SunMoonIcon,
+} from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
+import { ThemeSwitcher } from "../theme-switcher"
+import { LanguageSwitcher } from "../language-switcher"
 
 const SidebarUser = async () => {
   const t = await getTranslations()
@@ -59,7 +73,6 @@ const SidebarUser = async () => {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  {/* <AvatarImage src={avatar} alt={name} /> */}
                   <AvatarFallback className="rounded-lg">
                     {avatarFallback}
                   </AvatarFallback>
@@ -70,6 +83,20 @@ const SidebarUser = async () => {
                 </div>
               </div>
             </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+
+            <ThemeSwitcher />
+            <LanguageSwitcher />
+            <DropdownMenuSeparator />
+
+            <Link href="/account/settings/general" passHref>
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <SettingsIcon />
+                  Settings
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+            </Link>
 
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={signOut}>

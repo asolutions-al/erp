@@ -13,20 +13,18 @@ import { getTranslations } from "next-intl/server"
 const NotFound = async () => {
   const t = await getTranslations()
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+    <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="flex items-center justify-center text-4xl font-extrabold text-gray-900">
+          <CardTitle className="flex items-center justify-center text-4xl font-extrabold">
             <FileQuestion className="mr-2 h-12 w-12 text-primary" />
             404
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center">
-            <h2 className="text-2xl font-semibold text-gray-900">
-              {t("Page not found")}
-            </h2>
-            <p className="mt-2 text-sm text-gray-600">
+            <h2 className="text-2xl font-semibold">{t("Page not found")}</h2>
+            <p className="mt-2 text-sm">
               {t("We're sorry, the page you requested could not be found")}.
               {t("Please check the URL or try navigating back to the homepage")}
               .

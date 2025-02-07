@@ -12,12 +12,15 @@ const schema = createInsertSchema(user, {}).omit({
   id: true,
   createdAt: true,
   email: true,
+  deleted: true,
+  deletedAt: true,
 })
 
 type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   displayName: "",
+  defaultOrgId: "",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

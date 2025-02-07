@@ -228,5 +228,13 @@
   "Members": "Anëtarët",
   "Role": "Roli",
   "Back to dashboard": "Kthehu në dashboard",
-  "Menu": "Menu"
+  "Menu": "Menu",
+  "Overview": "Përmbledhje",
+  "Default organization": "Organizata e parazgjedhur",
+  "The organization selected when you first navigate to the dashboard": "Organizata e zgjedhur kur navigoni për herë të parë në dashboard",
+  "Delete account": "Fshij llogarinë",
+  "Permanently remove your Personal Account and all of its contents from our platform": "Hiqni përgjithmonë Llogarinë Tuaj Personale dhe të gjitha përmbajtjet e saj nga platforma jonë",
+  "This action is not reversible, so please continue with caution": "Kjo veprim nuk është i kthyeshëm, kështu që ju lutemi vazhdoni me kujdes",
+  "Select organization": "Zgjidh organizatën",
+  "System": "Sistemi"
 }

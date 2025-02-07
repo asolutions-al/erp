@@ -228,5 +228,13 @@
   "Members": "Members",
   "Role": "Role",
   "Back to dashboard": "Back to dashboard",
-  "Menu": "Menu"
+  "Menu": "Menu",
+  "Overview": "Overview",
+  "Default organization": "Default organization",
+  "The organization selected when you first navigate to the dashboard": "The organization selected when you first navigate to the dashboard",
+  "Delete account": "Delete account",
+  "Permanently remove your Personal Account and all of its contents from our platform": "Permanently remove your Personal Account and all of its contents from our platform",
+  "This action is not reversible, so please continue with caution": "This action is not reversible, so please continue with caution",
+  "Select organization": "Select organization",
+  "System": "System"
 }
