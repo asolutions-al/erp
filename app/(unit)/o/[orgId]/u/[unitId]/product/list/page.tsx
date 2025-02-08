@@ -1,8 +1,10 @@
 import { productColumns } from "@/components/columns/product"
-import { StatusTabs } from "@/components/tabs/status"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { mapStatusIcon } from "@/contants/maps"
 import { db } from "@/db/app/instance"
+import { cn } from "@/lib/utils"
 import { product, status } from "@/orm/app/schema"
 import { and, eq } from "drizzle-orm"
 import { PlusCircleIcon } from "lucide-react"
@@ -15,6 +17,8 @@ type Props = {
     status?: (typeof status.enumValues)[number]
   }>
 }
+
+const LIST = status.enumValues.sort()
 
 const Page = async ({ params, searchParams }: Props) => {
   const t = await getTranslations()
@@ -29,7 +33,33 @@ const Page = async ({ params, searchParams }: Props) => {
   return (
     <>
       <div className="mb-3 flex flex-row justify-between">
-        <StatusTabs defaultValue={status} />
+        <Tabs defaultValue={status}>
+          <TabsList>
+            {LIST.map((item) => {
+              const Icon = mapStatusIcon(item)
+              const isActive = item === status
+              return (
+                <Link
+                  key={item}
+                  href={`/o/${orgId}/u/${unitId}/product/list?status=${item}`}
+                  passHref
+                >
+                  <TabsTrigger value={item} className="flex items-center gap-2">
+                    <Icon size={20} />
+                    <span
+                      className={cn(
+                        "sr-only sm:not-sr-only",
+                        isActive && "not-sr-only"
+                      )}
+                    >
+                      {t(item)}
+                    </span>
+                  </TabsTrigger>
+                </Link>
+              )
+            })}
+          </TabsList>
+        </Tabs>
         <Link href={`/o/${orgId}/u/${unitId}/product/create`} passHref>
           <Button>
             <PlusCircleIcon />
