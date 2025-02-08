@@ -40,11 +40,14 @@ import {
   CheckIcon,
   ChevronsUpDownIcon,
   DownloadIcon,
+  GridIcon,
   MinusIcon,
   PackageSearchIcon,
   PlusCircleIcon,
   PlusIcon,
   PrinterIcon,
+  ShoppingCartIcon,
+  StarIcon,
   XIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -316,8 +319,14 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
             onValueChange={(value) => setActiveTab(value as ProductTab)}
           >
             <TabsList>
-              <TabsTrigger value="all">{t("All")}</TabsTrigger>
-              <TabsTrigger value="favorite">{t("Favorite")}</TabsTrigger>
+              <TabsTrigger value="all" className="flex items-center gap-2">
+                <GridIcon size={20} />
+                {t("All")}
+              </TabsTrigger>
+              <TabsTrigger value="favorite" className="flex items-center gap-2">
+                <StarIcon size={20} />
+                {t("Favorite")}
+              </TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -329,86 +338,84 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
         />
       </CardHeader>
       <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">
-        {hasProducts ? (
-          tabFilteredProducts.map((product) => {
-            const { id, imageBucketPath, name, unit, price } = product
-            const existingIdx = rows.findIndex((row) => row.productId === id)
-            const existing = existingIdx !== -1 ? rows[existingIdx] : null
-            const quantity = existing?.quantity || 0
+        {tabFilteredProducts.length === 0 && <NoProductsFound />}
 
-            const finalPrice = price / exchangeRate
+        {tabFilteredProducts.map((product) => {
+          const { id, imageBucketPath, name, unit, price } = product
+          const existingIdx = rows.findIndex((row) => row.productId === id)
+          const existing = existingIdx !== -1 ? rows[existingIdx] : null
+          const quantity = existing?.quantity || 0
 
-            return (
-              <motion.div
-                key={id}
-                whileTap={{ scale: 0.95 }}
-                transition={{ type: "spring", stiffness: 400, damping: 17 }}
-              >
-                <Card
-                  className={cn(
-                    "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
-                    quantity > 0 && "bg-primary/5"
-                  )}
-                  onClick={() => {
-                    if (existing)
-                      return form.setValue(
-                        `rows.${existingIdx}.quantity`,
-                        existing.quantity + 1
-                      )
+          const finalPrice = price / exchangeRate
 
-                    form.setValue(
-                      "rows",
-                      [
-                        ...rows,
-                        {
-                          ...product,
-                          productId: product.id,
-                          quantity: 1,
-                          product,
-                        },
-                      ],
-                      {
-                        shouldDirty: true,
-                      }
+          return (
+            <motion.div
+              key={id}
+              whileTap={{ scale: 0.95 }}
+              transition={{ type: "spring", stiffness: 400, damping: 17 }}
+            >
+              <Card
+                className={cn(
+                  "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
+                  quantity > 0 && "bg-primary/5"
+                )}
+                onClick={() => {
+                  if (existing)
+                    return form.setValue(
+                      `rows.${existingIdx}.quantity`,
+                      existing.quantity + 1
                     )
-                  }}
-                >
-                  <figure className="relative group-hover:opacity-90">
-                    {quantity > 0 && (
-                      <Badge className="absolute left-1.5 top-1.5">
-                        {quantity}
-                      </Badge>
-                    )}
-                    <Image
-                      className="aspect-square w-full object-cover"
-                      src={
-                        imageBucketPath
-                          ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
-                          : "/placeholder.svg"
-                      }
-                      width={200}
-                      height={200}
-                      alt={name}
-                    />
-                  </figure>
-                  <CardContent className="!mt-0 flex h-24 flex-col justify-between p-2">
-                    <div>
-                      <h3 className="truncate text-lg font-semibold">{name}</h3>
-                      <p className="text-sm text-muted-foreground">{t(unit)}</p>
-                    </div>
-                    <Price
-                      price={finalPrice}
-                      currency={currency}
-                      className="justify-end"
-                    />
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )
-          })
-        ) : (
-          <NoProductsFound />
-        )}
+
+                  form.setValue(
+                    "rows",
+                    [
+                      ...rows,
+                      {
+                        ...product,
+                        productId: product.id,
+                        quantity: 1,
+                        product,
+                      },
+                    ],
+                    {
+                      shouldDirty: true,
+                    }
+                  )
+                }}
+              >
+                <figure className="relative group-hover:opacity-90">
+                  {quantity > 0 && (
+                    <Badge className="absolute left-1.5 top-1.5">
+                      {quantity}
+                    </Badge>
+                  )}
+                  <Image
+                    className="aspect-square w-full object-cover"
+                    src={
+                      imageBucketPath
+                        ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
+                        : "/placeholder.svg"
+                    }
+                    width={200}
+                    height={200}
+                    alt={name}
+                  />
+                </figure>
+                <CardContent className="!mt-0 flex h-24 flex-col justify-between p-2">
+                  <div>
+                    <h3 className="truncate text-lg font-semibold">{name}</h3>
+                    <p className="text-sm text-muted-foreground">{t(unit)}</p>
+                  </div>
+                  <Price
+                    price={finalPrice}
+                    currency={currency}
+                    className="justify-end"
+                  />
+                </CardContent>
+              </Card>
+            </motion.div>
+          )
+        })}
       </CardContent>
     </Card>
   )
@@ -430,6 +437,16 @@ const NoProductsFound = () => {
     </div>
   )
 }
+const NoCheckoutProducts = () => {
+  const t = useTranslations()
+  return (
+    <div className="flex flex-col items-center justify-center py-6 text-center text-muted-foreground">
+      <ShoppingCartIcon className="mb-4 h-12 w-12" />
+      <p className="mb-2 text-lg font-semibold">{t("Your cart is empty")}</p>
+      <p>{t("Add some products to your cart to get started")}</p>
+    </div>
+  )
+}
 
 const CheckoutCard = () => {
   const t = useTranslations()
@@ -447,9 +464,10 @@ const CheckoutCard = () => {
           {t("Review the invoice and proceed to checkout")}
         </CardDescription>
       </CardHeader>
-      {/* TODO: remove hardcoded max height */}
       <CardContent className="max-h-96 overflow-y-scroll">
         <div className="flex flex-col gap-2">
+          {rows.length === 0 && <NoCheckoutProducts />}
+
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
             const { imageBucketPath, description, unit } = row.product || {}
