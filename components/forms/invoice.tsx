@@ -348,10 +348,7 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
               >
                 <figure className="relative group-hover:opacity-90">
                   {quantity > 0 && (
-                    <Badge
-                      className="absolute left-1.5 top-1.5"
-                      variant="destructive"
-                    >
+                    <Badge className="absolute left-1.5 top-1.5">
                       {quantity}
                     </Badge>
                   )}
