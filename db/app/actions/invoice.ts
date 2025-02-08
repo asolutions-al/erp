@@ -1,4 +1,5 @@
 "use server"
+import "server-only"
 
 import { db } from "@/db/app/instance"
 import { invoice, invoiceRow } from "@/orm/app/schema"

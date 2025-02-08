@@ -1,4 +1,5 @@
 "use server"
+import "server-only"
 
 import { defaultLocale, Locale } from "@/i18n"
 import { cookies } from "next/headers"

@@ -1,3 +1,5 @@
+import "server-only"
+
 import * as relations from "@/orm/app/relations"
 import * as schema from "@/orm/app/schema"
 import { drizzle } from "drizzle-orm/postgres-js"

@@ -1,4 +1,5 @@
 "use server"
+import "server-only"
 
 import { createAuthClient } from "@/db/auth/client"
 import { getAuthRedirectUrl } from "@/lib/utils"
