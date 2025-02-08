@@ -29,6 +29,7 @@ const defaultValues: SchemaT = {
   idType: "id",
   idValue: "",
   imageBucketPath: "",
+  isFavorite: false,
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

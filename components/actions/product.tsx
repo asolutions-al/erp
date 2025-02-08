@@ -6,21 +6,32 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { markProductAsFavorite } from "@/db/app/actions"
 import { ProductSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
-import { CopyPlusIcon, EditIcon, MoreHorizontalIcon } from "lucide-react"
+import {
+  CopyPlusIcon,
+  EditIcon,
+  MoreHorizontalIcon,
+  StarIcon,
+  StarOffIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type SchemaT = ProductSchemaT
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
+  const { original } = row
   const t = useTranslations()
   const { unitId, orgId } = useParams()
-  const { original } = row
+  const router = useRouter()
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -31,6 +42,8 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
         <Link
           href={`/o/${orgId}/u/${unitId}/product/update/${original.id}`}
           passHref
@@ -49,6 +62,26 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
             {t("Duplicate")}
           </DropdownMenuItem>
         </Link>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem
+          onClick={async () => {
+            try {
+              await markProductAsFavorite({
+                id: original.id,
+                isFavorite: !original.isFavorite,
+              })
+              toast.success(t("Product saved successfully"))
+              router.refresh()
+            } catch (error) {
+              toast.error(t("An error occurred"))
+            }
+          }}
+        >
+          {original.isFavorite ? <StarOffIcon /> : <StarIcon />}
+          {original.isFavorite
+            ? t("Unmark as favorite")
+            : t("Mark as favorite")}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

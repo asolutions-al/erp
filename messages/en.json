@@ -244,5 +244,10 @@
   "Create new product": "Create new product",
   "All": "All",
   "Your cart is empty": "Your cart is empty",
-  "Add some products to your cart to get started": "Add some products to your cart to get started"
+  "Add some products to your cart to get started": "Add some products to your cart to get started",
+  "Yes": "Yes",
+  "No": "No",
+  "Mark as favorite": "Mark as favorite",
+  "Failed to mark as favorite": "Failed to mark as favorite",
+  "Unmark as favorite": "Unmark as favorite"
 }

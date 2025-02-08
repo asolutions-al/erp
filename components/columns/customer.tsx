@@ -6,9 +6,16 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
-import { ColumnDef } from "@tanstack/react-table"
+import { CellContext, ColumnDef } from "@tanstack/react-table"
+import { useTranslations } from "next-intl"
 
 type SchemaT = CustomerSchemaT
+
+const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const { original } = row
+  const t = useTranslations()
+  return original.isFavorite ? t("Yes") : t("No")
+}
 
 const columns: ColumnDef<SchemaT>[] = [
   {
@@ -44,6 +51,11 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "email",
     header: ({ column }) => <SortBtn text="Email" column={column} />,
+  },
+  {
+    accessorKey: "isFavorite",
+    header: ({ column }) => <SortBtn text="Favorite" column={column} />,
+    cell: FavoriteCell,
   },
   {
     id: "actions",

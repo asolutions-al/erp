@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -38,6 +39,7 @@ import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
+import { Switch } from "../ui/switch"
 
 type SchemaT = CustomerFormSchemaT
 
@@ -136,6 +138,8 @@ const Form = ({ performAction }: Props) => {
                 />
               </CardContent>
             </Card>
+
+            <SettingsCard />
             <Card>
               <CardHeader>
                 <CardTitle>{t("Images")}</CardTitle>
@@ -376,6 +380,45 @@ const AdditionalCard = () => {
             </FormItem>
           )}
         />
+      </CardContent>
+    </Card>
+  )
+}
+
+const SettingsCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Settings")}</CardTitle>
+        <CardDescription>
+          {t("Configure additional product settings")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <FormField
+          control={form.control}
+          name="isFavorite"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>{t("Favorite")}</FormLabel>
+                <FormDescription>
+                  {t("Mark this product as a favorite")}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        {/* Add more toggles here as needed */}
       </CardContent>
     </Card>
   )

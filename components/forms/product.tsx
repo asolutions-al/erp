@@ -434,9 +434,9 @@ const StatusCard = () => {
   )
 }
 
-export const SettingsCard = () => {
+const SettingsCard = () => {
   const t = useTranslations()
-  const form = useFormContext<ProductFormSchemaT>()
+  const form = useFormContext<SchemaT>()
 
   return (
     <Card>
@@ -467,7 +467,6 @@ export const SettingsCard = () => {
             </FormItem>
           )}
         />
-        {/* Add more toggles here as needed */}
       </CardContent>
     </Card>
   )

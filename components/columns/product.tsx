@@ -27,6 +27,12 @@ const TaxCell = ({ row }: CellContext<SchemaT, unknown>) => {
   return t(original.taxType)
 }
 
+const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const { original } = row
+  const t = useTranslations()
+  return original.isFavorite ? t("Yes") : t("No")
+}
+
 const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
@@ -72,6 +78,11 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,
     cell: StatusCell,
+  },
+  {
+    accessorKey: "isFavorite",
+    header: ({ column }) => <SortBtn text="Favorite" column={column} />,
+    cell: FavoriteCell,
   },
   {
     id: "actions",

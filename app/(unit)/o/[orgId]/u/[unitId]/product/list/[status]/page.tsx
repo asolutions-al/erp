@@ -3,7 +3,7 @@ import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { product } from "@/orm/app/schema"
 import { StatusT } from "@/types/enum"
-import { and, eq } from "drizzle-orm"
+import { and, asc, desc, eq } from "drizzle-orm"
 
 type Props = {
   params: Promise<{ unitId: string; status: StatusT }>
@@ -14,7 +14,7 @@ const Page = async ({ params }: Props) => {
 
   const data = await db.query.product.findMany({
     where: and(eq(product.unitId, unitId), eq(product.status, status)),
-    orderBy: product.name,
+    orderBy: asc(product.name),
   })
 
   return <DataTable columns={productColumns} data={data} />

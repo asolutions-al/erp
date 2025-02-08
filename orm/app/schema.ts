@@ -133,6 +133,7 @@ export const customer = pgTable(
     city: text(),
     idValue: text(),
     orgId: uuid().notNull(),
+    isFavorite: boolean().notNull(),
   },
   (table) => [
     foreignKey({

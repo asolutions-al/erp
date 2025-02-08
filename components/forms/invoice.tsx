@@ -31,7 +31,7 @@ import { publicStorageUrl } from "@/contants/consts"
 import { mapPayMethodIcon } from "@/contants/maps"
 import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
-import { payMethod, recordStatus } from "@/orm/app/schema"
+import { payMethod } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm } from "@/utils/calc"
 import { motion } from "framer-motion"
@@ -52,6 +52,8 @@ import {
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
+import Link from "next/link"
+import { useParams } from "next/navigation"
 import { useState } from "react"
 import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
@@ -59,18 +61,9 @@ import { Price } from "../price"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
+import { FormField, FormItem, FormMessage } from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../ui/select"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
-import Link from "next/link"
-import { useParams } from "next/navigation"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -166,18 +159,43 @@ const Form = ({ performAction, products, customers }: Props) => {
   )
 }
 
+type CustomerTabT = "all" | "favorite"
+
 const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
   const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
+
+  const tabFilteredCustomers =
+    activeTab === "all"
+      ? customers
+      : customers.filter((customer) => customer.isFavorite)
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("Customer")}</CardTitle>
-        <CardDescription>
-          {t("The person that will receive the invoice")}
-        </CardDescription>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Customer")}</CardTitle>
+          <CardDescription>
+            {t("The person that will receive the invoice")}
+          </CardDescription>
+        </div>
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as CustomerTabT)}
+        >
+          <TabsList>
+            <TabsTrigger value="all" className="flex items-center gap-2">
+              <GridIcon size={20} />
+              {t("All")}
+            </TabsTrigger>
+            <TabsTrigger value="favorite" className="flex items-center gap-2">
+              <StarIcon size={20} />
+              {t("Favorite")}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
       </CardHeader>
       <CardContent>
         <FormField
@@ -198,7 +216,9 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                       className="w-60 justify-between"
                     >
                       {field.value
-                        ? customers.find((li) => li.id === field.value)?.name
+                        ? tabFilteredCustomers.find(
+                            (li) => li.id === field.value
+                          )?.name
                         : `${t("Select customer")}...`}
                       <ChevronsUpDownIcon className="opacity-50" />
                     </Button>
@@ -211,7 +231,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                       <CommandList>
                         <CommandEmpty>{t("No customer found")}.</CommandEmpty>
                         <CommandGroup>
-                          {customers.map((customer) => {
+                          {tabFilteredCustomers.map((customer) => {
                             const {
                               idType,
                               idValue,
@@ -276,14 +296,14 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   )
 }
 
-type ProductTab = "all" | "favorite"
+type ProductTabT = "all" | "favorite"
 
 const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
   const [search, setSearch] = useState("")
-  const [activeTab, setActiveTab] = useState<ProductTab>("all")
+  const [activeTab, setActiveTab] = useState<ProductTabT>("all")
 
   const [rows, currency, exchangeRate] = useWatch({
     name: ["rows", "currency", "exchangeRate"],
@@ -304,19 +324,17 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
       ? seachFilteredProducts
       : seachFilteredProducts.filter((product) => product.isFavorite)
 
-  const hasProducts = tabFilteredProducts.length > 0
-
   return (
     <Card>
       <CardHeader>
-        <div className="mb-4 flex items-center justify-between">
-          <div>
+        <div className="mb-2 flex items-center justify-between">
+          <div className="space-y-1.5">
             <CardTitle>{t("Products")}</CardTitle>
             <CardDescription>{t("List of products to sell")}</CardDescription>
           </div>
           <Tabs
             value={activeTab}
-            onValueChange={(value) => setActiveTab(value as ProductTab)}
+            onValueChange={(value) => setActiveTab(value as ProductTabT)}
           >
             <TabsList>
               <TabsTrigger value="all" className="flex items-center gap-2">
@@ -335,6 +353,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           placeholder={t("Name, price") + "..."}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          className="max-w-sm"
         />
       </CardHeader>
       <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">
@@ -645,45 +664,6 @@ const Summary = () => {
           <span className="text-lg font-semibold">{t("Total")}</span>
           <Price price={calcs.total} currency={currency} className="text-lg" />
         </div>
-      </CardContent>
-    </Card>
-  )
-}
-
-const StatusCard = () => {
-  const t = useTranslations()
-  const form = useFormContext<SchemaT>()
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
-        <CardDescription>{t("Current status of the invoice")}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <FormField
-          control={form.control}
-          name="status"
-          render={({ field }) => (
-            <FormItem>
-              <Select value={field.value || ""} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger aria-label={t("Select status")}>
-                    <SelectValue placeholder={t("Select status")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {recordStatus.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
       </CardContent>
     </Card>
   )

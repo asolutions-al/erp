@@ -244,5 +244,10 @@
   "Create new product": "Krijo produkt të ri",
   "All": "Të gjitha",
   "Your cart is empty": "Shporta juaj është e zbrazët",
-  "Add some products to your cart to get started": "Shtoni disa produkte në shportën tuaj për të filluar"
+  "Add some products to your cart to get started": "Shtoni disa produkte në shportën tuaj për të filluar",
+  "Yes": "Po",
+  "No": "Jo",
+  "Mark as favorite": "Shëno si të preferuar",
+  "Failed to mark as favorite": "Dështoi të shënohet si i preferuar",
+  "Unmark as favorite": "Hiq si i preferuar"
 }
