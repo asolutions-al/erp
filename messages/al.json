@@ -236,5 +236,11 @@
   "Permanently remove your Personal Account and all of its contents from our platform": "Hiqni përgjithmonë Llogarinë Tuaj Personale dhe të gjitha përmbajtjet e saj nga platforma jonë",
   "This action is not reversible, so please continue with caution": "Kjo veprim nuk është i kthyeshëm, kështu që ju lutemi vazhdoni me kujdes",
   "Select organization": "Zgjidh organizatën",
-  "System": "Sistemi"
+  "System": "Sistemi",
+  "Favorite": "I preferuar",
+  "Configure additional product settings": "Konfiguro cilësimet e shtesë të produktit",
+  "Mark this product as a favorite": "Shëno këtë produkt si të preferuar",
+  "No products found": "Nuk u gjetën produkte",
+  "Create new product": "Krijo produkt të ri",
+  "All": "Të gjitha"
 }

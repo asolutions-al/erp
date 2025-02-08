@@ -27,6 +27,7 @@ const defaultValues: SchemaT = {
   description: "",
   unit: "XPP",
   taxType: "0",
+  isFavorite: false,
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

@@ -236,5 +236,11 @@
   "Permanently remove your Personal Account and all of its contents from our platform": "Permanently remove your Personal Account and all of its contents from our platform",
   "This action is not reversible, so please continue with caution": "This action is not reversible, so please continue with caution",
   "Select organization": "Select organization",
-  "System": "System"
+  "System": "System",
+  "Favorite": "Favorite",
+  "Configure additional product settings": "Configure additional product settings",
+  "Mark this product as a favorite": "Mark this product as a favorite",
+  "No products found": "No products found",
+  "Create new product": "Create new product",
+  "All": "All"
 }

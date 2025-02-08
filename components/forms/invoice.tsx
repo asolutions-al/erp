@@ -41,6 +41,8 @@ import {
   ChevronsUpDownIcon,
   DownloadIcon,
   MinusIcon,
+  PackageSearchIcon,
+  PlusCircleIcon,
   PlusIcon,
   PrinterIcon,
   XIcon,
@@ -64,6 +66,8 @@ import {
   SelectValue,
 } from "../ui/select"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+import Link from "next/link"
+import { useParams } from "next/navigation"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -269,11 +273,14 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   )
 }
 
-export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
+type ProductTab = "all" | "favorite"
+
+const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
   const [search, setSearch] = useState("")
+  const [activeTab, setActiveTab] = useState<ProductTab>("all")
 
   const [rows, currency, exchangeRate] = useWatch({
     name: ["rows", "currency", "exchangeRate"],
@@ -285,15 +292,35 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
     threshold: 0.3,
   })
 
-  const filteredProducts = search
+  const seachFilteredProducts = search
     ? fuse.search(search).map((result) => result.item)
     : products
+
+  const tabFilteredProducts =
+    activeTab === "all"
+      ? seachFilteredProducts
+      : seachFilteredProducts.filter((product) => product.isFavorite)
+
+  const hasProducts = tabFilteredProducts.length > 0
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Products")}</CardTitle>
-        <CardDescription>{t("List of products to sell")}</CardDescription>
+        <div className="mb-4 flex items-center justify-between">
+          <div>
+            <CardTitle>{t("Products")}</CardTitle>
+            <CardDescription>{t("List of products to sell")}</CardDescription>
+          </div>
+          <Tabs
+            value={activeTab}
+            onValueChange={(value) => setActiveTab(value as ProductTab)}
+          >
+            <TabsList>
+              <TabsTrigger value="all">{t("All")}</TabsTrigger>
+              <TabsTrigger value="favorite">{t("Favorite")}</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
         <Input
           type="text"
           placeholder={t("Name, price") + "..."}
@@ -301,86 +328,106 @@ export const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           onChange={(e) => setSearch(e.target.value)}
         />
       </CardHeader>
-      {/* TODO: remove hardcoded max height */}
-      <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-scroll sm:grid-cols-3 xl:grid-cols-4">
-        {filteredProducts.map((product) => {
-          const { id, imageBucketPath, name, unit, price } = product
-          const existingIdx = rows.findIndex((row) => row.productId === id)
-          const existing = existingIdx !== -1 ? rows[existingIdx] : null
-          const quantity = existing?.quantity || 0
+      <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">
+        {hasProducts ? (
+          tabFilteredProducts.map((product) => {
+            const { id, imageBucketPath, name, unit, price } = product
+            const existingIdx = rows.findIndex((row) => row.productId === id)
+            const existing = existingIdx !== -1 ? rows[existingIdx] : null
+            const quantity = existing?.quantity || 0
 
-          const finalPrice = price / exchangeRate
+            const finalPrice = price / exchangeRate
 
-          return (
-            <motion.div
-              key={id}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 17 }}
-            >
-              <Card
-                className={cn(
-                  "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
-                  quantity > 0 && "bg-primary/5"
-                )}
-                onClick={() => {
-                  if (existing)
-                    return form.setValue(
-                      `rows.${existingIdx}.quantity`,
-                      existing.quantity + 1
-                    )
-
-                  form.setValue(
-                    "rows",
-                    [
-                      ...rows,
-                      {
-                        ...product,
-                        productId: product.id,
-                        quantity: 1,
-                        product,
-                      },
-                    ],
-                    {
-                      shouldDirty: true,
-                    }
-                  )
-                }}
+            return (
+              <motion.div
+                key={id}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
-                <figure className="relative group-hover:opacity-90">
-                  {quantity > 0 && (
-                    <Badge className="absolute left-1.5 top-1.5">
-                      {quantity}
-                    </Badge>
+                <Card
+                  className={cn(
+                    "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
+                    quantity > 0 && "bg-primary/5"
                   )}
-                  <Image
-                    className="aspect-square w-full object-cover"
-                    src={
-                      imageBucketPath
-                        ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
-                        : "/placeholder.svg"
-                    }
-                    width={200}
-                    height={200}
-                    alt={name}
-                  />
-                </figure>
-                <CardContent className="!mt-0 flex h-24 flex-col justify-between p-2">
-                  <div>
-                    <h3 className="truncate text-lg font-semibold">{name}</h3>
-                    <p className="text-sm text-muted-foreground">{t(unit)}</p>
-                  </div>
-                  <Price
-                    price={finalPrice}
-                    currency={currency}
-                    className="justify-end"
-                  />
-                </CardContent>
-              </Card>
-            </motion.div>
-          )
-        })}
+                  onClick={() => {
+                    if (existing)
+                      return form.setValue(
+                        `rows.${existingIdx}.quantity`,
+                        existing.quantity + 1
+                      )
+
+                    form.setValue(
+                      "rows",
+                      [
+                        ...rows,
+                        {
+                          ...product,
+                          productId: product.id,
+                          quantity: 1,
+                          product,
+                        },
+                      ],
+                      {
+                        shouldDirty: true,
+                      }
+                    )
+                  }}
+                >
+                  <figure className="relative group-hover:opacity-90">
+                    {quantity > 0 && (
+                      <Badge className="absolute left-1.5 top-1.5">
+                        {quantity}
+                      </Badge>
+                    )}
+                    <Image
+                      className="aspect-square w-full object-cover"
+                      src={
+                        imageBucketPath
+                          ? `${publicStorageUrl}/${productImagesBucket}/${imageBucketPath}`
+                          : "/placeholder.svg"
+                      }
+                      width={200}
+                      height={200}
+                      alt={name}
+                    />
+                  </figure>
+                  <CardContent className="!mt-0 flex h-24 flex-col justify-between p-2">
+                    <div>
+                      <h3 className="truncate text-lg font-semibold">{name}</h3>
+                      <p className="text-sm text-muted-foreground">{t(unit)}</p>
+                    </div>
+                    <Price
+                      price={finalPrice}
+                      currency={currency}
+                      className="justify-end"
+                    />
+                  </CardContent>
+                </Card>
+              </motion.div>
+            )
+          })
+        ) : (
+          <NoProductsFound />
+        )}
       </CardContent>
     </Card>
+  )
+}
+
+const NoProductsFound = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<GlobalParams>()
+  return (
+    <div className="col-span-full flex flex-col items-center justify-center py-8 text-muted-foreground">
+      <PackageSearchIcon className="mb-4 h-12 w-12" />
+      <p className="mb-4">{t("No products found")}</p>
+      <Link href={`/o/${orgId}/u/${unitId}/product/create`} passHref>
+        <Button>
+          <PlusCircleIcon className="mr-2 h-4 w-4" />
+          {t("Create new product")}
+        </Button>
+      </Link>
+    </div>
   )
 }
 

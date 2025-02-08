@@ -285,6 +285,7 @@ export const product = pgTable(
     orgId: uuid().notNull(),
     unit: productUnit().notNull(),
     taxType: taxType().notNull(),
+    isFavorite: boolean().notNull(),
   },
   (table) => [
     foreignKey({
