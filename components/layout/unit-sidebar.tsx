@@ -104,7 +104,7 @@ const UnitSidebar = async (props: Props) => {
                 <CollapsibleContent>
                   <SidebarMenuSub>
                     <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/customer/list`}
+                      href={`/o/${orgId}/u/${unitId}/customer/list/active`}
                       text="List"
                       icon={<ListTreeIcon />}
                     />

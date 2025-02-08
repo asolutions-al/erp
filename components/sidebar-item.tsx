@@ -9,7 +9,6 @@ import {
   SidebarMenuSubItem,
   useSidebar,
 } from "./ui/sidebar"
-import { SidebarIcon } from "lucide-react"
 
 type Props = {
   href: string
