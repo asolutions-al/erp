@@ -42,7 +42,6 @@ const Page = async ({ params, searchParams }: Props) => {
                 <Link
                   key={item}
                   href={`/o/${orgId}/u/${unitId}/product/list?status=${item}`}
-                  passHref
                 >
                   <TabsTrigger value={item} className="flex items-center gap-2">
                     <Icon size={20} />
