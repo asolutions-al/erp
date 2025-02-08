@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { status } from "@/orm/app/schema"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 const LIST = status.enumValues.sort()
 
@@ -18,6 +18,7 @@ const StatusTabs = ({
   const t = useTranslations()
   const pathname = usePathname()
   const param = useSearchParams().get("range") || defaultValue
+  const router = useRouter()
 
   return (
     <Tabs defaultValue={defaultValue}>
@@ -26,26 +27,24 @@ const StatusTabs = ({
           const Icon = mapStatusIcon(item)
           const isActive = item === param
           return (
-            <Link
-              key={item}
-              href={{
-                pathname,
-                query: { status: item },
+            <TabsTrigger
+              value={item}
+              className="flex items-center gap-2"
+              onClick={() => {
+                router.push(`${pathname}?status=${item}`)
               }}
-              passHref
+              key={item}
             >
-              <TabsTrigger value={item} className="flex items-center gap-2">
-                <Icon size={20} />
-                <span
-                  className={cn(
-                    "sr-only sm:not-sr-only",
-                    isActive && "not-sr-only"
-                  )}
-                >
-                  {t(item)}
-                </span>
-              </TabsTrigger>
-            </Link>
+              <Icon size={20} />
+              <span
+                className={cn(
+                  "sr-only sm:not-sr-only",
+                  isActive && "not-sr-only"
+                )}
+              >
+                {t(item)}
+              </span>
+            </TabsTrigger>
           )
         })}
       </TabsList>

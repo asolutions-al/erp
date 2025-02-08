@@ -16,8 +16,6 @@ type Props = {
   }>
 }
 
-const LIST = status.enumValues.sort()
-
 const Page = async ({ params, searchParams }: Props) => {
   const t = await getTranslations()
   const { orgId, unitId } = await params
