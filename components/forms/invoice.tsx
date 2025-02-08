@@ -549,6 +549,7 @@ const CheckoutCard = () => {
                             }
                             className="w-20 text-center"
                             min="1"
+                            onFocus={(e) => e.target.select()}
                           />
                           <Button
                             variant="outline"
