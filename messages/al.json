@@ -249,5 +249,12 @@
   "No": "Jo",
   "Mark as favorite": "Shëno si të preferuar",
   "Failed to mark as favorite": "Dështoi të shënohet si i preferuar",
-  "Unmark as favorite": "Hiq si i preferuar"
+  "Unmark as favorite": "Hiq si i preferuar",
+  "Configuration": "Konfigurimi",
+  "Config saved successfully": "Konfigurimi u ruajt me sukses",
+  "Currency of the invoice": "Monedha e faturës",
+  "Customer of the invoice": "Klienti i faturës",
+  "Pay method": "Metoda e pagesës",
+  "Select pay method": "Zgjidh metoden e pagesës",
+  "Invoice configuration": "Konfigurimi i faturës"
 }

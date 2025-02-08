@@ -115,6 +115,44 @@ export const organization = pgTable(
   ]
 )
 
+export const invoiceConfig = pgTable(
+  "invoiceConfig",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    orgId: uuid().notNull(),
+    unitId: uuid().notNull(),
+    currency: currency(),
+    payMethod: payMethod(),
+    customerId: uuid(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.customerId],
+      foreignColumns: [customer.id],
+      name: "invoiceConfig_invoice.customerId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.orgId],
+      foreignColumns: [organization.id],
+      name: "invoiceConfig_orgId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.unitId],
+      foreignColumns: [unit.id],
+      name: "invoiceConfig_unitId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
 export const customer = pgTable(
   "customer",
   {

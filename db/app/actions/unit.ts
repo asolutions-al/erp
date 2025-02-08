@@ -13,7 +13,7 @@ const create = async ({
 }: {
   values: FormSchemaT
   orgId: string
-}) =>
+}) => {
   await db
     .insert(unit)
     .values({
@@ -23,5 +23,6 @@ const create = async ({
     .returning({
       id: unit.id,
     })
+}
 
 export { create as createUnit }

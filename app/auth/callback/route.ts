@@ -2,6 +2,7 @@ import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { getAuthRedirectUrl } from "@/lib/utils"
 import {
+  invoiceConfig,
   organization,
   orgMember,
   user as schUser,
@@ -94,6 +95,7 @@ export async function GET(request: Request) {
 
       return {
         orgId: orgRes.id,
+        unitId: unitRes.id,
       }
     })
 
@@ -115,6 +117,12 @@ export async function GET(request: Request) {
           defaultOrgId: transRes.orgId,
         })
         .where(eq(schUser.id, userId))
+      db.insert(invoiceConfig).values({
+        unitId: transRes.unitId,
+        orgId: transRes.orgId,
+        payMethod: "cash",
+        currency: "all", // TODO: use geo location to determine currency
+      })
     } catch (error) {
       console.error("Background tasks failed", error)
     }

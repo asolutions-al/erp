@@ -249,5 +249,12 @@
   "No": "No",
   "Mark as favorite": "Mark as favorite",
   "Failed to mark as favorite": "Failed to mark as favorite",
-  "Unmark as favorite": "Unmark as favorite"
+  "Unmark as favorite": "Unmark as favorite",
+  "Configuration": "Configuration",
+  "Config saved successfully": "Config saved successfully",
+  "Currency of the invoice": "Currency of the invoice",
+  "Customer of the invoice": "Customer of the invoice",
+  "Pay method": "Pay method",
+  "Select pay method": "Select pay method",
+  "Invoice configuration": "Invoice configuration"
 }

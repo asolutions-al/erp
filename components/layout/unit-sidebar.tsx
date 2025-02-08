@@ -17,27 +17,22 @@ import {
 } from "@/components/ui/sidebar"
 import {
   ArrowLeftIcon,
-  BuildingIcon,
   ChevronRight,
   CirclePlusIcon,
   ContactIcon,
-  HomeIcon,
   ListTreeIcon,
   PackageIcon,
   ReceiptTextIcon,
   SettingsIcon,
-  StoreIcon,
-  SunMoonIcon,
-  UserIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
 import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
-import Link from "next/link"
 
 type Props = PropsWithChildren<{
   params: Promise<GlobalParams>
@@ -137,6 +132,26 @@ const UnitSidebar = async (props: Props) => {
                       href={`/o/${orgId}/u/${unitId}/invoice/create`}
                       text="Create"
                       icon={<CirclePlusIcon />}
+                    />
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+            <Collapsible asChild defaultOpen className="group/collapsible">
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={t("Configuration")}>
+                    <SettingsIcon />
+                    <span className="font-semibold">{t("Configuration")}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarItem
+                      href={`/o/${orgId}/u/${unitId}/config/invoice`}
+                      text="Invoice"
+                      icon={<ReceiptTextIcon />}
                     />
                   </SidebarMenuSub>
                 </CollapsibleContent>

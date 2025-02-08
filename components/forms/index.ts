@@ -1,5 +1,6 @@
 export * from "./customer"
 export * from "./invoice"
+export * from "./invoiceConfig"
 export * from "./product"
 export * from "./unit"
 export * from "./user"

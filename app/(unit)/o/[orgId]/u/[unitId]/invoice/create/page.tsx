@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { product } from "@/orm/app/schema"
+import { customer, product } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { eq } from "drizzle-orm"
 import { Settings2Icon } from "lucide-react"
@@ -31,7 +31,7 @@ const Page = async ({ params }: Props) => {
       where: eq(product.unitId, unitId),
     }),
     db.query.customer.findMany({
-      where: eq(product.unitId, unitId),
+      where: eq(customer.unitId, unitId),
     }),
   ])
 

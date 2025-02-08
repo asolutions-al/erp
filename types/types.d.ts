@@ -1,4 +1,10 @@
-type FormId = "product" | "invoice" | "unit" | "user" | "customer"
+type FormId =
+  | "product"
+  | "invoice"
+  | "unit"
+  | "user"
+  | "customer"
+  | "invoiceConfig"
 type RangeT =
   | "today"
   | "yesterday"

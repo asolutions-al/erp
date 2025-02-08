@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm"
 
 type FormSchemaT = ProductFormSchemaT
 
-const create = ({
+const create = async ({
   values,
   unitId,
   orgId,
@@ -16,15 +16,17 @@ const create = ({
   values: FormSchemaT
   unitId: string
   orgId: string
-}) =>
-  db.insert(product).values({
+}) => {
+  await db.insert(product).values({
     ...values,
     unitId,
     orgId,
   })
+}
 
-const update = ({ values, id }: { values: FormSchemaT; id: string }) =>
-  db.update(product).set(values).where(eq(product.id, id))
+const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
+  await db.update(product).set(values).where(eq(product.id, id))
+}
 
 const markAsFavorite = async ({
   id,
@@ -32,7 +34,9 @@ const markAsFavorite = async ({
 }: {
   id: string
   isFavorite: boolean
-}) => db.update(product).set({ isFavorite }).where(eq(product.id, id))
+}) => {
+  await db.update(product).set({ isFavorite }).where(eq(product.id, id))
+}
 
 export {
   create as createProduct,
