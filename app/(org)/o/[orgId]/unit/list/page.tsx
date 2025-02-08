@@ -2,8 +2,7 @@ import { UnitCard } from "@/components/cards"
 import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
-import { unitMember } from "@/orm/app/schema"
+import { unit } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -15,18 +14,10 @@ type Props = {
 const Page = async ({ params }: Props) => {
   const { orgId } = await params
   const t = await getTranslations()
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  const userId = user!.id
 
-  const members = await db.query.unitMember.findMany({
-    where: eq(unitMember.userId, userId),
-    with: { unit: true },
+  const data = await db.query.unit.findMany({
+    where: eq(unit.orgId, orgId),
   })
-
-  const unitsList = members.map((member) => member.unit)
 
   return (
     <>
@@ -45,7 +36,7 @@ const Page = async ({ params }: Props) => {
         className="mb-2"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
-        {unitsList.map((unit) => (
+        {data.map((unit) => (
           <Link
             key={unit.id}
             href={`/o/${orgId}/u/${unit.id}/product/list/active`}

@@ -211,35 +211,6 @@ export const invitation = pgTable(
   ]
 )
 
-export const unitMember = pgTable(
-  "unitMember",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    createdAt: timestamp({ withTimezone: true, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    unitId: uuid().notNull(),
-    userId: uuid().notNull(),
-    role: role().notNull(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.unitId],
-      foreignColumns: [unit.id],
-      name: "unitMember_unitId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-    foreignKey({
-      columns: [table.userId],
-      foreignColumns: [user.id],
-      name: "unitMember_userId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-  ]
-)
-
 export const orgMember = pgTable(
   "orgMember",
   {

@@ -3,7 +3,7 @@ import { Loading } from "@/components/layout/loading"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { organization, unitMember } from "@/orm/app/schema"
+import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import { Suspense } from "react"
@@ -16,22 +16,8 @@ const List = async () => {
 
   if (!user) return null
 
-  const [orgList, memberList] = await Promise.all([
-    db.query.organization.findMany({
-      where: eq(organization.ownerId, user.id),
-    }),
-    db.query.unitMember.findMany({
-      where: eq(unitMember.userId, user.id),
-      with: { unit: true },
-    }),
-  ])
-
-  const data = orgList.map((org) => {
-    const units = memberList.filter((member) => member.unit?.orgId === org.id) // units this org has, which the user is a member of
-    return {
-      ...org,
-      unitsCount: units.length,
-    }
+  const data = await db.query.organization.findMany({
+    where: eq(organization.ownerId, user.id),
   })
 
   return <DataTable columns={orgColumns} data={data} />

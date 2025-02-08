@@ -6,7 +6,6 @@ import {
   orgMember,
   user as schUser,
   unit,
-  unitMember,
 } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
@@ -85,20 +84,13 @@ export async function GET(request: Request) {
         })
 
       /**
-       * 3. add members
+       * 3. add org member
        */
-      await Promise.all([
-        tx.insert(orgMember).values({
-          userId,
-          orgId: orgRes.id,
-          role: "owner",
-        }),
-        tx.insert(unitMember).values({
-          userId,
-          unitId: unitRes.id,
-          role: "owner",
-        }),
-      ])
+      await tx.insert(orgMember).values({
+        userId,
+        orgId: orgRes.id,
+        role: "owner",
+      })
 
       return {
         orgId: orgRes.id,

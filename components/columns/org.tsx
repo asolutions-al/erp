@@ -4,9 +4,7 @@ import { SortBtn } from "@/components/buttons"
 import { OrgSchemaT } from "@/db/app/schema"
 import { ColumnDef } from "@tanstack/react-table"
 
-type SchemaT = OrgSchemaT & {
-  unitsCount: number
-}
+type SchemaT = OrgSchemaT
 
 const columns: ColumnDef<SchemaT>[] = [
   {
@@ -16,10 +14,6 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "description",
     header: ({ column }) => <SortBtn text="Description" column={column} />,
-  },
-  {
-    accessorKey: "unitsCount",
-    header: ({ column }) => <SortBtn text="Number of units" column={column} />,
   },
 ]
 

@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, invoice, unit, user, customer, invitation, unitMember, orgMember, product, invoiceRow } from "./schema";
+import { organization, invoice, unit, user, customer, invitation, orgMember, product, invoiceRow } from "./schema";
 
 export const invoiceRelations = relations(invoice, ({one, many}) => ({
 	organization: one(organization, {
@@ -35,7 +35,6 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 		references: [organization.id]
 	}),
 	invitations: many(invitation),
-	unitMembers: many(unitMember),
 	products: many(product),
 	invoiceRows: many(invoiceRow),
 }));
@@ -43,7 +42,6 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 export const userRelations = relations(user, ({many}) => ({
 	organizations: many(organization),
 	invitations: many(invitation),
-	unitMembers: many(unitMember),
 	orgMembers: many(orgMember),
 }));
 
@@ -69,17 +67,6 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 	}),
 	user: one(user, {
 		fields: [invitation.userId],
-		references: [user.id]
-	}),
-}));
-
-export const unitMemberRelations = relations(unitMember, ({one}) => ({
-	unit: one(unit, {
-		fields: [unitMember.unitId],
-		references: [unit.id]
-	}),
-	user: one(user, {
-		fields: [unitMember.userId],
 		references: [user.id]
 	}),
 }));
