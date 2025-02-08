@@ -46,7 +46,10 @@ const Page = async ({ params }: Props) => {
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
         {unitsList.map((unit) => (
-          <Link key={unit.id} href={`/o/${orgId}/u/${unit.id}/product/list`}>
+          <Link
+            key={unit.id}
+            href={`/o/${orgId}/u/${unit.id}/product/list/active`}
+          >
             <UnitCard data={unit} />
           </Link>
         ))}
