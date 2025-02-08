@@ -124,18 +124,10 @@ export const invoiceConfig = pgTable(
       .notNull(),
     orgId: uuid().notNull(),
     unitId: uuid().notNull(),
-    currency: currency(),
-    payMethod: payMethod(),
-    customerId: uuid(),
+    currency: currency().notNull(),
+    payMethod: payMethod().notNull(),
   },
   (table) => [
-    foreignKey({
-      columns: [table.customerId],
-      foreignColumns: [customer.id],
-      name: "invoiceConfig_invoice.customerId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
     foreignKey({
       columns: [table.orgId],
       foreignColumns: [organization.id],

@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sheet"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { customer, product } from "@/orm/app/schema"
+import { customer, invoiceConfig, product } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { eq } from "drizzle-orm"
 import { Settings2Icon } from "lucide-react"
@@ -26,17 +26,20 @@ type Props = {
 const Page = async ({ params }: Props) => {
   const t = await getTranslations()
   const { orgId, unitId } = await params
-  const [products, customers] = await Promise.all([
+  const [products, customers, config] = await Promise.all([
     db.query.product.findMany({
       where: eq(product.unitId, unitId),
     }),
     db.query.customer.findMany({
       where: eq(customer.unitId, unitId),
     }),
+    db.query.invoiceConfig.findFirst({
+      where: eq(invoiceConfig.unitId, unitId),
+    }),
   ])
 
   return (
-    <InvoiceFormProvider>
+    <InvoiceFormProvider defaultValues={config}>
       <PageHeader
         title={"Create invoice"}
         className="mb-2 max-w-none"

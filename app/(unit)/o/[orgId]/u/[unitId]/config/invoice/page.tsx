@@ -3,7 +3,7 @@ import { InvoiceConfigForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { updateInvoiceConfig } from "@/db/app/actions/invoiceConfig"
 import { db } from "@/db/app/instance"
-import { customer, invoiceConfig } from "@/orm/app/schema"
+import { invoiceConfig } from "@/orm/app/schema"
 import { InvoiceConfigFormProvider } from "@/providers/invoice-config-form"
 import { eq } from "drizzle-orm"
 
@@ -14,14 +14,9 @@ type Props = {
 const Page = async ({ params }: Props) => {
   const { unitId } = await params
 
-  const [customers, config] = await Promise.all([
-    db.query.customer.findMany({
-      where: eq(customer.unitId, unitId),
-    }),
-    db.query.invoiceConfig.findFirst({
-      where: eq(invoiceConfig.unitId, unitId),
-    }),
-  ])
+  const config = await db.query.invoiceConfig.findFirst({
+    where: eq(invoiceConfig.unitId, unitId),
+  })
 
   return (
     <InvoiceConfigFormProvider defaultValues={config}>
@@ -31,7 +26,6 @@ const Page = async ({ params }: Props) => {
         renderRight={() => <FormActionBtns formId="invoiceConfig" />}
       />
       <InvoiceConfigForm
-        customers={customers}
         performAction={async (values) => {
           "use server"
 

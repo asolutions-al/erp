@@ -18,9 +18,8 @@ const schema = createInsertSchema(invoiceConfig).omit({
 type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
-  currency: null,
-  customerId: null,
-  payMethod: null,
+  currency: "all",
+  payMethod: "cash",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

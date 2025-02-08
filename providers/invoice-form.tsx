@@ -57,7 +57,9 @@ const defaultValues: SchemaT = {
   status: "completed",
 }
 
-const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
+const Provider = (
+  props: PropsWithChildren<{ defaultValues?: Partial<SchemaT> }>
+) => {
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),
     defaultValues: { ...defaultValues, ...props.defaultValues },
