@@ -59,6 +59,9 @@ const Page = async ({ params, searchParams }: Props) => {
             })}
           </TabsList>
         </Tabs>
+        <Link href={`/o/${orgId}/u/${unitId}/product/list?status=draft`}>
+          draft
+        </Link>
         <Link href={`/o/${orgId}/u/${unitId}/product/create`} passHref>
           <Button>
             <PlusCircleIcon />
