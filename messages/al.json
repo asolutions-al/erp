@@ -157,11 +157,9 @@
   "Discount percentage": "Përqindja e zbritjes",
   "Discount amount": "Shuma e zbritjes",
   "Pick a date": "Zgjidh një datë",
-  "Select currency": "Zgjidh monedhën",
   "Notes": "Shënime",
   "A short note about the invoice": "Një shënim i shkurtër rreth faturës",
   "Exchange rate": "Kursi i këmbimit",
-  "Enter the exchange rate from {currency} to {baseCurrency}": "Vendos kursin e këmbimit nga {currency} në {baseCurrency}",
   "today": "Sot",
   "yesterday": "Dje",
   "this_week": "Këtë javë",
@@ -267,5 +265,9 @@
   "Balance": "Balanca",
   "Duplicate cash register": "Dubliko arkën",
   "Update cash register": "Përditëso arkën",
-  "Basic details of the cash register": "Detajet bazike të arkës"
+  "Basic details of the cash register": "Detajet bazike të arkës",
+  "Select cash register": "Zgjidh arkën",
+  "Configure additional settings": "Konfiguro cilësimet shtesë",
+  "Cash register on new invoice": "Arka në faturë të re",
+  "Automatically update balance after creating a new invoice": "Përditëso automatikisht balancën pasi të krijohet një faturë e re"
 }

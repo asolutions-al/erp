@@ -1,4 +1,4 @@
-import { currency, status } from "@/orm/app/schema"
+import { payMethod, status } from "@/orm/app/schema"
 
-type CurrencyT = (typeof currency.enumValues)[number]
 type StatusT = (typeof status.enumValues)[number]
+type PayMethodT = (typeof payMethod.enumValues)[number]

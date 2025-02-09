@@ -55,9 +55,8 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
-import { FieldErrors, useFormContext, useWatch } from "react-hook-form"
+import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
-import { Price } from "../price"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
@@ -97,6 +96,7 @@ const Form = ({ performAction, products, customers }: Props) => {
   }
 
   const onInvalid = (errors: FieldErrors<SchemaT>) => {
+    const cashRegisterError = get(errors, "cashRegisterId") //TODO: open cash sheet
     toast.error(t("Please fill in all required fields"))
   }
 
@@ -305,8 +305,8 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   const [search, setSearch] = useState("")
   const [activeTab, setActiveTab] = useState<ProductTabT>("all")
 
-  const [rows, currency, exchangeRate] = useWatch({
-    name: ["rows", "currency", "exchangeRate"],
+  const [rows] = useWatch({
+    name: ["rows"],
     control: form.control,
   })
 
@@ -364,8 +364,6 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           const existingIdx = rows.findIndex((row) => row.productId === id)
           const existing = existingIdx !== -1 ? rows[existingIdx] : null
           const quantity = existing?.quantity || 0
-
-          const finalPrice = price / exchangeRate
 
           return (
             <motion.div
@@ -425,11 +423,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     <h3 className="truncate text-lg font-semibold">{name}</h3>
                     <p className="text-sm text-muted-foreground">{t(unit)}</p>
                   </div>
-                  <Price
-                    price={finalPrice}
-                    currency={currency}
-                    className="justify-end"
-                  />
+                  <p className="font-semibold">{price}</p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -470,8 +464,8 @@ const NoCheckoutProducts = () => {
 const CheckoutCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
-  const [rows, currency, exchangeRate] = useWatch({
-    name: ["rows", "currency", "exchangeRate"],
+  const [rows] = useWatch({
+    name: ["rows"],
     control: form.control,
   })
 
@@ -490,7 +484,6 @@ const CheckoutCard = () => {
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
             const { imageBucketPath, description, unit } = row.product || {}
-            const finalPrice = price / exchangeRate
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)
@@ -527,7 +520,7 @@ const CheckoutCard = () => {
                             {t(unit)}
                           </p>
                         </div>
-                        <Price price={finalPrice} currency={currency} />
+                        <p className="font-semibold">{price}</p>
                       </div>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="flex gap-2">
@@ -632,8 +625,8 @@ const Summary = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
-  const [rows, discountType, discountValue, currency] = useWatch({
-    name: ["rows", "discountType", "discountValue", "currency"],
+  const [rows, discountType, discountValue] = useWatch({
+    name: ["rows", "discountType", "discountValue"],
     control: form.control,
   })
 
@@ -653,17 +646,17 @@ const Summary = () => {
         <div className="space-y-1">
           <div className="flex justify-between text-sm">
             <span>{t("Subtotal")}</span>
-            <Price price={calcs.subtotal} currency={currency} />
+            <p className="font-semibold">{calcs.subtotal}</p>
           </div>
           <div className="flex justify-between text-sm">
             <span>{t("Tax")}</span>
-            <Price price={calcs.tax} currency={currency} />
+            <p className="font-semibold">{calcs.tax}</p>
           </div>
         </div>
         <Separator />
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold">{t("Total")}</span>
-          <Price price={calcs.total} currency={currency} className="text-lg" />
+          <p className="text-lg font-semibold">{calcs.total}</p>
         </div>
       </CardContent>
     </Card>

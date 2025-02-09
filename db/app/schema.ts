@@ -2,6 +2,7 @@ import {
   cashRegister,
   customer,
   invoice,
+  invoiceConfig,
   invoiceRow,
   organization,
   orgMember,
@@ -43,3 +44,6 @@ export type UserSchemaT = z.infer<typeof userSchema>
 /////////////CASH REGISTER/////////////////////
 const cashRegisterSchema = createSelectSchema(cashRegister)
 export type CashRegisterSchemaT = z.infer<typeof cashRegisterSchema>
+/////////////CASH REGISTER/////////////////////
+const invoiceConfigSchema = createSelectSchema(invoiceConfig)
+export type InvoiceConfigSchemaT = z.infer<typeof invoiceConfigSchema>

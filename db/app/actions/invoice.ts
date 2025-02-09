@@ -2,9 +2,16 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { invoice, invoiceRow } from "@/orm/app/schema"
+import {
+  cashRegister,
+  invoice,
+  invoiceConfig,
+  invoiceRow,
+} from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
+import { checkShouldTriggerCash } from "@/utils/checks"
+import { eq, sql } from "drizzle-orm"
 
 type FormSchemaT = InvoiceFormSchemaT
 
@@ -17,8 +24,9 @@ const create = async ({
   unitId: string
   orgId: string
 }) => {
+  const calcs = calcInvoiceForm(values)
+
   await db.transaction(async (tx) => {
-    const calcs = calcInvoiceForm(values)
     const [res] = await tx
       .insert(invoice)
       .values({
@@ -48,6 +56,29 @@ const create = async ({
       })
     )
   })
+
+  const backgroundTasks = async () => {
+    const config = await db.query.invoiceConfig.findFirst({
+      where: eq(invoiceConfig.unitId, unitId),
+    })
+    if (!config) return
+
+    const shouldTriggerCash = checkShouldTriggerCash({
+      invoiceConfig: config,
+      payMethod: values.payMethod,
+    })
+
+    if (shouldTriggerCash) {
+      await db
+        .update(cashRegister)
+        .set({
+          balance: sql`${cashRegister.balance} + ${calcs.total}`,
+        })
+        .where(eq(cashRegister.id, values.cashRegisterId!))
+    }
+  }
+
+  backgroundTasks()
 }
 
 export { create as createInvoice }

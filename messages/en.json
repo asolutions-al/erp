@@ -157,11 +157,9 @@
   "Discount percentage": "Discount percentage",
   "Discount amount": "Discount amount",
   "Pick a date": "Pick a date",
-  "Select currency": "Select currency",
   "Notes": "Notes",
   "A short note about the invoice": "A short note about the invoice",
   "Exchange rate": "Exchange rate",
-  "Enter the exchange rate from {currency} to {baseCurrency}": "Enter the exchange rate from {currency} to {baseCurrency}",
   "today": "Today",
   "yesterday": "Yesterday",
   "this_week": "This week",
@@ -267,5 +265,9 @@
   "Balance": "Balance",
   "Duplicate cash register": "Duplicate cash register",
   "Update cash register": "Update cash register",
-  "Basic details of the cash register": "Basic details of the cash register"
+  "Basic details of the cash register": "Basic details of the cash register",
+  "Select cash register": "Select cash register",
+  "Configure additional settings": "Configure additional settings",
+  "Cash register on new invoice": "Cash register on new invoice",
+  "Automatically update balance after creating a new invoice": "Automatically update balance after creating a new invoice"
 }

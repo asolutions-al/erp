@@ -12,7 +12,6 @@ import {
 } from "drizzle-orm/pg-core"
 
 export const idType = pgEnum("IdType", ["tin", "id"])
-export const currency = pgEnum("currency", ["all", "eur", "usd"])
 export const discountType = pgEnum("discountType", ["value", "percentage"])
 export const payMethod = pgEnum("payMethod", ["cash", "card", "bank", "other"])
 export const productUnit = pgEnum("productUnit", [
@@ -62,9 +61,7 @@ export const invoice = pgTable(
     unitId: uuid().notNull(),
     total: doublePrecision().notNull(),
     payMethod: payMethod().notNull(),
-    currency: currency().notNull(),
     customerId: uuid().notNull(),
-    exchangeRate: doublePrecision().notNull(),
     discountValue: doublePrecision().notNull(),
     discountType: discountType().notNull(),
     notes: text(),
@@ -74,8 +71,16 @@ export const invoice = pgTable(
     tax: doublePrecision().notNull(),
     date: timestamp({ withTimezone: true, mode: "string" }),
     customer: jsonb().notNull().$type<CustomerSchemaT>(),
+    cashRegisterId: uuid(),
   },
   (table) => [
+    foreignKey({
+      columns: [table.cashRegisterId],
+      foreignColumns: [cashRegister.id],
+      name: "invoice_cashRegisterId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
     foreignKey({
       columns: [table.orgId],
       foreignColumns: [organization.id],
@@ -124,8 +129,8 @@ export const invoiceConfig = pgTable(
       .notNull(),
     orgId: uuid().notNull(),
     unitId: uuid().notNull(),
-    currency: currency().notNull(),
     payMethod: payMethod().notNull(),
+    triggerCashOnInvoice: boolean().notNull(),
   },
   (table) => [
     foreignKey({
@@ -183,28 +188,6 @@ export const customer = pgTable(
   ]
 )
 
-export const unit = pgTable(
-  "unit",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    createdAt: timestamp({ withTimezone: true, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    orgId: uuid().notNull(),
-    name: text().notNull(),
-    description: text(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.orgId],
-      foreignColumns: [organization.id],
-      name: "unit_orgId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-  ]
-)
-
 export const cashRegister = pgTable(
   "cashRegister",
   {
@@ -251,6 +234,28 @@ export const cashRegister = pgTable(
       columns: [table.unitId],
       foreignColumns: [unit.id],
       name: "cash_unitId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
+export const unit = pgTable(
+  "unit",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    orgId: uuid().notNull(),
+    name: text().notNull(),
+    description: text(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.orgId],
+      foreignColumns: [organization.id],
+      name: "unit_orgId_fkey",
     })
       .onUpdate("cascade")
       .onDelete("cascade"),

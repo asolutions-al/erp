@@ -2,7 +2,6 @@
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,82 +16,57 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { baseCurrency } from "@/contants/global-configs"
-import { currency } from "@/orm/app/schema"
+import { CashRegisterSchemaT, InvoiceConfigSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { checkShouldTriggerCash } from "@/utils/checks"
 import { useTranslations } from "next-intl"
 import { useFormContext, useWatch } from "react-hook-form"
 
 type SchemaT = InvoiceFormSchemaT
 
-const InvoiceOptions = () => {
+const InvoiceOptions = ({
+  cashRegisters,
+  invoiceConfig,
+}: {
+  cashRegisters: CashRegisterSchemaT[]
+  invoiceConfig: InvoiceConfigSchemaT
+}) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
-  const currencyValue = useWatch({
+  const [payMethod] = useWatch({
     control: form.control,
-    name: "currency",
+    name: ["payMethod"],
   })
+
+  const shouldTriggerCash = checkShouldTriggerCash({ invoiceConfig, payMethod })
 
   return (
     <>
-      <FormField
-        control={form.control}
-        name="currency"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>{t("Currency")}</FormLabel>
-            <Select
-              onValueChange={(value) => {
-                field.onChange(value)
-                if (value === baseCurrency) form.setValue("exchangeRate", 1) // reset exchange rate
-              }}
-              defaultValue={field.value}
-            >
-              <FormControl>
-                <SelectTrigger>
-                  <SelectValue placeholder={t("Select currency")} />
-                </SelectTrigger>
-              </FormControl>
-              <SelectContent>
-                {currency.enumValues.map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {t(currency)}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
-
-      {currencyValue && currencyValue !== baseCurrency && (
+      {shouldTriggerCash && (
         <FormField
           control={form.control}
-          name="exchangeRate"
+          name="cashRegisterId"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Exchange rate")}</FormLabel>
-              <FormControl>
-                <Input
-                  {...field}
-                  type="number"
-                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
-                  onFocus={(e) => e.target.select()}
-                  min="0"
-                  step="0.0001"
-                />
-              </FormControl>
-              <FormDescription>
-                {t(
-                  "Enter the exchange rate from {currency} to {baseCurrency}",
-                  {
-                    currency: t(currencyValue),
-                    baseCurrency: t(baseCurrency),
-                  }
-                )}
-              </FormDescription>
+              <FormLabel>{t("Cash register")}</FormLabel>
+              <Select
+                onValueChange={(value) => field.onChange(value)}
+                defaultValue={field.value || ""}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t("Select cash register")} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {cashRegisters.map((register) => (
+                    <SelectItem key={register.id} value={register.id}>
+                      {register.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
               <FormMessage />
             </FormItem>
           )}

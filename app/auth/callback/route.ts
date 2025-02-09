@@ -121,7 +121,7 @@ export async function GET(request: Request) {
         unitId: transRes.unitId,
         orgId: transRes.orgId,
         payMethod: "cash",
-        currency: "all", // TODO: use geo location to determine currency
+        triggerCashOnInvoice: true,
       })
     } catch (error) {
       console.error("Background tasks failed", error)

@@ -9,8 +9,10 @@ import {
 } from "@/components/ui/card"
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form"
 import {
@@ -20,12 +22,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { currency, payMethod } from "@/orm/app/schema"
+import { payMethod } from "@/orm/app/schema"
 import { InvoiceConfigFormSchemaT } from "@/providers/invoiceConfig-form"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { Switch } from "../ui/switch"
 
 type SchemaT = InvoiceConfigFormSchemaT
 
@@ -66,7 +69,7 @@ const Form = ({ performAction }: Props) => {
       >
         <div className="grid gap-2 sm:grid-cols-2">
           <PayMethodCard />
-          <CurrencyCard />
+          <SettingsCard />
         </div>
       </form>
     </>
@@ -112,37 +115,36 @@ const PayMethodCard = () => {
   )
 }
 
-const CurrencyCard = () => {
+const SettingsCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Currency")}</CardTitle>
-        <CardDescription>{t("Currency of the invoice")}</CardDescription>
+        <CardTitle>{t("Settings")}</CardTitle>
+        <CardDescription>{t("Configure additional settings")}</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <FormField
           control={form.control}
-          name="currency"
+          name="triggerCashOnInvoice"
           render={({ field }) => (
-            <FormItem>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger aria-label={t("Select currency")}>
-                    <SelectValue placeholder={t("Select currency")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {currency.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>{t("Cash register on new invoice")}</FormLabel>
+                <FormDescription>
+                  {t(
+                    "Automatically update balance after creating a new invoice"
+                  )}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

@@ -42,6 +42,15 @@ const schema = createInsertSchema(invoice, {
   .extend({
     rows: z.array(rowSchema).min(1),
   })
+  .refine(
+    (data) => {
+      if (data.payMethod === "cash") return !!data.cashRegisterId
+      return true
+    },
+    {
+      message: "Cash register is required",
+    }
+  )
 
 type SchemaT = z.infer<typeof schema>
 
@@ -51,8 +60,6 @@ const defaultValues: SchemaT = {
   customer: {} as CustomerSchemaT,
   discountType: "value",
   discountValue: 0,
-  exchangeRate: 1,
-  currency: "all",
   payMethod: "cash",
   status: "completed",
 }

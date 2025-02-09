@@ -13,7 +13,13 @@ import {
 } from "@/components/ui/sheet"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { customer, invoiceConfig, product } from "@/orm/app/schema"
+import { InvoiceConfigSchemaT } from "@/db/app/schema"
+import {
+  cashRegister,
+  customer,
+  invoiceConfig,
+  product,
+} from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { eq } from "drizzle-orm"
 import { Settings2Icon } from "lucide-react"
@@ -23,7 +29,27 @@ type Props = {
   params: Promise<{ orgId: string; unitId: string }>
 }
 
-const Page = async ({ params }: Props) => {
+const MoreOptions = async (
+  props: Props & {
+    invoiceConfig: InvoiceConfigSchemaT
+  }
+) => {
+  const { params, invoiceConfig } = props
+  const { unitId } = await params
+  const cashRegisters = await db.query.cashRegister.findMany({
+    where: eq(cashRegister.unitId, unitId),
+  })
+
+  return (
+    <InvoiceOptions
+      cashRegisters={cashRegisters}
+      invoiceConfig={invoiceConfig}
+    />
+  )
+}
+
+const Page = async (props: Props) => {
+  const { params } = props
   const t = await getTranslations()
   const { orgId, unitId } = await params
   const [products, customers, config] = await Promise.all([
@@ -62,7 +88,7 @@ const Page = async ({ params }: Props) => {
                     .
                   </SheetDescription>
                 </SheetHeader>
-                <InvoiceOptions />
+                <MoreOptions {...props} invoiceConfig={config!} />
               </SheetContent>
             </Sheet>
           </FormActionBtns>

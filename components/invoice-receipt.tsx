@@ -23,9 +23,6 @@ const InvoiceReceipt = ({ data }: Props) => {
           <p>
             {t("Date")}: {formatDate(new Date())}
           </p>
-          <p>
-            {t("Currency")}: {t(data.currency)}
-          </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:text-right">
           <h3 className="font-semibold">{t("Customer details")}</h3>
