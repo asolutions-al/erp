@@ -423,7 +423,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     <h3 className="truncate text-lg font-semibold">{name}</h3>
                     <p className="text-sm text-muted-foreground">{t(unit)}</p>
                   </div>
-                  <p className="font-semibold">{price}</p>
+                  <p className="text-right font-semibold">{price}</p>
                 </CardContent>
               </Card>
             </motion.div>
