@@ -116,7 +116,7 @@ const Form = ({ performAction }: Props) => {
                   render={({ field }) => (
                     <FormItem>
                       <Select
-                        value={field.value || ""}
+                        value={field.value}
                         onValueChange={field.onChange}
                       >
                         <FormControl>
@@ -238,10 +238,7 @@ const IdentityCard = () => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t("Id type")}</FormLabel>
-                <Select
-                  value={field.value || ""}
-                  onValueChange={field.onChange}
-                >
+                <Select value={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger aria-label={t("Select id type")}>
                       <SelectValue placeholder={t("Select id type")} />

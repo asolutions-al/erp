@@ -30,7 +30,7 @@ const Page = async () => {
     <>
       <PageHeader
         title="Choose organization"
-        renderRight={() => (
+        rightComp={
           <Tooltip>
             <TooltipTrigger asChild>
               <span tabIndex={0}>
@@ -46,7 +46,7 @@ const Page = async () => {
               <p>Coming soon</p>
             </TooltipContent>
           </Tooltip>
-        )}
+        }
         className="my-4"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">

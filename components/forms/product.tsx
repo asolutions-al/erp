@@ -298,9 +298,9 @@ const PriceCard = () => {
               <FormLabel>{t("Price")}</FormLabel>
               <FormControl>
                 <Input
+                  {...field}
                   type="number"
                   placeholder="0.00"
-                  {...field}
                   onChange={(e) => field.onChange(parseFloat(e.target.value))}
                   onFocus={(e) => e.target.select()}
                   min="0"
@@ -316,7 +316,7 @@ const PriceCard = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("Tax")}</FormLabel>
-              <Select value={field.value || ""} onValueChange={field.onChange}>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select tax")}>
                     <SelectValue placeholder={t("Select tax")} />
@@ -360,8 +360,8 @@ const ExtraDetailsCard = () => {
               <FormLabel>{t("Barcode")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="1234567890"
                   {...field}
+                  placeholder="1234567890"
                   value={field.value || ""}
                 />
               </FormControl>
@@ -378,10 +378,10 @@ const ExtraDetailsCard = () => {
               <FormLabel>{t("Description")}</FormLabel>
               <FormControl>
                 <Textarea
+                  {...field}
                   placeholder={t(
                     "A fancy pizza with pepperoni, mushrooms, and olives"
                   )}
-                  {...field}
                   value={field.value || ""}
                 />
               </FormControl>
@@ -411,7 +411,7 @@ const StatusCard = () => {
           render={({ field }) => (
             <FormItem>
               <FormLabel>{t("Status")}</FormLabel>
-              <Select value={field.value || ""} onValueChange={field.onChange}>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select status")}>
                     <SelectValue placeholder={t("Select status")} />

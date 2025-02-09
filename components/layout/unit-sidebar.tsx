@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/sidebar"
 import {
   ArrowLeftIcon,
+  BanknoteIcon,
   ChevronRight,
   CirclePlusIcon,
   ContactIcon,
@@ -130,6 +131,31 @@ const UnitSidebar = async (props: Props) => {
                     />
                     <SidebarItem
                       href={`/o/${orgId}/u/${unitId}/invoice/create`}
+                      text="Create"
+                      icon={<CirclePlusIcon />}
+                    />
+                  </SidebarMenuSub>
+                </CollapsibleContent>
+              </SidebarMenuItem>
+            </Collapsible>
+            <Collapsible asChild defaultOpen className="group/collapsible">
+              <SidebarMenuItem>
+                <CollapsibleTrigger asChild>
+                  <SidebarMenuButton tooltip={t("Cash register")}>
+                    <BanknoteIcon />
+                    <span className="font-semibold">{t("Cash register")}</span>
+                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                  </SidebarMenuButton>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <SidebarMenuSub>
+                    <SidebarItem
+                      href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
+                      text="List"
+                      icon={<ListTreeIcon />}
+                    />
+                    <SidebarItem
+                      href={`/o/${orgId}/u/${unitId}/cashRegister/create`}
                       text="Create"
                       icon={<CirclePlusIcon />}
                     />

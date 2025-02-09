@@ -17,6 +17,7 @@ import { Input } from "@/components/ui/input"
 
 import { useFormContext } from "react-hook-form"
 
+import { OrgSchemaT } from "@/db/app/schema"
 import { UserFormSchemaT } from "@/providers/user-form"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
@@ -28,7 +29,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../ui/select"
-import { OrgSchemaT } from "@/db/app/schema"
 
 type SchemaT = UserFormSchemaT
 
@@ -83,8 +83,8 @@ const Form = ({ performAction, orgs }: Props) => {
                   <FormItem>
                     <FormControl>
                       <Input
-                        placeholder="John Doe"
                         {...field}
+                        placeholder="John Doe"
                         value={field.value || ""}
                       />
                     </FormControl>

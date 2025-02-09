@@ -256,5 +256,15 @@
   "Customer of the invoice": "Customer of the invoice",
   "Pay method": "Pay method",
   "Select pay method": "Select pay method",
-  "Invoice configuration": "Invoice configuration"
+  "Invoice configuration": "Invoice configuration",
+  "Cash register": "Cash register",
+  "New cash register": "New cash register",
+  "Create cash register": "Create cash register",
+  "Opening balance": "Opening balance",
+  "Set the status of the cash register": "Set the status of the cash register",
+  "Cash register created": "Cash register created",
+  "Is open": "Is open",
+  "Balance": "Balance",
+  "Duplicate cash register": "Duplicate cash register",
+  "Update cash register": "Update cash register"
 }

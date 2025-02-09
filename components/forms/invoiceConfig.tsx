@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { currency, payMethod } from "@/orm/app/schema"
-import { InvoiceConfigFormSchemaT } from "@/providers/invoice-config-form"
+import { InvoiceConfigFormSchemaT } from "@/providers/invoiceConfig-form"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -89,7 +89,7 @@ const PayMethodCard = () => {
           name="payMethod"
           render={({ field }) => (
             <FormItem>
-              <Select value={field.value || ""} onValueChange={field.onChange}>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select pay method")}>
                     <SelectValue placeholder={t("Select pay method")} />
@@ -128,7 +128,7 @@ const CurrencyCard = () => {
           name="currency"
           render={({ field }) => (
             <FormItem>
-              <Select value={field.value || ""} onValueChange={field.onChange}>
+              <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select currency")}>
                     <SelectValue placeholder={t("Select currency")} />

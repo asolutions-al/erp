@@ -16,7 +16,7 @@ const Page = async ({ params }: Props) => {
       <PageHeader
         title={"Create product"}
         className="mb-2"
-        renderRight={() => <FormActionBtns formId="product" />}
+        rightComp={<FormActionBtns formId="product" />}
       />
       <ProductForm
         performAction={async (values) => {

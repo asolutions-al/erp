@@ -3,7 +3,7 @@
   "draft": "Draft",
   "archived": "Arkivuar",
   "Create product": "Krijo produkt",
-  "Status": "Status",
+  "Status": "Statusi",
   "Select status": "Zgjidh statusin",
   "Description": "Përshkrimi",
   "Price": "Çmimi",
@@ -256,5 +256,15 @@
   "Customer of the invoice": "Klienti i faturës",
   "Pay method": "Metoda e pagesës",
   "Select pay method": "Zgjidh metoden e pagesës",
-  "Invoice configuration": "Konfigurimi i faturës"
+  "Invoice configuration": "Konfigurimi i faturës",
+  "Cash register": "Arka",
+  "New cash register": "Arkë e re",
+  "Create cash register": "Krijo arkë",
+  "Opening balance": "Balanca e hapjes",
+  "Set the status of the cash register": "Vendos statusin e arkës",
+  "Cash register created": "Arka u krijua",
+  "Is open": "Është e hapur",
+  "Balance": "Balanca",
+  "Duplicate cash register": "Dubliko arkën",
+  "Update cash register": "Përditëso arkën"
 }

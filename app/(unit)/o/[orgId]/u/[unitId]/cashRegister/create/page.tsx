@@ -1,8 +1,8 @@
 import { FormActionBtns } from "@/components/buttons"
-import { ProductForm } from "@/components/forms"
+import { CashRegisterForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createProduct } from "@/db/app/actions"
-import { ProductFormProvider } from "@/providers/product-form"
+import { createCashRegister } from "@/db/app/actions"
+import { CashRegisterFormProvider } from "@/providers/cashRegister-form"
 
 type Props = {
   params: Promise<{ orgId: string; unitId: string }>
@@ -12,19 +12,19 @@ const Page = async ({ params }: Props) => {
   const { orgId, unitId } = await params
 
   return (
-    <ProductFormProvider>
+    <CashRegisterFormProvider>
       <PageHeader
-        title={"Create product"}
+        title="Create cash register"
         className="mb-2"
-        rightComp={<FormActionBtns formId="product" />}
+        rightComp={<FormActionBtns formId="cashRegister" />}
       />
-      <ProductForm
+      <CashRegisterForm
         performAction={async (values) => {
           "use server"
-          await createProduct({ values, orgId, unitId })
+          await createCashRegister({ values, orgId, unitId })
         }}
       />
-    </ProductFormProvider>
+    </CashRegisterFormProvider>
   )
 }
 

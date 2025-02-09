@@ -23,7 +23,7 @@ const Page = async ({ params }: Props) => {
     <>
       <PageHeader
         title="Select unit"
-        renderRight={() => (
+        rightComp={
           <Link href={`/o/${orgId}/unit/create`}>
             <Button size="sm" className="h-8 gap-1">
               <PlusCircle className="h-3.5 w-3.5" />
@@ -32,7 +32,7 @@ const Page = async ({ params }: Props) => {
               </span>
             </Button>
           </Link>
-        )}
+        }
         className="mb-2"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">

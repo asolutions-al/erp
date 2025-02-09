@@ -76,8 +76,8 @@ const InvoiceOptions = () => {
               <FormLabel>{t("Exchange rate")}</FormLabel>
               <FormControl>
                 <Input
-                  type="number"
                   {...field}
+                  type="number"
                   onChange={(e) => field.onChange(parseFloat(e.target.value))}
                   onFocus={(e) => e.target.select()}
                   min="0"
@@ -107,8 +107,8 @@ const InvoiceOptions = () => {
             <FormLabel>{t("Discount amount")}</FormLabel>
             <FormControl>
               <Input
-                type="number"
                 {...field}
+                type="number"
                 onChange={(e) => field.onChange(parseFloat(e.target.value))}
                 onFocus={(e) => e.target.select()}
                 min="0"

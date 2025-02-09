@@ -43,7 +43,7 @@ const Page = async ({ params }: Props) => {
       <PageHeader
         title={"Create invoice"}
         className="mb-2 max-w-none"
-        renderRight={() => (
+        rightComp={
           <FormActionBtns formId="invoice">
             <Sheet>
               <SheetTrigger asChild>
@@ -66,7 +66,7 @@ const Page = async ({ params }: Props) => {
               </SheetContent>
             </Sheet>
           </FormActionBtns>
-        )}
+        }
       />
       <InvoiceForm
         products={products}

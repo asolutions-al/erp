@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { updateInvoiceConfig } from "@/db/app/actions/invoiceConfig"
 import { db } from "@/db/app/instance"
 import { invoiceConfig } from "@/orm/app/schema"
-import { InvoiceConfigFormProvider } from "@/providers/invoice-config-form"
+import { InvoiceConfigFormProvider } from "@/providers/invoiceConfig-form"
 import { eq } from "drizzle-orm"
 
 type Props = {
@@ -23,7 +23,7 @@ const Page = async ({ params }: Props) => {
       <PageHeader
         title="Invoice configuration"
         className="mb-2"
-        renderRight={() => <FormActionBtns formId="invoiceConfig" />}
+        rightComp={<FormActionBtns formId="invoiceConfig" />}
       />
       <InvoiceConfigForm
         performAction={async (values) => {

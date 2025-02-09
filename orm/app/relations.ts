@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, invoice, unit, user, invoiceConfig, customer, invitation, orgMember, product, invoiceRow } from "./schema";
+import { organization, invoice, unit, user, invoiceConfig, customer, cashRegister, invitation, orgMember, product, invoiceRow } from "./schema";
 
 export const invoiceRelations = relations(invoice, ({one, many}) => ({
 	organization: one(organization, {
@@ -22,6 +22,7 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 	invoiceConfigs: many(invoiceConfig),
 	customers: many(customer),
 	units: many(unit),
+	cashRegisters: many(cashRegister),
 	invitations: many(invitation),
 	orgMembers: many(orgMember),
 	products: many(product),
@@ -36,6 +37,7 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 		fields: [unit.orgId],
 		references: [organization.id]
 	}),
+	cashRegisters: many(cashRegister),
 	invitations: many(invitation),
 	products: many(product),
 	invoiceRows: many(invoiceRow),
@@ -43,6 +45,12 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 
 export const userRelations = relations(user, ({many}) => ({
 	organizations: many(organization),
+	cashRegisters_closedBy: many(cashRegister, {
+		relationName: "cashRegister_closedBy_user_id"
+	}),
+	cashRegisters_openedBy: many(cashRegister, {
+		relationName: "cashRegister_openedBy_user_id"
+	}),
 	invitations: many(invitation),
 	orgMembers: many(orgMember),
 }));
@@ -65,6 +73,27 @@ export const customerRelations = relations(customer, ({one}) => ({
 	}),
 	unit: one(unit, {
 		fields: [customer.unitId],
+		references: [unit.id]
+	}),
+}));
+
+export const cashRegisterRelations = relations(cashRegister, ({one}) => ({
+	user_closedBy: one(user, {
+		fields: [cashRegister.closedBy],
+		references: [user.id],
+		relationName: "cashRegister_closedBy_user_id"
+	}),
+	user_openedBy: one(user, {
+		fields: [cashRegister.openedBy],
+		references: [user.id],
+		relationName: "cashRegister_openedBy_user_id"
+	}),
+	organization: one(organization, {
+		fields: [cashRegister.orgId],
+		references: [organization.id]
+	}),
+	unit: one(unit, {
+		fields: [cashRegister.unitId],
 		references: [unit.id]
 	}),
 }));

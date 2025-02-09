@@ -3,7 +3,7 @@ import "server-only"
 
 import { db } from "@/db/app/instance"
 import { invoiceConfig } from "@/orm/app/schema"
-import { InvoiceConfigFormSchemaT } from "@/providers/invoice-config-form"
+import { InvoiceConfigFormSchemaT } from "@/providers/invoiceConfig-form"
 import { eq } from "drizzle-orm"
 
 type FormSchemaT = InvoiceConfigFormSchemaT

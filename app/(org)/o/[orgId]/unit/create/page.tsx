@@ -15,7 +15,7 @@ const Page = async (props: Props) => {
       <PageHeader
         title={"New unit"}
         className="my-2"
-        renderRight={() => <FormActionBtns formId="unit" />}
+        rightComp={<FormActionBtns formId="unit" />}
       />
       <UnitForm
         performAction={async (values) => {

@@ -36,7 +36,7 @@ const Page = async (props: Props) => {
       <PageHeader
         title={"Account settings"}
         className="mb-2"
-        renderRight={() => <FormActionBtns formId="user" />}
+        rightComp={<FormActionBtns formId="user" />}
       />
       <UserForm
         orgs={orgs}

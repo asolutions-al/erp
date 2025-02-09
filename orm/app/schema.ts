@@ -205,6 +205,58 @@ export const unit = pgTable(
   ]
 )
 
+export const cashRegister = pgTable(
+  "cashRegister",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    unitId: uuid().notNull(),
+    orgId: uuid().notNull(),
+    name: text().notNull(),
+    balance: doublePrecision().notNull(),
+    isOpen: boolean().notNull(),
+    openedAt: timestamp({ withTimezone: true, mode: "string" }),
+    closedAt: timestamp({ withTimezone: true, mode: "string" }),
+    openingBalance: doublePrecision(),
+    closingBalanace: doublePrecision(),
+    openedBy: uuid(),
+    closedBy: uuid(),
+    status: status().notNull(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.closedBy],
+      foreignColumns: [user.id],
+      name: "cash_closedBy_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.openedBy],
+      foreignColumns: [user.id],
+      name: "cash_openedBy_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.orgId],
+      foreignColumns: [organization.id],
+      name: "cash_orgId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+    foreignKey({
+      columns: [table.unitId],
+      foreignColumns: [unit.id],
+      name: "cash_unitId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
 export const invitation = pgTable(
   "invitation",
   {

@@ -7,11 +7,11 @@ import { ReactNode } from "react"
 const PageHeader = async ({
   title,
   className = "",
-  renderRight,
+  rightComp,
 }: {
   title: keyof Messages
   className?: string
-  renderRight?: () => ReactNode
+  rightComp?: ReactNode
 }) => {
   const t = await getTranslations()
   return (
@@ -19,7 +19,7 @@ const PageHeader = async ({
       <BackButton />
       <h1 className="ml-2 text-xl font-semibold">{t(title)}</h1>
 
-      {renderRight && <div className="ml-auto">{renderRight()}</div>}
+      {rightComp && <div className="ml-auto">{rightComp}</div>}
     </div>
   )
 }

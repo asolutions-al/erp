@@ -5,6 +5,8 @@ type FormId =
   | "user"
   | "customer"
   | "invoiceConfig"
+  | "cashRegister"
+
 type RangeT =
   | "today"
   | "yesterday"

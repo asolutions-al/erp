@@ -8,7 +8,7 @@ import { ProductFormProvider } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string; id: string; orgId: string }>
+  params: Promise<GlobalParams & { id: string }>
 }
 
 const Page = async (props: Props) => {
@@ -23,7 +23,7 @@ const Page = async (props: Props) => {
       <PageHeader
         title={"Duplicate product"}
         className="mb-2"
-        renderRight={() => <FormActionBtns formId="product" />}
+        rightComp={<FormActionBtns formId="product" />}
       />
       <ProductForm
         performAction={async (values) => {
