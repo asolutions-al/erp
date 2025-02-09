@@ -6,7 +6,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { CashRegisterSchemaT } from "@/db/app/schema"
@@ -33,8 +32,6 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
-
-        <DropdownMenuSeparator />
         <Link
           href={`/o/${orgId}/u/${unitId}/cashRegister/${original.id}/update`}
           passHref
@@ -53,7 +50,6 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
             {t("Duplicate")}
           </DropdownMenuItem>
         </Link>
-        <DropdownMenuSeparator />
       </DropdownMenuContent>
     </DropdownMenu>
   )

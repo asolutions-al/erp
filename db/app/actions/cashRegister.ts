@@ -27,7 +27,7 @@ const create = async ({
     ...values,
     unitId,
     orgId,
-    balance: values.openingBalance || 0,
+    balance: values.openingBalance,
     isOpen: true, // all new cash registers are open by default
     openedAt: new Date().toISOString(),
     openedBy: user.id,

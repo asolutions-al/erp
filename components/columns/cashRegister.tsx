@@ -26,6 +26,10 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => <SortBtn text="Name" column={column} />,
   },
   {
+    accessorKey: "openingBalance",
+    header: ({ column }) => <SortBtn text="Opening balance" column={column} />,
+  },
+  {
     accessorKey: "balance",
     header: ({ column }) => <SortBtn text="Balance" column={column} />,
   },
