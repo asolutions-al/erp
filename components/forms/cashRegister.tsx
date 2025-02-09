@@ -90,7 +90,9 @@ const DetailsCard = ({ isUpdate }: { isUpdate?: boolean }) => {
     <Card>
       <CardHeader>
         <CardTitle>{t("Information")}</CardTitle>
-        <CardDescription>{t("Basic details of the product")}</CardDescription>
+        <CardDescription>
+          {t("Basic details of the cash register")}
+        </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
         <FormField
