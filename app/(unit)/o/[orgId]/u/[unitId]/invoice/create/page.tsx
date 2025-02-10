@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/sheet"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { InvoiceConfigSchemaT } from "@/db/app/schema"
 import {
   cashRegister,
   customer,
@@ -21,7 +20,7 @@ import {
   product,
 } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { Settings2Icon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
@@ -29,35 +28,22 @@ type Props = {
   params: Promise<{ orgId: string; unitId: string }>
 }
 
-const MoreOptions = async (
-  props: Props & {
-    invoiceConfig: InvoiceConfigSchemaT
-  }
-) => {
-  const { params, invoiceConfig } = props
-  const { unitId } = await params
-  const cashRegisters = await db.query.cashRegister.findMany({
-    where: eq(cashRegister.unitId, unitId),
-  })
-
-  return (
-    <InvoiceOptions
-      cashRegisters={cashRegisters}
-      invoiceConfig={invoiceConfig}
-    />
-  )
-}
-
 const Page = async (props: Props) => {
   const { params } = props
   const t = await getTranslations()
   const { orgId, unitId } = await params
-  const [products, customers, config] = await Promise.all([
+  const [products, customers, cashRegisters, config] = await Promise.all([
     db.query.product.findMany({
-      where: eq(product.unitId, unitId),
+      where: and(eq(product.unitId, unitId), eq(product.status, "active")),
     }),
     db.query.customer.findMany({
-      where: eq(customer.unitId, unitId),
+      where: and(eq(customer.unitId, unitId), eq(customer.status, "active")),
+    }),
+    db.query.cashRegister.findMany({
+      where: and(
+        eq(cashRegister.unitId, unitId),
+        eq(cashRegister.status, "active")
+      ),
     }),
     db.query.invoiceConfig.findFirst({
       where: eq(invoiceConfig.unitId, unitId),
@@ -88,7 +74,7 @@ const Page = async (props: Props) => {
                     .
                   </SheetDescription>
                 </SheetHeader>
-                <MoreOptions {...props} invoiceConfig={config!} />
+                <InvoiceOptions />
               </SheetContent>
             </Sheet>
           </FormActionBtns>
@@ -97,6 +83,8 @@ const Page = async (props: Props) => {
       <InvoiceForm
         products={products}
         customers={customers}
+        cashRegisters={cashRegisters}
+        invoiceConfig={config!}
         performAction={async (values) => {
           "use server"
           await createInvoice({ values, orgId, unitId })

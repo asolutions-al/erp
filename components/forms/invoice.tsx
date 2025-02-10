@@ -29,11 +29,17 @@ import { Separator } from "@/components/ui/separator"
 import { customerImageBucket, productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapPayMethodIcon } from "@/contants/maps"
-import { CustomerSchemaT, ProductSchemaT } from "@/db/app/schema"
+import {
+  CashRegisterSchemaT,
+  CustomerSchemaT,
+  InvoiceConfigSchemaT,
+  ProductSchemaT,
+} from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm } from "@/utils/calc"
+import { checkShouldTriggerCash } from "@/utils/checks"
 import { motion } from "framer-motion"
 import Fuse from "fuse.js"
 import {
@@ -70,11 +76,19 @@ type Props = {
   performAction: (values: SchemaT) => Promise<void>
   products: ProductSchemaT[]
   customers: CustomerSchemaT[]
+  cashRegisters: CashRegisterSchemaT[]
+  invoiceConfig: InvoiceConfigSchemaT
 }
 
 const formId: FormId = "invoice"
 
-const Form = ({ performAction, products, customers }: Props) => {
+const Form = ({
+  performAction,
+  products,
+  customers,
+  cashRegisters,
+  invoiceConfig,
+}: Props) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
@@ -114,6 +128,11 @@ const Form = ({ performAction, products, customers }: Props) => {
           </div>
           <div className="space-y-3">
             <PaymentCard />
+
+            <CashRegisterCard
+              cashRegisters={cashRegisters}
+              invoiceConfig={invoiceConfig}
+            />
 
             {/* <StatusCard /> */}
 
@@ -269,6 +288,128 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                                     </span>
                                   )}
                                 </div>
+                                <CheckIcon
+                                  size={16}
+                                  className={cn(
+                                    "ml-auto",
+                                    field.value === id
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            )
+                          })}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const CashRegisterCard = ({
+  cashRegisters,
+  invoiceConfig,
+}: {
+  cashRegisters: CashRegisterSchemaT[]
+  invoiceConfig: InvoiceConfigSchemaT
+}) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
+  const [popOverOpen, setPopOverOpen] = useState(false)
+
+  const tabFiltered =
+    activeTab === "all"
+      ? cashRegisters
+      : // : cashRegisters.filter((customer) => customer.isFavorite)
+        cashRegisters.filter((customer) => customer)
+
+  const [payMethod] = useWatch({
+    control: form.control,
+    name: ["payMethod"],
+  })
+
+  const shouldTriggerCash = checkShouldTriggerCash({ invoiceConfig, payMethod })
+
+  if (!shouldTriggerCash) return null
+
+  return (
+    <Card>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Cash register")}</CardTitle>
+          <CardDescription>
+            {t("Where the money will be stored")}
+          </CardDescription>
+        </div>
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as CustomerTabT)}
+        >
+          <TabsList>
+            <TabsTrigger value="all" className="flex items-center gap-2">
+              <GridIcon size={20} />
+              {t("All")}
+            </TabsTrigger>
+            <TabsTrigger value="favorite" className="flex items-center gap-2">
+              <StarIcon size={20} />
+              {t("Favorite")}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="cashRegisterId"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-col">
+                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={popOverOpen}
+                      className="w-60 justify-between"
+                    >
+                      {field.value
+                        ? tabFiltered.find((li) => li.id === field.value)?.name
+                        : `${t("Select cash register")}...`}
+                      <ChevronsUpDownIcon className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-60 p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("Search cash register") + "..."}
+                      />
+                      <CommandList>
+                        <CommandEmpty>
+                          {t("No cash register found")}.
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {tabFiltered.map((customer) => {
+                            const { id, name } = customer
+                            return (
+                              <CommandItem
+                                key={id}
+                                value={name}
+                                onSelect={() => {
+                                  field.onChange(id)
+                                  setPopOverOpen(false)
+                                }}
+                              >
+                                <span>{name}</span>
                                 <CheckIcon
                                   size={16}
                                   className={cn(

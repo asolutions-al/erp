@@ -269,5 +269,8 @@
   "Select cash register": "Zgjidh arkën",
   "Configure additional settings": "Konfiguro cilësimet shtesë",
   "Cash register on new invoice": "Arka në faturë të re",
-  "Automatically update balance after creating a new invoice": "Përditëso automatikisht balancën pasi të krijohet një faturë e re"
+  "Automatically update balance after creating a new invoice": "Përditëso automatikisht balancën pasi të krijohet një faturë e re",
+  "Search cash register": "Kërko arkën",
+  "No cash register found": "Nuk u gjet arkë",
+  "Where the money will be stored": "Ku do të ruhen paratë"
 }

@@ -8,71 +8,19 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { CashRegisterSchemaT, InvoiceConfigSchemaT } from "@/db/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
-import { checkShouldTriggerCash } from "@/utils/checks"
 import { useTranslations } from "next-intl"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 
 type SchemaT = InvoiceFormSchemaT
 
-const InvoiceOptions = ({
-  cashRegisters,
-  invoiceConfig,
-}: {
-  cashRegisters: CashRegisterSchemaT[]
-  invoiceConfig: InvoiceConfigSchemaT
-}) => {
+const InvoiceOptions = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
-  const [payMethod] = useWatch({
-    control: form.control,
-    name: ["payMethod"],
-  })
-
-  const shouldTriggerCash = checkShouldTriggerCash({ invoiceConfig, payMethod })
-
   return (
     <>
-      {shouldTriggerCash && (
-        <FormField
-          control={form.control}
-          name="cashRegisterId"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t("Cash register")}</FormLabel>
-              <Select
-                onValueChange={(value) => field.onChange(value)}
-                defaultValue={field.value || ""}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t("Select cash register")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {cashRegisters.map((register) => (
-                    <SelectItem key={register.id} value={register.id}>
-                      {register.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-      )}
-
       <FormField
         control={form.control}
         name="discountValue"
