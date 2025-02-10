@@ -280,5 +280,6 @@
   "This action cannot be undone": "Ky veprim nuk mund të zhbëhet",
   "Are you absolutely sure": "A jeni të sigurt",
   "This will permanently close the cash register": "Kjo do të mbyllë përgjithmonë arkën",
-  "Cash register closed successfully": "Arka u mbyll me sukses"
+  "Cash register closed successfully": "Arka u mbyll me sukses",
+  "Cash register 1": "Arka 1"
 }

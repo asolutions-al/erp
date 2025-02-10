@@ -102,7 +102,7 @@ const DetailsCard = ({ isUpdate }: { isUpdate?: boolean }) => {
             <FormItem>
               <FormLabel>{t("Name")}</FormLabel>
               <FormControl>
-                <Input placeholder="Pizza" {...field} />
+                <Input placeholder={t("Cash register 1")} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
