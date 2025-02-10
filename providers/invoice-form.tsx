@@ -48,6 +48,7 @@ const schema = createInsertSchema(invoice, {
       return true
     },
     {
+      path: ["cashRegisterId"],
       message: "Cash register is required",
     }
   )
@@ -62,6 +63,7 @@ const defaultValues: SchemaT = {
   discountValue: 0,
   payMethod: "cash",
   status: "completed",
+  cashRegisterId: null,
 }
 
 const Provider = (
