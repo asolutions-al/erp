@@ -102,30 +102,33 @@ export async function GET(request: Request) {
     /**
      * Start background tasks
      */
+    const backgroundTasks = async () =>
+      await Promise.all([
+        /**
+         * TODO:
+         * 1. Send welcome email
+         */
+        /**
+         * 2. Update default orgId for user
+         */
+        db
+          .update(schUser)
+          .set({
+            defaultOrgId: transRes.orgId,
+          })
+          .where(eq(schUser.id, userId)),
+        /**
+         * 3. Create default invoice config
+         */
+        db.insert(invoiceConfig).values({
+          unitId: transRes.unitId,
+          orgId: transRes.orgId,
+          payMethod: "cash",
+          triggerCashOnInvoice: true,
+        }),
+      ])
 
-    try {
-      /**
-       * TODO:
-       * 1. Send welcome email
-       */
-
-      /**
-       * 2. Adjust default settings
-       */
-      db.update(schUser)
-        .set({
-          defaultOrgId: transRes.orgId,
-        })
-        .where(eq(schUser.id, userId))
-      db.insert(invoiceConfig).values({
-        unitId: transRes.unitId,
-        orgId: transRes.orgId,
-        payMethod: "cash",
-        triggerCashOnInvoice: true,
-      })
-    } catch (error) {
-      console.error("Background tasks failed", error)
-    }
+    backgroundTasks()
   } catch (error) {
     console.error(error)
     // TODO: where to redirect?
