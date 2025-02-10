@@ -1,8 +1,4 @@
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { SidebarItem } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -12,12 +8,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
   BuildingIcon,
-  ChevronRight,
   CirclePlusIcon,
   ListTreeIcon,
   UsersIcon,
@@ -25,7 +19,6 @@ import {
 import { getTranslations } from "next-intl/server"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
-import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { SidebarUser } from "./sidebar-user"
 
@@ -48,51 +41,35 @@ const OrgSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Unit")}>
-                    <BuildingIcon />
-                    <span className="font-semibold">{t("Unit")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/unit/list`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                    <SidebarItem
-                      href={`/o/${orgId}/unit/create`}
-                      text="Create"
-                      icon={<CirclePlusIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Member")}>
-                    <UsersIcon />
-                    <span className="font-semibold">{t("Member")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/member/list`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
+            <SidebarItem
+              text="Unit"
+              href={`/o/${orgId}/unit/list`}
+              icon={<BuildingIcon />}
+              subItems={[
+                {
+                  href: `/o/${orgId}/unit/list`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/unit/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Member"
+              href={`/o/${orgId}/member/list`}
+              icon={<UsersIcon />}
+              subItems={[
+                {
+                  href: `/o/${orgId}/member/list`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+              ]}
+            />
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

@@ -1,8 +1,4 @@
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible"
+import { SidebarItem } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -12,13 +8,11 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarMenuSub,
   SidebarRail,
 } from "@/components/ui/sidebar"
 import {
   ArrowLeftIcon,
   BanknoteIcon,
-  ChevronRight,
   CirclePlusIcon,
   ContactIcon,
   ListTreeIcon,
@@ -30,7 +24,6 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
-import { SidebarItem } from "../sidebar-item"
 import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
@@ -63,126 +56,86 @@ const UnitSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Product")}>
-                    <PackageIcon />
-                    <span className="font-semibold">{t("Product")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/product/list/active`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/product/create`}
-                      text="Create"
-                      icon={<CirclePlusIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Customer")}>
-                    <ContactIcon />
-                    <span className="font-semibold">{t("Customer")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/customer/list/active`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/customer/create`}
-                      text="Create"
-                      icon={<CirclePlusIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Invoice")}>
-                    <ReceiptTextIcon />
-                    <span className="font-semibold">{t("Invoice")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/invoice/list/today`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/invoice/create`}
-                      text="Create"
-                      icon={<CirclePlusIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Cash register")}>
-                    <BanknoteIcon />
-                    <span className="font-semibold">{t("Cash register")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
-                      text="List"
-                      icon={<ListTreeIcon />}
-                    />
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/cashRegister/create`}
-                      text="Create"
-                      icon={<CirclePlusIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
-            <Collapsible asChild defaultOpen className="group/collapsible">
-              <SidebarMenuItem>
-                <CollapsibleTrigger asChild>
-                  <SidebarMenuButton tooltip={t("Configuration")}>
-                    <SettingsIcon />
-                    <span className="font-semibold">{t("Configuration")}</span>
-                    <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
-                  </SidebarMenuButton>
-                </CollapsibleTrigger>
-                <CollapsibleContent>
-                  <SidebarMenuSub>
-                    <SidebarItem
-                      href={`/o/${orgId}/u/${unitId}/config/invoice`}
-                      text="Invoice"
-                      icon={<ReceiptTextIcon />}
-                    />
-                  </SidebarMenuSub>
-                </CollapsibleContent>
-              </SidebarMenuItem>
-            </Collapsible>
+            <SidebarItem
+              text="Product"
+              icon={<PackageIcon />}
+              href={`/o/${orgId}/u/${unitId}/product/list/active`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/product/list/active`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/product/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Customer"
+              icon={<ContactIcon />}
+              href={`/o/${orgId}/u/${unitId}/customer/list/active`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/customer/list/active`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/customer/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Invoice"
+              icon={<ReceiptTextIcon />}
+              href={`/o/${orgId}/u/${unitId}/invoice/list/today`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/invoice/list/today`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/invoice/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Cash register"
+              icon={<BanknoteIcon />}
+              href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/cashRegister/list/active`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/cashRegister/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Configuration"
+              icon={<SettingsIcon />}
+              href={`/o/${orgId}/u/${unitId}/config/invoice`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/config/invoice`,
+                  text: "Invoice",
+                  icon: <ReceiptTextIcon />,
+                },
+              ]}
+            />
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>
