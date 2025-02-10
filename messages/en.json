@@ -272,5 +272,6 @@
   "Automatically update balance after creating a new invoice": "Automatically update balance after creating a new invoice",
   "Search cash register": "Search cash register",
   "No cash register found": "No cash register found",
-  "Where the money will be stored": "Where the money will be stored"
+  "Where the money will be stored": "Where the money will be stored",
+  "Opened at": "Opened at"
 }

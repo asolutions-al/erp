@@ -3,6 +3,7 @@
 import { CashRegisterActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
 import { CashRegisterSchemaT } from "@/db/app/schema"
+import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
@@ -24,6 +25,11 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
     header: ({ column }) => <SortBtn text="Name" column={column} />,
+  },
+  {
+    accessorKey: "openedAt",
+    header: ({ column }) => <SortBtn text="Opened at" column={column} />,
+    cell: ({ row }) => formatDate(new Date(row.original.openedAt)),
   },
   {
     accessorKey: "openingBalance",

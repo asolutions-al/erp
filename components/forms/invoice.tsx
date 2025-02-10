@@ -584,7 +584,7 @@ const NoProductsFound = () => {
       <p className="mb-4">{t("No products found")}</p>
       <Link href={`/o/${orgId}/u/${unitId}/product/create`} passHref>
         <Button>
-          <PlusCircleIcon className="mr-2 h-4 w-4" />
+          <PlusCircleIcon />
           {t("Create new product")}
         </Button>
       </Link>
