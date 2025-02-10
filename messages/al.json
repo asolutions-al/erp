@@ -273,5 +273,12 @@
   "Search cash register": "Kërko arkën",
   "No cash register found": "Nuk u gjet arkë",
   "Where the money will be stored": "Ku do të ruhen paratë",
-  "Opened at": "Hapur në"
+  "Opened at": "Hapur në",
+  "Closing balance": "Balanca e mbylljes",
+  "Closed at": "Mbyllur në",
+  "Close cash register": "Mbyll arken",
+  "This action cannot be undone": "Ky veprim nuk mund të zhbëhet",
+  "Are you absolutely sure": "A jeni të sigurt",
+  "This will permanently close the cash register": "Kjo do të mbyllë përgjithmonë arkën",
+  "Cash register closed successfully": "Arka u mbyll me sukses"
 }

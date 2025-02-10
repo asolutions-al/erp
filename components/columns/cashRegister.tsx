@@ -45,6 +45,22 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: IsOpenCell,
   },
   {
+    accessorKey: "closedAt",
+    header: ({ column }) => <SortBtn text="Closed at" column={column} />,
+    cell: ({ row }) => {
+      const { closedAt } = row.original
+      return closedAt ? formatDate(new Date(closedAt)) : "-"
+    },
+  },
+  {
+    accessorKey: "closingBalanace",
+    header: ({ column }) => <SortBtn text="Closing balance" column={column} />,
+    cell: ({ row }) => {
+      const { closingBalanace } = row.original
+      return closingBalanace ? closingBalanace : "-"
+    },
+  },
+  {
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,
     cell: StatusCell,

@@ -42,7 +42,8 @@ const Page = async (props: Props) => {
     db.query.cashRegister.findMany({
       where: and(
         eq(cashRegister.unitId, unitId),
-        eq(cashRegister.status, "active")
+        eq(cashRegister.status, "active"),
+        eq(cashRegister.isOpen, true)
       ),
     }),
     db.query.invoiceConfig.findFirst({

@@ -38,4 +38,26 @@ const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
   await db.update(cashRegister).set(values).where(eq(cashRegister.id, id))
 }
 
-export { create as createCashRegister, update as updateCashRegister }
+const close = async (id: string) => {
+  const client = await createAuthClient()
+  const {
+    data: { user },
+  } = await client.auth.getUser()
+  if (!user) return // user not found
+
+  await db
+    .update(cashRegister)
+    .set({
+      isOpen: false,
+      closedAt: new Date().toISOString(),
+      closedBy: user.id,
+      closingBalanace: cashRegister.balance,
+    })
+    .where(eq(cashRegister.id, id))
+}
+
+export {
+  close as closeCashRegister,
+  create as createCashRegister,
+  update as updateCashRegister,
+}

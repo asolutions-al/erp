@@ -273,5 +273,12 @@
   "Search cash register": "Search cash register",
   "No cash register found": "No cash register found",
   "Where the money will be stored": "Where the money will be stored",
-  "Opened at": "Opened at"
+  "Opened at": "Opened at",
+  "Closing balance": "Closing balance",
+  "Closed at": "Closed at",
+  "Close cash register": "Close cash register",
+  "This action cannot be undone": "This action cannot be undone",
+  "Are you absolutely sure": "Are you absolutely sure",
+  "This will permanently close the cash register": "This will permanently close the cash register",
+  "Cash register closed successfully": "Cash register closed successfully"
 }
