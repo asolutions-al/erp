@@ -46,7 +46,7 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   return (
     <>
       <AlertDialog>
-        <DropdownMenu>
+        <DropdownMenu modal={false}>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
               <span className="sr-only">{t("Open menu")}</span>
