@@ -330,8 +330,7 @@ const CashRegisterCard = ({
   const tabFiltered =
     activeTab === "all"
       ? cashRegisters
-      : // : cashRegisters.filter((customer) => customer.isFavorite)
-        cashRegisters.filter((customer) => customer)
+      : cashRegisters.filter((customer) => customer.isFavorite)
 
   const [payMethod] = useWatch({
     control: form.control,

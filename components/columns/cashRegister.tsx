@@ -14,11 +14,15 @@ const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   return t(original.status)
 }
-
 const IsOpenCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
   return original.isOpen ? t("Yes") : t("No")
+}
+const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const { original } = row
+  const t = useTranslations()
+  return original.isFavorite ? t("Yes") : t("No")
 }
 
 const columns: ColumnDef<SchemaT>[] = [
@@ -64,6 +68,11 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,
     cell: StatusCell,
+  },
+  {
+    accessorKey: "isFavorite",
+    header: ({ column }) => <SortBtn text="Favorite" column={column} />,
+    cell: FavoriteCell,
   },
   {
     id: "actions",

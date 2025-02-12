@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card"
 import {
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -28,6 +29,7 @@ import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { Switch } from "../ui/switch"
 
 type SchemaT = CashRegisterFormSchemaT
 
@@ -72,6 +74,7 @@ const Form = ({ performAction, isUpdate }: Props) => {
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2 lg:col-span-2">
             <DetailsCard isUpdate={isUpdate} />
+            <SettingsCard />
           </div>
           <div className="space-y-4">
             <StatusCard />
@@ -169,6 +172,44 @@ const StatusCard = () => {
                 </SelectContent>
               </Select>
               <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const SettingsCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Settings")}</CardTitle>
+        <CardDescription>
+          {t("Additional settings for the cash register")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <FormField
+          control={form.control}
+          name="isFavorite"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>{t("Favorite")}</FormLabel>
+                <FormDescription>
+                  {t("Helps you quickly find the cash register")}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />
