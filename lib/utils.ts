@@ -15,8 +15,8 @@ export const getAuthRedirectUrl = () => {
   return url
 }
 
-export const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat("en-US", {
+export const formatDate = (date: Date) =>
+  new Intl.DateTimeFormat("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
@@ -24,4 +24,6 @@ export const formatDate = (date: Date) => {
     minute: "numeric",
     hourCycle: "h23",
   }).format(date)
-}
+
+export const formatNumber = (num: number) =>
+  new Intl.NumberFormat("en-US").format(num)

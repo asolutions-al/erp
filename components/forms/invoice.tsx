@@ -35,7 +35,7 @@ import {
   InvoiceConfigSchemaT,
   ProductSchemaT,
 } from "@/db/app/schema"
-import { cn } from "@/lib/utils"
+import { cn, formatNumber } from "@/lib/utils"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm } from "@/utils/calc"
@@ -563,7 +563,9 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     <h3 className="truncate text-lg font-semibold">{name}</h3>
                     <p className="text-sm text-muted-foreground">{t(unit)}</p>
                   </div>
-                  <p className="text-right font-semibold">{price}</p>
+                  <p className="text-right font-semibold">
+                    {formatNumber(price)}
+                  </p>
                 </CardContent>
               </Card>
             </motion.div>
@@ -660,7 +662,7 @@ const CheckoutCard = () => {
                             {t(unit)}
                           </p>
                         </div>
-                        <p className="font-semibold">{price}</p>
+                        <p className="font-semibold">{formatNumber(price)}</p>
                       </div>
                       <div className="mt-2 flex items-center justify-between">
                         <div className="flex gap-2">
@@ -786,17 +788,17 @@ const Summary = () => {
         <div className="space-y-1">
           <div className="flex justify-between text-sm">
             <span>{t("Subtotal")}</span>
-            <p className="font-semibold">{calcs.subtotal}</p>
+            <p className="font-semibold">{formatNumber(calcs.subtotal)}</p>
           </div>
           <div className="flex justify-between text-sm">
             <span>{t("Tax")}</span>
-            <p className="font-semibold">{calcs.tax}</p>
+            <p className="font-semibold">{formatNumber(calcs.tax)}</p>
           </div>
         </div>
         <Separator />
         <div className="flex items-center justify-between">
           <span className="text-lg font-semibold">{t("Total")}</span>
-          <p className="text-lg font-semibold">{calcs.total}</p>
+          <p className="text-lg font-semibold">{formatNumber(calcs.total)}</p>
         </div>
       </CardContent>
     </Card>

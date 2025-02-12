@@ -3,7 +3,7 @@
 import { InvoiceActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
 import { InvoiceSchemaT } from "@/db/app/schema"
-import { formatDate } from "@/lib/utils"
+import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
@@ -30,6 +30,7 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "total",
     header: ({ column }) => <SortBtn text="Total" column={column} />,
+    cell: ({ row }) => formatNumber(row.original.total),
   },
   {
     accessorKey: "payMethod",

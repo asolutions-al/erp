@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { ProductSchemaT } from "@/db/app/schema"
+import { formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
@@ -68,6 +69,7 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "price",
     header: ({ column }) => <SortBtn text="Price" column={column} />,
+    cell: ({ row }) => formatNumber(row.original.price),
   },
   {
     accessorKey: "taxType",

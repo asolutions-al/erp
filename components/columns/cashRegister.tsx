@@ -3,7 +3,7 @@
 import { CashRegisterActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
 import { CashRegisterSchemaT } from "@/db/app/schema"
-import { formatDate } from "@/lib/utils"
+import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
@@ -38,10 +38,12 @@ const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "openingBalance",
     header: ({ column }) => <SortBtn text="Opening balance" column={column} />,
+    cell: ({ row }) => formatNumber(row.original.openingBalance),
   },
   {
     accessorKey: "balance",
     header: ({ column }) => <SortBtn text="Balance" column={column} />,
+    cell: ({ row }) => formatNumber(row.original.balance),
   },
   {
     accessorKey: "isOpen",
@@ -61,7 +63,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => <SortBtn text="Closing balance" column={column} />,
     cell: ({ row }) => {
       const { closingBalanace } = row.original
-      return closingBalanace ? closingBalanace : "-"
+      return closingBalanace ? formatNumber(closingBalanace) : "-"
     },
   },
   {

@@ -1,5 +1,5 @@
 import { Separator } from "@/components/ui/separator"
-import { formatDate } from "@/lib/utils"
+import { formatDate, formatNumber } from "@/lib/utils"
 import { InvoiceFormSchemaT } from "@/providers/invoice-form"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
 import { useTranslations } from "next-intl"
@@ -45,7 +45,7 @@ const InvoiceReceipt = ({ data }: Props) => {
             <div key={index} className="grid grid-cols-6">
               <div className="col-span-2">{row.name}</div>
               <div className="text-right">{row.quantity}</div>
-              <div className="text-right">{row.price}</div>
+              <div className="text-right">{formatNumber(row.price)}</div>
               <div className="text-right">{calc.tax}</div>
               <div className="text-right">{calcInvoiceFormRow(row).total}</div>
             </div>
