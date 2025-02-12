@@ -162,12 +162,8 @@
           "tableFrom": "invoice",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -176,12 +172,8 @@
           "tableFrom": "invoice",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -236,12 +228,8 @@
           "tableFrom": "organization",
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsFrom": [
-            "ownerId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["ownerId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -346,12 +334,8 @@
           "tableFrom": "customer",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -360,12 +344,8 @@
           "tableFrom": "customer",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -420,12 +400,8 @@
           "tableFrom": "unit",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -480,12 +456,8 @@
           "tableFrom": "member",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -494,12 +466,8 @@
           "tableFrom": "member",
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -554,12 +522,8 @@
           "tableFrom": "invitation",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -568,12 +532,8 @@
           "tableFrom": "invitation",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -582,12 +542,8 @@
           "tableFrom": "invitation",
           "tableTo": "user",
           "schemaTo": "public",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["userId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -673,12 +629,8 @@
           "tableFrom": "product",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -687,12 +639,8 @@
           "tableFrom": "product",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -795,12 +743,8 @@
           "tableFrom": "invoiceRow",
           "tableTo": "invoice",
           "schemaTo": "public",
-          "columnsFrom": [
-            "invoiceId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["invoiceId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -809,12 +753,8 @@
           "tableFrom": "invoiceRow",
           "tableTo": "organization",
           "schemaTo": "public",
-          "columnsFrom": [
-            "orgId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["orgId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -823,12 +763,8 @@
           "tableFrom": "invoiceRow",
           "tableTo": "product",
           "schemaTo": "public",
-          "columnsFrom": [
-            "productId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["productId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         },
@@ -837,12 +773,8 @@
           "tableFrom": "invoiceRow",
           "tableTo": "unit",
           "schemaTo": "public",
-          "columnsFrom": [
-            "unitId"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["unitId"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "cascade"
         }
@@ -857,63 +789,37 @@
   "enums": {
     "public.IdType": {
       "name": "IdType",
-      "values": [
-        "tin",
-        "id"
-      ],
+      "values": ["tin", "id"],
       "schema": "public"
     },
     "public.currency": {
       "name": "currency",
-      "values": [
-        "ALL",
-        "EUR",
-        "USD"
-      ],
+      "values": ["ALL", "EUR", "USD"],
       "schema": "public"
     },
     "public.discountType": {
       "name": "discountType",
-      "values": [
-        "value",
-        "percentage"
-      ],
+      "values": ["value", "percentage"],
       "schema": "public"
     },
     "public.payMethod": {
       "name": "payMethod",
-      "values": [
-        "cash",
-        "card",
-        "bank",
-        "other"
-      ],
+      "values": ["cash", "card", "bank", "other"],
       "schema": "public"
     },
     "public.recordStatus": {
       "name": "recordStatus",
-      "values": [
-        "draft",
-        "completed"
-      ],
+      "values": ["draft", "completed"],
       "schema": "public"
     },
     "public.role": {
       "name": "role",
-      "values": [
-        "admin",
-        "owner",
-        "member"
-      ],
+      "values": ["admin", "owner", "member"],
       "schema": "public"
     },
     "public.status": {
       "name": "status",
-      "values": [
-        "draft",
-        "active",
-        "archived"
-      ],
+      "values": ["draft", "active", "archived"],
       "schema": "public"
     }
   },
