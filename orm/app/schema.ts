@@ -11,8 +11,13 @@ import {
   uuid,
 } from "drizzle-orm/pg-core"
 
-export const idType = pgEnum("IdType", ["tin", "id"])
 export const discountType = pgEnum("discountType", ["value", "percentage"])
+export const entityStatus = pgEnum("entityStatus", [
+  "draft",
+  "active",
+  "archived",
+])
+export const idType = pgEnum("idType", ["tin", "id"])
 export const payMethod = pgEnum("payMethod", ["cash", "card", "bank", "other"])
 export const productUnit = pgEnum("productUnit", [
   "E49",
@@ -36,7 +41,6 @@ export const productUnit = pgEnum("productUnit", [
 ])
 export const recordStatus = pgEnum("recordStatus", ["draft", "completed"])
 export const role = pgEnum("role", ["admin", "owner", "member"])
-export const status = pgEnum("status", ["draft", "active", "archived"])
 export const taxType = pgEnum("taxType", ["0", "6", "10", "20"])
 
 export const user = pgTable("user", {
@@ -159,7 +163,7 @@ export const customer = pgTable(
       .notNull(),
     unitId: uuid().notNull(),
     name: text().notNull(),
-    status: status().notNull(),
+    status: entityStatus().notNull(),
     description: text(),
     imageBucketPath: text(),
     idType: idType().notNull(),
@@ -188,6 +192,28 @@ export const customer = pgTable(
   ]
 )
 
+export const unit = pgTable(
+  "unit",
+  {
+    id: uuid().defaultRandom().primaryKey().notNull(),
+    createdAt: timestamp({ withTimezone: true, mode: "string" })
+      .defaultNow()
+      .notNull(),
+    orgId: uuid().notNull(),
+    name: text().notNull(),
+    description: text(),
+  },
+  (table) => [
+    foreignKey({
+      columns: [table.orgId],
+      foreignColumns: [organization.id],
+      name: "unit_orgId_fkey",
+    })
+      .onUpdate("cascade")
+      .onDelete("cascade"),
+  ]
+)
+
 export const cashRegister = pgTable(
   "cashRegister",
   {
@@ -206,7 +232,8 @@ export const cashRegister = pgTable(
     closingBalanace: doublePrecision(),
     openedBy: uuid().notNull(),
     closedBy: uuid(),
-    status: status().notNull(),
+    status: entityStatus().notNull(),
+    isFavorite: boolean().default(false).notNull(),
   },
   (table) => [
     foreignKey({
@@ -234,28 +261,6 @@ export const cashRegister = pgTable(
       columns: [table.unitId],
       foreignColumns: [unit.id],
       name: "cash_unitId_fkey",
-    })
-      .onUpdate("cascade")
-      .onDelete("cascade"),
-  ]
-)
-
-export const unit = pgTable(
-  "unit",
-  {
-    id: uuid().defaultRandom().primaryKey().notNull(),
-    createdAt: timestamp({ withTimezone: true, mode: "string" })
-      .defaultNow()
-      .notNull(),
-    orgId: uuid().notNull(),
-    name: text().notNull(),
-    description: text(),
-  },
-  (table) => [
-    foreignKey({
-      columns: [table.orgId],
-      foreignColumns: [organization.id],
-      name: "unit_orgId_fkey",
     })
       .onUpdate("cascade")
       .onDelete("cascade"),
@@ -337,7 +342,7 @@ export const product = pgTable(
     unitId: uuid().notNull(),
     name: text().notNull(),
     price: doublePrecision().notNull(),
-    status: status().notNull(),
+    status: entityStatus().notNull(),
     barcode: text(),
     description: text(),
     imageBucketPath: text(),

@@ -30,6 +30,7 @@ const defaultValues: SchemaT = {
   name: "",
   status: "active",
   openingBalance: 0,
+  isFavorite: false,
 }
 
 const Provider = (

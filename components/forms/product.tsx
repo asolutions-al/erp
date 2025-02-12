@@ -31,7 +31,7 @@ import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
 import { cn } from "@/lib/utils"
-import { productUnit, status, taxType } from "@/orm/app/schema"
+import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { CheckIcon, ChevronsUpDownIcon, UploadIcon } from "lucide-react"
 import { nanoid } from "nanoid"
@@ -418,7 +418,7 @@ const StatusCard = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {status.enumValues.map((item) => (
+                  {entityStatus.enumValues.map((item) => (
                     <SelectItem key={item} value={item}>
                       {t(item)}
                     </SelectItem>

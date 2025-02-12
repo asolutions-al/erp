@@ -2,11 +2,11 @@ import { productColumns } from "@/components/columns/product"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { product } from "@/orm/app/schema"
-import { StatusT } from "@/types/enum"
-import { and, asc, desc, eq } from "drizzle-orm"
+import { EntityStatusT } from "@/types/enum"
+import { and, asc, eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string; status: StatusT }>
+  params: Promise<{ unitId: string; status: EntityStatusT }>
 }
 
 const Page = async ({ params }: Props) => {

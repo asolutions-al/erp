@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { status } from "@/orm/app/schema"
+import { entityStatus } from "@/orm/app/schema"
 import { CashRegisterFormSchemaT } from "@/providers/cashRegister-form"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
@@ -161,7 +161,7 @@ const StatusCard = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {status.enumValues.map((item) => (
+                  {entityStatus.enumValues.map((item) => (
                     <SelectItem key={item} value={item}>
                       {t(item)}
                     </SelectItem>

@@ -1,4 +1,4 @@
-import { payMethod, status } from "@/orm/app/schema"
+import { EntityStatusT, PayMethodT } from "@/types/enum"
 import {
   endOfMonth,
   endOfToday,
@@ -23,9 +23,8 @@ import {
   HandCoinsIcon,
   LandmarkIcon,
 } from "lucide-react"
-type PayMethodT = (typeof payMethod.enumValues)[number]
+
 type IconT = typeof LandmarkIcon // temp solution, not sure how to get the type of the icon
-type StatusT = (typeof status.enumValues)[number]
 
 const mapPayMethodIcon = (value: PayMethodT) => {
   const MAP: Record<PayMethodT, IconT> = {
@@ -47,8 +46,8 @@ const mapRangeIcon = (value: RangeT) => {
   }
   return MAP[value]
 }
-const mapStatusIcon = (value: StatusT) => {
-  const MAP: Record<StatusT, IconT> = {
+const mapStatusIcon = (value: EntityStatusT) => {
+  const MAP: Record<EntityStatusT, IconT> = {
     active: CircleCheckIcon,
     archived: ArchiveIcon,
     draft: FileIcon,

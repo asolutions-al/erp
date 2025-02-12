@@ -5,13 +5,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {
@@ -21,17 +15,11 @@ import {
 } from "@/components/ui/sidebar"
 import { signOut } from "@/db/auth/actions"
 import { createAuthClient } from "@/db/auth/client"
-import {
-  ChevronsUpDown,
-  LogOut,
-  SettingsIcon,
-  Sparkles,
-  SunMoonIcon,
-} from "lucide-react"
+import { ChevronsUpDown, LogOut, SettingsIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
-import { ThemeSwitcher } from "../theme-switcher"
 import { LanguageSwitcher } from "../language-switcher"
+import { ThemeSwitcher } from "../theme-switcher"
 
 const SidebarUser = async () => {
   const t = await getTranslations()

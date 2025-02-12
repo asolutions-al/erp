@@ -2,18 +2,18 @@ import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapStatusIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
-import { status } from "@/orm/app/schema"
-import { StatusT } from "@/types/enum"
+import { entityStatus } from "@/orm/app/schema"
+import { EntityStatusT } from "@/types/enum"
 import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
 
 type Props = PropsWithChildren<{
-  params: Promise<{ orgId: string; unitId: string; status: StatusT }>
+  params: Promise<{ orgId: string; unitId: string; status: EntityStatusT }>
 }>
 
-const LIST = status.enumValues.sort()
+const LIST = entityStatus.enumValues.sort()
 
 const Layout = async (props: Props) => {
   const { params } = props

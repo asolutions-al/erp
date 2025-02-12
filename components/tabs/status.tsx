@@ -3,12 +3,11 @@
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapStatusIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
-import { status } from "@/orm/app/schema"
+import { entityStatus } from "@/orm/app/schema"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
-const LIST = status.enumValues.sort()
+const LIST = entityStatus.enumValues.sort()
 
 const StatusTabs = ({
   defaultValue,
