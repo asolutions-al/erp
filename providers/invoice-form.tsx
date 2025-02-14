@@ -26,6 +26,7 @@ const rowSchema = createInsertSchema(invoiceRow, {
 
 const schema = createInsertSchema(invoice, {
   customerId: (sch) => sch.customerId.min(1),
+  discountValue: (sch) => sch.discountValue.min(0),
 })
   .omit({
     id: true,

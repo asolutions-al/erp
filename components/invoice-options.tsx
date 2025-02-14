@@ -33,7 +33,6 @@ const InvoiceOptions = () => {
                 type="number"
                 onChange={(e) => field.onChange(parseFloat(e.target.value))}
                 onFocus={(e) => e.target.select()}
-                min="0"
               />
             </FormControl>
             <FormMessage />

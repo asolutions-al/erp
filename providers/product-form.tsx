@@ -10,6 +10,7 @@ import { z } from "zod"
 
 const schema = createInsertSchema(product, {
   name: (sch) => sch.name.min(1),
+  price: (sch) => sch.price.min(0),
 }).omit({
   id: true,
   unitId: true,

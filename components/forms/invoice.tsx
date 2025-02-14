@@ -66,7 +66,7 @@ import { toast } from "sonner"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
-import { FormField, FormItem, FormMessage } from "../ui/form"
+import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
 
@@ -680,16 +680,29 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
                           >
                             <MinusIcon />
                           </Button>
-                          <Input
-                            type="number"
-                            value={quantity}
-                            onChange={(e) =>
-                              changeQty(parseInt(e.target.value, 10) || 1)
-                            }
-                            className="w-20 text-center"
-                            min="1"
-                            onFocus={(e) => e.target.select()}
+
+                          <FormField
+                            control={form.control}
+                            name={`rows.${index}.price`}
+                            render={({ field }) => (
+                              <FormItem className="max-w-32">
+                                <FormControl>
+                                  <Input
+                                    {...field}
+                                    type="number"
+                                    placeholder="0.00"
+                                    onChange={(e) =>
+                                      field.onChange(parseFloat(e.target.value))
+                                    }
+                                    onFocus={(e) => e.target.select()}
+                                    className="text-center"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
                           />
+
                           <Button
                             variant="outline"
                             size="icon"

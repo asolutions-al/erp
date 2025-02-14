@@ -125,7 +125,6 @@ const DetailsCard = ({ isUpdate }: { isUpdate?: boolean }) => {
                   value={field.value || 0}
                   onChange={(e) => field.onChange(parseFloat(e.target.value))}
                   onFocus={(e) => e.target.select()}
-                  min="0"
                   disabled={isUpdate}
                 />
               </FormControl>
