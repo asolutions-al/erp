@@ -299,7 +299,7 @@ const LocationCard = () => {
               <FormLabel>{t("City")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder={t("customerCityPlaceholder")}
+                  placeholder={t("cityInputPlaceholder")}
                   {...field}
                   value={field.value || ""}
                 />
@@ -316,7 +316,7 @@ const LocationCard = () => {
               <FormLabel>{t("Address")}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder={t("customerAddressPlaceholder")}
+                  placeholder={t("addressInputPlaceholder")}
                   {...field}
                   value={field.value || ""}
                 />

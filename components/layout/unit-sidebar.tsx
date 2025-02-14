@@ -19,6 +19,7 @@ import {
   PackageIcon,
   ReceiptTextIcon,
   SettingsIcon,
+  WarehouseIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -119,6 +120,23 @@ const UnitSidebar = async (props: Props) => {
                 },
                 {
                   href: `/o/${orgId}/u/${unitId}/cashRegister/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Warehouse"
+              icon={<WarehouseIcon />}
+              href={`/o/${orgId}/u/${unitId}/warehouse/list/active`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/warehouse/list/active`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/warehouse/create`,
                   text: "Create",
                   icon: <CirclePlusIcon />,
                 },

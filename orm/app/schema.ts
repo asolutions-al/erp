@@ -247,6 +247,29 @@ export const product = pgTable("product", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
+export const warehouse = pgTable("warehouse", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	city: text(),
+	address: text(),
+	status: entityStatus().notNull(),
+	isFavorite: boolean().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "warehouse_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "warehouse_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const invoiceRow = pgTable("invoiceRow", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),

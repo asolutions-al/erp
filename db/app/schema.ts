@@ -9,6 +9,7 @@ import {
   product,
   unit,
   user,
+  warehouse,
 } from "@/orm/app/schema"
 import { createSelectSchema } from "drizzle-zod"
 import { z } from "zod"
@@ -43,3 +44,6 @@ export type CashRegisterSchemaT = z.infer<typeof cashRegisterSchema>
 /////////////CASH REGISTER/////////////////////
 const invoiceConfigSchema = createSelectSchema(invoiceConfig)
 export type InvoiceConfigSchemaT = z.infer<typeof invoiceConfigSchema>
+/////////////WAREHOUSE/////////////////////
+const warehouseSchema = createSelectSchema(warehouse)
+export type WarehouseSchemaT = z.infer<typeof warehouseSchema>
