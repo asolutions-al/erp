@@ -26,14 +26,10 @@ export type ProductSchemaT = z.infer<typeof productSchema>
 const customerSchema = createSelectSchema(customer)
 export type CustomerSchemaT = z.infer<typeof customerSchema>
 /////////////INVOICE/////////////////////
-const invoiceSchema = createSelectSchema(invoice, {
-  customer: customerSchema,
-})
+const invoiceSchema = createSelectSchema(invoice)
 export type InvoiceSchemaT = z.infer<typeof invoiceSchema>
 /////////////INVOICE ROW/////////////////////
-const invoiceRowSchema = createSelectSchema(invoiceRow, {
-  product: productSchema,
-})
+const invoiceRowSchema = createSelectSchema(invoiceRow)
 export type InvoiceRowSchemaT = z.infer<typeof invoiceRowSchema>
 /////////////ORG MEMBER/////////////////////
 const orgMemberSchema = createSelectSchema(orgMember)

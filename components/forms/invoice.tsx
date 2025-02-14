@@ -136,7 +136,7 @@ const Form = ({
 
             {/* <StatusCard /> */}
 
-            <CheckoutCard />
+            <CheckoutCard products={products} />
 
             <Summary />
           </div>
@@ -264,7 +264,9 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                                 value={name}
                                 onSelect={() => {
                                   field.onChange(id)
-                                  form.setValue("customer", customer)
+                                  form.setValue("customerName", name)
+                                  form.setValue("customerIdType", idType)
+                                  form.setValue("customerIdValue", idValue)
                                   setCustomerPopOverOpen(false)
                                 }}
                               >
@@ -529,9 +531,8 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                       ...rows,
                       {
                         ...product,
-                        productId: product.id,
                         quantity: 1,
-                        product,
+                        productId: product.id,
                       },
                     ],
                     {
@@ -603,7 +604,7 @@ const NoCheckoutProducts = () => {
   )
 }
 
-const CheckoutCard = () => {
+const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const [rows] = useWatch({
@@ -625,7 +626,8 @@ const CheckoutCard = () => {
 
           {(rows || []).map((row, index) => {
             const { name, price, quantity, productId } = row
-            const { imageBucketPath, description, unit } = row.product || {}
+            const product = products.find((p) => p.id === productId)!
+            const { imageBucketPath, unit } = product
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value)
