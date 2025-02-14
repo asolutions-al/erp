@@ -43,8 +43,10 @@ import { checkShouldTriggerCash } from "@/utils/checks"
 import { motion } from "framer-motion"
 import Fuse from "fuse.js"
 import {
+  BanknoteIcon,
   CheckIcon,
   ChevronsUpDownIcon,
+  ContactIcon,
   DownloadIcon,
   GridIcon,
   MinusIcon,
@@ -248,7 +250,9 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                         placeholder={t("Search customer") + "..."}
                       />
                       <CommandList>
-                        <CommandEmpty>{t("No customer found")}.</CommandEmpty>
+                        <CommandEmpty>
+                          <NoCustomersFound />
+                        </CommandEmpty>
                         <CommandGroup>
                           {tabFiltered.map((customer) => {
                             const {
@@ -399,7 +403,7 @@ const CashRegisterCard = ({
                       />
                       <CommandList>
                         <CommandEmpty>
-                          {t("No cash register found")}.
+                          <NoCashRegistersFound />
                         </CommandEmpty>
                         <CommandGroup>
                           {tabFiltered.map((customer) => {
@@ -596,6 +600,41 @@ const NoProductsFound = () => {
     </div>
   )
 }
+
+const NoCustomersFound = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<GlobalParams>()
+  return (
+    <div className="flex flex-col items-center text-muted-foreground">
+      <ContactIcon className="mb-4 h-12 w-12" />
+      <p className="mb-4">{t("No customers found")}</p>
+      <Link href={`/o/${orgId}/u/${unitId}/customer/create`} passHref>
+        <Button>
+          <PlusCircleIcon />
+          {t("Create new customer")}
+        </Button>
+      </Link>
+    </div>
+  )
+}
+
+const NoCashRegistersFound = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<GlobalParams>()
+  return (
+    <div className="flex flex-col items-center text-muted-foreground">
+      <BanknoteIcon className="mb-4 h-12 w-12" />
+      <p className="mb-4">{t("No cash registers found")}</p>
+      <Link href={`/o/${orgId}/u/${unitId}/cashRegister/create`} passHref>
+        <Button>
+          <PlusCircleIcon />
+          {t("Create new cash register")}
+        </Button>
+      </Link>
+    </div>
+  )
+}
+
 const NoCheckoutProducts = () => {
   const t = useTranslations()
   return (

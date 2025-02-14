@@ -286,5 +286,9 @@
   "Additional settings for the cash register": "Additional settings for the cash register",
   "Name or ID": "Name or ID",
   "customerCityPlaceholder": "New York",
-  "customerAddressPlaceholder": "5th Avenue"
+  "customerAddressPlaceholder": "5th Avenue",
+  "Create new customer": "Create new customer",
+  "No customers found": "No customers found",
+  "No cash registers found": "No cash registers found",
+  "Create new cash register": "Create new cash register"
 }

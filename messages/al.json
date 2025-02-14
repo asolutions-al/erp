@@ -286,5 +286,9 @@
   "Additional settings for the cash register": "Cilësimet shtesë për arkën",
   "Name or ID": "Emri ose ID",
   "customerCityPlaceholder": "Tirana",
-  "customerAddressPlaceholder": "Rruga e Kavajës, Nr. 1"
+  "customerAddressPlaceholder": "Rruga e Kavajës, Nr. 1",
+  "Create new customer": "Krijo klient të ri",
+  "No customers found": "Nuk u gjetën klientë",
+  "No cash registers found": "Nuk u gjetën arkë",
+  "Create new cash register": "Krijo arkë të re"
 }
