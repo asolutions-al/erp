@@ -46,13 +46,14 @@ const calcInvoiceForm = (
     (acc, row) => acc + calcInvoiceFormRow(row).tax,
     0
   )
+
   const discount =
     values.discountType === "value"
       ? values.discountValue
       : productsTotal * values.discountValue
 
+  const subtotal = productsTotal - tax
   const total = productsTotal - discount
-  const subtotal = total - tax
 
   return {
     total,

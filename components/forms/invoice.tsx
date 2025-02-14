@@ -238,7 +238,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                     >
                       {field.value
                         ? tabFiltered.find((li) => li.id === field.value)?.name
-                        : `${t("Select customer")}...`}
+                        : `${t("Name or ID")}...`}
                       <ChevronsUpDownIcon className="opacity-50" />
                     </Button>
                   </PopoverTrigger>
@@ -262,6 +262,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                               <CommandItem
                                 key={id}
                                 value={name}
+                                keywords={[name, idValue || ""]}
                                 onSelect={() => {
                                   field.onChange(id)
                                   form.setValue("customerName", name)
@@ -810,6 +811,10 @@ const Summary = () => {
           <div className="flex justify-between text-sm">
             <span>{t("Tax")}</span>
             <p className="font-semibold">{formatNumber(calcs.tax)}</p>
+          </div>
+          <div className="flex justify-between text-sm">
+            <span>{t("Discount")}</span>
+            <p className="font-semibold">{formatNumber(calcs.discount)}</p>
           </div>
         </div>
         <Separator />
