@@ -186,11 +186,6 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
   const [customerPopOverOpen, setCustomerPopOverOpen] = useState(false)
 
-  const tabFilteredCustomers =
-    activeTab === "all"
-      ? customers
-      : customers.filter((customer) => customer.isFavorite)
-
   return (
     <Card>
       <CardHeader className="flex-row justify-between">
@@ -221,6 +216,13 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
           control={form.control}
           name="customerId"
           render={({ field }) => {
+            const tabFiltered =
+              activeTab === "all"
+                ? customers
+                : customers.filter((customer) =>
+                    field.value === customer.id ? true : customer.isFavorite
+                  )
+
             return (
               <FormItem className="flex flex-col">
                 <Popover
@@ -235,9 +237,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                       className="w-60 justify-between"
                     >
                       {field.value
-                        ? tabFilteredCustomers.find(
-                            (li) => li.id === field.value
-                          )?.name
+                        ? tabFiltered.find((li) => li.id === field.value)?.name
                         : `${t("Select customer")}...`}
                       <ChevronsUpDownIcon className="opacity-50" />
                     </Button>
@@ -250,7 +250,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
                       <CommandList>
                         <CommandEmpty>{t("No customer found")}.</CommandEmpty>
                         <CommandGroup>
-                          {tabFilteredCustomers.map((customer) => {
+                          {tabFiltered.map((customer) => {
                             const {
                               idType,
                               idValue,
@@ -329,11 +329,6 @@ const CashRegisterCard = ({
   const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
   const [popOverOpen, setPopOverOpen] = useState(false)
 
-  const tabFiltered =
-    activeTab === "all"
-      ? cashRegisters
-      : cashRegisters.filter((customer) => customer.isFavorite)
-
   const [payMethod] = useWatch({
     control: form.control,
     name: ["payMethod"],
@@ -373,6 +368,13 @@ const CashRegisterCard = ({
           control={form.control}
           name="cashRegisterId"
           render={({ field }) => {
+            const tabFiltered =
+              activeTab === "all"
+                ? cashRegisters
+                : cashRegisters.filter((register) =>
+                    field.value === register.id ? true : register.isFavorite
+                  )
+
             return (
               <FormItem className="flex flex-col">
                 <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
