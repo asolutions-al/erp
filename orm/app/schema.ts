@@ -21,6 +21,39 @@ export const user = pgTable("user", {
 	deletedAt: timestamp({ withTimezone: true, mode: 'string' }),
 });
 
+export const productInventory = pgTable("productInventory", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	productId: uuid().notNull(),
+	orgId: uuid().notNull(),
+	unitId: uuid().notNull(),
+	warehouseId: uuid().notNull(),
+	stock: doublePrecision().notNull(),
+	minStock: doublePrecision().notNull(),
+	maxStock: doublePrecision().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "productInventory_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.productId],
+			foreignColumns: [product.id],
+			name: "productInventory_productId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "productInventory_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.warehouseId],
+			foreignColumns: [warehouse.id],
+			name: "productInventory_warehouseId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const invoice = pgTable("invoice", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),

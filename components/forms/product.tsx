@@ -16,9 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-
-import { useFormContext } from "react-hook-form"
-
 import {
   Select,
   SelectContent,
@@ -26,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
@@ -33,12 +31,19 @@ import { createClient } from "@/db/app/client"
 import { cn } from "@/lib/utils"
 import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
-import { CheckIcon, ChevronsUpDownIcon, UploadIcon } from "lucide-react"
+import {
+  CheckIcon,
+  ChevronsUpDownIcon,
+  InfoIcon,
+  SettingsIcon,
+  UploadIcon,
+} from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
+import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
 import {
@@ -106,77 +111,103 @@ const Form = ({ performAction }: Props) => {
         className="mx-auto max-w-4xl"
         id={formId}
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="space-y-2 lg:col-span-2">
-            <DetailsCard />
-            <PriceCard />
-            <ExtraDetailsCard />
-          </div>
-          <div className="space-y-4">
+        <Tabs defaultValue="information">
+          <TabsList className="grid max-w-sm grid-cols-2">
+            <TabsTrigger
+              value="information"
+              className="flex items-center gap-2"
+            >
+              <InfoIcon size={20} />
+              {t("Information")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="configuration"
+              className="flex items-center gap-2"
+            >
+              <SettingsIcon size={20} />
+              {t("Configuration")}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent
+            value="information"
+            className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+          >
+            <div className="space-y-2 sm:col-span-2">
+              <DetailsCard />
+              <PriceCard />
+              <ExtraDetailsCard />
+            </div>
+            <div>
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t("Images")}</CardTitle>
+                  <CardDescription>
+                    {t("Upload and manage product images")}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid gap-2">
+                    <Image
+                      alt={t("Product image")}
+                      className="aspect-square w-full rounded-md object-cover"
+                      height="300"
+                      src={
+                        imgFile
+                          ? URL.createObjectURL(imgFile)
+                          : defaultImgBucketPath
+                            ? `${publicStorageUrl}/${productImagesBucket}/${defaultImgBucketPath}`
+                            : "/placeholder.svg"
+                      }
+                      width="300"
+                    />
+                    <div className="grid grid-cols-3 gap-2">
+                      <Image
+                        alt="Product image"
+                        className="aspect-square w-full rounded-md object-cover"
+                        height="84"
+                        src="/placeholder.svg"
+                        width="84"
+                      />
+                      <Image
+                        alt="Product image"
+                        className="aspect-square w-full rounded-md object-cover"
+                        height="84"
+                        src="/placeholder.svg"
+                        width="84"
+                      />
+                      <button
+                        className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          const input = document.createElement("input")
+                          input.type = "file"
+                          input.accept = "image/*"
+                          input.onchange = (e) => {
+                            const files = (e.target as HTMLInputElement).files
+                            const file = files?.[0]
+                            if (!file) return
+                            setImgFile(file)
+                          }
+                          input.click()
+                        }}
+                      >
+                        <UploadIcon className="h-4 w-4 text-muted-foreground" />
+                        <span className="sr-only">Upload</span>
+                      </button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+          <TabsContent
+            value="configuration"
+            className="grid gap-2 sm:grid-cols-2"
+          >
             <StatusCard />
             <SettingsCard />
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Images")}</CardTitle>
-                <CardDescription>
-                  {t("Upload and manage product images")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-2">
-                  <Image
-                    alt={t("Product image")}
-                    className="aspect-square w-full rounded-md object-cover"
-                    height="300"
-                    src={
-                      imgFile
-                        ? URL.createObjectURL(imgFile)
-                        : defaultImgBucketPath
-                          ? `${publicStorageUrl}/${productImagesBucket}/${defaultImgBucketPath}`
-                          : "/placeholder.svg"
-                    }
-                    width="300"
-                  />
-                  <div className="grid grid-cols-3 gap-2">
-                    <Image
-                      alt="Product image"
-                      className="aspect-square w-full rounded-md object-cover"
-                      height="84"
-                      src="/placeholder.svg"
-                      width="84"
-                    />
-                    <Image
-                      alt="Product image"
-                      className="aspect-square w-full rounded-md object-cover"
-                      height="84"
-                      src="/placeholder.svg"
-                      width="84"
-                    />
-                    <button
-                      className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed"
-                      onClick={(e) => {
-                        e.preventDefault()
-                        const input = document.createElement("input")
-                        input.type = "file"
-                        input.accept = "image/*"
-                        input.onchange = (e) => {
-                          const files = (e.target as HTMLInputElement).files
-                          const file = files?.[0]
-                          if (!file) return
-                          setImgFile(file)
-                        }
-                        input.click()
-                      }}
-                    >
-                      <UploadIcon className="h-4 w-4 text-muted-foreground" />
-                      <span className="sr-only">Upload</span>
-                    </button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </form>
     </>
   )
@@ -409,7 +440,6 @@ const StatusCard = () => {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Status")}</FormLabel>
               <Select value={field.value} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select status")}>
