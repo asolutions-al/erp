@@ -10,7 +10,9 @@ import { formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
-type SchemaT = ProductSchemaT
+type SchemaT = ProductSchemaT & {
+  stock: number
+}
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
@@ -63,10 +65,6 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: UnitCell,
   },
   {
-    accessorKey: "barcode",
-    header: ({ column }) => <SortBtn text="Barcode" column={column} />,
-  },
-  {
     accessorKey: "price",
     header: ({ column }) => <SortBtn text="Price" column={column} />,
     cell: ({ row }) => formatNumber(row.original.price),
@@ -75,6 +73,15 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "taxType",
     header: ({ column }) => <SortBtn text="Tax" column={column} />,
     cell: TaxCell,
+  },
+  {
+    accessorKey: "stock",
+    header: ({ column }) => <SortBtn text="Stock" column={column} />,
+    cell: ({ row }) => formatNumber(row.original.stock),
+  },
+  {
+    accessorKey: "barcode",
+    header: ({ column }) => <SortBtn text="Barcode" column={column} />,
   },
   {
     accessorKey: "status",

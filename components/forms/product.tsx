@@ -574,6 +574,7 @@ export const InventoryTab = ({
                         onChange={(e) =>
                           field.onChange(Number.parseInt(e.target.value, 10))
                         }
+                        onFocus={(e) => e.target.select()}
                       />
                     </FormControl>
                     <FormMessage />
@@ -593,6 +594,7 @@ export const InventoryTab = ({
                         onChange={(e) =>
                           field.onChange(Number.parseInt(e.target.value, 10))
                         }
+                        onFocus={(e) => e.target.select()}
                       />
                     </FormControl>
                     <FormMessage />
@@ -612,6 +614,7 @@ export const InventoryTab = ({
                         onChange={(e) =>
                           field.onChange(Number.parseInt(e.target.value, 10))
                         }
+                        onFocus={(e) => e.target.select()}
                       />
                     </FormControl>
                     <FormMessage />

@@ -24,7 +24,9 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-type SchemaT = ProductSchemaT
+type SchemaT = ProductSchemaT & {
+  stock: number
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row

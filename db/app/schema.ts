@@ -7,6 +7,7 @@ import {
   organization,
   orgMember,
   product,
+  productInventory,
   unit,
   user,
   warehouse,
@@ -47,3 +48,6 @@ export type InvoiceConfigSchemaT = z.infer<typeof invoiceConfigSchema>
 /////////////WAREHOUSE/////////////////////
 const warehouseSchema = createSelectSchema(warehouse)
 export type WarehouseSchemaT = z.infer<typeof warehouseSchema>
+/////////////PRODUCT INVENTORY/////////////////////
+const productInventorySchema = createSelectSchema(productInventory)
+export type ProductInventorySchemaT = z.infer<typeof productInventorySchema>
