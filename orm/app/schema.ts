@@ -1,5 +1,4 @@
-import { pgTable, uuid, timestamp, text, boolean, foreignKey, doublePrecision, pgEnum } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
+import { boolean, doublePrecision, foreignKey, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived'])
@@ -72,6 +71,7 @@ export const invoice = pgTable("invoice", {
 	customerName: text().notNull(),
 	customerIdType: idType().notNull(),
 	customerIdValue: text(),
+	warehouseId: uuid().notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.cashRegisterId],
@@ -92,6 +92,11 @@ export const invoice = pgTable("invoice", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "invoice_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.warehouseId],
+			foreignColumns: [warehouse.id],
+			name: "invoice_warehouseId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

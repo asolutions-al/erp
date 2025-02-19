@@ -34,6 +34,7 @@ import {
   CustomerSchemaT,
   InvoiceConfigSchemaT,
   ProductSchemaT,
+  WarehouseSchemaT,
 } from "@/db/app/schema"
 import { cn, formatNumber } from "@/lib/utils"
 import { payMethod } from "@/orm/app/schema"
@@ -49,11 +50,13 @@ import {
   ContactIcon,
   DownloadIcon,
   GridIcon,
+  InfoIcon,
   MinusIcon,
   PackageSearchIcon,
   PlusCircleIcon,
   PlusIcon,
   PrinterIcon,
+  SettingsIcon,
   ShoppingCartIcon,
   StarIcon,
   XIcon,
@@ -70,7 +73,7 @@ import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Tabs, TabsList, TabsTrigger } from "../ui/tabs"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -79,6 +82,7 @@ type Props = {
   products: ProductSchemaT[]
   customers: CustomerSchemaT[]
   cashRegisters: CashRegisterSchemaT[]
+  warehouses: WarehouseSchemaT[]
   invoiceConfig: InvoiceConfigSchemaT
 }
 
@@ -89,6 +93,7 @@ const Form = ({
   products,
   customers,
   cashRegisters,
+  warehouses,
   invoiceConfig,
 }: Props) => {
   const t = useTranslations()
@@ -123,26 +128,48 @@ const Form = ({
         className="mx-auto"
         id={formId}
       >
-        <div className="grid gap-3 lg:grid-cols-2">
-          <div className="space-y-3">
-            <CustomerCard customers={customers} />
-            <ProductsCard products={products} />
-          </div>
-          <div className="space-y-3">
-            <PaymentCard />
+        <Tabs defaultValue="information">
+          <TabsList className="grid max-w-sm grid-cols-2">
+            <TabsTrigger
+              value="information"
+              className="flex items-center gap-2"
+            >
+              <InfoIcon size={20} />
+              {t("Information")}
+            </TabsTrigger>
+            <TabsTrigger
+              value="configuration"
+              className="flex items-center gap-2"
+            >
+              <SettingsIcon size={20} />
+              {t("Configuration")}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="information">
+            <div className="grid gap-3 lg:grid-cols-2">
+              <div className="space-y-3">
+                <CustomerCard customers={customers} />
+                <ProductsCard products={products} />
+              </div>
+              <div className="space-y-3">
+                <PaymentCard />
 
-            <CashRegisterCard
-              cashRegisters={cashRegisters}
-              invoiceConfig={invoiceConfig}
-            />
+                <CheckoutCard products={products} />
 
-            {/* <StatusCard /> */}
-
-            <CheckoutCard products={products} />
-
-            <Summary />
-          </div>
-        </div>
+                <Summary />
+              </div>
+            </div>
+          </TabsContent>
+          <TabsContent value="configuration">
+            <div className="grid gap-3 lg:grid-cols-2">
+              <CashRegisterCard
+                cashRegisters={cashRegisters}
+                invoiceConfig={invoiceConfig}
+              />
+              <WarehouseCard warehouses={warehouses} />
+            </div>
+          </TabsContent>
+        </Tabs>
       </form>
 
       <Dialog
@@ -400,6 +427,114 @@ const CashRegisterCard = ({
                     <Command>
                       <CommandInput
                         placeholder={t("Search cash register") + "..."}
+                      />
+                      <CommandList>
+                        <CommandEmpty>
+                          <NoCashRegistersFound />
+                        </CommandEmpty>
+                        <CommandGroup>
+                          {tabFiltered.map((customer) => {
+                            const { id, name } = customer
+                            return (
+                              <CommandItem
+                                key={id}
+                                value={name}
+                                onSelect={() => {
+                                  field.onChange(id)
+                                  setPopOverOpen(false)
+                                }}
+                              >
+                                <span>{name}</span>
+                                <CheckIcon
+                                  size={16}
+                                  className={cn(
+                                    "ml-auto",
+                                    field.value === id
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                              </CommandItem>
+                            )
+                          })}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+  const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
+  const [popOverOpen, setPopOverOpen] = useState(false)
+
+  return (
+    <Card>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Warehouse")}</CardTitle>
+          <CardDescription>
+            {t("Where the products are stored")}
+          </CardDescription>
+        </div>
+        <Tabs
+          value={activeTab}
+          onValueChange={(value) => setActiveTab(value as CustomerTabT)}
+        >
+          <TabsList>
+            <TabsTrigger value="all" className="flex items-center gap-2">
+              <GridIcon size={20} />
+              {t("All")}
+            </TabsTrigger>
+            <TabsTrigger value="favorite" className="flex items-center gap-2">
+              <StarIcon size={20} />
+              {t("Favorite")}
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="warehouseId"
+          render={({ field }) => {
+            const tabFiltered =
+              activeTab === "all"
+                ? warehouses
+                : warehouses.filter((register) =>
+                    field.value === register.id ? true : register.isFavorite
+                  )
+
+            return (
+              <FormItem className="flex flex-col">
+                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={popOverOpen}
+                      className="w-60 justify-between"
+                    >
+                      {field.value
+                        ? tabFiltered.find((li) => li.id === field.value)?.name
+                        : `${t("Select warehouse")}...`}
+                      <ChevronsUpDownIcon className="opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-60 p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder={t("Search warehouse") + "..."}
                       />
                       <CommandList>
                         <CommandEmpty>

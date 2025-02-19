@@ -15,7 +15,11 @@ const Page = async ({ params }: Props) => {
   const { orgId, unitId } = await params
 
   const warehouses = await db.query.warehouse.findMany({
-    where: and(eq(warehouse.orgId, orgId), eq(warehouse.unitId, unitId)),
+    where: and(
+      eq(warehouse.orgId, orgId),
+      eq(warehouse.unitId, unitId),
+      eq(warehouse.status, "active")
+    ),
   })
 
   return (

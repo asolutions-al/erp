@@ -309,5 +309,7 @@
   "Stock": "Stock",
   "Min stock": "Min stock",
   "Max stock": "Max stock",
-  "Add warehouse": "Add warehouse"
+  "Add warehouse": "Add warehouse",
+  "Search warehouse": "Search warehouse",
+  "Where the products are stored": "Where the products are stored"
 }

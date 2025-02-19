@@ -69,6 +69,7 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 
 export const warehouseRelations = relations(warehouse, ({one, many}) => ({
 	productInventories: many(productInventory),
+	invoices: many(invoice),
 	organization: one(organization, {
 		fields: [warehouse.orgId],
 		references: [organization.id]
@@ -95,6 +96,10 @@ export const invoiceRelations = relations(invoice, ({one, many}) => ({
 	unit: one(unit, {
 		fields: [invoice.unitId],
 		references: [unit.id]
+	}),
+	warehouse: one(warehouse, {
+		fields: [invoice.warehouseId],
+		references: [warehouse.id]
 	}),
 	invoiceRows: many(invoiceRow),
 }));

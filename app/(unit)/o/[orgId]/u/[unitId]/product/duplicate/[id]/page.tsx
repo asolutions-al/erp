@@ -19,7 +19,11 @@ const Page = async (props: Props) => {
       where: eq(product.id, id),
     }),
     db.query.warehouse.findMany({
-      where: and(eq(warehouse.orgId, orgId), eq(warehouse.unitId, unitId)),
+      where: and(
+        eq(warehouse.orgId, orgId),
+        eq(warehouse.unitId, unitId),
+        eq(warehouse.status, "active")
+      ),
     }),
     db.query.productInventory.findMany({
       where: eq(productInventory.productId, id),

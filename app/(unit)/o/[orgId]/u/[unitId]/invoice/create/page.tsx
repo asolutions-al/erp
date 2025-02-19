@@ -18,6 +18,7 @@ import {
   customer,
   invoiceConfig,
   product,
+  warehouse,
 } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers/invoice-form"
 import { and, eq } from "drizzle-orm"
@@ -32,24 +33,31 @@ const Page = async (props: Props) => {
   const { params } = props
   const t = await getTranslations()
   const { orgId, unitId } = await params
-  const [products, customers, cashRegisters, config] = await Promise.all([
-    db.query.product.findMany({
-      where: and(eq(product.unitId, unitId), eq(product.status, "active")),
-    }),
-    db.query.customer.findMany({
-      where: and(eq(customer.unitId, unitId), eq(customer.status, "active")),
-    }),
-    db.query.cashRegister.findMany({
-      where: and(
-        eq(cashRegister.unitId, unitId),
-        eq(cashRegister.status, "active"),
-        eq(cashRegister.isOpen, true)
-      ),
-    }),
-    db.query.invoiceConfig.findFirst({
-      where: eq(invoiceConfig.unitId, unitId),
-    }),
-  ])
+  const [products, customers, cashRegisters, warehouses, config] =
+    await Promise.all([
+      db.query.product.findMany({
+        where: and(eq(product.unitId, unitId), eq(product.status, "active")),
+      }),
+      db.query.customer.findMany({
+        where: and(eq(customer.unitId, unitId), eq(customer.status, "active")),
+      }),
+      db.query.cashRegister.findMany({
+        where: and(
+          eq(cashRegister.unitId, unitId),
+          eq(cashRegister.status, "active"),
+          eq(cashRegister.isOpen, true)
+        ),
+      }),
+      db.query.warehouse.findMany({
+        where: and(
+          eq(warehouse.unitId, unitId),
+          eq(warehouse.status, "active")
+        ),
+      }),
+      db.query.invoiceConfig.findFirst({
+        where: eq(invoiceConfig.unitId, unitId),
+      }),
+    ])
 
   return (
     <InvoiceFormProvider defaultValues={config}>
@@ -85,6 +93,7 @@ const Page = async (props: Props) => {
         products={products}
         customers={customers}
         cashRegisters={cashRegisters}
+        warehouses={warehouses}
         invoiceConfig={config!}
         performAction={async (values) => {
           "use server"
