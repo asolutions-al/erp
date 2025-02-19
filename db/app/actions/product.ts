@@ -42,8 +42,33 @@ const create = async ({
   })
 }
 
-const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
-  await db.update(product).set(values).where(eq(product.id, id))
+const update = async ({
+  values,
+  id,
+  orgId,
+  unitId,
+}: {
+  values: FormSchemaT
+  id: string
+  orgId: string
+  unitId: string
+}) => {
+  await db.transaction(async (tx) => {
+    await tx.update(product).set(values).where(eq(product.id, id))
+
+    await tx.delete(productInventory).where(eq(productInventory.productId, id))
+
+    await tx.insert(productInventory).values(
+      values.rows.map((row) => {
+        return {
+          ...row,
+          productId: id,
+          orgId,
+          unitId,
+        }
+      })
+    )
+  })
 }
 
 const markAsFavorite = async ({
