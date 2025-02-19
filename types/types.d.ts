@@ -7,6 +7,7 @@ type FormId =
   | "invoiceConfig"
   | "cashRegister"
   | "warehouse"
+  | "category"
 
 type RangeT =
   | "today"

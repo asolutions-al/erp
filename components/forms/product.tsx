@@ -513,11 +513,7 @@ const SettingsCard = () => {
   )
 }
 
-export const InventoryTab = ({
-  warehouses,
-}: {
-  warehouses: WarehouseSchemaT[]
-}) => {
+const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<ProductFormSchemaT>()
   const { fields, append, remove } = useFieldArray({

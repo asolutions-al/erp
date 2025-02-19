@@ -13,6 +13,7 @@ import {
 import {
   ArrowLeftIcon,
   BanknoteIcon,
+  BriefcaseBusinessIcon,
   CirclePlusIcon,
   ContactIcon,
   ListTreeIcon,
@@ -137,6 +138,23 @@ const UnitSidebar = async (props: Props) => {
                 },
                 {
                   href: `/o/${orgId}/u/${unitId}/warehouse/create`,
+                  text: "Create",
+                  icon: <CirclePlusIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Category"
+              icon={<BriefcaseBusinessIcon />}
+              href={`/o/${orgId}/u/${unitId}/category/list/active`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/category/list/active`,
+                  text: "List",
+                  icon: <ListTreeIcon />,
+                },
+                {
+                  href: `/o/${orgId}/u/${unitId}/category/create`,
                   text: "Create",
                   icon: <CirclePlusIcon />,
                 },

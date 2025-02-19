@@ -1,5 +1,6 @@
 import {
   cashRegister,
+  category,
   customer,
   invoice,
   invoiceConfig,
@@ -51,3 +52,6 @@ export type WarehouseSchemaT = z.infer<typeof warehouseSchema>
 /////////////PRODUCT INVENTORY/////////////////////
 const productInventorySchema = createSelectSchema(productInventory)
 export type ProductInventorySchemaT = z.infer<typeof productInventorySchema>
+/////////////CATEGORY/////////////////////
+const categorySchema = createSelectSchema(category)
+export type CategorySchemaT = z.infer<typeof categorySchema>

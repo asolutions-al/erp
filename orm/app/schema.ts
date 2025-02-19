@@ -1,4 +1,5 @@
-import { boolean, doublePrecision, foreignKey, pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { pgTable, uuid, timestamp, text, boolean, foreignKey, doublePrecision, pgEnum } from "drizzle-orm/pg-core"
+import { sql } from "drizzle-orm"
 
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived'])
@@ -212,6 +213,29 @@ export const cashRegister = pgTable("cashRegister", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "cash_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
+export const category = pgTable("category", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	forProduct: boolean().notNull(),
+	forCustomer: boolean().notNull(),
+	status: entityStatus().notNull(),
+	isFavorite: boolean().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "category_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "category_unitId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

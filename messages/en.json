@@ -311,5 +311,18 @@
   "Max stock": "Max stock",
   "Add warehouse": "Add warehouse",
   "Search warehouse": "Search warehouse",
-  "Where the products are stored": "Where the products are stored"
+  "Where the products are stored": "Where the products are stored",
+  "Category": "Category",
+  "New category": "New category",
+  "Create category": "Create category",
+  "Category saved successfully": "Category saved successfully",
+  "Mark this category as a favorite": "Mark this category as a favorite",
+  "Configure additional settings for the category": "Configure additional settings for the category",
+  "Basic details of the category": "Basic details of the category",
+  "Used for customers": "Used for customers",
+  "Use this category for customers": "Use this category for customers",
+  "Used for products": "Used for products",
+  "Use this category for products": "Use this category for products",
+  "Duplicate category": "Duplicate category",
+  "Update category": "Update category"
 }

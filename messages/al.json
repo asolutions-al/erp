@@ -311,5 +311,18 @@
   "Max stock": "Stoku maksimal",
   "Add warehouse": "Shto magazinë",
   "Search warehouse": "Kërko magazinë",
-  "Where the products are stored": "Ku ruhen produktet"
+  "Where the products are stored": "Ku ruhen produktet",
+  "Category": "Kategoria",
+  "New category": "Kategori e re",
+  "Create category": "Krijo kategori",
+  "Category saved successfully": "Kategoria u ruajt me sukses",
+  "Mark this category as a favorite": "Shëno këtë kategori si të preferuar",
+  "Configure additional settings for the category": "Konfiguro cilësimet shtesë për kategorinë",
+  "Basic details of the category": "Detajet bazike të kategorisë",
+  "Used for customers": "Përdoret për klientët",
+  "Use this category for customers": "Përdor këtë kategori për klientët",
+  "Used for products": "Përdoret për produktet",
+  "Use this category for products": "Përdor këtë kategori për produktet",
+  "Duplicate category": "Dubliko kategorinë",
+  "Update category": "Përditëso kategorinë"
 }
