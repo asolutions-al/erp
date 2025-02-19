@@ -19,9 +19,6 @@ const productSchema = createInsertSchema(product, {
 })
 
 const inventorySchema = createInsertSchema(productInventory, {
-  stock: (sch) => sch.stock.min(0),
-  maxStock: (sch) => sch.maxStock.min(0),
-  minStock: (sch) => sch.minStock.min(0),
   warehouseId: (sch) => sch.warehouseId.min(1),
 }).omit({
   id: true,
