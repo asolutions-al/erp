@@ -640,7 +640,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           className="max-w-sm"
         />
       </CardHeader>
-      <CardContent className="grid max-h-[30rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">
+      <CardContent className="grid max-h-[29rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">
         {tabFilteredProducts.length === 0 && <NoProductsFound />}
 
         {tabFilteredProducts.map((product) => {
@@ -797,7 +797,7 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
           {t("Review the invoice and proceed to checkout")}
         </CardDescription>
       </CardHeader>
-      <CardContent className="max-h-96 overflow-y-scroll">
+      <CardContent className="max-h-72 overflow-y-scroll">
         <div className="flex flex-col gap-2">
           {rows.length === 0 && <NoCheckoutProducts />}
 
