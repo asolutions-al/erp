@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { product } from "@/orm/app/schema"
+import { product, productInventory } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
 
@@ -17,10 +17,28 @@ const create = async ({
   unitId: string
   orgId: string
 }) => {
-  await db.insert(product).values({
-    ...values,
-    unitId,
-    orgId,
+  await db.transaction(async (tx) => {
+    const [res] = await tx
+      .insert(product)
+      .values({
+        ...values,
+        unitId,
+        orgId,
+      })
+      .returning({
+        id: product.id,
+      })
+
+    await tx.insert(productInventory).values(
+      values.rows.map((row) => {
+        return {
+          ...row,
+          unitId,
+          orgId,
+          productId: res.id,
+        }
+      })
+    )
   })
 }
 

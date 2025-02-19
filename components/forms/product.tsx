@@ -28,6 +28,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
+import { WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
@@ -35,15 +36,18 @@ import {
   CheckIcon,
   ChevronsUpDownIcon,
   InfoIcon,
+  PlusIcon,
   SettingsIcon,
+  TrashIcon,
   UploadIcon,
+  WarehouseIcon,
 } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { useFormContext } from "react-hook-form"
+import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { Button } from "../ui/button"
 import {
@@ -61,11 +65,12 @@ type SchemaT = ProductFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
+  warehouses: WarehouseSchemaT[]
 }
 
 const formId: FormId = "product"
 
-const Form = ({ performAction }: Props) => {
+const Form = ({ performAction, warehouses }: Props) => {
   const t = useTranslations()
   const router = useRouter()
   const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
@@ -112,13 +117,17 @@ const Form = ({ performAction }: Props) => {
         id={formId}
       >
         <Tabs defaultValue="information">
-          <TabsList className="grid max-w-sm grid-cols-2">
+          <TabsList className="grid max-w-lg grid-cols-3">
             <TabsTrigger
               value="information"
               className="flex items-center gap-2"
             >
               <InfoIcon size={20} />
               {t("Information")}
+            </TabsTrigger>
+            <TabsTrigger value="inventory" className="flex items-center gap-2">
+              <WarehouseIcon size={20} />
+              {t("Inventory")}
             </TabsTrigger>
             <TabsTrigger
               value="configuration"
@@ -128,6 +137,9 @@ const Form = ({ performAction }: Props) => {
               {t("Configuration")}
             </TabsTrigger>
           </TabsList>
+          <TabsContent value="inventory">
+            <InventoryTab warehouses={warehouses} />
+          </TabsContent>
           <TabsContent
             value="information"
             className="grid grid-cols-1 gap-2 sm:grid-cols-3"
@@ -496,6 +508,141 @@ const SettingsCard = () => {
             </FormItem>
           )}
         />
+      </CardContent>
+    </Card>
+  )
+}
+
+export const InventoryTab = ({
+  warehouses,
+}: {
+  warehouses: WarehouseSchemaT[]
+}) => {
+  const t = useTranslations()
+  const form = useFormContext<ProductFormSchemaT>()
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "rows",
+  })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Inventory")}</CardTitle>
+        <CardDescription>
+          {t("Manage product inventory across warehouses")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex items-end gap-2">
+            <div className="grid grid-cols-5 items-end gap-2">
+              <FormField
+                control={form.control}
+                name={`rows.${index}.warehouseId`}
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>{t("Warehouse")}</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("Select warehouse")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {warehouses.map((warehouse) => (
+                          <SelectItem key={warehouse.id} value={warehouse.id}>
+                            {warehouse.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`rows.${index}.stock`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("Stock")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(Number.parseInt(e.target.value, 10))
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`rows.${index}.minStock`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("Min stock")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(Number.parseInt(e.target.value, 10))
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name={`rows.${index}.maxStock`}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t("Max stock")}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) =>
+                          field.onChange(Number.parseInt(e.target.value, 10))
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                onClick={() => remove(index)}
+              >
+                <TrashIcon />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-5"
+          onClick={() =>
+            append({ warehouseId: "", stock: 0, minStock: 0, maxStock: 0 })
+          }
+        >
+          <PlusIcon className="mr-2 h-4 w-4" />
+          {t("Add warehouse")}
+        </Button>
       </CardContent>
     </Card>
   )

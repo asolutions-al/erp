@@ -303,5 +303,11 @@
   "Warehouse created": "Warehouse created",
   "Update warehouse": "Update warehouse",
   "Duplicate warehouse": "Duplicate warehouse",
-  "Inventory": "Inventory"
+  "Inventory": "Inventory",
+  "Manage product inventory across warehouses": "Manage product inventory across warehouses",
+  "Select warehouse": "Select warehouse",
+  "Stock": "Stock",
+  "Min stock": "Min stock",
+  "Max stock": "Max stock",
+  "Add warehouse": "Add warehouse"
 }

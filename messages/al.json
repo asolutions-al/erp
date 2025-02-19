@@ -303,5 +303,11 @@
   "Warehouse created": "Magazina u krijua",
   "Update warehouse": "Përditëso magazinën",
   "Duplicate warehouse": "Dubliko magazinën",
-  "Inventory": "Inventari"
+  "Inventory": "Inventari",
+  "Manage product inventory across warehouses": "Menaxho inventarin e produktit nëpër magazina",
+  "Select warehouse": "Zgjidh magazinën",
+  "Stock": "Stoku",
+  "Min stock": "Stoku minimal",
+  "Max stock": "Stoku maksimal",
+  "Add warehouse": "Shto magazinë"
 }
