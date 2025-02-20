@@ -3,7 +3,12 @@ import { ProductForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { createProduct } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { product, productInventory, warehouse } from "@/orm/app/schema"
+import {
+  category,
+  product,
+  productInventory,
+  warehouse,
+} from "@/orm/app/schema"
 import { ProductFormProvider } from "@/providers/product-form"
 import { and, eq } from "drizzle-orm"
 
@@ -14,7 +19,7 @@ type Props = {
 const Page = async (props: Props) => {
   const { orgId, unitId, id } = await props.params
 
-  const [data, warehouses, inventory] = await Promise.all([
+  const [data, warehouses, inventory, categories] = await Promise.all([
     db.query.product.findFirst({
       where: eq(product.id, id),
     }),
@@ -28,13 +33,20 @@ const Page = async (props: Props) => {
     db.query.productInventory.findMany({
       where: eq(productInventory.productId, id),
     }),
+    db.query.category.findMany({
+      where: and(
+        eq(category.orgId, orgId),
+        eq(category.unitId, unitId),
+        eq(category.status, "active")
+      ),
+    }),
   ])
 
   return (
     <ProductFormProvider
       defaultValues={{
         ...data,
-        rows: inventory,
+        inventoryRows: inventory,
       }}
     >
       <PageHeader
@@ -43,6 +55,7 @@ const Page = async (props: Props) => {
         rightComp={<FormActionBtns formId="product" />}
       />
       <ProductForm
+        categories={categories}
         warehouses={warehouses}
         performAction={async (values) => {
           "use server"

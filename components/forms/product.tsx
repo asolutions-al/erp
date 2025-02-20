@@ -28,11 +28,12 @@ import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
-import { WarehouseSchemaT } from "@/db/app/schema"
+import { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import {
+  BriefcaseBusinessIcon,
   CheckIcon,
   ChevronsUpDownIcon,
   InfoIcon,
@@ -66,11 +67,12 @@ type SchemaT = ProductFormSchemaT
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
   warehouses: WarehouseSchemaT[]
+  categories: CategorySchemaT[]
 }
 
 const formId: FormId = "product"
 
-const Form = ({ performAction, warehouses }: Props) => {
+const Form = ({ performAction, warehouses, categories }: Props) => {
   const t = useTranslations()
   const router = useRouter()
   const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
@@ -117,7 +119,7 @@ const Form = ({ performAction, warehouses }: Props) => {
         id={formId}
       >
         <Tabs defaultValue="information">
-          <TabsList className="grid max-w-lg grid-cols-3">
+          <TabsList className="grid max-w-xl grid-cols-4">
             <TabsTrigger
               value="information"
               className="flex items-center gap-2"
@@ -129,6 +131,10 @@ const Form = ({ performAction, warehouses }: Props) => {
               <WarehouseIcon size={20} />
               {t("Inventory")}
             </TabsTrigger>
+            <TabsTrigger value="category" className="flex items-center gap-2">
+              <BriefcaseBusinessIcon size={20} />
+              {t("Category")}
+            </TabsTrigger>
             <TabsTrigger
               value="configuration"
               className="flex items-center gap-2"
@@ -139,6 +145,9 @@ const Form = ({ performAction, warehouses }: Props) => {
           </TabsList>
           <TabsContent value="inventory">
             <InventoryTab warehouses={warehouses} />
+          </TabsContent>
+          <TabsContent value="category">
+            <CategoryTab categories={categories} />
           </TabsContent>
           <TabsContent
             value="information"
@@ -518,7 +527,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
   const form = useFormContext<ProductFormSchemaT>()
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "rows",
+    name: "inventoryRows",
   })
 
   return (
@@ -535,7 +544,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
             <div className="grid grid-cols-5 items-end gap-2">
               <FormField
                 control={form.control}
-                name={`rows.${index}.warehouseId`}
+                name={`inventoryRows.${index}.warehouseId`}
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormLabel>{t("Warehouse")}</FormLabel>
@@ -559,7 +568,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
               />
               <FormField
                 control={form.control}
-                name={`rows.${index}.stock`}
+                name={`inventoryRows.${index}.stock`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("Stock")}</FormLabel>
@@ -579,7 +588,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
               />
               <FormField
                 control={form.control}
-                name={`rows.${index}.minStock`}
+                name={`inventoryRows.${index}.minStock`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("Min stock")}</FormLabel>
@@ -599,7 +608,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
               />
               <FormField
                 control={form.control}
-                name={`rows.${index}.maxStock`}
+                name={`inventoryRows.${index}.maxStock`}
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>{t("Max stock")}</FormLabel>
@@ -641,6 +650,76 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
         >
           <PlusIcon className="mr-2 h-4 w-4" />
           {t("Add warehouse")}
+        </Button>
+      </CardContent>
+    </Card>
+  )
+}
+
+const CategoryTab = ({ categories }: { categories: CategorySchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<ProductFormSchemaT>()
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "categoryRows",
+  })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Category")}</CardTitle>
+        <CardDescription>{t("Manage product categories")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        {fields.map((field, index) => (
+          <div key={field.id} className="flex items-end gap-2">
+            <div className="flex-1">
+              <FormField
+                control={form.control}
+                name={`categoryRows.${index}.categoryId`}
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>{t("Category")}</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder={t("Select category")} />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories.map((category) => (
+                          <SelectItem key={category.id} value={category.id}>
+                            {category.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+            <div>
+              <Button
+                type="button"
+                variant="destructive"
+                size="icon"
+                onClick={() => remove(index)}
+              >
+                <TrashIcon />
+              </Button>
+            </div>
+          </div>
+        ))}
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          className="mt-5"
+          onClick={() => append({ categoryId: "" })}
+        >
+          <PlusIcon className="mr-2 h-4 w-4" />
+          {t("Add category")}
         </Button>
       </CardContent>
     </Card>

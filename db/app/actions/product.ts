@@ -29,16 +29,19 @@ const create = async ({
         id: product.id,
       })
 
-    await tx.insert(productInventory).values(
-      values.rows.map((row) => {
-        return {
-          ...row,
-          unitId,
-          orgId,
-          productId: res.id,
-        }
-      })
-    )
+    const { inventoryRows } = values
+
+    if (inventoryRows.length > 0)
+      await tx.insert(productInventory).values(
+        inventoryRows.map((row) => {
+          return {
+            ...row,
+            unitId,
+            orgId,
+            productId: res.id,
+          }
+        })
+      )
   })
 }
 
@@ -58,16 +61,19 @@ const update = async ({
 
     await tx.delete(productInventory).where(eq(productInventory.productId, id))
 
-    await tx.insert(productInventory).values(
-      values.rows.map((row) => {
-        return {
-          ...row,
-          productId: id,
-          orgId,
-          unitId,
-        }
-      })
-    )
+    const { inventoryRows } = values
+
+    if (inventoryRows.length > 0)
+      await tx.insert(productInventory).values(
+        inventoryRows.map((row) => {
+          return {
+            ...row,
+            productId: id,
+            orgId,
+            unitId,
+          }
+        })
+      )
   })
 }
 

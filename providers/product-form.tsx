@@ -1,7 +1,7 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { product, productInventory } from "@/orm/app/schema"
+import { product, productCategory, productInventory } from "@/orm/app/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { PropsWithChildren } from "react"
@@ -28,9 +28,20 @@ const inventorySchema = createInsertSchema(productInventory, {
   productId: true,
 })
 
+const categorySchema = createInsertSchema(productCategory, {
+  categoryId: (sch) => sch.categoryId.min(1),
+}).omit({
+  id: true,
+  createdAt: true,
+  orgId: true,
+  unitId: true,
+  productId: true,
+})
+
 const schema = productSchema.extend(
   z.object({
-    rows: z.array(inventorySchema),
+    inventoryRows: z.array(inventorySchema),
+    categoryRows: z.array(categorySchema),
   }).shape
 )
 
@@ -46,14 +57,8 @@ const defaultValues: SchemaT = {
   description: null,
   barcode: null,
   imageBucketPath: null,
-  rows: [
-    {
-      stock: 0,
-      maxStock: 0,
-      minStock: 0,
-      warehouseId: "",
-    },
-  ],
+  inventoryRows: [],
+  categoryRows: [],
 }
 
 const Provider = (
