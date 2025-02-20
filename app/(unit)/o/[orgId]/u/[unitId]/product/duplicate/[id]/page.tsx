@@ -6,6 +6,7 @@ import { db } from "@/db/app/instance"
 import {
   category,
   product,
+  productCategory,
   productInventory,
   warehouse,
 } from "@/orm/app/schema"
@@ -19,34 +20,39 @@ type Props = {
 const Page = async (props: Props) => {
   const { orgId, unitId, id } = await props.params
 
-  const [data, warehouses, inventory, categories] = await Promise.all([
-    db.query.product.findFirst({
-      where: eq(product.id, id),
-    }),
-    db.query.warehouse.findMany({
-      where: and(
-        eq(warehouse.orgId, orgId),
-        eq(warehouse.unitId, unitId),
-        eq(warehouse.status, "active")
-      ),
-    }),
-    db.query.productInventory.findMany({
-      where: eq(productInventory.productId, id),
-    }),
-    db.query.category.findMany({
-      where: and(
-        eq(category.orgId, orgId),
-        eq(category.unitId, unitId),
-        eq(category.status, "active")
-      ),
-    }),
-  ])
+  const [data, warehouses, inventoryRows, categories, categoryRows] =
+    await Promise.all([
+      db.query.product.findFirst({
+        where: eq(product.id, id),
+      }),
+      db.query.warehouse.findMany({
+        where: and(
+          eq(warehouse.orgId, orgId),
+          eq(warehouse.unitId, unitId),
+          eq(warehouse.status, "active")
+        ),
+      }),
+      db.query.productInventory.findMany({
+        where: eq(productInventory.productId, id),
+      }),
+      db.query.category.findMany({
+        where: and(
+          eq(category.orgId, orgId),
+          eq(category.unitId, unitId),
+          eq(category.status, "active")
+        ),
+      }),
+      db.query.productCategory.findMany({
+        where: eq(productCategory.productId, id),
+      }),
+    ])
 
   return (
     <ProductFormProvider
       defaultValues={{
         ...data,
-        inventoryRows: inventory,
+        inventoryRows,
+        categoryRows,
       }}
     >
       <PageHeader

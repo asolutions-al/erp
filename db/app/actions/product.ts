@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { product, productInventory } from "@/orm/app/schema"
+import { product, productCategory, productInventory } from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers/product-form"
 import { eq } from "drizzle-orm"
 
@@ -29,11 +29,23 @@ const create = async ({
         id: product.id,
       })
 
-    const { inventoryRows } = values
+    const { inventoryRows, categoryRows } = values
 
     if (inventoryRows.length > 0)
       await tx.insert(productInventory).values(
         inventoryRows.map((row) => {
+          return {
+            ...row,
+            unitId,
+            orgId,
+            productId: res.id,
+          }
+        })
+      )
+
+    if (categoryRows.length > 0)
+      await tx.insert(productCategory).values(
+        categoryRows.map((row) => {
           return {
             ...row,
             unitId,
@@ -60,12 +72,25 @@ const update = async ({
     await tx.update(product).set(values).where(eq(product.id, id))
 
     await tx.delete(productInventory).where(eq(productInventory.productId, id))
+    await tx.delete(productCategory).where(eq(productCategory.productId, id))
 
-    const { inventoryRows } = values
+    const { inventoryRows, categoryRows } = values
 
     if (inventoryRows.length > 0)
       await tx.insert(productInventory).values(
         inventoryRows.map((row) => {
+          return {
+            ...row,
+            productId: id,
+            orgId,
+            unitId,
+          }
+        })
+      )
+
+    if (categoryRows.length > 0)
+      await tx.insert(productCategory).values(
+        categoryRows.map((row) => {
           return {
             ...row,
             productId: id,
