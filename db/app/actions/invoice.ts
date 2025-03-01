@@ -7,11 +7,12 @@ import {
   invoice,
   invoiceConfig,
   invoiceRow,
+  productInventory,
 } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
 import { checkShouldTriggerCash } from "@/utils/checks"
-import { eq, sql } from "drizzle-orm"
+import { and, eq, sql } from "drizzle-orm"
 
 type FormSchemaT = InvoiceFormSchemaT
 
@@ -75,6 +76,28 @@ const create = async ({
           balance: sql`${cashRegister.balance} + ${calcs.total}`,
         })
         .where(eq(cashRegister.id, values.cashRegisterId!))
+    }
+
+    if (config.triggerInventoryOnInvoice) {
+      await db.transaction(async (tx) => {
+        const updates = values.rows.map((row) =>
+          tx
+            .update(productInventory)
+            .set({
+              stock: sql`${productInventory.stock} - ${row.quantity}`,
+            })
+            .where(
+              and(
+                eq(productInventory.orgId, orgId),
+                eq(productInventory.unitId, unitId),
+                eq(productInventory.warehouseId, values.warehouseId),
+                eq(productInventory.productId, row.productId)
+              )
+            )
+        )
+
+        await Promise.all(updates)
+      })
     }
   }
 

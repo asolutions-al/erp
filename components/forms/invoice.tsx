@@ -869,7 +869,7 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
 
                           <FormField
                             control={form.control}
-                            name={`rows.${index}.price`}
+                            name={`rows.${index}.quantity`}
                             render={({ field }) => (
                               <FormItem className="max-w-32">
                                 <FormControl>
