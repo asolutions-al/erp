@@ -338,5 +338,6 @@
   "Demo warehouse": "Demo warehouse",
   "Demo cash register": "Demo cash register",
   "Demo product": "Demo product",
-  "Demo customer": "Demo customer"
+  "Demo customer": "Demo customer",
+  "Stock should be between min stock and max stock": "Stock should be between min stock and max stock"
 }

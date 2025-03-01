@@ -4,48 +4,64 @@ import { Form } from "@/components/ui/form"
 import { product, productCategory, productInventory } from "@/orm/app/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
+import { useTranslations } from "next-intl"
 import { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-const productSchema = createInsertSchema(product, {
-  name: (sch) => sch.name.min(1),
-  price: (sch) => sch.price.min(0),
-}).omit({
-  id: true,
-  createdAt: true,
-  orgId: true,
-  unitId: true,
-})
+const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
+  const productSchema = createInsertSchema(product, {
+    name: (sch) => sch.name.min(1),
+    price: (sch) => sch.price.min(0),
+  }).omit({
+    id: true,
+    createdAt: true,
+    orgId: true,
+    unitId: true,
+  })
 
-const inventorySchema = createInsertSchema(productInventory, {
-  warehouseId: (sch) => sch.warehouseId.min(1),
-}).omit({
-  id: true,
-  createdAt: true,
-  orgId: true,
-  unitId: true,
-  productId: true,
-})
+  const inventorySchema = createInsertSchema(productInventory, {
+    warehouseId: (sch) => sch.warehouseId.min(1),
+  })
+    .omit({
+      id: true,
+      createdAt: true,
+      orgId: true,
+      unitId: true,
+      productId: true,
+    })
+    .refine(
+      (value) => {
+        // prevent stock overflow
+        return value.minStock <= value.stock && value.stock <= value.maxStock
+      },
+      {
+        message: t("Stock should be between min stock and max stock"),
+        path: ["stock"],
+      }
+    )
 
-const categorySchema = createInsertSchema(productCategory, {
-  categoryId: (sch) => sch.categoryId.min(1),
-}).omit({
-  id: true,
-  createdAt: true,
-  orgId: true,
-  unitId: true,
-  productId: true,
-})
+  const categorySchema = createInsertSchema(productCategory, {
+    categoryId: (sch) => sch.categoryId.min(1),
+  }).omit({
+    id: true,
+    createdAt: true,
+    orgId: true,
+    unitId: true,
+    productId: true,
+  })
 
-const schema = productSchema.extend(
-  z.object({
-    inventoryRows: z.array(inventorySchema),
-    categoryRows: z.array(categorySchema),
-  }).shape
-)
+  const schema = productSchema.extend(
+    z.object({
+      inventoryRows: z.array(inventorySchema),
+      categoryRows: z.array(categorySchema),
+    }).shape
+  )
 
-type SchemaT = z.infer<typeof schema>
+  return schema
+}
+
+type SchemaT = z.infer<ReturnType<typeof createSchema>>
 
 const defaultValues: SchemaT = {
   name: "",
@@ -64,6 +80,10 @@ const defaultValues: SchemaT = {
 const Provider = (
   props: PropsWithChildren<{ defaultValues?: Partial<SchemaT> }>
 ) => {
+  const t = useTranslations()
+
+  const schema = createSchema({ t })
+
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),
     defaultValues: { ...defaultValues, ...props.defaultValues },
