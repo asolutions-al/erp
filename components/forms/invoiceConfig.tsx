@@ -148,6 +148,28 @@ const SettingsCard = () => {
             </FormItem>
           )}
         />
+        <FormField
+          control={form.control}
+          name="triggerInventoryOnInvoice"
+          render={({ field }) => (
+            <FormItem className="flex flex-row items-center justify-between">
+              <div className="space-y-0.5">
+                <FormLabel>{t("Inventory on new invoice")}</FormLabel>
+                <FormDescription>
+                  {t(
+                    "Automatically update inventory after creating a new invoice"
+                  )}
+                </FormDescription>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
+            </FormItem>
+          )}
+        />
       </CardContent>
     </Card>
   )

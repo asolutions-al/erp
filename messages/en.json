@@ -329,5 +329,7 @@
   "Select category": "Select category",
   "Add category": "Add category",
   "My warehouse": "My warehouse",
-  "My cash register": "My cash register"
+  "My cash register": "My cash register",
+  "Inventory on new invoice": "Inventory on new invoice",
+  "Automatically update inventory after creating a new invoice": "Automatically update inventory after creating a new invoice"
 }

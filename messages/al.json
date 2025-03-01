@@ -329,5 +329,7 @@
   "Select category": "Zgjidh kategorinë",
   "Add category": "Shto kategori",
   "My warehouse": "Magazina ime",
-  "My cash register": "Arka ime"
+  "My cash register": "Arka ime",
+  "Inventory on new invoice": "Inventari në faturë të re",
+  "Automatically update inventory after creating a new invoice": "Përditëso automatikisht inventarin pasi të krijohet një faturë e re"
 }

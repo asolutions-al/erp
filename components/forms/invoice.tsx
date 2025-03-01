@@ -166,7 +166,10 @@ const Form = ({
                 cashRegisters={cashRegisters}
                 invoiceConfig={invoiceConfig}
               />
-              <WarehouseCard warehouses={warehouses} />
+              <WarehouseCard
+                warehouses={warehouses}
+                invoiceConfig={invoiceConfig}
+              />
             </div>
           </TabsContent>
         </Tabs>
@@ -472,11 +475,19 @@ const CashRegisterCard = ({
   )
 }
 
-const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
+const WarehouseCard = ({
+  warehouses,
+  invoiceConfig,
+}: {
+  warehouses: WarehouseSchemaT[]
+  invoiceConfig: InvoiceConfigSchemaT
+}) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
   const [popOverOpen, setPopOverOpen] = useState(false)
+
+  if (!invoiceConfig.triggerInventoryOnInvoice) return null
 
   return (
     <Card>
