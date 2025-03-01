@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { entityStatus } from "@/orm/app/schema"
-import { WarehouseFormSchemaT } from "@/providers/warehouse-form"
+import { WarehouseFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"

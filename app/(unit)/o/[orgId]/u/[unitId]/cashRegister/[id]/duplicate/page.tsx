@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { createCashRegister } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { cashRegister } from "@/orm/app/schema"
-import { CashRegisterFormProvider } from "@/providers/cashRegister-form"
+import { CashRegisterFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {

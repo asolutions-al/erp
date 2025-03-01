@@ -2,7 +2,7 @@ import { FormActionBtns } from "@/components/buttons"
 import { CashRegisterForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { createCashRegister } from "@/db/app/actions"
-import { CashRegisterFormProvider } from "@/providers/cashRegister-form"
+import { CashRegisterFormProvider } from "@/providers"
 
 type Props = {
   params: Promise<{ orgId: string; unitId: string }>

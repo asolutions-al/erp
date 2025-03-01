@@ -31,7 +31,7 @@ import { createClient } from "@/db/app/client"
 import { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
-import { ProductFormSchemaT } from "@/providers/product-form"
+import { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
   CheckIcon,

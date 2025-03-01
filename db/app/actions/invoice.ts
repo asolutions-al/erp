@@ -8,7 +8,7 @@ import {
   invoiceConfig,
   invoiceRow,
 } from "@/orm/app/schema"
-import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { InvoiceFormSchemaT } from "@/providers"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
 import { checkShouldTriggerCash } from "@/utils/checks"
 import { eq, sql } from "drizzle-orm"

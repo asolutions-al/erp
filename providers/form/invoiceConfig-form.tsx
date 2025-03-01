@@ -20,6 +20,7 @@ type SchemaT = z.infer<typeof schema>
 const defaultValues: SchemaT = {
   payMethod: "cash",
   triggerCashOnInvoice: true,
+  triggerInventoryOnInvoice: true,
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

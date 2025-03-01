@@ -27,8 +27,8 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 		fields: [organization.ownerId],
 		references: [user.id]
 	}),
-	invoiceConfigs: many(invoiceConfig),
 	customers: many(customer),
+	invoiceConfigs: many(invoiceConfig),
 	units: many(unit),
 	cashRegisters: many(cashRegister),
 	categories: many(category),
@@ -57,8 +57,8 @@ export const productRelations = relations(product, ({one, many}) => ({
 export const unitRelations = relations(unit, ({one, many}) => ({
 	productInventories: many(productInventory),
 	invoices: many(invoice),
-	invoiceConfigs: many(invoiceConfig),
 	customers: many(customer),
+	invoiceConfigs: many(invoiceConfig),
 	organization: one(organization, {
 		fields: [unit.orgId],
 		references: [organization.id]

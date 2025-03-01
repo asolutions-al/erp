@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { updateInvoiceConfig } from "@/db/app/actions/invoiceConfig"
 import { db } from "@/db/app/instance"
 import { invoiceConfig } from "@/orm/app/schema"
-import { InvoiceConfigFormProvider } from "@/providers/invoiceConfig-form"
+import { InvoiceConfigFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {

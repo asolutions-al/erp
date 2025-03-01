@@ -3,7 +3,7 @@ import "server-only"
 
 import { db } from "@/db/app/instance"
 import { category } from "@/orm/app/schema"
-import { CategoryFormSchemaT } from "@/providers/category-form"
+import { CategoryFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type FormSchemaT = CategoryFormSchemaT

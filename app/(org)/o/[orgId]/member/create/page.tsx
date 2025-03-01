@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { createProduct } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { category, warehouse } from "@/orm/app/schema"
-import { ProductFormProvider } from "@/providers/product-form"
+import { ProductFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 
 type Props = {

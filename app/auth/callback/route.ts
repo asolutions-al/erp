@@ -2,11 +2,13 @@ import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { getAuthRedirectUrl } from "@/lib/utils"
 import {
+  cashRegister,
   invoiceConfig,
   organization,
   orgMember,
   user as schUser,
   unit,
+  warehouse,
 } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
@@ -125,6 +127,32 @@ export async function GET(request: Request) {
           orgId: transRes.orgId,
           payMethod: "cash",
           triggerCashOnInvoice: true,
+          triggerInventoryOnInvoice: true,
+        }),
+        /**
+         * 3. Create warehouse
+         */
+        db.insert(warehouse).values({
+          name: t("My warehouse"),
+          orgId: transRes.orgId,
+          unitId: transRes.unitId,
+          status: "active",
+          isFavorite: false,
+        }),
+        /**
+         * 4. Create cash register
+         */
+        db.insert(cashRegister).values({
+          name: t("My cash register"),
+          orgId: transRes.orgId,
+          unitId: transRes.unitId,
+          status: "active",
+          isFavorite: false,
+          balance: 0,
+          isOpen: true,
+          openedAt: new Date().toISOString(),
+          openedBy: userId,
+          openingBalance: 0,
         }),
       ])
 

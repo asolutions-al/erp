@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { UnitFormSchemaT } from "@/providers/unit-form"
+import { UnitFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"

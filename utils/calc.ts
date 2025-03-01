@@ -1,5 +1,5 @@
 import { taxType } from "@/orm/app/schema"
-import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { InvoiceFormSchemaT } from "@/providers"
 
 type TaxTypeT = (typeof taxType.enumValues)[number]
 

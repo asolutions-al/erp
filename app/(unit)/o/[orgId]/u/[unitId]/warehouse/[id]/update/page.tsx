@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { updateWarehouse } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { warehouse } from "@/orm/app/schema"
-import { WarehouseFormProvider } from "@/providers/warehouse-form"
+import { WarehouseFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {

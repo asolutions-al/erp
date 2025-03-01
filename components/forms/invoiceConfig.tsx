@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { payMethod } from "@/orm/app/schema"
-import { InvoiceConfigFormSchemaT } from "@/providers/invoiceConfig-form"
+import { InvoiceConfigFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"

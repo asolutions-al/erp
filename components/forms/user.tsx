@@ -18,7 +18,7 @@ import { Input } from "@/components/ui/input"
 import { useFormContext } from "react-hook-form"
 
 import { OrgSchemaT } from "@/db/app/schema"
-import { UserFormSchemaT } from "@/providers/user-form"
+import { UserFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { toast } from "sonner"
 import { Button } from "../ui/button"

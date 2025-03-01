@@ -3,7 +3,7 @@ import "server-only"
 
 import { db } from "@/db/app/instance"
 import { unit } from "@/orm/app/schema"
-import { UnitFormSchemaT } from "@/providers/unit-form"
+import { UnitFormSchemaT } from "@/providers"
 
 type FormSchemaT = UnitFormSchemaT
 

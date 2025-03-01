@@ -10,7 +10,7 @@ import {
   productInventory,
   warehouse,
 } from "@/orm/app/schema"
-import { ProductFormProvider } from "@/providers/product-form"
+import { ProductFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 
 type Props = {

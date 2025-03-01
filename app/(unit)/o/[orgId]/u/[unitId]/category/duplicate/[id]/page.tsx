@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { createCategory } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { category } from "@/orm/app/schema"
-import { CategoryFormProvider } from "@/providers/category-form"
+import { CategoryFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {

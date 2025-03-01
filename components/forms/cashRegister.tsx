@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { entityStatus } from "@/orm/app/schema"
-import { CashRegisterFormSchemaT } from "@/providers/cashRegister-form"
+import { CashRegisterFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"

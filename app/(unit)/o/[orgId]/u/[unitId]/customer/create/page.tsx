@@ -2,7 +2,7 @@ import { FormActionBtns } from "@/components/buttons"
 import { CustomerForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { createCustomer } from "@/db/app/actions"
-import { CustomerFormProvider } from "@/providers/customer-form"
+import { CustomerFormProvider } from "@/providers"
 
 type Props = {
   params: Promise<{ unitId: string; orgId: string }>

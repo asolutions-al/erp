@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { InvoiceFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useFormContext } from "react-hook-form"
 

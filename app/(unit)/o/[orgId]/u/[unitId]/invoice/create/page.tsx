@@ -20,7 +20,7 @@ import {
   product,
   warehouse,
 } from "@/orm/app/schema"
-import { InvoiceFormProvider } from "@/providers/invoice-form"
+import { InvoiceFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 import { Settings2Icon } from "lucide-react"
 import { getTranslations } from "next-intl/server"

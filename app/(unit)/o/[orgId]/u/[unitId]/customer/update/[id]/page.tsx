@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { updateCustomer } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { customer } from "@/orm/app/schema"
-import { CustomerFormProvider } from "@/providers/customer-form"
+import { CustomerFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {

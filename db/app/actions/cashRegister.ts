@@ -4,7 +4,7 @@ import "server-only"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { cashRegister } from "@/orm/app/schema"
-import { CashRegisterFormSchemaT } from "@/providers/cashRegister-form"
+import { CashRegisterFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type FormSchemaT = CashRegisterFormSchemaT

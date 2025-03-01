@@ -38,7 +38,7 @@ import {
 } from "@/db/app/schema"
 import { cn, formatNumber } from "@/lib/utils"
 import { payMethod } from "@/orm/app/schema"
-import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { InvoiceFormSchemaT } from "@/providers"
 import { calcInvoiceForm } from "@/utils/calc"
 import { checkShouldTriggerCash } from "@/utils/checks"
 import { motion } from "framer-motion"

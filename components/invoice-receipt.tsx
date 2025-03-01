@@ -1,6 +1,6 @@
 import { Separator } from "@/components/ui/separator"
 import { formatDate, formatNumber } from "@/lib/utils"
-import { InvoiceFormSchemaT } from "@/providers/invoice-form"
+import { InvoiceFormSchemaT } from "@/providers"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
 import { useTranslations } from "next-intl"
 import Image from "next/image"

@@ -4,7 +4,7 @@ import { PageHeader } from "@/components/layout/page-header"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { orgMember, user } from "@/orm/app/schema"
-import { UserFormProvider } from "@/providers/user-form"
+import { UserFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {}
