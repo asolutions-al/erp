@@ -331,5 +331,6 @@
   "My warehouse": "Magazina ime",
   "My cash register": "Arka ime",
   "Inventory on new invoice": "Inventari në faturë të re",
-  "Automatically update inventory after creating a new invoice": "Përditëso automatikisht inventarin pasi të krijohet një faturë e re"
+  "Automatically update inventory after creating a new invoice": "Përditëso automatikisht inventarin pasi të krijohet një faturë e re",
+  "Cash register is required": "Arka është e detyrueshme"
 }
