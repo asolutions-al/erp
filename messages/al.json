@@ -332,5 +332,11 @@
   "My cash register": "Arka ime",
   "Inventory on new invoice": "Inventari në faturë të re",
   "Automatically update inventory after creating a new invoice": "Përditëso automatikisht inventarin pasi të krijohet një faturë e re",
-  "Cash register is required": "Arka është e detyrueshme"
+  "Cash register is required": "Arka është e detyrueshme",
+  "Demo organization": "Organizata demo",
+  "Demo unit": "Njësia demo",
+  "Demo warehouse": "Magazina demo",
+  "Demo cash register": "Arka demo",
+  "Demo product": "Produkti demo",
+  "Demo customer": "Klienti demo"
 }

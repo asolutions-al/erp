@@ -3,9 +3,11 @@ import { createAuthClient } from "@/db/auth/client"
 import { getAuthRedirectUrl } from "@/lib/utils"
 import {
   cashRegister,
+  customer,
   invoiceConfig,
   organization,
   orgMember,
+  product,
   user as schUser,
   unit,
   warehouse,
@@ -64,8 +66,7 @@ export async function GET(request: Request) {
       const [orgRes] = await tx
         .insert(organization)
         .values({
-          name: t("My organization"),
-          description: t("My first organization"),
+          name: t("Demo organization"),
           ownerId: userId,
         })
         .returning({
@@ -78,8 +79,7 @@ export async function GET(request: Request) {
       const [unitRes] = await tx
         .insert(unit)
         .values({
-          name: t("My unit"),
-          description: t("My first unit"),
+          name: t("Demo unit"),
           orgId: orgRes.id,
         })
         .returning({
@@ -133,7 +133,7 @@ export async function GET(request: Request) {
          * 3. Create warehouse
          */
         db.insert(warehouse).values({
-          name: t("My warehouse"),
+          name: t("Demo warehouse"),
           orgId: transRes.orgId,
           unitId: transRes.unitId,
           status: "active",
@@ -143,9 +143,9 @@ export async function GET(request: Request) {
          * 4. Create cash register
          */
         db.insert(cashRegister).values({
-          name: t("My cash register"),
           orgId: transRes.orgId,
           unitId: transRes.unitId,
+          name: t("Demo cash register"),
           status: "active",
           isFavorite: false,
           balance: 0,
@@ -153,6 +153,30 @@ export async function GET(request: Request) {
           openedAt: new Date().toISOString(),
           openedBy: userId,
           openingBalance: 0,
+        }),
+        /**
+         * 5. Create product
+         */
+        db.insert(product).values({
+          orgId: transRes.orgId,
+          unitId: transRes.unitId,
+          name: t("Demo product"),
+          unit: "XPP",
+          price: 1,
+          status: "active",
+          isFavorite: false,
+          taxType: "0",
+        }),
+        /**
+         * 6. Create customer
+         */
+        db.insert(customer).values({
+          orgId: transRes.orgId,
+          unitId: transRes.unitId,
+          name: t("Demo customer"),
+          status: "active",
+          isFavorite: false,
+          idType: "id",
         }),
       ])
 
