@@ -60,7 +60,7 @@ const Page = async (props: Props) => {
     ])
 
   return (
-    <InvoiceFormProvider defaultValues={config}>
+    <InvoiceFormProvider defaultValues={config} config={config!}>
       <PageHeader
         title={"Create invoice"}
         className="mb-2 max-w-none"

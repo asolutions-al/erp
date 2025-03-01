@@ -1,7 +1,9 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
+import { InvoiceConfigSchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
+import { checkShouldTriggerCash } from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { useTranslations } from "next-intl"
@@ -9,7 +11,13 @@ import { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
+const createSchema = ({
+  t,
+  config,
+}: {
+  t: ReturnType<typeof useTranslations>
+  config: InvoiceConfigSchemaT
+}) => {
   const rowSchema = createInsertSchema(invoiceRow, {
     productId: (sch) => sch.productId.min(1),
     name: (sch) => sch.name.min(1),
@@ -44,7 +52,14 @@ const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
     })
     .refine(
       (data) => {
-        if (data.payMethod === "cash") return !!data.cashRegisterId
+        if (
+          checkShouldTriggerCash({
+            invoiceConfig: config,
+            payMethod: data.payMethod,
+          })
+        )
+          return !!data.cashRegisterId
+
         return true
       },
       {
@@ -74,11 +89,14 @@ const defaultValues: SchemaT = {
 }
 
 const Provider = (
-  props: PropsWithChildren<{ defaultValues?: Partial<SchemaT> }>
+  props: PropsWithChildren<{
+    defaultValues?: Partial<SchemaT>
+    config: InvoiceConfigSchemaT
+  }>
 ) => {
   const t = useTranslations()
 
-  const schema = createSchema({ t })
+  const schema = createSchema({ t, config: props.config })
 
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),

@@ -5,7 +5,7 @@ const checkShouldTriggerCash = ({
   invoiceConfig,
   payMethod,
 }: {
-  invoiceConfig: InvoiceConfigSchemaT
+  invoiceConfig: Pick<InvoiceConfigSchemaT, "triggerCashOnInvoice">
   payMethod: PayMethodT
 }) => invoiceConfig?.triggerCashOnInvoice && payMethod === "cash"
 
