@@ -342,5 +342,6 @@
   "Stock should be between min stock and max stock": "Stock should be between min stock and max stock",
   "Quantity exceeds minimum stock": "Quantity exceeds minimum stock",
   "Warehouse not found": "Warehouse not found",
-  "Create new warehouse": "Create new warehouse"
+  "Create new warehouse": "Create new warehouse",
+  "Go back": "Go back"
 }

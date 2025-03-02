@@ -50,7 +50,7 @@ const UnitSidebar = async (props: Props) => {
         <Link href={`/o/${orgId}/unit/list`} passHref>
           <SidebarMenuButton>
             <ArrowLeftIcon />
-            {t("Back to dashboard")}
+            {t("Organization")}
           </SidebarMenuButton>
         </Link>
       </SidebarHeader>

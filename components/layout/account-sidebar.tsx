@@ -32,7 +32,7 @@ const AccountSidebar = async (props: Props) => {
         <Link href="/o/list" passHref>
           <SidebarMenuButton>
             <ArrowLeftIcon />
-            {t("Back to dashboard")}
+            {t("Go back")}
           </SidebarMenuButton>
         </Link>
       </SidebarHeader>
