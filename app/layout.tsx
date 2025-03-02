@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               <Toaster className="print:hidden" />
             </ThemeProvider>
             <SpeedInsights />
-            <Analytics mode="production" />
+            <Analytics />
           </body>
         </TooltipProvider>
       </TranslationProvider>
