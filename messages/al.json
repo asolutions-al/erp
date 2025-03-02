@@ -78,7 +78,7 @@
   "Payment": "Pagesa",
   "List of products to sell": "Lista e produkteve për shitje",
   "Products": "Produktet",
-  "The person that will receive the invoice": "Persona që do të marrë faturën",
+  "The person that will receive the invoice": "Personi që do të marrë faturën",
   "Party": "Partia",
   "Settings": "Konfigurimet",
   "Account": "Llogaria",
@@ -343,5 +343,6 @@
   "Quantity exceeds minimum stock": "Sasia tejkalon stokun minimal",
   "Warehouse not found": "Magazina nuk u gjet",
   "Create new warehouse": "Krijo magazinë të re",
-  "Go back": "Kthehu prapa"
+  "Go back": "Kthehu prapa",
+  "Customer not found": "Klienti nuk u gjet"
 }

@@ -343,5 +343,6 @@
   "Quantity exceeds minimum stock": "Quantity exceeds minimum stock",
   "Warehouse not found": "Warehouse not found",
   "Create new warehouse": "Create new warehouse",
-  "Go back": "Go back"
+  "Go back": "Go back",
+  "Customer not found": "Customer not found"
 }

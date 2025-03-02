@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -22,23 +23,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { CustomerSchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceConfigFormSchemaT } from "@/providers"
+import { ContactIcon, PlusCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { CustomerCommand, WarehouseCommand } from "../command"
 import { Switch } from "../ui/switch"
 
 type SchemaT = InvoiceConfigFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
+  warehouses: WarehouseSchemaT[]
+  customers: CustomerSchemaT[]
 }
 
 const formId: FormId = "invoiceConfig"
 
-const Form = ({ performAction }: Props) => {
+const Form = ({ performAction, warehouses, customers }: Props) => {
   const t = useTranslations()
   const router = useRouter()
   const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
@@ -69,6 +76,8 @@ const Form = ({ performAction }: Props) => {
       >
         <div className="grid gap-2 sm:grid-cols-2">
           <PayMethodCard />
+          <CustomerCard customers={customers} />
+          <WarehouseCard warehouses={warehouses} />
           <SettingsCard />
         </div>
       </form>
@@ -169,6 +178,97 @@ const SettingsCard = () => {
               </FormControl>
             </FormItem>
           )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Warehouse")}</CardTitle>
+          <CardDescription>
+            {t("Where the products are stored")}
+          </CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="warehouseId"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-col">
+                <WarehouseCommand
+                  list={warehouses}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                />
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+const NoCustomersFound = () => {
+  const t = useTranslations()
+  const { orgId, unitId } = useParams<GlobalParams>()
+  return (
+    <div className="flex flex-col items-center text-muted-foreground">
+      <ContactIcon className="mb-4 h-12 w-12" />
+      <p className="mb-4">{t("No customers found")}</p>
+      <Link href={`/o/${orgId}/u/${unitId}/customer/create`} passHref>
+        <Button>
+          <PlusCircleIcon />
+          {t("Create new customer")}
+        </Button>
+      </Link>
+    </div>
+  )
+}
+
+const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Customer")}</CardTitle>
+          <CardDescription>
+            {t("The person that will receive the invoice")}
+          </CardDescription>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="customerId"
+          render={({ field }) => {
+            const tabFiltered = customers
+
+            return (
+              <FormItem className="flex flex-col">
+                <CustomerCommand
+                  list={tabFiltered}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                />
+                <FormMessage />
+              </FormItem>
+            )
+          }}
         />
       </CardContent>
     </Card>

@@ -26,7 +26,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
-import { customerImageBucket, productImagesBucket } from "@/contants/bucket"
+import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapPayMethodIcon } from "@/contants/maps"
 import {
@@ -47,7 +47,6 @@ import {
   BanknoteIcon,
   CheckIcon,
   ChevronsUpDownIcon,
-  ContactIcon,
   DownloadIcon,
   GridIcon,
   InfoIcon,
@@ -68,8 +67,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
-import { WarehouseCommand } from "../command"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
+import { CustomerCommand, WarehouseCommand } from "../command"
 import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
 import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
@@ -260,91 +258,11 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
 
             return (
               <FormItem className="flex flex-col">
-                <Popover
-                  open={customerPopOverOpen}
-                  onOpenChange={setCustomerPopOverOpen}
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={customerPopOverOpen}
-                      className="w-60 justify-between"
-                    >
-                      {field.value
-                        ? tabFiltered.find((li) => li.id === field.value)?.name
-                        : `${t("Name or ID")}...`}
-                      <ChevronsUpDownIcon className="opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-60 p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder={t("Search customer") + "..."}
-                      />
-                      <CommandList>
-                        <CommandEmpty>
-                          <NoCustomersFound />
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {tabFiltered.map((customer) => {
-                            const {
-                              idType,
-                              idValue,
-                              id,
-                              name,
-                              imageBucketPath,
-                            } = customer
-                            return (
-                              <CommandItem
-                                key={id}
-                                value={name}
-                                keywords={[name, idValue || ""]}
-                                onSelect={() => {
-                                  field.onChange(id)
-                                  form.setValue("customerName", name)
-                                  form.setValue("customerIdType", idType)
-                                  form.setValue("customerIdValue", idValue)
-                                  setCustomerPopOverOpen(false)
-                                }}
-                              >
-                                <Avatar className="mr-2">
-                                  {imageBucketPath ? (
-                                    <AvatarImage
-                                      src={`${publicStorageUrl}/${customerImageBucket}/${imageBucketPath}`}
-                                      alt={name}
-                                    />
-                                  ) : (
-                                    <AvatarFallback>
-                                      {name.charAt(0)}
-                                    </AvatarFallback>
-                                  )}
-                                </Avatar>
-                                <div className="flex flex-col">
-                                  <span>{name}</span>
-                                  {idValue && (
-                                    <span className="text-sm text-muted-foreground">
-                                      {t(idType)}: {idValue}
-                                    </span>
-                                  )}
-                                </div>
-                                <CheckIcon
-                                  size={16}
-                                  className={cn(
-                                    "ml-auto",
-                                    field.value === id
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            )
-                          })}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <CustomerCommand
+                  list={tabFiltered}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                />
                 <FormMessage />
               </FormItem>
             )
@@ -695,23 +613,6 @@ const NoProductsFound = () => {
         <Button>
           <PlusCircleIcon />
           {t("Create new product")}
-        </Button>
-      </Link>
-    </div>
-  )
-}
-
-const NoCustomersFound = () => {
-  const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParams>()
-  return (
-    <div className="flex flex-col items-center text-muted-foreground">
-      <ContactIcon className="mb-4 h-12 w-12" />
-      <p className="mb-4">{t("No customers found")}</p>
-      <Link href={`/o/${orgId}/u/${unitId}/customer/create`} passHref>
-        <Button>
-          <PlusCircleIcon />
-          {t("Create new customer")}
         </Button>
       </Link>
     </div>
