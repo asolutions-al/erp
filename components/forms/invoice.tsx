@@ -64,7 +64,7 @@ import {
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
@@ -98,6 +98,7 @@ const Form = ({
 }: Props) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const router = useRouter()
 
   const [receiptDialog, setReceiptDialog] = useState<{
     open: boolean
@@ -110,6 +111,7 @@ const Form = ({
       toast.success(t("Invoice saved successfully"))
       setReceiptDialog({ open: true, data: values })
       form.reset()
+      router.refresh()
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
