@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar"
 import { ChevronRight } from "lucide-react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { Messages, useTranslations } from "use-intl"
 
 type Item = {
@@ -31,13 +31,20 @@ type Props = Item & {
 const SidebarItem = (props: Props) => {
   const t = useTranslations()
   const pathname = usePathname()
+  const router = useRouter()
   const { setOpenMobile, isMobile, state } = useSidebar()
 
   return (
     <Collapsible asChild defaultOpen className="group/collapsible">
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
-          <SidebarMenuButton tooltip={t(props.text)}>
+          <SidebarMenuButton
+            tooltip={t(props.text)}
+            onClick={
+              state === "collapsed" ? () => router.push(props.href) : undefined
+            }
+            isActive={state === "collapsed" && pathname === props.href}
+          >
             {props.icon}
             <span className="font-semibold">{t(props.text)}</span>
             <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
