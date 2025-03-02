@@ -67,7 +67,7 @@ const WarehouseCommand = ({
           <ChevronsUpDownIcon className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-full p-0">
+      <PopoverContent className="p-0">
         <Command>
           <CommandInput placeholder={t("Search warehouse") + "..."} />
           <CommandList>

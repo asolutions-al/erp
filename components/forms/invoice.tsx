@@ -339,7 +339,7 @@ const CashRegisterCard = ({
                       variant="outline"
                       role="combobox"
                       aria-expanded={popOverOpen}
-                      className="w-60 justify-between"
+                      className="w-full justify-between"
                     >
                       {field.value
                         ? tabFiltered.find((li) => li.id === field.value)?.name
@@ -347,7 +347,7 @@ const CashRegisterCard = ({
                       <ChevronsUpDownIcon className="opacity-50" />
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-60 p-0">
+                  <PopoverContent className="p-0">
                     <Command>
                       <CommandInput
                         placeholder={t("Search cash register") + "..."}
