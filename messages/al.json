@@ -339,5 +339,6 @@
   "Demo cash register": "Arka demo",
   "Demo product": "Produkti demo",
   "Demo customer": "Klienti demo",
-  "Stock should be between min stock and max stock": "Stoku duhet të jetë midis stokut minimal dhe stokut maksimal"
+  "Stock should be between min stock and max stock": "Stoku duhet të jetë midis stokut minimal dhe stokut maksimal",
+  "Quantity exceeds minimum stock": "Sasia tejkalon stokun minimal"
 }

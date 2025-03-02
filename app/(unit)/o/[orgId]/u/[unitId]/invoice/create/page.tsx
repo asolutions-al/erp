@@ -18,6 +18,7 @@ import {
   customer,
   invoiceConfig,
   product,
+  productInventory,
   warehouse,
 } from "@/orm/app/schema"
 import { InvoiceFormProvider } from "@/providers"
@@ -33,34 +34,47 @@ const Page = async (props: Props) => {
   const { params } = props
   const t = await getTranslations()
   const { orgId, unitId } = await params
-  const [products, customers, cashRegisters, warehouses, config] =
-    await Promise.all([
-      db.query.product.findMany({
-        where: and(eq(product.unitId, unitId), eq(product.status, "active")),
-      }),
-      db.query.customer.findMany({
-        where: and(eq(customer.unitId, unitId), eq(customer.status, "active")),
-      }),
-      db.query.cashRegister.findMany({
-        where: and(
-          eq(cashRegister.unitId, unitId),
-          eq(cashRegister.status, "active"),
-          eq(cashRegister.isOpen, true)
-        ),
-      }),
-      db.query.warehouse.findMany({
-        where: and(
-          eq(warehouse.unitId, unitId),
-          eq(warehouse.status, "active")
-        ),
-      }),
-      db.query.invoiceConfig.findFirst({
-        where: eq(invoiceConfig.unitId, unitId),
-      }),
-    ])
+  const [
+    products,
+    customers,
+    cashRegisters,
+    warehouses,
+    config,
+    productInventories,
+  ] = await Promise.all([
+    db.query.product.findMany({
+      where: and(eq(product.unitId, unitId), eq(product.status, "active")),
+    }),
+    db.query.customer.findMany({
+      where: and(eq(customer.unitId, unitId), eq(customer.status, "active")),
+    }),
+    db.query.cashRegister.findMany({
+      where: and(
+        eq(cashRegister.unitId, unitId),
+        eq(cashRegister.status, "active"),
+        eq(cashRegister.isOpen, true)
+      ),
+    }),
+    db.query.warehouse.findMany({
+      where: and(eq(warehouse.unitId, unitId), eq(warehouse.status, "active")),
+    }),
+    db.query.invoiceConfig.findFirst({
+      where: eq(invoiceConfig.unitId, unitId),
+    }),
+    db.query.productInventory.findMany({
+      where: and(
+        eq(productInventory.orgId, orgId),
+        eq(productInventory.unitId, unitId)
+      ),
+    }),
+  ])
 
   return (
-    <InvoiceFormProvider defaultValues={config} config={config!}>
+    <InvoiceFormProvider
+      defaultValues={config}
+      config={config!}
+      productInventories={productInventories}
+    >
       <PageHeader
         title={"Create invoice"}
         className="mb-2 max-w-none"

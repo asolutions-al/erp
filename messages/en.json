@@ -339,5 +339,6 @@
   "Demo cash register": "Demo cash register",
   "Demo product": "Demo product",
   "Demo customer": "Demo customer",
-  "Stock should be between min stock and max stock": "Stock should be between min stock and max stock"
+  "Stock should be between min stock and max stock": "Stock should be between min stock and max stock",
+  "Quantity exceeds minimum stock": "Quantity exceeds minimum stock"
 }

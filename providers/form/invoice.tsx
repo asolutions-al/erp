@@ -1,7 +1,7 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { InvoiceConfigSchemaT } from "@/db/app/schema"
+import { InvoiceConfigSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
 import { checkShouldTriggerCash } from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -14,25 +14,46 @@ import { z } from "zod"
 const createSchema = ({
   t,
   config,
+  productInventories,
 }: {
   t: ReturnType<typeof useTranslations>
   config: InvoiceConfigSchemaT
+  productInventories: ProductInventorySchemaT[]
 }) => {
   const rowSchema = createInsertSchema(invoiceRow, {
     productId: (sch) => sch.productId.min(1),
     name: (sch) => sch.name.min(1),
     price: (sch) => sch.price.min(0),
     quantity: (sch) => sch.quantity.positive(),
-  }).omit({
-    id: true,
-    createdAt: true,
-    orgId: true,
-    unitId: true,
-    invoiceId: true,
-    total: true,
-    subtotal: true,
-    tax: true,
   })
+    .omit({
+      id: true,
+      createdAt: true,
+      orgId: true,
+      unitId: true,
+      invoiceId: true,
+      total: true,
+      subtotal: true,
+      tax: true,
+    })
+    .refine(
+      (data) => {
+        const inventory = productInventories.find(
+          (inv) => inv.productId === data.productId
+        )
+
+        if (!inventory) return true
+
+        const { minStock } = inventory
+        const newStock = inventory.stock - data.quantity
+
+        return newStock >= minStock
+      },
+      {
+        path: ["quantity"],
+        message: t("Quantity exceeds minimum stock"),
+      }
+    )
 
   const schema = createInsertSchema(invoice, {
     customerId: (sch) => sch.customerId.min(1),
@@ -92,11 +113,16 @@ const Provider = (
   props: PropsWithChildren<{
     defaultValues?: Partial<SchemaT>
     config: InvoiceConfigSchemaT
+    productInventories: ProductInventorySchemaT[]
   }>
 ) => {
   const t = useTranslations()
 
-  const schema = createSchema({ t, config: props.config })
+  const schema = createSchema({
+    t,
+    config: props.config,
+    productInventories: props.productInventories,
+  })
 
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),
