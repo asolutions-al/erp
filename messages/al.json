@@ -340,5 +340,7 @@
   "Demo product": "Produkti demo",
   "Demo customer": "Klienti demo",
   "Stock should be between min stock and max stock": "Stoku duhet të jetë midis stokut minimal dhe stokut maksimal",
-  "Quantity exceeds minimum stock": "Sasia tejkalon stokun minimal"
+  "Quantity exceeds minimum stock": "Sasia tejkalon stokun minimal",
+  "Warehouse not found": "Magazina nuk u gjet",
+  "Create new warehouse": "Krijo magazinë të re"
 }

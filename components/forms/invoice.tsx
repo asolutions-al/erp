@@ -68,6 +68,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
+import { WarehouseCommand } from "../command"
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
 import { Badge } from "../ui/badge"
 import { Command } from "../ui/command"
@@ -487,7 +488,6 @@ const WarehouseCard = ({
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
-  const [popOverOpen, setPopOverOpen] = useState(false)
 
   if (!invoiceConfig.triggerInventoryOnInvoice) return null
 
@@ -530,59 +530,11 @@ const WarehouseCard = ({
 
             return (
               <FormItem className="flex flex-col">
-                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={popOverOpen}
-                      className="w-60 justify-between"
-                    >
-                      {field.value
-                        ? tabFiltered.find((li) => li.id === field.value)?.name
-                        : `${t("Select warehouse")}...`}
-                      <ChevronsUpDownIcon className="opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-60 p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder={t("Search warehouse") + "..."}
-                      />
-                      <CommandList>
-                        <CommandEmpty>
-                          <NoCashRegistersFound />
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {tabFiltered.map((customer) => {
-                            const { id, name } = customer
-                            return (
-                              <CommandItem
-                                key={id}
-                                value={name}
-                                onSelect={() => {
-                                  field.onChange(id)
-                                  setPopOverOpen(false)
-                                }}
-                              >
-                                <span>{name}</span>
-                                <CheckIcon
-                                  size={16}
-                                  className={cn(
-                                    "ml-auto",
-                                    field.value === id
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            )
-                          })}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <WarehouseCommand
+                  list={tabFiltered}
+                  value={field.value}
+                  onChange={(value) => field.onChange(value)}
+                />
                 <FormMessage />
               </FormItem>
             )

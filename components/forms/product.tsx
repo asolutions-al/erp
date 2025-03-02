@@ -50,6 +50,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { WarehouseCommand } from "../command"
 import { Button } from "../ui/button"
 import {
   Command,
@@ -548,20 +549,11 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
                 render={({ field }) => (
                   <FormItem className="col-span-2">
                     <FormLabel>{t("Warehouse")}</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("Select warehouse")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {warehouses.map((warehouse) => (
-                          <SelectItem key={warehouse.id} value={warehouse.id}>
-                            {warehouse.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <WarehouseCommand
+                      list={warehouses}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
                     <FormMessage />
                   </FormItem>
                 )}
