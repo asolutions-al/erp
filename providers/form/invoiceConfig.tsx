@@ -19,6 +19,8 @@ type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   payMethod: "cash",
+  warehouseId: "",
+  customerId: "",
   triggerCashOnInvoice: true,
   triggerInventoryOnInvoice: true,
 }

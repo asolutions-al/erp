@@ -29,29 +29,28 @@ export async function GET(request: Request) {
 
   /**
    * If user is not present, redirect to authenticate page.
-   * This should never happen, but just in case.
-   * Possible reasons:
+   * This should never happen, possible reasons could be:
    * 1. User authentication was not successful
-   * 2. Trying to access this page directly
+   * 2. Trying to access this route directly
    */
   if (!userId) return NextResponse.redirect(getAuthRedirectUrl())
+
+  const existingUser = await db.query.user.findFirst({
+    where: eq(schUser.id, userId),
+  })
 
   /**
    * Being an existing user means:
    * User creation process has been run at least once.
    * Therefore, We skip this process.
    */
-  const existingUser = await db.query.user.findFirst({
-    where: eq(schUser.id, userId),
-  })
-
-  if (existingUser) return NextResponse.redirect(`${origin}/o/list`)
+  if (existingUser) return NextResponse.redirect(origin)
 
   /**
    * Start onboarding process
    */
   try {
-    const transRes = await db.transaction(async (tx) => {
+    await db.transaction(async (tx) => {
       /**
        * 1. Create user
        */
@@ -59,7 +58,6 @@ export async function GET(request: Request) {
         id: userId, // use same id as auth user
         email: user.email!, // TODO: are we sure email is always present?
       })
-
       /**
        * 2. Create organization
        */
@@ -72,7 +70,6 @@ export async function GET(request: Request) {
         .returning({
           id: organization.id,
         })
-
       /**
        * 3. Create unit
        */
@@ -86,106 +83,105 @@ export async function GET(request: Request) {
           id: unit.id,
         })
 
+      const [[], [], [], [customerRes], [warehouseRes], []] = await Promise.all(
+        [
+          /**
+           * 4. Update user with default org
+           */
+          tx
+            .update(schUser)
+            .set({
+              defaultOrgId: orgRes.id,
+            })
+            .where(eq(schUser.id, userId)),
+          /**
+           * 5. Create org member
+           */
+          tx.insert(orgMember).values({
+            userId,
+            orgId: orgRes.id,
+            role: "owner",
+          }),
+          /**
+           * 6. Create product
+           */
+          tx.insert(product).values({
+            orgId: orgRes.id,
+            unitId: unitRes.id,
+            name: t("Demo product"),
+            unit: "XPP",
+            price: 1,
+            status: "active",
+            isFavorite: false,
+            taxType: "0",
+          }),
+          /**
+           * 7. Create customer
+           */
+          tx
+            .insert(customer)
+            .values({
+              orgId: orgRes.id,
+              unitId: unitRes.id,
+              name: t("Demo customer"),
+              status: "active",
+              isFavorite: false,
+              idType: "id",
+            })
+            .returning({
+              id: customer.id,
+            }),
+          /**
+           * 8. Create warehouse
+           */
+          tx
+            .insert(warehouse)
+            .values({
+              name: t("Demo warehouse"),
+              orgId: orgRes.id,
+              unitId: unitRes.id,
+              status: "active",
+              isFavorite: false,
+            })
+            .returning({
+              id: warehouse.id,
+            }),
+          /**
+           * 9. Create cash register
+           */
+          tx.insert(cashRegister).values({
+            orgId: orgRes.id,
+            unitId: unitRes.id,
+            name: t("Demo cash register"),
+            status: "active",
+            isFavorite: false,
+            balance: 0,
+            isOpen: true,
+            openedAt: new Date().toISOString(),
+            openedBy: userId,
+            openingBalance: 0,
+          }),
+        ]
+      )
+
       /**
-       * 3. add org member
+       * 10. Create default invoice config
        */
-      await tx.insert(orgMember).values({
-        userId,
-        orgId: orgRes.id,
-        role: "owner",
-      })
-
-      return {
-        orgId: orgRes.id,
+      await tx.insert(invoiceConfig).values({
         unitId: unitRes.id,
-      }
+        orgId: orgRes.id,
+        payMethod: "cash",
+        triggerCashOnInvoice: true,
+        triggerInventoryOnInvoice: true,
+        warehouseId: warehouseRes.id,
+        customerId: customerRes.id,
+      })
     })
-
-    /**
-     * Start background tasks
-     */
-    const backgroundTasks = async () =>
-      await Promise.all([
-        /**
-         * TODO:
-         * 1. Send welcome email
-         */
-        /**
-         * 2. Update default orgId for user
-         */
-        db
-          .update(schUser)
-          .set({
-            defaultOrgId: transRes.orgId,
-          })
-          .where(eq(schUser.id, userId)),
-        /**
-         * 3. Create default invoice config
-         */
-        db.insert(invoiceConfig).values({
-          unitId: transRes.unitId,
-          orgId: transRes.orgId,
-          payMethod: "cash",
-          triggerCashOnInvoice: true,
-          triggerInventoryOnInvoice: true,
-        }),
-        /**
-         * 3. Create warehouse
-         */
-        db.insert(warehouse).values({
-          name: t("Demo warehouse"),
-          orgId: transRes.orgId,
-          unitId: transRes.unitId,
-          status: "active",
-          isFavorite: false,
-        }),
-        /**
-         * 4. Create cash register
-         */
-        db.insert(cashRegister).values({
-          orgId: transRes.orgId,
-          unitId: transRes.unitId,
-          name: t("Demo cash register"),
-          status: "active",
-          isFavorite: false,
-          balance: 0,
-          isOpen: true,
-          openedAt: new Date().toISOString(),
-          openedBy: userId,
-          openingBalance: 0,
-        }),
-        /**
-         * 5. Create product
-         */
-        db.insert(product).values({
-          orgId: transRes.orgId,
-          unitId: transRes.unitId,
-          name: t("Demo product"),
-          unit: "XPP",
-          price: 1,
-          status: "active",
-          isFavorite: false,
-          taxType: "0",
-        }),
-        /**
-         * 6. Create customer
-         */
-        db.insert(customer).values({
-          orgId: transRes.orgId,
-          unitId: transRes.unitId,
-          name: t("Demo customer"),
-          status: "active",
-          isFavorite: false,
-          idType: "id",
-        }),
-      ])
-
-    backgroundTasks()
   } catch (error) {
     console.error(error)
     // TODO: where to redirect?
     return NextResponse.redirect(origin)
   }
 
-  return NextResponse.redirect(`${origin}/o/list`)
+  return NextResponse.redirect(origin)
 }

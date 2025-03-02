@@ -151,7 +151,14 @@ export const invoiceConfig = pgTable("invoiceConfig", {
 	payMethod: payMethod().notNull(),
 	triggerCashOnInvoice: boolean().notNull(),
 	triggerInventoryOnInvoice: boolean().notNull(),
+	warehouseId: uuid().notNull(),
+	customerId: uuid().notNull(),
 }, (table) => [
+	foreignKey({
+			columns: [table.customerId],
+			foreignColumns: [customer.id],
+			name: "invoiceConfig_customerId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.orgId],
 			foreignColumns: [organization.id],
@@ -161,6 +168,11 @@ export const invoiceConfig = pgTable("invoiceConfig", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "invoiceConfig_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.warehouseId],
+			foreignColumns: [warehouse.id],
+			name: "invoiceConfig_warehouseId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

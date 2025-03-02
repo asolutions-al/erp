@@ -75,6 +75,7 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 export const warehouseRelations = relations(warehouse, ({one, many}) => ({
 	productInventories: many(productInventory),
 	invoices: many(invoice),
+	invoiceConfigs: many(invoiceConfig),
 	organization: one(organization, {
 		fields: [warehouse.orgId],
 		references: [organization.id]
@@ -141,6 +142,7 @@ export const customerRelations = relations(customer, ({one, many}) => ({
 		fields: [customer.unitId],
 		references: [unit.id]
 	}),
+	invoiceConfigs: many(invoiceConfig),
 }));
 
 export const userRelations = relations(user, ({many}) => ({
@@ -156,6 +158,10 @@ export const userRelations = relations(user, ({many}) => ({
 }));
 
 export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
+	customer: one(customer, {
+		fields: [invoiceConfig.customerId],
+		references: [customer.id]
+	}),
 	organization: one(organization, {
 		fields: [invoiceConfig.orgId],
 		references: [organization.id]
@@ -163,6 +169,10 @@ export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
 	unit: one(unit, {
 		fields: [invoiceConfig.unitId],
 		references: [unit.id]
+	}),
+	warehouse: one(warehouse, {
+		fields: [invoiceConfig.warehouseId],
+		references: [warehouse.id]
 	}),
 }));
 
