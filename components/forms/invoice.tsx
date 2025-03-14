@@ -64,7 +64,7 @@ import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
@@ -150,6 +150,7 @@ const Form = ({
             <div className="grid gap-3 lg:grid-cols-2">
               <div className="space-y-3">
                 <CustomerCard customers={customers} />
+                <CustomerListener customers={customers} />
                 <ProductsCard products={products} />
               </div>
               <div className="space-y-3">
@@ -271,6 +272,25 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
       </CardContent>
     </Card>
   )
+}
+
+const CustomerListener = ({ customers }: { customers: CustomerSchemaT[] }) => {
+  const { control, setValue } = useFormContext<InvoiceFormSchemaT>()
+  const customerId = useWatch({
+    control,
+    name: "customerId",
+  })
+  useEffect(() => {
+    if (!customerId) return
+    const customer = customers.find((c) => c.id === customerId)
+    if (!customer) return
+    setValue("customerName", customer.name)
+    setValue("customerId", customer.id)
+    setValue("customerIdType", customer.idType)
+    setValue("customerIdValue", customer.idValue)
+  }, [customers, customerId])
+
+  return null
 }
 
 const CashRegisterCard = ({
