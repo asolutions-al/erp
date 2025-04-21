@@ -1,11 +1,11 @@
 import { orgColumns } from "@/components/columns/org"
+import { PageHeader } from "@/components/layout"
 import { Loading } from "@/components/layout/loading"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
-import { getTranslations } from "next-intl/server"
 import { Suspense } from "react"
 
 const List = async () => {
@@ -24,19 +24,15 @@ const List = async () => {
 }
 
 const Page = async () => {
-  const t = await getTranslations()
   return (
-    <div className="m-4 space-y-6">
-      <div>
-        <h3 className="text-lg font-medium">{t("Organizations")}</h3>
-        <p className="text-sm text-muted-foreground">
-          {t("Organizations that are associated with your account")}.
-        </p>
+    <>
+      <PageHeader title="Organizations" className="mb-2" />
+      <div className="mx-auto max-w-4xl">
+        <Suspense fallback={<Loading />}>
+          <List />
+        </Suspense>
       </div>
-      <Suspense fallback={<Loading />}>
-        <List />
-      </Suspense>
-    </div>
+    </>
   )
 }
 
