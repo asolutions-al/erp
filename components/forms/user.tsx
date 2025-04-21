@@ -150,7 +150,7 @@ const Form = ({ performAction, orgs }: Props) => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Button variant="destructive" type="button">
+              <Button variant="destructive" type="button" disabled>
                 {t("Delete account")}
               </Button>
             </CardContent>
