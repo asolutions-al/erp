@@ -21,3 +21,9 @@ type GlobalParams = {
   orgId: string
   unitId: string
 }
+
+type GrowthT = {
+  diff: number
+  diffPercent: number
+  status: "equal" | "up" | "down"
+}

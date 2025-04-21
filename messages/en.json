@@ -344,5 +344,14 @@
   "Warehouse not found": "Warehouse not found",
   "Create new warehouse": "Create new warehouse",
   "Go back": "Go back",
-  "Customer not found": "Customer not found"
+  "Customer not found": "Customer not found",
+  "Up by {diffPercent}% this period": "Up by {diffPercent}% this period",
+  "Down by {diffPercent}% this period": "Down by {diffPercent}% this period",
+  "Acquisition is the same": "Acquisition is the same",
+  "Acquisition is on track": "Acquisition is on track",
+  "Acquisition needs attention": "Acquisition needs attention",
+  "No change this period": "No change this period",
+  "New customers": "New customers",
+  "Up this period": "Up this period",
+  "Down this period": "Down this period"
 }

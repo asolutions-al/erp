@@ -1,13 +1,16 @@
 import { EntityStatusT, PayMethodT } from "@/types/enum"
 import {
+  endOfDay,
   endOfMonth,
   endOfToday,
   endOfWeek,
   endOfYesterday,
+  startOfDay,
   startOfMonth,
   startOfToday,
   startOfWeek,
   startOfYesterday,
+  subDays,
   subMonths,
   subWeeks,
 } from "date-fns"
@@ -78,4 +81,39 @@ const mapRangeToStartEnd = (range: RangeT) => {
   return MAP[range]
 }
 
-export { mapPayMethodIcon, mapRangeIcon, mapRangeToStartEnd, mapStatusIcon }
+const mapRangeToPrevStartEnd = (range: RangeT) => {
+  const weekStartsOn = 1
+
+  const MAP: Record<RangeT, [Date, Date]> = {
+    today: [startOfYesterday(), endOfYesterday()],
+    yesterday: [
+      startOfDay(subDays(new Date(), 2)),
+      endOfDay(subDays(new Date(), 2)),
+    ],
+    this_week: [
+      startOfWeek(subWeeks(new Date(), 1), { weekStartsOn }),
+      endOfWeek(subWeeks(new Date(), 1), { weekStartsOn }),
+    ],
+    last_week: [
+      startOfWeek(subWeeks(new Date(), 2), { weekStartsOn }),
+      endOfWeek(subWeeks(new Date(), 2), { weekStartsOn }),
+    ],
+    this_month: [
+      startOfMonth(subMonths(new Date(), 1)),
+      endOfMonth(subMonths(new Date(), 1)),
+    ],
+    last_month: [
+      startOfMonth(subMonths(new Date(), 2)),
+      endOfMonth(subMonths(new Date(), 2)),
+    ],
+  }
+  return MAP[range]
+}
+
+export {
+  mapPayMethodIcon,
+  mapRangeIcon,
+  mapRangeToPrevStartEnd,
+  mapRangeToStartEnd,
+  mapStatusIcon,
+}

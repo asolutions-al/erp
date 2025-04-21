@@ -344,5 +344,14 @@
   "Warehouse not found": "Magazina nuk u gjet",
   "Create new warehouse": "Krijo magazinë të re",
   "Go back": "Kthehu prapa",
-  "Customer not found": "Klienti nuk u gjet"
+  "Customer not found": "Klienti nuk u gjet",
+  "Up by {diffPercent}% this period": "Rritur me {diffPercent}% këtë periudhë",
+  "Down by {diffPercent}% this period": "Ulur me {diffPercent}% këtë periudhë",
+  "Acquisition is the same": "Blerja është e njëjtë",
+  "Acquisition is on track": "Blerja është rritur",
+  "Acquisition needs attention": "Blerja është ulur",
+  "No change this period": "Nuk ka ndryshim këtë periudhë",
+  "New customers": "Klientë të rinj",
+  "Up this period": "Rritur këtë periudhë",
+  "Down this period": "Ulur këtë periudhë"
 }

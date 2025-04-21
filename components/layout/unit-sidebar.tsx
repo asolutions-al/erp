@@ -13,9 +13,11 @@ import {
 import {
   ArrowLeftIcon,
   BanknoteIcon,
+  BrickWallIcon,
   BriefcaseBusinessIcon,
   CirclePlusIcon,
   ContactIcon,
+  LayoutDashboardIcon,
   ListTreeIcon,
   PackageIcon,
   ReceiptTextIcon,
@@ -58,6 +60,18 @@ const UnitSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
+            <SidebarItem
+              text="Overview"
+              icon={<BrickWallIcon />}
+              href={`/o/${orgId}/u/${unitId}/overview`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/u/${unitId}/overview/dashboard/today`,
+                  text: "Dashboard",
+                  icon: <LayoutDashboardIcon />,
+                },
+              ]}
+            />
             <SidebarItem
               text="Product"
               icon={<PackageIcon />}
