@@ -46,8 +46,10 @@ const InvoiceReceipt = ({ data }: Props) => {
               <div className="col-span-2">{row.name}</div>
               <div className="text-right">{row.quantity}</div>
               <div className="text-right">{formatNumber(row.price)}</div>
-              <div className="text-right">{calc.tax}</div>
-              <div className="text-right">{calcInvoiceFormRow(row).total}</div>
+              <div className="text-right">{formatNumber(calc.tax)}</div>
+              <div className="text-right">
+                {formatNumber(calcInvoiceFormRow(row).total)}
+              </div>
             </div>
           )
         })}
