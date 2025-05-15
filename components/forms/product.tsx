@@ -28,10 +28,10 @@ import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
-import { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
+import type { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
-import { ProductFormSchemaT } from "@/providers"
+import type { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
   CheckIcon,
@@ -48,7 +48,7 @@ import { useTranslations } from "next-intl"
 import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
-import { useFieldArray, useFormContext } from "react-hook-form"
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { WarehouseCommand } from "../command"
 import { Button } from "../ui/button"
@@ -79,26 +79,9 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
   const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
   const form = useFormContext<SchemaT>()
 
-  const [imgFile, setImgFile] = useState<File>()
-
-  const defaultImgBucketPath = form.formState.defaultValues?.imageBucketPath
-
   const onValid = async (values: SchemaT) => {
     try {
-      let imgPath: SchemaT["imageBucketPath"]
-
-      if (imgFile) {
-        imgPath = nanoid() // new path
-        const client = createClient()
-        client.storage.from(productImagesBucket).upload(imgPath, imgFile) // optimistic
-      } else {
-        imgPath = defaultImgBucketPath // keep the same path
-      }
-
-      await performAction({
-        ...values,
-        imageBucketPath: imgPath,
-      })
+      await performAction(values)
       toast.success(t("Product saved successfully"))
       router.prefetch(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
       router.push(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
@@ -160,66 +143,7 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
               <ExtraDetailsCard />
             </div>
             <div>
-              <Card>
-                <CardHeader>
-                  <CardTitle>{t("Images")}</CardTitle>
-                  <CardDescription>
-                    {t("Upload and manage product images")}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid gap-2">
-                    <Image
-                      alt={t("Product image")}
-                      className="aspect-square w-full rounded-md object-cover"
-                      height="300"
-                      src={
-                        imgFile
-                          ? URL.createObjectURL(imgFile)
-                          : defaultImgBucketPath
-                            ? `${publicStorageUrl}/${productImagesBucket}/${defaultImgBucketPath}`
-                            : "/placeholder.svg"
-                      }
-                      width="300"
-                    />
-                    <div className="grid grid-cols-3 gap-2">
-                      <Image
-                        alt="Product image"
-                        className="aspect-square w-full rounded-md object-cover"
-                        height="84"
-                        src="/placeholder.svg"
-                        width="84"
-                      />
-                      <Image
-                        alt="Product image"
-                        className="aspect-square w-full rounded-md object-cover"
-                        height="84"
-                        src="/placeholder.svg"
-                        width="84"
-                      />
-                      <button
-                        className="flex aspect-square w-full items-center justify-center rounded-md border border-dashed"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          const input = document.createElement("input")
-                          input.type = "file"
-                          input.accept = "image/*"
-                          input.onchange = (e) => {
-                            const files = (e.target as HTMLInputElement).files
-                            const file = files?.[0]
-                            if (!file) return
-                            setImgFile(file)
-                          }
-                          input.click()
-                        }}
-                      >
-                        <UploadIcon className="h-4 w-4 text-muted-foreground" />
-                        <span className="sr-only">Upload</span>
-                      </button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <ImageCard />
             </div>
           </TabsContent>
           <TabsContent
@@ -232,6 +156,90 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
         </Tabs>
       </form>
     </>
+  )
+}
+
+const ImageCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  const imgBucketPath = useWatch({
+    control: form.control,
+    name: "imageBucketPath",
+  })
+
+  const upload = async (file: File) => {
+    try {
+      const client = createClient()
+      const res = await client.storage
+        .from(productImagesBucket)
+        .upload(nanoid(), file)
+      form.setValue("imageBucketPath", res.data?.path)
+    } catch (error) {
+      toast.error(t("An error occurred"))
+    } finally {
+    }
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Images")}</CardTitle>
+        <CardDescription>
+          {t("Upload and manage product image")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <div className="relative">
+            <Image
+              alt={t("Product image")}
+              className="aspect-square w-full rounded-md object-cover"
+              height="300"
+              src={
+                imgBucketPath
+                  ? `${publicStorageUrl}/${productImagesBucket}/${imgBucketPath}`
+                  : "/placeholder.svg"
+              }
+              width="300"
+            />
+            {imgBucketPath && (
+              <Button
+                variant="destructive"
+                size="icon"
+                className="absolute right-2 top-2"
+                onClick={(e) => {
+                  e.preventDefault()
+                  form.setValue("imageBucketPath", null)
+                }}
+              >
+                <TrashIcon className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={(e) => {
+              e.preventDefault()
+              const input = document.createElement("input")
+              input.type = "file"
+              input.accept = "image/*"
+              input.onchange = async (e) => {
+                const files = (e.target as HTMLInputElement).files
+                const file = files?.[0]
+                if (!file) return
+                upload(file)
+              }
+              input.click()
+            }}
+          >
+            <UploadIcon className="mr-2 h-4 w-4" />
+            {t("Upload Image")}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   )
 }
 
