@@ -357,5 +357,10 @@
   "Total sales": "Total sales",
   "Sales is the same": "Sales is the same",
   "Sales is on track": "Sales is on track",
-  "Sales needs attention": "Sales needs attention"
+  "Sales needs attention": "Sales needs attention",
+  "Stock is the same": "Stock is the same",
+  "Stock is on track": "Stock is on track",
+  "Stock needs attention": "Stock needs attention",
+  "Low stock products": "Low stock products",
+  "Low stock": "Low stock"
 }

@@ -540,104 +540,140 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {fields.map((field, index) => (
-          <div key={field.id} className="flex items-end gap-2">
-            <div className="grid grid-cols-5 items-end gap-2">
-              <FormField
-                control={form.control}
-                name={`inventoryRows.${index}.warehouseId`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>{t("Warehouse")}</FormLabel>
-                    <WarehouseCommand
-                      list={warehouses}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`inventoryRows.${index}.stock`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("Stock")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value, 10))
-                        }
-                        onFocus={(e) => e.target.select()}
+        {fields.map((field, index) => {
+          // prevent selecting the same warehouse
+          const availableWarehouses = warehouses.filter(
+            (warehouse) =>
+              !fields.some(
+                (f, i) => f.warehouseId === warehouse.id && i !== index
+              )
+          )
+
+          return (
+            <div key={field.id} className="flex items-end gap-2">
+              <div className="grid grid-cols-6 items-end gap-2">
+                <FormField
+                  control={form.control}
+                  name={`inventoryRows.${index}.warehouseId`}
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel>{t("Warehouse")}</FormLabel>
+                      <WarehouseCommand
+                        list={availableWarehouses}
+                        value={field.value}
+                        onChange={field.onChange}
                       />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`inventoryRows.${index}.minStock`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("Min stock")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value, 10))
-                        }
-                        onFocus={(e) => e.target.select()}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name={`inventoryRows.${index}.maxStock`}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("Max stock")}</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        {...field}
-                        onChange={(e) =>
-                          field.onChange(Number.parseInt(e.target.value, 10))
-                        }
-                        onFocus={(e) => e.target.select()}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`inventoryRows.${index}.stock`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("Stock")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number.parseInt(e.target.value, 10))
+                          }
+                          onFocus={(e) => e.target.select()}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`inventoryRows.${index}.lowStock`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("Low stock")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number.parseInt(e.target.value, 10))
+                          }
+                          onFocus={(e) => e.target.select()}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`inventoryRows.${index}.minStock`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("Min stock")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number.parseInt(e.target.value, 10))
+                          }
+                          onFocus={(e) => e.target.select()}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name={`inventoryRows.${index}.maxStock`}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{t("Max stock")}</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(Number.parseInt(e.target.value, 10))
+                          }
+                          onFocus={(e) => e.target.select()}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => remove(index)}
+                >
+                  <TrashIcon />
+                </Button>
+              </div>
             </div>
-            <div>
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                onClick={() => remove(index)}
-              >
-                <TrashIcon />
-              </Button>
-            </div>
-          </div>
-        ))}
+          )
+        })}
         <Button
           type="button"
           variant="outline"
           size="sm"
           className="mt-5"
           onClick={() =>
-            append({ warehouseId: "", stock: 0, minStock: 0, maxStock: 0 })
+            append({
+              warehouseId: "",
+              stock: 0,
+              minStock: 0,
+              maxStock: 0,
+              lowStock: 0,
+            })
           }
         >
           <PlusIcon className="mr-2 h-4 w-4" />
@@ -663,46 +699,58 @@ const CategoryTab = ({ categories }: { categories: CategorySchemaT[] }) => {
         <CardDescription>{t("Manage product categories")}</CardDescription>
       </CardHeader>
       <CardContent>
-        {fields.map((field, index) => (
-          <div key={field.id} className="flex items-end gap-2">
-            <div className="flex-1">
-              <FormField
-                control={form.control}
-                name={`categoryRows.${index}.categoryId`}
-                render={({ field }) => (
-                  <FormItem className="col-span-2">
-                    <FormLabel>{t("Category")}</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t("Select category")} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories.map((category) => (
-                          <SelectItem key={category.id} value={category.id}>
-                            {category.name}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+        {fields.map((field, index) => {
+          // prevent selecting the same category
+          const availableCategories = categories.filter(
+            (category) =>
+              !fields.some(
+                (f, i) => f.categoryId === category.id && i !== index
+              )
+          )
+          return (
+            <div key={field.id} className="flex items-end gap-2">
+              <div className="flex-1">
+                <FormField
+                  control={form.control}
+                  name={`categoryRows.${index}.categoryId`}
+                  render={({ field }) => (
+                    <FormItem className="col-span-2">
+                      <FormLabel>{t("Category")}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue placeholder={t("Select category")} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {availableCategories.map((category) => (
+                            <SelectItem key={category.id} value={category.id}>
+                              {category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="icon"
+                  onClick={() => remove(index)}
+                >
+                  <TrashIcon />
+                </Button>
+              </div>
             </div>
-            <div>
-              <Button
-                type="button"
-                variant="destructive"
-                size="icon"
-                onClick={() => remove(index)}
-              >
-                <TrashIcon />
-              </Button>
-            </div>
-          </div>
-        ))}
+          )
+        })}
         <Button
           type="button"
           variant="outline"

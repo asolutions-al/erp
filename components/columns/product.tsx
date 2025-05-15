@@ -5,13 +5,13 @@ import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
-import { ProductSchemaT } from "@/db/app/schema"
+import { ProductInventorySchemaT, ProductSchemaT } from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
 type SchemaT = ProductSchemaT & {
-  stock: number
+  productInventories: Pick<ProductInventorySchemaT, "stock">[]
 }
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -75,14 +75,17 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: TaxCell,
   },
   {
-    accessorKey: "stock",
+    id: "stock",
+    accessorFn: (row) =>
+      row.productInventories.reduce((acc, i) => acc + i.stock, 0),
     header: ({ column }) => <SortBtn text="Stock" column={column} />,
-    cell: ({ row }) => formatNumber(row.original.stock),
+    cell: ({ getValue }) => formatNumber(getValue() as number),
   },
   {
     accessorKey: "barcode",
     header: ({ column }) => <SortBtn text="Barcode" column={column} />,
   },
+
   {
     accessorKey: "status",
     header: ({ column }) => <SortBtn text="Status" column={column} />,

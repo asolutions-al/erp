@@ -357,5 +357,10 @@
   "Total sales": "Shitjet totale",
   "Sales is the same": "Shitjet janë të njëjta",
   "Sales is on track": "Shitjet janë rritur",
-  "Sales needs attention": "Shitjet janë ulur"
+  "Sales needs attention": "Shitjet janë ulur",
+  "Stock is the same": "Stoku është i njëjtë",
+  "Stock is on track": "Stoku është rritur",
+  "Stock needs attention": "Stoku është ulur",
+  "Low stock products": "Produkte me stok të ulët",
+  "Low stock": "Stoku i ulët"
 }
