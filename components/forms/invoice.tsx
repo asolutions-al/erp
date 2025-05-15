@@ -47,7 +47,6 @@ import {
   BanknoteIcon,
   CheckIcon,
   ChevronsUpDownIcon,
-  DownloadIcon,
   GridIcon,
   InfoIcon,
   MinusIcon,
@@ -192,14 +191,14 @@ const Form = ({
           </ScrollArea>
           <DialogFooter className="sm:justify-between print:hidden">
             <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={() => {}}
                 className="mt-2 w-full sm:mt-0 sm:w-auto"
               >
                 <DownloadIcon className="mr-2 h-4 w-4" />
                 {t("Pdf")}
-              </Button>
+              </Button> */}
             </div>
             <Button onClick={() => window.print()} className="w-full sm:w-auto">
               <PrinterIcon className="mr-2 h-4 w-4" />
