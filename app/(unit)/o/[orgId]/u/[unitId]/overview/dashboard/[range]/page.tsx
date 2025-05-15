@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/card"
 import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
 import { db } from "@/db/app/instance"
-import { customer } from "@/orm/app/schema"
+import { formatNumber } from "@/lib/utils"
+import { customer, invoice } from "@/orm/app/schema"
 import { calcGrowth } from "@/utils/calc"
-import { and, desc, eq, gte, lte } from "drizzle-orm"
+import { and, count, desc, eq, gte, lte } from "drizzle-orm"
 import { TrendingDownIcon, TrendingUpDown, TrendingUpIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
@@ -27,7 +28,7 @@ const NewCustomersCard = async ({
   growth: GrowthT
 }) => {
   const t = await getTranslations()
-  const { diffPercent, diff, status } = growth
+  const { diffPercent, status } = growth
 
   const Icon = {
     equal: TrendingUpDown,
@@ -42,7 +43,7 @@ const NewCustomersCard = async ({
 
   return (
     <Card>
-      <CardHeader className="relative">
+      <CardHeader className="relative p-6">
         <CardDescription>{t("New customers")}</CardDescription>
         <CardTitle className="text-2xl font-semibold tabular-nums">
           {count}
@@ -80,6 +81,67 @@ const NewCustomersCard = async ({
   )
 }
 
+const TotalSalesCard = async ({
+  count,
+  growth,
+}: {
+  count: number
+  growth: GrowthT
+}) => {
+  const t = await getTranslations()
+  const { diffPercent, status } = growth
+
+  const Icon = {
+    equal: TrendingUpDown,
+    up: TrendingUpIcon,
+    down: TrendingDownIcon,
+  }[status]
+  const sign = {
+    equal: "",
+    up: "+",
+    down: "-",
+  }[status]
+
+  return (
+    <Card>
+      <CardHeader className="relative p-6">
+        <CardDescription>{t("Total sales")}</CardDescription>
+        <CardTitle className="text-2xl font-semibold tabular-nums">
+          {formatNumber(count)}
+        </CardTitle>
+        <div className="absolute right-4 top-4">
+          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
+            <Icon className="size-3" />
+            {sign}
+            {formatNumber(Math.abs(diffPercent))}%
+          </Badge>
+        </div>
+      </CardHeader>
+      <CardFooter className="flex-col items-start gap-1 text-sm">
+        <div className="line-clamp-1 flex gap-2 font-medium">
+          {
+            {
+              equal: t("No change this period"),
+              up: t("Up this period"),
+              down: t("Down this period"),
+            }[status]
+          }
+          <Icon className="size-4" />
+        </div>
+        <div className="text-muted-foreground">
+          {
+            {
+              equal: t("Sales is the same"),
+              up: t("Sales is on track"),
+              down: t("Sales needs attention"),
+            }[status]
+          }
+        </div>
+      </CardFooter>
+    </Card>
+  )
+}
+
 const Page = async (props: Props) => {
   const { params } = props
   const { unitId, range } = await params
@@ -87,31 +149,67 @@ const Page = async (props: Props) => {
   const [start, end] = mapRangeToStartEnd(range)
   const [prevStart, prevEnd] = mapRangeToPrevStartEnd(range)
 
-  const [customers, prevCustomers] = await Promise.all([
-    db.query.customer.findMany({
-      where: and(
-        eq(customer.unitId, unitId),
-        gte(customer.createdAt, start.toISOString()),
-        lte(customer.createdAt, end.toISOString())
-      ),
-      orderBy: desc(customer.createdAt),
-    }),
-    db.query.customer.findMany({
-      where: and(
-        eq(customer.unitId, unitId),
-        gte(customer.createdAt, prevStart.toISOString()),
-        lte(customer.createdAt, prevEnd.toISOString())
-      ),
-      orderBy: desc(customer.createdAt),
-    }),
-  ])
-
-  const growth = calcGrowth(customers.length, prevCustomers.length)
+  const [[customers], [prevCustomers], invoices, prevInvoices] =
+    await Promise.all([
+      db
+        .select({ count: count() })
+        .from(customer)
+        .where(
+          and(
+            eq(customer.unitId, unitId),
+            gte(customer.createdAt, start.toISOString()),
+            lte(customer.createdAt, end.toISOString())
+          )
+        ),
+      db
+        .select({ count: count() })
+        .from(customer)
+        .where(
+          and(
+            eq(customer.unitId, unitId),
+            gte(customer.createdAt, prevStart.toISOString()),
+            lte(customer.createdAt, prevEnd.toISOString())
+          )
+        ),
+      db.query.invoice.findMany({
+        where: and(
+          eq(invoice.unitId, unitId),
+          gte(invoice.createdAt, start.toISOString()),
+          lte(invoice.createdAt, end.toISOString())
+        ),
+        orderBy: desc(invoice.createdAt),
+        columns: {
+          total: true,
+        },
+      }),
+      db.query.invoice.findMany({
+        where: and(
+          eq(invoice.unitId, unitId),
+          gte(invoice.createdAt, prevStart.toISOString()),
+          lte(invoice.createdAt, prevEnd.toISOString())
+        ),
+        orderBy: desc(invoice.createdAt),
+        columns: {
+          total: true,
+        },
+      }),
+    ])
 
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <NewCustomersCard count={customers.length} growth={growth} />
+        <TotalSalesCard
+          count={invoices.reduce((acc, invoice) => acc + invoice.total, 0)}
+          growth={calcGrowth(
+            invoices.reduce((acc, invoice) => acc + invoice.total, 0),
+            prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0)
+          )}
+        />
+
+        <NewCustomersCard
+          count={customers.count}
+          growth={calcGrowth(customers.count, prevCustomers.count)}
+        />
 
         {/* <Card>
           <CardHeader className="relative">

@@ -353,5 +353,9 @@
   "No change this period": "No change this period",
   "New customers": "New customers",
   "Up this period": "Up this period",
-  "Down this period": "Down this period"
+  "Down this period": "Down this period",
+  "Total sales": "Total sales",
+  "Sales is the same": "Sales is the same",
+  "Sales is on track": "Sales is on track",
+  "Sales needs attention": "Sales needs attention"
 }

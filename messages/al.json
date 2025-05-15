@@ -353,5 +353,9 @@
   "No change this period": "Nuk ka ndryshim këtë periudhë",
   "New customers": "Klientë të rinj",
   "Up this period": "Rritur këtë periudhë",
-  "Down this period": "Ulur këtë periudhë"
+  "Down this period": "Ulur këtë periudhë",
+  "Total sales": "Shitjet totale",
+  "Sales is the same": "Shitjet janë të njëjta",
+  "Sales is on track": "Shitjet janë rritur",
+  "Sales needs attention": "Shitjet janë ulur"
 }
