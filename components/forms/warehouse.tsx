@@ -23,13 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { entityStatus } from "@/orm/app/schema"
 import { WarehouseFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
-import { Switch } from "../ui/switch"
 
 type SchemaT = WarehouseFormSchemaT
 

@@ -1,6 +1,7 @@
 "use client"
 
 import { InvoiceReceipt } from "@/components/invoice-receipt"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -10,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -23,9 +25,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapPayMethodIcon } from "@/contants/maps"
@@ -67,11 +81,6 @@ import { useEffect, useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
-import { Badge } from "../ui/badge"
-import { Command } from "../ui/command"
-import { FormControl, FormField, FormItem, FormMessage } from "../ui/form"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 
 type SchemaT = InvoiceFormSchemaT
 

@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { CustomerSchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceConfigFormSchemaT } from "@/providers"
@@ -33,7 +34,6 @@ import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
-import { Switch } from "../ui/switch"
 
 type SchemaT = InvoiceConfigFormSchemaT
 

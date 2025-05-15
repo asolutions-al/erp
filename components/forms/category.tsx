@@ -16,12 +16,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { Switch } from "@/components/ui/switch"
 import { CategoryFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
-import { Switch } from "../ui/switch"
 
 type SchemaT = CategoryFormSchemaT
 

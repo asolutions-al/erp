@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   BuildingIcon,
   CirclePlusIcon,
@@ -19,7 +20,6 @@ import {
 import { getTranslations } from "next-intl/server"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
-import { Skeleton } from "../ui/skeleton"
 import { SidebarUser } from "./sidebar-user"
 
 type Props = PropsWithChildren<{

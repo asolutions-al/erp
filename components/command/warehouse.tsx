@@ -2,12 +2,18 @@
 
 import { Button } from "@/components/ui/button"
 import {
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import {
@@ -20,8 +26,6 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
-import { Command } from "../ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 const Empty = () => {
   const t = useTranslations()

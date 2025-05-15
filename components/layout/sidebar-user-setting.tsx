@@ -4,9 +4,9 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import { useSidebar } from "@/components/ui/sidebar"
 import { SettingsIcon } from "lucide-react"
 import Link from "next/link"
-import { useSidebar } from "../ui/sidebar"
 
 const SidebarUserSetting = () => {
   const { setOpenMobile, isMobile } = useSidebar()

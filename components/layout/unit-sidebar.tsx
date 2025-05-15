@@ -10,6 +10,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
   ArrowLeftIcon,
   BanknoteIcon,
@@ -28,7 +29,6 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
 import { OrgSwitcher } from "../org-switcher"
-import { Skeleton } from "../ui/skeleton"
 import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
 

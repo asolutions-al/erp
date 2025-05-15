@@ -17,18 +17,18 @@ import { Input } from "@/components/ui/input"
 
 import { useFormContext } from "react-hook-form"
 
-import { OrgSchemaT } from "@/db/app/schema"
-import { UserFormSchemaT } from "@/providers"
-import { useTranslations } from "next-intl"
-import { toast } from "sonner"
-import { Button } from "../ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select"
+} from "@/components/ui/select"
+import { OrgSchemaT } from "@/db/app/schema"
+import { UserFormSchemaT } from "@/providers"
+import { useTranslations } from "next-intl"
+import { toast } from "sonner"
 
 type SchemaT = UserFormSchemaT
 

@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -23,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
@@ -36,8 +38,6 @@ import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
-import { Button } from "../ui/button"
-import { Switch } from "../ui/switch"
 
 type SchemaT = CustomerFormSchemaT
 

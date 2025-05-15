@@ -1,5 +1,6 @@
 "use client"
 
+import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -7,6 +8,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 import {
   FormControl,
   FormDescription,
@@ -17,12 +26,18 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
@@ -51,17 +66,6 @@ import { useState } from "react"
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { WarehouseCommand } from "../command"
-import { Button } from "../ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "../ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { Switch } from "../ui/switch"
 
 type SchemaT = ProductFormSchemaT
 

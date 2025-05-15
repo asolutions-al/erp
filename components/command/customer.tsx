@@ -1,13 +1,20 @@
 "use client"
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
@@ -22,9 +29,6 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar"
-import { Command } from "../ui/command"
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 
 const Empty = () => {
   const t = useTranslations()
