@@ -31,7 +31,7 @@ import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
 import { entityStatus, idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
-import { TrashIcon, UploadIcon } from "lucide-react"
+import { TrashIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
@@ -161,7 +161,22 @@ const ImageCard = () => {
       </CardHeader>
       <CardContent>
         <div className="grid gap-4">
-          <div className="relative">
+          <div
+            className="relative cursor-pointer"
+            onClick={(e) => {
+              e.preventDefault()
+              const input = document.createElement("input")
+              input.type = "file"
+              input.accept = "image/*"
+              input.onchange = async (e) => {
+                const files = (e.target as HTMLInputElement).files
+                const file = files?.[0]
+                if (!file) return
+                upload(file)
+              }
+              input.click()
+            }}
+          >
             <Image
               alt={t("Product image")}
               className="aspect-square w-full rounded-md object-cover"
@@ -187,26 +202,6 @@ const ImageCard = () => {
               </Button>
             )}
           </div>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={(e) => {
-              e.preventDefault()
-              const input = document.createElement("input")
-              input.type = "file"
-              input.accept = "image/*"
-              input.onchange = async (e) => {
-                const files = (e.target as HTMLInputElement).files
-                const file = files?.[0]
-                if (!file) return
-                upload(file)
-              }
-              input.click()
-            }}
-          >
-            <UploadIcon className="mr-2 h-4 w-4" />
-            {t("Upload Image")}
-          </Button>
         </div>
       </CardContent>
     </Card>
