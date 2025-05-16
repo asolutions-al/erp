@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { warehouse } from "@/orm/app/schema"
+import { invoiceConfig, warehouse } from "@/orm/app/schema"
 import { WarehouseFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
@@ -25,7 +25,17 @@ const create = async ({
 }
 
 const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
-  await db.update(warehouse).set(values).where(eq(warehouse.id, id))
+  await db.transaction(async (tx) => {
+    await tx.update(warehouse).set(values).where(eq(warehouse.id, id))
+
+    if (values.status !== "active")
+      await tx
+        .update(invoiceConfig)
+        .set({
+          warehouseId: null,
+        })
+        .where(eq(invoiceConfig.warehouseId, id))
+  })
 }
 
 export { create as createWarehouse, update as updateWarehouse }

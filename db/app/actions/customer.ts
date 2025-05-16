@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { customer } from "@/orm/app/schema"
+import { customer, invoiceConfig } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
@@ -25,7 +25,17 @@ const create = async ({
 }
 
 const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
-  await db.update(customer).set(values).where(eq(customer.id, id))
+  await db.transaction(async (tx) => {
+    await tx.update(customer).set(values).where(eq(customer.id, id))
+
+    if (values.status !== "active")
+      await tx
+        .update(invoiceConfig)
+        .set({
+          customerId: null,
+        })
+        .where(eq(invoiceConfig.customerId, id))
+  })
 }
 
 const markAsFavorite = async ({

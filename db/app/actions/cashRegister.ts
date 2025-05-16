@@ -35,7 +35,17 @@ const create = async ({
 }
 
 const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
-  await db.update(cashRegister).set(values).where(eq(cashRegister.id, id))
+  await db.transaction(async (tx) => {
+    await tx.update(cashRegister).set(values).where(eq(cashRegister.id, id))
+
+    if (values.status !== "active")
+      await tx
+        .update(invoiceConfig)
+        .set({
+          cashRegisterId: null,
+        })
+        .where(eq(invoiceConfig.cashRegisterId, id))
+  })
 }
 
 const close = async (id: string) => {
