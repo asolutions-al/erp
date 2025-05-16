@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, productInventory, product, unit, warehouse, customer, invoiceConfig, category, user, invoice, invoiceRow, invitation, cashRegister, orgMember, productCategory } from "./schema";
+import { organization, productInventory, product, unit, warehouse, cashRegister, invoiceConfig, customer, category, user, invoice, invoiceRow, invitation, orgMember, productCategory } from "./schema";
 
 export const productInventoryRelations = relations(productInventory, ({one}) => ({
 	organization: one(organization, {
@@ -87,6 +87,10 @@ export const warehouseRelations = relations(warehouse, ({one, many}) => ({
 }));
 
 export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
+	cashRegister: one(cashRegister, {
+		fields: [invoiceConfig.cashRegisterId],
+		references: [cashRegister.id]
+	}),
 	customer: one(customer, {
 		fields: [invoiceConfig.customerId],
 		references: [customer.id]
@@ -103,6 +107,29 @@ export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
 		fields: [invoiceConfig.warehouseId],
 		references: [warehouse.id]
 	}),
+}));
+
+export const cashRegisterRelations = relations(cashRegister, ({one, many}) => ({
+	invoiceConfigs: many(invoiceConfig),
+	user_closedBy: one(user, {
+		fields: [cashRegister.closedBy],
+		references: [user.id],
+		relationName: "cashRegister_closedBy_user_id"
+	}),
+	user_openedBy: one(user, {
+		fields: [cashRegister.openedBy],
+		references: [user.id],
+		relationName: "cashRegister_openedBy_user_id"
+	}),
+	organization: one(organization, {
+		fields: [cashRegister.orgId],
+		references: [organization.id]
+	}),
+	unit: one(unit, {
+		fields: [cashRegister.unitId],
+		references: [unit.id]
+	}),
+	invoices: many(invoice),
 }));
 
 export const customerRelations = relations(customer, ({one, many}) => ({
@@ -198,28 +225,6 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 		fields: [invitation.userId],
 		references: [user.id]
 	}),
-}));
-
-export const cashRegisterRelations = relations(cashRegister, ({one, many}) => ({
-	user_closedBy: one(user, {
-		fields: [cashRegister.closedBy],
-		references: [user.id],
-		relationName: "cashRegister_closedBy_user_id"
-	}),
-	user_openedBy: one(user, {
-		fields: [cashRegister.openedBy],
-		references: [user.id],
-		relationName: "cashRegister_openedBy_user_id"
-	}),
-	organization: one(organization, {
-		fields: [cashRegister.orgId],
-		references: [organization.id]
-	}),
-	unit: one(unit, {
-		fields: [cashRegister.unitId],
-		references: [unit.id]
-	}),
-	invoices: many(invoice),
 }));
 
 export const orgMemberRelations = relations(orgMember, ({one}) => ({

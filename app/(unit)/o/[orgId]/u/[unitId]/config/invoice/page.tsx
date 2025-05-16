@@ -3,7 +3,12 @@ import { InvoiceConfigForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { updateInvoiceConfig } from "@/db/app/actions/invoiceConfig"
 import { db } from "@/db/app/instance"
-import { customer, invoiceConfig, warehouse } from "@/orm/app/schema"
+import {
+  cashRegister,
+  customer,
+  invoiceConfig,
+  warehouse,
+} from "@/orm/app/schema"
 import { InvoiceConfigFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 
@@ -14,7 +19,7 @@ type Props = {
 const Page = async ({ params }: Props) => {
   const { unitId } = await params
 
-  const [config, customers, warehouses] = await Promise.all([
+  const [config, customers, warehouses, cashRegisters] = await Promise.all([
     db.query.invoiceConfig.findFirst({
       where: eq(invoiceConfig.unitId, unitId),
     }),
@@ -23,6 +28,12 @@ const Page = async ({ params }: Props) => {
     }),
     db.query.warehouse.findMany({
       where: and(eq(warehouse.unitId, unitId), eq(warehouse.status, "active")),
+    }),
+    db.query.cashRegister.findMany({
+      where: and(
+        eq(cashRegister.unitId, unitId),
+        eq(cashRegister.status, "active")
+      ),
     }),
   ])
 
@@ -34,6 +45,7 @@ const Page = async ({ params }: Props) => {
         rightComp={<FormActionBtns formId="invoiceConfig" />}
       />
       <InvoiceConfigForm
+        cashRegisters={cashRegisters}
         customers={customers}
         warehouses={warehouses}
         performAction={async (values) => {

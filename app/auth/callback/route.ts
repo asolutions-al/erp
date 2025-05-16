@@ -83,8 +83,8 @@ export async function GET(request: Request) {
           id: unit.id,
         })
 
-      const [[], [], [], [customerRes], [warehouseRes], []] = await Promise.all(
-        [
+      const [[], [], [], [customerRes], [warehouseRes], [cashRegisterRes]] =
+        await Promise.all([
           /**
            * 4. Update user with default org
            */
@@ -149,20 +149,24 @@ export async function GET(request: Request) {
           /**
            * 9. Create cash register
            */
-          tx.insert(cashRegister).values({
-            orgId: orgRes.id,
-            unitId: unitRes.id,
-            name: t("Demo cash register"),
-            status: "active",
-            isFavorite: false,
-            balance: 0,
-            isOpen: true,
-            openedAt: new Date().toISOString(),
-            openedBy: userId,
-            openingBalance: 0,
-          }),
-        ]
-      )
+          tx
+            .insert(cashRegister)
+            .values({
+              orgId: orgRes.id,
+              unitId: unitRes.id,
+              name: t("Demo cash register"),
+              status: "active",
+              isFavorite: false,
+              balance: 0,
+              isOpen: true,
+              openedAt: new Date().toISOString(),
+              openedBy: userId,
+              openingBalance: 0,
+            })
+            .returning({
+              id: cashRegister.id,
+            }),
+        ])
 
       /**
        * 10. Create default invoice config
@@ -175,6 +179,7 @@ export async function GET(request: Request) {
         triggerInventoryOnInvoice: true,
         warehouseId: warehouseRes.id,
         customerId: customerRes.id,
+        cashRegisterId: cashRegisterRes.id,
       })
     })
   } catch (error) {

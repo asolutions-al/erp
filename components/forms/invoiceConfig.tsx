@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -24,16 +23,24 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { CustomerSchemaT, WarehouseSchemaT } from "@/db/app/schema"
+import {
+  CashRegisterSchemaT,
+  CustomerSchemaT,
+  WarehouseSchemaT,
+} from "@/db/app/schema"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceConfigFormSchemaT } from "@/providers"
-import { ContactIcon, PlusCircleIcon } from "lucide-react"
+import { EraserIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
-import { CustomerCommand, WarehouseCommand } from "../command"
+import {
+  CashRegisterCommand,
+  CustomerCommand,
+  WarehouseCommand,
+} from "../command"
+import { Button } from "../ui/button"
 
 type SchemaT = InvoiceConfigFormSchemaT
 
@@ -41,11 +48,17 @@ type Props = {
   performAction: (values: SchemaT) => Promise<void>
   warehouses: WarehouseSchemaT[]
   customers: CustomerSchemaT[]
+  cashRegisters: CashRegisterSchemaT[]
 }
 
 const formId: FormId = "invoiceConfig"
 
-const Form = ({ performAction, warehouses, customers }: Props) => {
+const Form = ({
+  performAction,
+  warehouses,
+  customers,
+  cashRegisters,
+}: Props) => {
   const t = useTranslations()
   const router = useRouter()
   const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
@@ -78,6 +91,7 @@ const Form = ({ performAction, warehouses, customers }: Props) => {
           <PayMethodCard />
           <CustomerCard customers={customers} />
           <WarehouseCard warehouses={warehouses} />
+          <CashRegisterCard cashRegisters={cashRegisters} />
           <SettingsCard />
         </div>
       </form>
@@ -197,6 +211,15 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
             {t("Where the products are stored")}
           </CardDescription>
         </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          type="button"
+          onClick={() => form.setValue("warehouseId", null)}
+        >
+          <EraserIcon />
+          {t("Clear")}
+        </Button>
       </CardHeader>
       <CardContent>
         <FormField
@@ -207,7 +230,7 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
               <FormItem className="flex flex-col">
                 <WarehouseCommand
                   list={warehouses}
-                  value={field.value}
+                  value={field.value || ""}
                   onChange={(value) => field.onChange(value)}
                 />
                 <FormMessage />
@@ -220,20 +243,50 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
   )
 }
 
-const NoCustomersFound = () => {
+const CashRegisterCard = ({
+  cashRegisters,
+}: {
+  cashRegisters: CashRegisterSchemaT[]
+}) => {
   const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParams>()
+  const form = useFormContext<SchemaT>()
+
   return (
-    <div className="flex flex-col items-center text-muted-foreground">
-      <ContactIcon className="mb-4 h-12 w-12" />
-      <p className="mb-4">{t("No customers found")}</p>
-      <Link href={`/o/${orgId}/u/${unitId}/customer/create`} passHref>
-        <Button>
-          <PlusCircleIcon />
-          {t("Create new customer")}
+    <Card>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Cash register")}</CardTitle>
+          <CardDescription>{t("Where cash is stored")}</CardDescription>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          type="button"
+          onClick={() => form.setValue("cashRegisterId", null)}
+        >
+          <EraserIcon />
+          {t("Clear")}
         </Button>
-      </Link>
-    </div>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="cashRegisterId"
+          render={({ field }) => {
+            return (
+              <FormItem className="flex flex-col">
+                <CashRegisterCommand
+                  list={cashRegisters}
+                  value={field.value || ""}
+                  onChange={(item) => field.onChange(item.id)}
+                />
+                <FormMessage />
+              </FormItem>
+            )
+          }}
+        />
+      </CardContent>
+    </Card>
   )
 }
 
@@ -250,6 +303,15 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
             {t("The person that will receive the invoice")}
           </CardDescription>
         </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          type="button"
+          onClick={() => form.setValue("customerId", null)}
+        >
+          <EraserIcon />
+          {t("Clear")}
+        </Button>
       </CardHeader>
       <CardContent>
         <FormField
@@ -262,7 +324,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
               <FormItem className="flex flex-col">
                 <CustomerCommand
                   list={tabFiltered}
-                  value={field.value}
+                  value={field.value || ""}
                   onChange={(value) => field.onChange(value)}
                 />
                 <FormMessage />

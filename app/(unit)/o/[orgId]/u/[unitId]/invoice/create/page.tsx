@@ -71,7 +71,13 @@ const Page = async (props: Props) => {
 
   return (
     <InvoiceFormProvider
-      defaultValues={config}
+      defaultValues={{
+        ...config,
+        // form does not accept null values
+        customerId: config?.customerId || undefined,
+        cashRegisterId: config?.cashRegisterId || undefined,
+        warehouseId: config?.warehouseId || undefined,
+      }}
       config={config!}
       productInventories={productInventories}
     >

@@ -11,14 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
   Dialog,
   DialogContent,
   DialogFooter,
@@ -32,11 +24,6 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -59,8 +46,6 @@ import { motion } from "framer-motion"
 import Fuse from "fuse.js"
 import {
   BanknoteIcon,
-  CheckIcon,
-  ChevronsUpDownIcon,
   GridIcon,
   InfoIcon,
   MinusIcon,
@@ -81,6 +66,7 @@ import { useEffect, useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
+import { CashRegisterCommand } from "../command/cashRegister"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -361,59 +347,11 @@ const CashRegisterCard = ({
 
             return (
               <FormItem className="flex flex-col">
-                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={popOverOpen}
-                      className="w-full justify-between"
-                    >
-                      {field.value
-                        ? tabFiltered.find((li) => li.id === field.value)?.name
-                        : `${t("Select cash register")}...`}
-                      <ChevronsUpDownIcon className="opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder={t("Search cash register") + "..."}
-                      />
-                      <CommandList>
-                        <CommandEmpty>
-                          <NoCashRegistersFound />
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {tabFiltered.map((customer) => {
-                            const { id, name } = customer
-                            return (
-                              <CommandItem
-                                key={id}
-                                value={name}
-                                onSelect={() => {
-                                  field.onChange(id)
-                                  setPopOverOpen(false)
-                                }}
-                              >
-                                <span>{name}</span>
-                                <CheckIcon
-                                  size={16}
-                                  className={cn(
-                                    "ml-auto",
-                                    field.value === id
-                                      ? "opacity-100"
-                                      : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            )
-                          })}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <CashRegisterCommand
+                  list={tabFiltered}
+                  value={field.value || ""}
+                  onChange={(item) => field.onChange(item.id)}
+                />
                 <FormMessage />
               </FormItem>
             )
