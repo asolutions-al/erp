@@ -17,7 +17,7 @@ const AppHeader = async (props: Props) => {
         <Link
           href={
             unitId
-              ? `/o/${orgId}/u/${unitId}/product/list/active`
+              ? `/o/${orgId}/u/${unitId}/overview/dashboard/today`
               : orgId
                 ? `/o/${orgId}/unit/list`
                 : `/o/list`
