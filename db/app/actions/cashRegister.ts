@@ -3,7 +3,7 @@ import "server-only"
 
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { cashRegister } from "@/orm/app/schema"
+import { cashRegister, invoiceConfig } from "@/orm/app/schema"
 import { CashRegisterFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
@@ -45,15 +45,25 @@ const close = async (id: string) => {
   } = await client.auth.getUser()
   if (!user) return // user not found
 
-  await db
-    .update(cashRegister)
-    .set({
-      isOpen: false,
-      closedAt: new Date().toISOString(),
-      closedBy: user.id,
-      closingBalanace: cashRegister.balance,
-    })
-    .where(eq(cashRegister.id, id))
+  await db.transaction(async (tx) => {
+    await tx
+      .update(cashRegister)
+      .set({
+        isOpen: false,
+        closedAt: new Date().toISOString(),
+        closedBy: user.id,
+        closingBalanace: cashRegister.balance,
+        status: "archived",
+      })
+      .where(eq(cashRegister.id, id))
+
+    await tx
+      .update(invoiceConfig)
+      .set({
+        cashRegisterId: null,
+      })
+      .where(eq(invoiceConfig.cashRegisterId, id))
+  })
 }
 
 export {
