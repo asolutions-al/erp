@@ -10,7 +10,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { markProductAsFavorite } from "@/db/app/actions"
-import { ProductInventorySchemaT, ProductSchemaT } from "@/db/app/schema"
+import {
+  CategorySchemaT,
+  ProductCategorySchemaT,
+  ProductInventorySchemaT,
+  ProductSchemaT,
+} from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
@@ -26,6 +31,9 @@ import { toast } from "sonner"
 
 type SchemaT = ProductSchemaT & {
   productInventories: Pick<ProductInventorySchemaT, "stock">[]
+  productCategories: (ProductCategorySchemaT & {
+    category: CategorySchemaT
+  })[]
 }
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {

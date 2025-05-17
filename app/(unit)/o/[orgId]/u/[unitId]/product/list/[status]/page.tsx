@@ -21,6 +21,11 @@ const Page = async ({ params }: Props) => {
           stock: true,
         },
       },
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
     },
   })
 

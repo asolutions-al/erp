@@ -34,11 +34,6 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => <SortBtn text="Address" column={column} />,
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => <SortBtn text="Status" column={column} />,
-    cell: StatusCell,
-  },
-  {
     accessorKey: "isFavorite",
     header: ({ column }) => <SortBtn text="Favorite" column={column} />,
     cell: FavoriteCell,

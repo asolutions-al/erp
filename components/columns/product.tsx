@@ -5,13 +5,22 @@ import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
-import { ProductInventorySchemaT, ProductSchemaT } from "@/db/app/schema"
+import {
+  CategorySchemaT,
+  ProductCategorySchemaT,
+  ProductInventorySchemaT,
+  ProductSchemaT,
+} from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
+import { Badge } from "../ui/badge"
 
 type SchemaT = ProductSchemaT & {
   productInventories: Pick<ProductInventorySchemaT, "stock">[]
+  productCategories: (ProductCategorySchemaT & {
+    category: CategorySchemaT
+  })[]
 }
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -85,16 +94,27 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "barcode",
     header: ({ column }) => <SortBtn text="Barcode" column={column} />,
   },
-
-  {
-    accessorKey: "status",
-    header: ({ column }) => <SortBtn text="Status" column={column} />,
-    cell: StatusCell,
-  },
   {
     accessorKey: "isFavorite",
     header: ({ column }) => <SortBtn text="Favorite" column={column} />,
     cell: FavoriteCell,
+  },
+  {
+    size: 250,
+    accessorKey: "productCategories",
+    header: ({ column }) => <SortBtn text="Category" column={column} />,
+    cell: ({ row }) => {
+      const { original } = row
+      return (
+        <div className="flex flex-wrap gap-2">
+          {original.productCategories.map((productCategory) => (
+            <Badge key={productCategory.id} variant="outline">
+              {productCategory.category.name}
+            </Badge>
+          ))}
+        </div>
+      )
+    },
   },
   {
     id: "actions",
