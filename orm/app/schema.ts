@@ -6,10 +6,43 @@ export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived
 export const idType = pgEnum("idType", ['tin', 'id'])
 export const payMethod = pgEnum("payMethod", ['cash', 'card', 'bank', 'other'])
 export const productUnit = pgEnum("productUnit", ['E49', 'GRM', 'HUR', 'KGM', 'KMT', 'KWH', 'LM', 'LTR', 'M4', 'MTK', 'MTQ', 'PR', 'SAN', 'WM', 'XAM', 'XAV', 'XBE', 'XPP'])
+export const reason = pgEnum("reason", ['SALE', 'PURCHASE', 'ADJUSMENT'])
 export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 export const taxType = pgEnum("taxType", ['0', '6', '10', '20'])
 
+
+export const productInventoryMovement = pgTable("productInventoryMovement", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	productId: uuid().notNull(),
+	orgId: uuid().notNull(),
+	unitId: uuid().notNull(),
+	warehouseId: uuid().notNull(),
+	amount: doublePrecision().notNull(),
+	reason: reason().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "productInventory_duplicate_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.productId],
+			foreignColumns: [product.id],
+			name: "productInventory_duplicate_productId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "productInventory_duplicate_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.warehouseId],
+			foreignColumns: [warehouse.id],
+			name: "productInventory_duplicate_warehouseId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const productInventory = pgTable("productInventory", {
 	id: uuid().defaultRandom().primaryKey().notNull(),

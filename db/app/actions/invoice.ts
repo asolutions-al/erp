@@ -8,6 +8,7 @@ import {
   invoiceConfig,
   invoiceRow,
   productInventory,
+  productInventoryMovement,
 } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers"
 import { calcInvoiceForm, calcInvoiceFormRow } from "@/utils/calc"
@@ -96,7 +97,18 @@ const create = async ({
             )
         )
 
-        await Promise.all(updates)
+        const movements = values.rows.map((row) =>
+          tx.insert(productInventoryMovement).values({
+            unitId,
+            orgId,
+            warehouseId: values.warehouseId,
+            productId: row.productId,
+            amount: row.quantity,
+            reason: "SALE",
+          })
+        )
+
+        await Promise.all([...updates, ...movements])
       })
     }
   }

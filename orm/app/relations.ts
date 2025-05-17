@@ -1,26 +1,27 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, productInventory, product, unit, warehouse, cashRegister, invoiceConfig, customer, category, user, invoice, invoiceRow, invitation, orgMember, productCategory } from "./schema";
+import { organization, productInventoryMovement, product, unit, warehouse, productInventory, cashRegister, invoiceConfig, customer, category, user, invoice, invoiceRow, invitation, orgMember, productCategory } from "./schema";
 
-export const productInventoryRelations = relations(productInventory, ({one}) => ({
+export const productInventoryMovementRelations = relations(productInventoryMovement, ({one}) => ({
 	organization: one(organization, {
-		fields: [productInventory.orgId],
+		fields: [productInventoryMovement.orgId],
 		references: [organization.id]
 	}),
 	product: one(product, {
-		fields: [productInventory.productId],
+		fields: [productInventoryMovement.productId],
 		references: [product.id]
 	}),
 	unit: one(unit, {
-		fields: [productInventory.unitId],
+		fields: [productInventoryMovement.unitId],
 		references: [unit.id]
 	}),
 	warehouse: one(warehouse, {
-		fields: [productInventory.warehouseId],
+		fields: [productInventoryMovement.warehouseId],
 		references: [warehouse.id]
 	}),
 }));
 
 export const organizationRelations = relations(organization, ({one, many}) => ({
+	productInventoryMovements: many(productInventoryMovement),
 	productInventories: many(productInventory),
 	invoiceConfigs: many(invoiceConfig),
 	categories: many(category),
@@ -41,6 +42,7 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 }));
 
 export const productRelations = relations(product, ({one, many}) => ({
+	productInventoryMovements: many(productInventoryMovement),
 	productInventories: many(productInventory),
 	invoiceRows: many(invoiceRow),
 	organization: one(organization, {
@@ -55,6 +57,7 @@ export const productRelations = relations(product, ({one, many}) => ({
 }));
 
 export const unitRelations = relations(unit, ({one, many}) => ({
+	productInventoryMovements: many(productInventoryMovement),
 	productInventories: many(productInventory),
 	invoiceConfigs: many(invoiceConfig),
 	categories: many(category),
@@ -73,6 +76,7 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 }));
 
 export const warehouseRelations = relations(warehouse, ({one, many}) => ({
+	productInventoryMovements: many(productInventoryMovement),
 	productInventories: many(productInventory),
 	invoiceConfigs: many(invoiceConfig),
 	invoices: many(invoice),
@@ -83,6 +87,25 @@ export const warehouseRelations = relations(warehouse, ({one, many}) => ({
 	unit: one(unit, {
 		fields: [warehouse.unitId],
 		references: [unit.id]
+	}),
+}));
+
+export const productInventoryRelations = relations(productInventory, ({one}) => ({
+	organization: one(organization, {
+		fields: [productInventory.orgId],
+		references: [organization.id]
+	}),
+	product: one(product, {
+		fields: [productInventory.productId],
+		references: [product.id]
+	}),
+	unit: one(unit, {
+		fields: [productInventory.unitId],
+		references: [unit.id]
+	}),
+	warehouse: one(warehouse, {
+		fields: [productInventory.warehouseId],
+		references: [warehouse.id]
 	}),
 }));
 

@@ -3,7 +3,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start --turbopack",
+    "start": "next start",
     "db:introspect": "drizzle-kit introspect",
     "db:studio": "drizzle-kit studio",
     "db.auth:introspect": "drizzle-kit introspect --config drizzle.config.auth.ts",
