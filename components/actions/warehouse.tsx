@@ -8,14 +8,22 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { WarehouseSchemaT } from "@/db/app/schema"
+import {
+  ProductInventorySchemaT,
+  ProductSchemaT,
+  WarehouseSchemaT,
+} from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import { CopyPlusIcon, EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-type SchemaT = WarehouseSchemaT
+type SchemaT = WarehouseSchemaT & {
+  productInventories: (Pick<ProductInventorySchemaT, "stock"> & {
+    product: Pick<ProductSchemaT, "status">
+  })[]
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row

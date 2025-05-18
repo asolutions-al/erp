@@ -15,6 +15,22 @@ const Page = async ({ params }: Props) => {
   const data = await db.query.warehouse.findMany({
     where: and(eq(warehouse.unitId, unitId), eq(warehouse.status, status)),
     orderBy: asc(warehouse.name),
+    with: {
+      productInventories: {
+        columns: {
+          stock: true,
+        },
+        with: {
+          product: {
+            columns: {
+              // needed for client-side filtering,
+              // TODO: filter on the query
+              status: true,
+            },
+          },
+        },
+      },
+    },
   })
 
   return <DataTable columns={warehouseColumns} data={data} />
