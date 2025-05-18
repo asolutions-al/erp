@@ -639,7 +639,9 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
             const { imageBucketPath, unit } = product
 
             const changeQty = (value: number) => {
-              form.setValue(`rows.${index}.quantity`, value)
+              form.setValue(`rows.${index}.quantity`, value, {
+                shouldValidate: true,
+              })
             }
 
             const remove = () => {
