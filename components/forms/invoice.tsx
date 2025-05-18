@@ -416,7 +416,7 @@ const WarehouseCard = ({
               <FormItem className="flex flex-col">
                 <WarehouseCommand
                   list={tabFiltered}
-                  value={field.value}
+                  value={field.value || ""}
                   onChange={(value) => field.onChange(value)}
                 />
                 <FormMessage />

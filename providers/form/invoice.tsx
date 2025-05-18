@@ -106,7 +106,7 @@ const defaultValues: SchemaT = {
   status: "completed",
   cashRegisterId: null,
   notes: "",
-  warehouseId: "",
+  warehouseId: null,
 }
 
 const Provider = (

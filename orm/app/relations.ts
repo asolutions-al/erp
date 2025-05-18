@@ -34,8 +34,8 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 	products: many(product),
 	customers: many(customer),
 	invitations: many(invitation),
-	cashRegisters: many(cashRegister),
 	invoices: many(invoice),
+	cashRegisters: many(cashRegister),
 	orgMembers: many(orgMember),
 	productCategories: many(productCategory),
 	warehouses: many(warehouse),
@@ -69,8 +69,8 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 	products: many(product),
 	customers: many(customer),
 	invitations: many(invitation),
-	cashRegisters: many(cashRegister),
 	invoices: many(invoice),
+	cashRegisters: many(cashRegister),
 	productCategories: many(productCategory),
 	warehouses: many(warehouse),
 }));
@@ -134,6 +134,7 @@ export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
 
 export const cashRegisterRelations = relations(cashRegister, ({one, many}) => ({
 	invoiceConfigs: many(invoiceConfig),
+	invoices: many(invoice),
 	user_closedBy: one(user, {
 		fields: [cashRegister.closedBy],
 		references: [user.id],
@@ -152,7 +153,6 @@ export const cashRegisterRelations = relations(cashRegister, ({one, many}) => ({
 		fields: [cashRegister.unitId],
 		references: [unit.id]
 	}),
-	invoices: many(invoice),
 }));
 
 export const customerRelations = relations(customer, ({one, many}) => ({
