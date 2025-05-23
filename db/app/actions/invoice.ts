@@ -91,7 +91,7 @@ const create = async ({
               and(
                 eq(productInventory.orgId, orgId),
                 eq(productInventory.unitId, unitId),
-                eq(productInventory.warehouseId, values.warehouseId),
+                eq(productInventory.warehouseId, values.warehouseId!),
                 eq(productInventory.productId, row.productId)
               )
             )
@@ -101,7 +101,7 @@ const create = async ({
           tx.insert(productInventoryMovement).values({
             unitId,
             orgId,
-            warehouseId: values.warehouseId,
+            warehouseId: values.warehouseId!,
             productId: row.productId,
             amount: row.quantity,
             reason: "SALE",
