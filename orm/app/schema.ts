@@ -191,6 +191,25 @@ export const invoiceRow = pgTable("invoiceRow", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
+export const invitation = pgTable("invitation", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	userId: uuid().notNull(),
+	orgId: uuid().notNull(),
+	role: role().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invitation_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "invitation_userId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const unit = pgTable("unit", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -267,30 +286,6 @@ export const customer = pgTable("customer", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "customer_unitId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
-export const invitation = pgTable("invitation", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid().notNull(),
-	userId: uuid().notNull(),
-	orgId: uuid().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "invitation_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.unitId],
-			foreignColumns: [unit.id],
-			name: "invitation_unitId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.userId],
-			foreignColumns: [user.id],
-			name: "invitation_userId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

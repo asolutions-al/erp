@@ -30,10 +30,10 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 		references: [user.id]
 	}),
 	invoiceRows: many(invoiceRow),
+	invitations: many(invitation),
 	units: many(unit),
 	products: many(product),
 	customers: many(customer),
-	invitations: many(invitation),
 	invoices: many(invoice),
 	cashRegisters: many(cashRegister),
 	orgMembers: many(orgMember),
@@ -68,7 +68,6 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 	}),
 	products: many(product),
 	customers: many(customer),
-	invitations: many(invitation),
 	invoices: many(invoice),
 	cashRegisters: many(cashRegister),
 	productCategories: many(productCategory),
@@ -239,10 +238,6 @@ export const invitationRelations = relations(invitation, ({one}) => ({
 	organization: one(organization, {
 		fields: [invitation.orgId],
 		references: [organization.id]
-	}),
-	unit: one(unit, {
-		fields: [invitation.unitId],
-		references: [unit.id]
 	}),
 	user: one(user, {
 		fields: [invitation.userId],
