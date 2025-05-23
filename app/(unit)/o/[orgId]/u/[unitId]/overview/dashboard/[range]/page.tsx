@@ -28,7 +28,7 @@ const NewCustomersCard = async ({
   growth: GrowthT
 }) => {
   const t = await getTranslations()
-  const { diffPercent, status } = growth
+  const { diffPercent, status, diff } = growth
 
   const Icon = {
     equal: TrendingUpDown,
@@ -61,8 +61,12 @@ const NewCustomersCard = async ({
           {
             {
               equal: t("No change this period"),
-              up: t("Up this period"),
-              down: t("Down this period"),
+              up: t("Up by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
+              down: t("Down by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
             }[status]
           }
           <Icon className="size-4" />
@@ -89,7 +93,7 @@ const TotalSalesCard = async ({
   growth: GrowthT
 }) => {
   const t = await getTranslations()
-  const { diffPercent, status } = growth
+  const { diffPercent, status, diff } = growth
 
   const Icon = {
     equal: TrendingUpDown,
@@ -122,8 +126,12 @@ const TotalSalesCard = async ({
           {
             {
               equal: t("No change this period"),
-              up: t("Up this period"),
-              down: t("Down this period"),
+              up: t("Up by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
+              down: t("Down by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
             }[status]
           }
           <Icon className="size-4" />
@@ -149,7 +157,7 @@ const LowStockProductsCard = async ({
   growth: GrowthT
 }) => {
   const t = await getTranslations()
-  const { diffPercent, status } = growth
+  const { diffPercent, status, diff } = growth
 
   const Icon = {
     equal: TrendingUpDown,
@@ -182,8 +190,12 @@ const LowStockProductsCard = async ({
           {
             {
               equal: t("No change this period"),
-              up: t("Up this period"),
-              down: t("Down this period"),
+              up: t("Up by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
+              down: t("Down by {diff} this period", {
+                diff: formatNumber(Math.abs(diff)),
+              }),
             }[status]
           }
           <Icon className="size-4" />

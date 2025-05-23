@@ -366,5 +366,7 @@
   "Upload Image": "Upload Image",
   "Upload and manage product image": "Upload and manage product image",
   "Where cash is stored": "Where cash is stored",
-  "Clear": "Clear"
+  "Clear": "Clear",
+  "Down by {diff} this period": "Down by {diff} this period",
+  "Up by {diff} this period": "Up by {diff} this period"
 }

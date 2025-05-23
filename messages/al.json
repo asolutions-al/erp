@@ -366,5 +366,7 @@
   "Upload Image": "Ngarko imazhin",
   "Upload and manage product image": "Ngarko dhe menaxho imazhin e produktit",
   "Where cash is stored": "Ku ruhen paratë",
-  "Clear": "Pastro"
+  "Clear": "Pastro",
+  "Down by {diff} this period": "Ulur me {diff} këtë periudhë",
+  "Up by {diff} this period": "Rritur me {diff} këtë periudhë"
 }
