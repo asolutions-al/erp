@@ -63,7 +63,7 @@ const UnitSidebar = async (props: Props) => {
             <SidebarItem
               text="Overview"
               icon={<BrickWallIcon />}
-              href={`/o/${orgId}/u/${unitId}/overview`}
+              href={`/o/${orgId}/u/${unitId}/overview/dashboard/today`}
               subItems={[
                 {
                   href: `/o/${orgId}/u/${unitId}/overview/dashboard/today`,
