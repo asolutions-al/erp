@@ -368,5 +368,6 @@
   "Where cash is stored": "Where cash is stored",
   "Clear": "Clear",
   "Down by {diff} this period": "Down by {diff} this period",
-  "Up by {diff} this period": "Up by {diff} this period"
+  "Up by {diff} this period": "Up by {diff} this period",
+  "Discount value cannot be greater than total": "Discount value cannot be greater than total"
 }

@@ -3,6 +3,7 @@
 import { Form } from "@/components/ui/form"
 import { InvoiceConfigSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
+import { calcInvoiceForm } from "@/utils/calc"
 import { checkShouldTriggerCash } from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
@@ -86,6 +87,21 @@ const createSchema = ({
       {
         path: ["cashRegisterId"],
         message: t("Cash register is required"),
+      }
+    )
+    // prevent discount value to be greater than total
+    .refine(
+      (data) => {
+        const { total, discount } = calcInvoiceForm(data)
+
+        if (data.discountType === "value")
+          return data.discountValue <= total + discount
+
+        return true
+      },
+      {
+        path: ["discountValue"],
+        message: t("Discount value cannot be greater than total"),
       }
     )
 

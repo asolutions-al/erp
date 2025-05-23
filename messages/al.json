@@ -368,5 +368,6 @@
   "Where cash is stored": "Ku ruhen paratë",
   "Clear": "Pastro",
   "Down by {diff} this period": "Ulur me {diff} këtë periudhë",
-  "Up by {diff} this period": "Rritur me {diff} këtë periudhë"
+  "Up by {diff} this period": "Rritur me {diff} këtë periudhë",
+  "Discount value cannot be greater than total": "Vlera e zbritjes nuk mund të jetë më e madhe se totali"
 }
