@@ -1,17 +1,4 @@
-import { taxType } from "@/orm/app/schema"
 import { InvoiceFormSchemaT } from "@/providers"
-
-type TaxTypeT = (typeof taxType.enumValues)[number]
-
-const taxTypeToPercentage = (taxType: TaxTypeT) => {
-  const MAP: Record<TaxTypeT, number> = {
-    "0": 0,
-    "6": 0.06,
-    "10": 0.1,
-    "20": 0.2,
-  }
-  return MAP[taxType]
-}
 
 type CalcResultT = {
   total: number
@@ -24,7 +11,7 @@ const calcInvoiceFormRow = (
   row: InvoiceFormSchemaT["rows"][0]
 ): CalcResultT => {
   const total = row.quantity * row.price
-  const tax = total * taxTypeToPercentage(row.taxType)
+  const tax = (total * row.taxPercentage) / 100
   const subtotal = total - tax
 
   return {
@@ -77,4 +64,4 @@ const calcGrowth = (current: number, previous: number): GrowthT => {
   }
 }
 
-export { calcGrowth, calcInvoiceForm, calcInvoiceFormRow, taxTypeToPercentage }
+export { calcGrowth, calcInvoiceForm, calcInvoiceFormRow }

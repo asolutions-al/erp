@@ -1,4 +1,4 @@
-import { pgTable, foreignKey, uuid, timestamp, doublePrecision, boolean, text, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, foreignKey, uuid, timestamp, doublePrecision, text, bigint, boolean, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
@@ -9,7 +9,6 @@ export const productUnit = pgEnum("productUnit", ['E49', 'GRM', 'HUR', 'KGM', 'K
 export const reason = pgEnum("reason", ['SALE', 'PURCHASE', 'ADJUSMENT'])
 export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
-export const taxType = pgEnum("taxType", ['0', '6', '10', '20'])
 
 
 export const productInventoryMovement = pgTable("productInventoryMovement", {
@@ -44,37 +43,41 @@ export const productInventoryMovement = pgTable("productInventoryMovement", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const productInventory = pgTable("productInventory", {
+export const invoiceRow = pgTable("invoiceRow", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	productId: uuid().notNull(),
-	orgId: uuid().notNull(),
+	name: text().notNull(),
+	quantity: doublePrecision().notNull(),
+	invoiceId: uuid().notNull(),
+	total: doublePrecision().notNull(),
 	unitId: uuid().notNull(),
-	warehouseId: uuid().notNull(),
-	stock: doublePrecision().notNull(),
-	minStock: doublePrecision().notNull(),
-	maxStock: doublePrecision().notNull(),
-	lowStock: doublePrecision().notNull(),
+	orgId: uuid().notNull(),
+	subtotal: doublePrecision().notNull(),
+	price: doublePrecision().notNull(),
+	tax: doublePrecision().notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	taxPercentage: bigint({ mode: "number" }).notNull(),
 }, (table) => [
+	foreignKey({
+			columns: [table.invoiceId],
+			foreignColumns: [invoice.id],
+			name: "invoiceRow_invoiceId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.orgId],
 			foreignColumns: [organization.id],
-			name: "productInventory_orgId_fkey"
+			name: "invoiceRow_orgId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.productId],
 			foreignColumns: [product.id],
-			name: "productInventory_productId_fkey"
+			name: "invoiceRow_productId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
-			name: "productInventory_unitId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.warehouseId],
-			foreignColumns: [warehouse.id],
-			name: "productInventory_warehouseId_fkey"
+			name: "invoiceRow_unitId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
@@ -154,40 +157,37 @@ export const organization = pgTable("organization", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const invoiceRow = pgTable("invoiceRow", {
+export const productInventory = pgTable("productInventory", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	productId: uuid().notNull(),
-	name: text().notNull(),
-	quantity: doublePrecision().notNull(),
-	invoiceId: uuid().notNull(),
-	total: doublePrecision().notNull(),
-	unitId: uuid().notNull(),
 	orgId: uuid().notNull(),
-	subtotal: doublePrecision().notNull(),
-	price: doublePrecision().notNull(),
-	tax: doublePrecision().notNull(),
-	taxType: taxType().notNull(),
+	unitId: uuid().notNull(),
+	warehouseId: uuid().notNull(),
+	stock: doublePrecision().notNull(),
+	minStock: doublePrecision().notNull(),
+	maxStock: doublePrecision().notNull(),
+	lowStock: doublePrecision().notNull(),
 }, (table) => [
-	foreignKey({
-			columns: [table.invoiceId],
-			foreignColumns: [invoice.id],
-			name: "invoiceRow_invoiceId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.orgId],
 			foreignColumns: [organization.id],
-			name: "invoiceRow_orgId_fkey"
+			name: "productInventory_orgId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.productId],
 			foreignColumns: [product.id],
-			name: "invoiceRow_productId_fkey"
+			name: "productInventory_productId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
-			name: "invoiceRow_unitId_fkey"
+			name: "productInventory_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.warehouseId],
+			foreignColumns: [warehouse.id],
+			name: "productInventory_warehouseId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
@@ -236,8 +236,9 @@ export const product = pgTable("product", {
 	imageBucketPath: text(),
 	orgId: uuid().notNull(),
 	unit: productUnit().notNull(),
-	taxType: taxType().notNull(),
 	isFavorite: boolean().notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	taxPercentage: bigint({ mode: "number" }).notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.orgId],

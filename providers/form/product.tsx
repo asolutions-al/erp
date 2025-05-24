@@ -13,6 +13,7 @@ const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
   const productSchema = createInsertSchema(product, {
     name: (sch) => sch.name.min(1),
     price: (sch) => sch.price.min(0),
+    taxPercentage: (sch) => sch.taxPercentage.min(0).max(100),
   }).omit({
     id: true,
     createdAt: true,
@@ -67,7 +68,6 @@ const defaultValues: SchemaT = {
   name: "",
   status: "active",
   unit: "XPP",
-  taxType: "0",
   price: 0,
   isFavorite: false,
   description: null,
@@ -75,6 +75,7 @@ const defaultValues: SchemaT = {
   imageBucketPath: null,
   inventoryRows: [],
   categoryRows: [],
+  taxPercentage: 0,
 }
 
 const Provider = (

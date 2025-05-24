@@ -113,7 +113,7 @@ export async function GET(request: Request) {
             price: 1,
             status: "active",
             isFavorite: false,
-            taxType: "0",
+            taxPercentage: 0,
           }),
           /**
            * 7. Create customer

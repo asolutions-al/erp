@@ -45,7 +45,7 @@ import { publicStorageUrl } from "@/contants/consts"
 import { createClient } from "@/db/app/client"
 import type { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
-import { entityStatus, productUnit, taxType } from "@/orm/app/schema"
+import { entityStatus, productUnit } from "@/orm/app/schema"
 import type { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
@@ -370,24 +370,19 @@ const PriceCard = () => {
         />
         <FormField
           control={form.control}
-          name="taxType"
+          name="taxPercentage"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Tax")}</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger aria-label={t("Select tax")}>
-                    <SelectValue placeholder={t("Select tax")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {taxType.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormLabel>{t("Tax")} (%)</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="number"
+                  placeholder="0"
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onFocus={(e) => e.target.select()}
+                />
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}

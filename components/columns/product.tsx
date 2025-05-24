@@ -23,20 +23,10 @@ type SchemaT = ProductSchemaT & {
   })[]
 }
 
-const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const t = useTranslations()
-  const { original } = row
-  return t(original.status)
-}
 const UnitCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { original } = row
   return t(original.unit)
-}
-const TaxCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const t = useTranslations()
-  const { original } = row
-  return t(original.taxType)
 }
 
 const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -79,9 +69,9 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: ({ row }) => formatNumber(row.original.price),
   },
   {
-    accessorKey: "taxType",
+    accessorKey: "taxPercentage",
     header: ({ column }) => <SortBtn text="Tax" column={column} />,
-    cell: TaxCell,
+    cell: ({ row }) => formatNumber(row.original.taxPercentage) + "%",
   },
   {
     id: "stock",
