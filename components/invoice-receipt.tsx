@@ -44,7 +44,7 @@ const InvoiceReceipt = ({ data }: Props) => {
           return (
             <div key={index} className="grid grid-cols-6">
               <div className="col-span-2">{row.name}</div>
-              <div className="text-right">{row.quantity}</div>
+              <div className="text-right">{formatNumber(row.quantity)}</div>
               <div className="text-right">{formatNumber(row.price)}</div>
               <div className="text-right">{formatNumber(calc.tax)}</div>
               <div className="text-right">
@@ -59,20 +59,20 @@ const InvoiceReceipt = ({ data }: Props) => {
         <div className="w-full sm:w-1/2">
           <div className="mb-2 flex justify-between">
             <span>{t("Subtotal")}:</span>
-            <span>{calcs.subtotal}</span>
+            <span>{formatNumber(calcs.subtotal)}</span>
           </div>
           <div className="mb-2 flex justify-between">
             <span>{t("Tax")}:</span>
-            <span>{calcs.tax}</span>
+            <span>{formatNumber(calcs.tax)}</span>
           </div>
           <div className="mb-2 flex justify-between">
             <span>{t("Discount")}:</span>
-            <span>{calcs.discount}</span>
+            <span>{formatNumber(calcs.discount)}</span>
           </div>
           <Separator className="my-2" />
           <div className="flex justify-between font-bold">
             <span>{t("Total")}:</span>
-            <span>{calcs.total}</span>
+            <span>{formatNumber(calcs.total)}</span>
           </div>
         </div>
       </div>
