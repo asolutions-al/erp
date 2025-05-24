@@ -77,4 +77,4 @@ const calcGrowth = (current: number, previous: number): GrowthT => {
   }
 }
 
-export { calcGrowth, calcInvoiceForm, calcInvoiceFormRow }
+export { calcGrowth, calcInvoiceForm, calcInvoiceFormRow, taxTypeToPercentage }

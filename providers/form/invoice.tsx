@@ -3,7 +3,7 @@
 import { Form } from "@/components/ui/form"
 import { InvoiceConfigSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
-import { calcInvoiceForm } from "@/utils/calc"
+import { taxTypeToPercentage } from "@/utils/calc"
 import { checkShouldTriggerCash } from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
@@ -92,10 +92,13 @@ const createSchema = ({
     // prevent discount value to be greater than total
     .refine(
       (data) => {
-        const { total, discount } = calcInvoiceForm(data)
+        const total = data.rows.reduce(
+          (acc, row) =>
+            acc + row.quantity * row.price * taxTypeToPercentage(row.taxType),
+          0
+        )
 
-        if (data.discountType === "value")
-          return data.discountValue <= total + discount
+        if (data.discountType === "value") return data.discountValue <= total
 
         return true
       },
