@@ -7,14 +7,16 @@ import { unit } from "@/orm/app/schema"
 import { UnitFormProvider } from "@/providers/form/unit"
 import { and, eq } from "drizzle-orm"
 
-type Props = { params: { orgId: string; id: string } }
+type Props = { params: Promise<{ orgId: string; id: string }> }
 
 const Page = async ({ params }: Props) => {
-  const { orgId, id } = params
+  const { orgId, id } = await params
   const data = await db.query.unit.findFirst({
     where: and(eq(unit.id, id), eq(unit.orgId, orgId)),
   })
+
   if (!data) return <div>Unit not found</div>
+
   return (
     <UnitFormProvider defaultValues={data}>
       <PageHeader
