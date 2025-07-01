@@ -14,7 +14,7 @@ const Page = async (props: Props) => {
     <UnitFormProvider>
       <PageHeader
         title={"New unit"}
-        className="my-2"
+        className="mb-2"
         rightComp={<FormActionBtns formId="unit" />}
       />
       <UnitForm

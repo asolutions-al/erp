@@ -12,8 +12,10 @@ import {
 } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
+  BrickWallIcon,
   BuildingIcon,
   CirclePlusIcon,
+  LayoutDashboardIcon,
   ListTreeIcon,
   UsersIcon,
 } from "lucide-react"
@@ -40,14 +42,27 @@ const OrgSidebar = async (props: Props) => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
+
           <SidebarMenu>
             <SidebarItem
+              text="Overview"
+              icon={<BrickWallIcon />}
+              href={`/o/${orgId}/overview`}
+              subItems={[
+                {
+                  href: `/o/${orgId}/overview`,
+                  text: "Dashboard",
+                  icon: <LayoutDashboardIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
               text="Unit"
-              href={`/o/${orgId}/unit/list`}
+              href={`/o/${orgId}/unit/list/active`}
               icon={<BuildingIcon />}
               subItems={[
                 {
-                  href: `/o/${orgId}/unit/list`,
+                  href: `/o/${orgId}/unit/list/active`,
                   text: "List",
                   icon: <ListTreeIcon />,
                 },

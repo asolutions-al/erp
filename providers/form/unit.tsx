@@ -21,6 +21,7 @@ type SchemaT = z.infer<typeof schema>
 const defaultValues: SchemaT = {
   name: "",
   description: "",
+  status: "active",
 }
 
 const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {

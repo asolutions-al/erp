@@ -39,7 +39,7 @@ const Page = async ({ params }: Props) => {
         {data.map((unit) => (
           <Link
             key={unit.id}
-            href={`/o/${orgId}/u/${unit.id}/product/list/active`}
+            href={`/o/${orgId}/u/${unit.id}/overview/dashboard/today`}
           >
             <UnitCard data={unit} />
           </Link>

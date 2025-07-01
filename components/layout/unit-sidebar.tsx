@@ -49,7 +49,7 @@ const UnitSidebar = async (props: Props) => {
         <Suspense fallback={<SwitcherSkeleton />}>
           <UnitSwitcher {...props} />
         </Suspense>
-        <Link href={`/o/${orgId}/unit/list`} passHref>
+        <Link href={`/o/${orgId}/overview`} passHref>
           <SidebarMenuButton>
             <ArrowLeftIcon />
             {t("Organization")}

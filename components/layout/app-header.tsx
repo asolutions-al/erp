@@ -19,7 +19,7 @@ const AppHeader = async (props: Props) => {
             unitId
               ? `/o/${orgId}/u/${unitId}/overview/dashboard/today`
               : orgId
-                ? `/o/${orgId}/unit/list`
+                ? `/o/${orgId}/overview`
                 : `/o/list`
           }
         >
