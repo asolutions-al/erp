@@ -3,7 +3,7 @@ import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db/app/instance"
 import { unit } from "@/orm/app/schema"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -16,7 +16,7 @@ const Page = async ({ params }: Props) => {
   const t = await getTranslations()
 
   const data = await db.query.unit.findMany({
-    where: eq(unit.orgId, orgId),
+    where: and(eq(unit.orgId, orgId), eq(unit.status, "active")),
   })
 
   return (

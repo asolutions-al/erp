@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sidebar"
 import { db } from "@/db/app/instance"
 import { unit } from "@/orm/app/schema"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { UnitSwitcherItem } from "./unit-switcher-item"
@@ -28,7 +28,7 @@ const UnitSwitcher = async (props: Props) => {
   const t = await getTranslations()
   const { orgId, unitId } = await props.params
   const units = await db.query.unit.findMany({
-    where: eq(unit.orgId, orgId),
+    where: and(eq(unit.orgId, orgId), eq(unit.status, "active")),
   })
 
   const activeUnit = units.find((unit) => unit.id === unitId)
