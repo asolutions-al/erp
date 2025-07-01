@@ -2,7 +2,13 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { product, productCategory, productInventory } from "@/orm/app/schema"
+import {
+  product,
+  productCategory,
+  productInventory,
+  productInventoryMovement,
+  reason,
+} from "@/orm/app/schema"
 import { ProductFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
 
@@ -31,28 +37,36 @@ const create = async ({
 
     const { inventoryRows, categoryRows } = values
 
-    if (inventoryRows.length > 0)
+    if (inventoryRows.length > 0) {
       await tx.insert(productInventory).values(
-        inventoryRows.map((row) => {
-          return {
-            ...row,
-            unitId,
-            orgId,
-            productId: res.id,
-          }
-        })
+        inventoryRows.map((row) => ({
+          ...row,
+          unitId,
+          orgId,
+          productId: res.id,
+        }))
       )
+
+      await tx.insert(productInventoryMovement).values(
+        inventoryRows.map((row) => ({
+          productId: res.id,
+          unitId,
+          orgId,
+          amount: row.stock,
+          reason: reason.enumValues[3],
+          warehouseId: row.warehouseId,
+        }))
+      )
+    }
 
     if (categoryRows.length > 0)
       await tx.insert(productCategory).values(
-        categoryRows.map((row) => {
-          return {
-            ...row,
-            unitId,
-            orgId,
-            productId: res.id,
-          }
-        })
+        categoryRows.map((row) => ({
+          ...row,
+          unitId,
+          orgId,
+          productId: res.id,
+        }))
       )
   })
 }
@@ -78,26 +92,22 @@ const update = async ({
 
     if (inventoryRows.length > 0)
       await tx.insert(productInventory).values(
-        inventoryRows.map((row) => {
-          return {
-            ...row,
-            productId: id,
-            orgId,
-            unitId,
-          }
-        })
+        inventoryRows.map((row) => ({
+          ...row,
+          productId: id,
+          orgId,
+          unitId,
+        }))
       )
 
     if (categoryRows.length > 0)
       await tx.insert(productCategory).values(
-        categoryRows.map((row) => {
-          return {
-            ...row,
-            productId: id,
-            orgId,
-            unitId,
-          }
-        })
+        categoryRows.map((row) => ({
+          ...row,
+          productId: id,
+          orgId,
+          unitId,
+        }))
       )
   })
 }

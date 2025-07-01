@@ -6,7 +6,7 @@ export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived
 export const idType = pgEnum("idType", ['tin', 'id'])
 export const payMethod = pgEnum("payMethod", ['cash', 'card', 'bank', 'other'])
 export const productUnit = pgEnum("productUnit", ['E49', 'GRM', 'HUR', 'KGM', 'KMT', 'KWH', 'LM', 'LTR', 'M4', 'MTK', 'MTQ', 'PR', 'SAN', 'WM', 'XAM', 'XAV', 'XBE', 'XPP'])
-export const reason = pgEnum("reason", ['SALE', 'PURCHASE', 'ADJUSMENT'])
+export const reason = pgEnum("reason", ['SALE', 'PURCHASE', 'ADJUSMENT', 'INITIAL'])
 export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 
