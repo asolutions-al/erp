@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/auth/instance"
-import { plan } from "@/orm/auth/schema"
+import { plan, planId } from "@/orm/auth/schema"
 import { eq } from "drizzle-orm"
 
 const get = () =>
@@ -10,4 +10,9 @@ const get = () =>
     where: eq(plan.product, "INVOICE"),
   })
 
-export { get as getPlans }
+const getById = (id: (typeof planId.enumValues)[number]) =>
+  db.query.plan.findFirst({
+    where: eq(plan.id, id),
+  })
+
+export { getById as getPlanById, get as getPlans }

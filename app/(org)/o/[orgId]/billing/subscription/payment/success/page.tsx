@@ -26,12 +26,13 @@ type Props = {
     subscription_id: string
     ba_token: string
     token: string
+    plan?: string
   }>
 }
 
 const Page = async ({ params, searchParams }: Props) => {
   const { orgId } = await params
-  const { subscription_id } = await searchParams
+  const { subscription_id, plan } = await searchParams
 
   let subscriptionStatus = "PENDING"
   let subscriptionDetails = null
@@ -48,14 +49,22 @@ const Page = async ({ params, searchParams }: Props) => {
       // Check if org already has a subscription
       const existing = await getSubscriptionByOrgId(orgId)
       console.log("existing", existing)
+
+      // Determine the plan to use (from URL param or default to existing plan or INVOICE-PRO)
+      const planToUse = plan || existing?.plan || "INVOICE-PRO"
+
       if (existing) {
+        // With revision API, we just update the plan - no need to cancel old subscription
         await updateSubscription({
           id: existing.id,
           values: {
             status: "ACTIVE",
             paymentProvider: "PAYPAL",
             externalSubscriptionId: subscription_id,
-            plan: existing.plan,
+            plan: planToUse as
+              | "INVOICE-STARTER"
+              | "INVOICE-PRO"
+              | "INVOICE-BUSINESS",
             startedAt: subscription.start_time,
             canceledAt: null,
           },
@@ -63,7 +72,10 @@ const Page = async ({ params, searchParams }: Props) => {
       } else {
         await createSubscription({
           orgId,
-          plan: "INVOICE-PRO",
+          plan: planToUse as
+            | "INVOICE-STARTER"
+            | "INVOICE-PRO"
+            | "INVOICE-BUSINESS",
           status: "ACTIVE",
           startedAt: subscription.start_time,
           paymentProvider: "PAYPAL",

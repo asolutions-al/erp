@@ -1,4 +1,4 @@
-import { pgTable, uuid, timestamp, text, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, uuid, timestamp, text, doublePrecision, bigint, smallint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const planId = pgEnum("PLAN_ID", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
@@ -27,4 +27,6 @@ export const plan = pgTable("plan", {
 	maxCustomers: bigint({ mode: "number" }).notNull(),
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	maxProducts: bigint({ mode: "number" }).notNull(),
+	tier: smallint().notNull(),
+	paypalPlanId: text().notNull(),
 });

@@ -83,3 +83,41 @@ export async function cancelPayPalSubscription(
   const data = await res.json()
   return data
 }
+
+export async function revisePayPalSubscription(
+  subscriptionId: string,
+  newPlanId: string,
+  reason: string = "Plan upgrade"
+) {
+  const accessToken = await getAccessToken()
+  const res = await fetch(
+    `${PAYPAL_API_BASE}/v1/billing/subscriptions/${subscriptionId}/revise`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        plan_id: newPlanId,
+        application_context: {
+          brand_name: "Invoice App",
+          user_action: "CONTINUE",
+        },
+        plan: {
+          id: newPlanId,
+        },
+      }),
+    }
+  )
+
+  if (!res.ok) {
+    const errorData = await res.json()
+    throw new Error(
+      `PayPal revision failed: ${errorData.message || res.statusText}`
+    )
+  }
+
+  const data = await res.json()
+  return data
+}
