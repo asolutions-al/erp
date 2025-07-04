@@ -1,7 +1,7 @@
 import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
+import { getPlans } from "@/db/auth/loaders"
 import { getTranslations } from "next-intl/server"
 import { BillingPage } from "./billing-page"
-import { NoSubscriptionPage } from "./no-subscription-page"
 
 type Props = {
   params: Promise<GlobalParams>
@@ -12,12 +12,12 @@ const Page = async (props: Props) => {
   const { orgId } = await props.params
 
   const subscription = await getSubscriptionByOrgId(orgId)
+  const plans = await getPlans()
+  console.log("Plans:", plans)
 
-  if (!subscription) {
-    return <NoSubscriptionPage orgId={orgId} />
-  }
+  if (!subscription) return null
 
-  return <BillingPage subscription={subscription} />
+  return <BillingPage subscription={subscription} plans={plans} />
 }
 
 export default Page

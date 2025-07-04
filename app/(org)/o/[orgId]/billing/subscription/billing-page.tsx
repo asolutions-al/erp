@@ -23,6 +23,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
+import { plan } from "@/orm/auth/schema"
 import {
   BuildingIcon,
   CalendarIcon,
@@ -48,50 +49,63 @@ type Subscription = {
 
 type Props = {
   subscription: SubscriptionSchemaT
+  plans: (typeof plan.$inferSelect)[]
 }
 
-const planFeatures = {
-  "INVOICE-STARTER": [
-    "Up to 100 invoices per month",
-    "Basic reporting",
-    "Email support",
-    "1 organization",
-    "Up to 5 units",
-  ],
-  "INVOICE-PRO": [
-    "Up to 1000 invoices per month",
-    "Advanced reporting",
-    "Priority support",
-    "Multiple organizations",
-    "Unlimited units",
-    "Custom branding",
-    "API access",
-  ],
-  "INVOICE-BUSINESS": [
-    "Unlimited invoices",
-    "Enterprise reporting",
-    "24/7 support",
-    "Multiple organizations",
-    "Unlimited units",
-    "Custom branding",
-    "API access",
-    "White-label solution",
-    "Dedicated account manager",
-  ],
-}
-
-const planPricing = {
-  "INVOICE-STARTER": { monthly: 9.99, yearly: 99.99 },
-  "INVOICE-PRO": { monthly: 29.99, yearly: 299.99 },
-  "INVOICE-BUSINESS": { monthly: 99.99, yearly: 999.99 },
-}
-
-export const BillingPage = ({ subscription }: Props) => {
+export const BillingPage = ({ subscription, plans }: Props) => {
   const t = useTranslations()
   const { orgId } = useParams()
   const router = useRouter()
   const [isCanceling, setIsCanceling] = useState(false)
   const [isReactivating, setIsReactivating] = useState(false)
+
+  // Create a map of plans by ID for easy lookup
+  const planMap = plans.reduce(
+    (acc, plan) => {
+      acc[plan.id] = plan
+      return acc
+    },
+    {} as Record<string, (typeof plans)[0]>
+  )
+
+  // Generate features based on plan data
+  const generatePlanFeatures = (planData: (typeof plans)[0]) => {
+    const features = []
+
+    if (planData.maxInvoices === -1) {
+      features.push("Unlimited invoices")
+    } else {
+      features.push(
+        `Up to ${planData.maxInvoices.toLocaleString()} invoices per month`
+      )
+    }
+
+    if (planData.maxUnits === -1) {
+      features.push("Unlimited units")
+    } else {
+      features.push(`Up to ${planData.maxUnits} units`)
+    }
+
+    if (planData.maxMembers === -1) {
+      features.push("Unlimited team members")
+    } else {
+      features.push(`Up to ${planData.maxMembers} team members`)
+    }
+
+    if (planData.maxCustomers === -1) {
+      features.push("Unlimited customers")
+    } else {
+      features.push(`Up to ${planData.maxCustomers.toLocaleString()} customers`)
+    }
+
+    if (planData.maxProducts === -1) {
+      features.push("Unlimited products")
+    } else {
+      features.push(`Up to ${planData.maxProducts.toLocaleString()} products`)
+    }
+
+    return features
+  }
 
   const handleCancelSubscription = async () => {
     setIsCanceling(true)
@@ -237,7 +251,7 @@ export const BillingPage = ({ subscription }: Props) => {
             <div className="flex items-center justify-between">
               <span className="font-medium">{t("Price")}</span>
               <span className="text-lg font-semibold">
-                ${planPricing[subscription.plan].monthly}/month
+                ${planMap[subscription.plan]?.monthlyPrice}/month
               </span>
             </div>
 
@@ -246,13 +260,18 @@ export const BillingPage = ({ subscription }: Props) => {
             <div className="space-y-2">
               <h4 className="font-medium">{t("Plan Features")}</h4>
               <ul className="space-y-1">
-                {planFeatures[subscription.plan].map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-sm">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                    {/* {t(feature)} */}
-                    {feature}
-                  </li>
-                ))}
+                {planMap[subscription.plan] &&
+                  generatePlanFeatures(planMap[subscription.plan]).map(
+                    (feature, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        <CheckIcon className="h-4 w-4 text-green-500" />
+                        {feature}
+                      </li>
+                    )
+                  )}
               </ul>
             </div>
           </CardContent>
@@ -395,50 +414,46 @@ export const BillingPage = ({ subscription }: Props) => {
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-3">
-            {Object.entries(planPricing).map(([plan, pricing]) => (
-              <Card key={plan} className="relative">
-                {subscription.plan === plan && (
-                  <div className="absolute -right-2 -top-2">
-                    <Badge className="bg-blue-500 text-white">
-                      {t("Current")}
-                    </Badge>
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-center">
-                    {getPlanDisplayName(plan)}
-                  </CardTitle>
-                  <CardDescription className="text-center">
-                    ${pricing.monthly}/month
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2">
-                    {planFeatures[plan as keyof typeof planFeatures].map(
-                      (feature, index) => (
+            {plans.map((plan) => {
+              const isActive = subscription.plan === plan.id
+              return (
+                <Card key={plan.id} className="relative">
+                  {isActive && (
+                    <div className="absolute -right-2 -top-2">
+                      <Badge className="bg-blue-500 text-white">
+                        {t("Current")}
+                      </Badge>
+                    </div>
+                  )}
+                  <CardHeader>
+                    <CardTitle className="text-center">{plan.name}</CardTitle>
+                    <CardDescription className="text-center">
+                      ${plan.monthlyPrice}/month
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2">
+                      {generatePlanFeatures(plan).map((feature, index) => (
                         <li
                           key={index}
                           className="flex items-center gap-2 text-sm"
                         >
                           <CheckIcon className="h-4 w-4 text-green-500" />
-                          {/* {t(feature)} */}
                           {feature}
                         </li>
-                      )
-                    )}
-                  </ul>
-                  <Button
-                    className="mt-4 w-full"
-                    variant={subscription.plan === plan ? "outline" : "default"}
-                    disabled={subscription.plan === plan}
-                  >
-                    {subscription.plan === plan
-                      ? t("Current Plan")
-                      : t("Upgrade")}
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+                      ))}
+                    </ul>
+                    <Button
+                      className="mt-4 w-full"
+                      variant={isActive ? "outline" : "default"}
+                      disabled={isActive}
+                    >
+                      {isActive ? t("Current Plan") : t("Upgrade")}
+                    </Button>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </CardContent>
       </Card>
