@@ -29,8 +29,8 @@ export default async function RootLayout({ children }: PropsWithChildren) {
               {children}
               <Toaster className="print:hidden" />
             </ThemeProvider>
-            <SpeedInsights />
-            <Analytics />
+            <SpeedInsights debug={false} />
+            <Analytics debug={false} />
           </body>
         </TooltipProvider>
       </TranslationProvider>

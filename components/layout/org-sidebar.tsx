@@ -15,6 +15,7 @@ import {
   BrickWallIcon,
   BuildingIcon,
   CirclePlusIcon,
+  CreditCardIcon,
   LayoutDashboardIcon,
   ListTreeIcon,
   UsersIcon,
@@ -82,6 +83,18 @@ const OrgSidebar = async (props: Props) => {
                   href: `/o/${orgId}/member/list`,
                   text: "List",
                   icon: <ListTreeIcon />,
+                },
+              ]}
+            />
+            <SidebarItem
+              text="Billing"
+              href={`/o/${orgId}/billing/subscription`}
+              icon={<CreditCardIcon />}
+              subItems={[
+                {
+                  href: `/o/${orgId}/billing/subscription`,
+                  text: "Subscription",
+                  icon: <CreditCardIcon />,
                 },
               ]}
             />

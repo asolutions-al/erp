@@ -1,6 +1,9 @@
 import { pgTable, foreignKey, uuid, timestamp, boolean, text, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
+export const plan = pgEnum("PLAN", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
+export const subscriptionPaymentProvider = pgEnum("SUBSCRIPTION_PAYMENT_PROVIDER", ['PAYPAL'])
+export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['ACTIVE', 'CANCELED'])
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived'])
 export const idType = pgEnum("idType", ['tin', 'id'])
@@ -274,6 +277,24 @@ export const invitation = pgTable("invitation", {
 			columns: [table.userId],
 			foreignColumns: [user.id],
 			name: "invitation_userId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
+export const subscription = pgTable("subscription", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	plan: plan().notNull(),
+	status: subscriptionStatus().notNull(),
+	startedAt: timestamp({ withTimezone: true, mode: 'string' }).notNull(),
+	canceledAt: timestamp({ withTimezone: true, mode: 'string' }),
+	paymentProvider: subscriptionPaymentProvider(),
+	externalSubscriptionId: text(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "subscription_orgId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

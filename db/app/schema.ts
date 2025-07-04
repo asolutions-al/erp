@@ -10,6 +10,7 @@ import {
   product,
   productCategory,
   productInventory,
+  subscription,
   unit,
   user,
   warehouse,
@@ -59,3 +60,6 @@ export type ProductCategorySchemaT = z.infer<typeof productCategorySchema>
 /////////////CATEGORY/////////////////////
 const categorySchema = createSelectSchema(category)
 export type CategorySchemaT = z.infer<typeof categorySchema>
+/////////////SUBSCRIPTION/////////////////////
+const subscriptionSchema = createSelectSchema(subscription)
+export type SubscriptionSchemaT = z.infer<typeof subscriptionSchema>
