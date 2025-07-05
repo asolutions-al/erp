@@ -196,31 +196,31 @@ const Page = async ({ params, searchParams }: Props) => {
                       <AlertDialogAction
                         className="bg-red-600 hover:bg-red-700"
                         onClick={async () => {
-                          try {
-                            const response = await fetch(
-                              "/api/paypal/cancel-subscription",
-                              {
-                                method: "POST",
-                                headers: {
-                                  "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify({
-                                  orgId,
-                                  reason:
-                                    "User cancelled immediately after subscription",
-                                }),
-                              }
-                            )
-
-                            if (response.ok) {
-                              window.location.reload()
-                            } else {
-                              alert("Failed to cancel subscription")
-                            }
-                          } catch (error) {
-                            console.error("Error:", error)
-                            alert("An error occurred")
-                          }
+                          // TODO:
+                          // try {
+                          //   const response = await fetch(
+                          //     "/api/paypal/cancel-subscription",
+                          //     {
+                          //       method: "POST",
+                          //       headers: {
+                          //         "Content-Type": "application/json",
+                          //       },
+                          //       body: JSON.stringify({
+                          //         orgId,
+                          //         reason:
+                          //           "User cancelled immediately after subscription",
+                          //       }),
+                          //     }
+                          //   )
+                          //   if (response.ok) {
+                          //     window.location.reload()
+                          //   } else {
+                          //     alert("Failed to cancel subscription")
+                          //   }
+                          // } catch (error) {
+                          //   console.error("Error:", error)
+                          //   alert("An error occurred")
+                          // }
                         }}
                       >
                         Yes, Cancel Now

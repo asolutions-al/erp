@@ -18,11 +18,22 @@ const getAccessToken = async () => {
   return data.access_token
 }
 
+type PayPalSubscriptionResponse = {
+  status: "APPROVAL_PENDING" | "ACTIVE"
+  id: string
+  create_time: string
+  links: {
+    href: string
+    rel: "approve" | "edit" | "self"
+    method: "GET" | "PATCH"
+  }[]
+}
+
 export async function createPayPalSubscription(
   planId: string,
   returnUrl: string,
   cancelUrl: string
-) {
+): Promise<PayPalSubscriptionResponse> {
   const accessToken = await getAccessToken()
   const res = await fetch(`${PAYPAL_API_BASE}/v1/billing/subscriptions`, {
     method: "POST",

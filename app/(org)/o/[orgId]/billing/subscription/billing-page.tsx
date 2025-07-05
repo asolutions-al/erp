@@ -24,6 +24,7 @@ import { Separator } from "@/components/ui/separator"
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
 import { formatDate } from "@/lib/utils"
+import { planId } from "@/orm/auth/schema"
 import {
   BuildingIcon,
   CalendarIcon,
@@ -35,9 +36,18 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
+type PlanId = (typeof planId.enumValues)[number]
+
 type Props = {
   subscription: SubscriptionSchemaT
   plans: PlanSchemaT[]
+  changePlan: (planId: PlanId) => Promise<ResT<true>>
+  cancelSubscription: () => Promise<ResT<true>>
+  reactivateSubscription: () => Promise<
+    ResT<{
+      approvalUrl: string
+    }>
+  >
 }
 
 const generatePlanFeatures = (planData: PlanSchemaT) => {
@@ -78,7 +88,13 @@ const generatePlanFeatures = (planData: PlanSchemaT) => {
   return features
 }
 
-export const BillingPage = ({ subscription, plans }: Props) => {
+export const BillingPage = ({
+  subscription,
+  plans,
+  changePlan,
+  cancelSubscription,
+  reactivateSubscription,
+}: Props) => {
   const t = useTranslations()
   const { orgId } = useParams()
   const router = useRouter()
@@ -91,71 +107,6 @@ export const BillingPage = ({ subscription, plans }: Props) => {
     useState<PlanSchemaT | null>(null)
 
   const currentPlan = plans.find((plan) => plan.id === subscription.plan)!
-
-  const handleCancelSubscription = async () => {
-    setIsCanceling(true)
-    try {
-      const response = await fetch("/api/paypal/cancel-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orgId,
-          reason: "User requested cancellation via billing page",
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        toast.success(t("Subscription cancelled successfully"))
-        router.refresh()
-      } else {
-        toast.error(data.error || t("Failed to cancel subscription"))
-      }
-    } catch (error) {
-      console.error("Error canceling subscription:", error)
-      toast.error(t("An error occurred while canceling subscription"))
-    } finally {
-      setIsCanceling(false)
-    }
-  }
-
-  const handleReactivateSubscription = async () => {
-    setIsReactivating(true)
-    try {
-      const response = await fetch("/api/paypal/reactivate-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orgId,
-          reason: "User requested reactivation via billing page",
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        if (data.requiresApproval && data.approvalUrl) {
-          // Redirect to PayPal for approval
-          window.location.href = data.approvalUrl
-        } else {
-          toast.success(t("Subscription reactivated successfully"))
-          router.refresh()
-        }
-      } else {
-        toast.error(data.error || t("Failed to reactivate subscription"))
-      }
-    } catch (error) {
-      console.error("Error reactivating subscription:", error)
-      toast.error(t("An error occurred while reactivating subscription"))
-    } finally {
-      setIsReactivating(false)
-    }
-  }
 
   const handlePlanChange = async (planId: string) => {
     setIsUpgrading(planId)
@@ -352,7 +303,17 @@ export const BillingPage = ({ subscription, plans }: Props) => {
                           {t("Keep Subscription")}
                         </AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={handleCancelSubscription}
+                          onClick={async () => {
+                            setIsCanceling(true)
+                            const res = await cancelSubscription()
+                            if (res.error) toast.error(res.error.message)
+                            if (res.success) {
+                              toast.success(
+                                t("Subscription cancelled successfully")
+                              )
+                              router.refresh()
+                            }
+                          }}
                           className="bg-red-600 hover:bg-red-700"
                         >
                           {t("Yes, Cancel Subscription")}
@@ -389,7 +350,17 @@ export const BillingPage = ({ subscription, plans }: Props) => {
                       <AlertDialogFooter>
                         <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={handleReactivateSubscription}
+                          onClick={async () => {
+                            setIsReactivating(true)
+                            const res = await reactivateSubscription()
+                            if (res.error) toast.error(res.error.message)
+
+                            if (res.success) {
+                              const { approvalUrl } = res.success.data
+                              window.location.href = approvalUrl
+                            }
+                            setIsReactivating(false)
+                          }}
                           className="bg-green-600 hover:bg-green-700"
                         >
                           {t("Yes, Reactivate Subscription")}
@@ -542,6 +513,7 @@ export const BillingPage = ({ subscription, plans }: Props) => {
               <AlertDialogAction
                 onClick={() => {
                   handlePlanChange(selectedPlanForUpgrade.id)
+                  // changePlan(selectedPlanForUpgrade.id)
                   setSelectedPlanForUpgrade(null)
                 }}
                 className="bg-blue-600 hover:bg-blue-700"
@@ -603,7 +575,8 @@ export const BillingPage = ({ subscription, plans }: Props) => {
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
-                  handlePlanChange(selectedPlanForDowngrade.id)
+                  // handlePlanChange(selectedPlanForDowngrade.id)
+                  changePlan(selectedPlanForDowngrade.id)
                   setSelectedPlanForDowngrade(null)
                 }}
                 className="bg-orange-600 hover:bg-orange-700"

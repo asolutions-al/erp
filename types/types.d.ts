@@ -27,3 +27,12 @@ type GrowthT = {
   diffPercent: number
   status: "equal" | "up" | "down"
 }
+
+type ResT<T> = {
+  success: {
+    data: T
+  } | null
+  error: {
+    message: string
+  } | null
+}
