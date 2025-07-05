@@ -40,7 +40,7 @@ const Page = async ({ params, searchParams }: Props) => {
 
   try {
     const subscription = await getPayPalSubscription(subscription_id)
-    console.log("PayPal subscription data:", subscription)
+
     subscriptionDetails = subscription
     subscriptionStatus = subscription.status
 
@@ -48,7 +48,6 @@ const Page = async ({ params, searchParams }: Props) => {
     if (subscription.status === "ACTIVE") {
       // Check if org already has a subscription
       const existing = await getSubscriptionByOrgId(orgId)
-      console.log("existing", existing)
 
       // Determine the plan to use (from URL param or default to existing plan or INVOICE-PRO)
       const planToUse = plan || existing?.plan || "INVOICE-PRO"

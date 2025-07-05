@@ -11,7 +11,6 @@ const schema = createInsertSchema(subscription)
 type SchemaT = z.infer<typeof schema>
 
 const getByOrgId = async (orgId: string) => {
-  console.log("getByOrgId", orgId)
   return await db.query.subscription.findFirst({
     where: eq(subscription.orgId, orgId),
     orderBy: (subscription, { desc }) => [desc(subscription.createdAt)],
@@ -19,7 +18,6 @@ const getByOrgId = async (orgId: string) => {
 }
 
 const create = async (data: SchemaT) => {
-  console.log("create", data)
   return await db.insert(subscription).values(data)
 }
 
@@ -30,8 +28,6 @@ const update = async ({
   id: string
   values: Partial<SchemaT>
 }) => {
-  console.log("update", values)
-
   return await db
     .update(subscription)
     .set(values)

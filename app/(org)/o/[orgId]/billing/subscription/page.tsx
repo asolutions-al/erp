@@ -21,7 +21,6 @@ const reactivateSubscription = async (
   }>
 > => {
   const subscription = await getSubscriptionByOrgId(orgId)
-  console.log("reactivateSubscription", subscription)
 
   if (!subscription) {
     return {
@@ -58,8 +57,6 @@ const reactivateSubscription = async (
     returnUrl,
     cancelUrl
   )
-
-  console.log("newSubscriptionData", newSubscriptionData)
 
   if (!newSubscriptionData.id) {
     return {

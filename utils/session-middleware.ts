@@ -32,15 +32,10 @@ export async function updateSession(request: NextRequest) {
     }
   )
 
-  const now = new Date().getTime()
-
   // SESSION VALIDATION //
   const {
     data: { user },
   } = await supabase.auth.getUser()
-
-  const after = new Date().getTime()
-  console.log("Session middleware took: ", after - now, "ms")
 
   // ROUTE PROTECTION //
   const isAtProtectedRoutes = !["/auth", "/invitation"].some((route) =>
