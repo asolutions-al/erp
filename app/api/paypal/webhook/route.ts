@@ -49,24 +49,17 @@ async function verifyWebhookSignature(
 
 export async function POST(req: NextRequest) {
   try {
-    console.log("Received PayPal webhook request")
     const body = await req.text()
 
     // Verify webhook signature for security
     const isValid = await verifyWebhookSignature(req, body)
     if (!isValid) {
-      console.error("Invalid webhook signature")
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 })
     }
 
     const data = JSON.parse(body)
     const eventType = data.event_type
     const resource = data.resource
-
-    console.log(`Processing PayPal webhook: ${eventType}`, {
-      subscriptionId: resource?.id,
-      customId: resource?.custom_id,
-    })
 
     // Handle all subscription lifecycle events
     switch (eventType) {
@@ -94,13 +87,10 @@ export async function POST(req: NextRequest) {
       case "PAYMENT.SALE.COMPLETED":
         await handlePaymentCompleted(resource)
         break
-      default:
-        console.log(`Unhandled webhook event: ${eventType}`)
     }
 
     return NextResponse.json({ received: true })
   } catch (error) {
-    console.error("Webhook processing error:", error)
     return NextResponse.json({ error: "Processing failed" }, { status: 500 })
   }
 }
@@ -109,28 +99,25 @@ async function handleSubscriptionActivated(resource: any) {
   const subscriptionId = resource.id
   const customId = resource.custom_id // This should contain orgId
 
-  if (!customId) {
-    console.error("No custom_id in subscription resource", { subscriptionId })
-    return
-  }
+  if (!customId) return
 
   try {
-    const existing = await getSubscriptionByOrgId(customId)
-
     // Query database for plan by PayPal plan ID instead of manual mapping
     const planRecord = await getPlanByPayPalId(resource.plan_id)
 
-    if (!planRecord) {
-      console.error("Unknown PayPal plan ID", {
-        paypalPlanId: resource.plan_id,
-        subscriptionId,
-      })
-      return
-    }
+    if (!planRecord) return
 
     const plan = planRecord.id
 
+    // Try to find existing subscription by orgId first, then by external subscription ID
+    let existing = await getSubscriptionByOrgId(customId)
+
+    if (!existing) {
+      existing = await getSubscriptionByExternalId(subscriptionId)
+    }
+
     if (existing) {
+      // Update existing subscription to ACTIVE
       await updateSubscription({
         id: existing.id,
         values: {
@@ -138,11 +125,13 @@ async function handleSubscriptionActivated(resource: any) {
           paymentProvider: "PAYPAL",
           externalSubscriptionId: subscriptionId,
           plan: plan as "INVOICE-STARTER" | "INVOICE-PRO" | "INVOICE-BUSINESS",
-          startedAt: resource.start_time,
+          startedAt: resource.start_time || existing.startedAt,
           canceledAt: null,
+          orgId: customId, // Ensure orgId is correctly set
         },
       })
     } else {
+      // Create new active subscription if none exists (fallback case)
       await createSubscription({
         orgId: customId,
         plan: plan as "INVOICE-STARTER" | "INVOICE-PRO" | "INVOICE-BUSINESS",
@@ -152,14 +141,7 @@ async function handleSubscriptionActivated(resource: any) {
         externalSubscriptionId: subscriptionId,
       })
     }
-
-    console.log("Subscription activated successfully", {
-      orgId: customId,
-      subscriptionId,
-    })
-  } catch (error) {
-    console.error("Failed to process subscription activation:", error)
-  }
+  } catch (error) {}
 }
 
 async function handleSubscriptionCancelled(resource: any) {
@@ -176,7 +158,6 @@ async function handleSubscriptionCancelled(resource: any) {
           canceledAt: new Date().toISOString(),
         },
       })
-      console.log("Subscription cancelled successfully", { subscriptionId })
     }
   } catch (error) {
     console.error("Failed to process subscription cancellation:", error)
@@ -195,7 +176,6 @@ async function handleSubscriptionSuspended(resource: any) {
           status: "PENDING", // Use PENDING since SUSPENDED might not be a valid status
         },
       })
-      console.log("Subscription suspended successfully", { subscriptionId })
     }
   } catch (error) {
     console.error("Failed to process subscription suspension:", error)
@@ -245,11 +225,29 @@ async function handleSubscriptionCreated(resource: any) {
 
     const plan = planRecord.id
 
-    // Check if subscription already exists
-    const existing = await getSubscriptionByOrgId(customId)
+    // Check if subscription already exists (by orgId or external subscription ID)
+    let existing = await getSubscriptionByOrgId(customId)
 
+    // Also check by external subscription ID in case it was created with different orgId
     if (!existing) {
-      // Create pending subscription that will be activated by webhook
+      existing = await getSubscriptionByExternalId(subscriptionId)
+    }
+
+    if (existing) {
+      // Update existing subscription with PayPal details
+      await updateSubscription({
+        id: existing.id,
+        values: {
+          status: "PENDING", // Set to pending, will be activated by ACTIVATED webhook
+          paymentProvider: "PAYPAL",
+          externalSubscriptionId: subscriptionId,
+          plan: plan as "INVOICE-STARTER" | "INVOICE-PRO" | "INVOICE-BUSINESS",
+          startedAt: resource.create_time || existing.startedAt,
+          orgId: customId, // Ensure orgId is correctly set
+        },
+      })
+    } else {
+      // Create new pending subscription that will be activated by webhook
       await createSubscription({
         orgId: customId,
         plan,
@@ -257,11 +255,6 @@ async function handleSubscriptionCreated(resource: any) {
         paymentProvider: "PAYPAL",
         externalSubscriptionId: subscriptionId,
         startedAt: resource.create_time || new Date().toISOString(),
-      })
-
-      console.log("Pending subscription created", {
-        orgId: customId,
-        subscriptionId,
       })
     }
   } catch (error) {
@@ -283,7 +276,6 @@ async function handleSubscriptionExpired(resource: any) {
           canceledAt: new Date().toISOString(),
         },
       })
-      console.log("Subscription expired successfully", { subscriptionId })
     }
   } catch (error) {
     console.error("Failed to process subscription expiration:", error)
@@ -318,11 +310,6 @@ async function handleSubscriptionUpdated(resource: any) {
             status: resource.status === "ACTIVE" ? "ACTIVE" : existing.status,
           },
         })
-        console.log("Subscription updated successfully", {
-          subscriptionId,
-          oldPlan: existing.plan,
-          newPlan,
-        })
       }
     }
   } catch (error) {
@@ -334,19 +321,9 @@ async function handleSubscriptionUpdated(resource: any) {
 async function handlePaymentCompleted(resource: any) {
   const subscriptionId = resource.billing_agreement_id
 
-  if (!subscriptionId) {
-    console.log("Payment completed but no subscription ID found", { resource })
-    return
-  }
+  if (!subscriptionId) return
 
   try {
-    console.log("Payment completed for subscription", {
-      subscriptionId,
-      amount: resource.amount?.total,
-      currency: resource.amount?.currency,
-      paymentId: resource.id,
-    })
-
     // You could track successful payments in a separate table if needed
     // For now, just ensure subscription is active
     const existing = await getSubscriptionByExternalId(subscriptionId)
