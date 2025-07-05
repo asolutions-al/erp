@@ -82,7 +82,7 @@ const Page = async ({ params, searchParams }: Props) => {
             </Button>
 
             <Button variant="outline" asChild>
-              <Link href={`/o/${orgId}`}>
+              <Link href={`/o/${orgId}/overview`}>
                 <ArrowLeft className="mr-2 h-4 w-4" />
                 Return to Dashboard
               </Link>

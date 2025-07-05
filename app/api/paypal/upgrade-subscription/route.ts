@@ -1,6 +1,6 @@
 import { getSubscriptionByOrgId } from "@/db/app/actions"
 import { getPlanById } from "@/db/auth/loaders"
-import { revisePayPalSubscription } from "@/lib/paypal"
+import { revisePayPalSub } from "@/lib/paypal"
 import { NextRequest, NextResponse } from "next/server"
 
 export async function POST(req: NextRequest) {
@@ -38,13 +38,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Use PayPal revision API to change the subscription plan
-    const data = await revisePayPalSubscription(
+    const res = await revisePayPalSub(
       currentSubscription.externalSubscriptionId,
-      newPlan.paypalPlanId,
-      `Plan change from ${currentSubscription.plan} to ${planId}`
+      newPlan.paypalPlanId
     )
 
-    const approvalUrl = data.links?.find((l: any) => l.rel === "approve")?.href
+    const approvalUrl = res.success?.data.links?.find(
+      (l: any) => l.rel === "approve"
+    )?.href
 
     if (!approvalUrl) {
       return NextResponse.json(

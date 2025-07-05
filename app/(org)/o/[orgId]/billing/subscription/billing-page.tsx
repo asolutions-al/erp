@@ -313,6 +313,7 @@ export const BillingPage = ({
                               )
                               router.refresh()
                             }
+                            setIsCanceling(false)
                           }}
                           className="bg-red-600 hover:bg-red-700"
                         >

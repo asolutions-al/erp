@@ -17,6 +17,12 @@ const getByOrgId = async (orgId: string) => {
   })
 }
 
+const getByExternalId = async (externalSubscriptionId: string) => {
+  return await db.query.subscription.findFirst({
+    where: eq(subscription.externalSubscriptionId, externalSubscriptionId),
+  })
+}
+
 const create = async (data: SchemaT) => {
   return await db.insert(subscription).values(data)
 }
@@ -36,6 +42,7 @@ const update = async ({
 
 export {
   create as createSubscription,
+  getByExternalId as getSubscriptionByExternalId,
   getByOrgId as getSubscriptionByOrgId,
   update as updateSubscription,
 }

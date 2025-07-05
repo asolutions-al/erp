@@ -11,12 +11,8 @@ import {
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  createSubscription,
-  getSubscriptionByOrgId,
-  updateSubscription,
-} from "@/db/app/actions"
-import { getPayPalSubscription } from "@/lib/paypal"
+import { getPayPalSub } from "@/lib/paypal"
+import { getSubscriptionDisplayStatus } from "@/lib/webhook-subscription"
 import { CheckCircle, Clock, XCircle } from "lucide-react"
 import Link from "next/link"
 
@@ -32,61 +28,32 @@ type Props = {
 
 const Page = async ({ params, searchParams }: Props) => {
   const { orgId } = await params
-  const { subscription_id, plan } = await searchParams
+  const { subscription_id } = await searchParams
 
-  let subscriptionStatus = "PENDING"
-  let subscriptionDetails = null
+  // Get current subscription status (read-only, webhook updates the data)
+  const {
+    status: subscriptionStatus,
+    subscription: subscriptionDetails,
+    message,
+  } = await getSubscriptionDisplayStatus(orgId, subscription_id)
+
   let errorMessage = ""
 
-  try {
-    const subscription = await getPayPalSubscription(subscription_id)
-
-    subscriptionDetails = subscription
-    subscriptionStatus = subscription.status
-
-    // If subscription is ACTIVE, update DB
-    if (subscription.status === "ACTIVE") {
-      // Check if org already has a subscription
-      const existing = await getSubscriptionByOrgId(orgId)
-
-      // Determine the plan to use (from URL param or default to existing plan or INVOICE-PRO)
-      const planToUse = plan || existing?.plan || "INVOICE-PRO"
-
-      if (existing) {
-        // With revision API, we just update the plan - no need to cancel old subscription
-        await updateSubscription({
-          id: existing.id,
-          values: {
-            status: "ACTIVE",
-            paymentProvider: "PAYPAL",
-            externalSubscriptionId: subscription_id,
-            plan: planToUse as
-              | "INVOICE-STARTER"
-              | "INVOICE-PRO"
-              | "INVOICE-BUSINESS",
-            startedAt: subscription.start_time,
-            canceledAt: null,
-          },
-        })
+  // Only fetch PayPal details if we have a subscription ID (for display purposes)
+  let paypalSubscription = null
+  if (subscription_id) {
+    try {
+      const res = await getPayPalSub(subscription_id)
+      if (res.error) {
+        errorMessage =
+          res.error.message || "Failed to fetch PayPal subscription"
       } else {
-        await createSubscription({
-          orgId,
-          plan: planToUse as
-            | "INVOICE-STARTER"
-            | "INVOICE-PRO"
-            | "INVOICE-BUSINESS",
-          status: "ACTIVE",
-          startedAt: subscription.start_time,
-          paymentProvider: "PAYPAL",
-          externalSubscriptionId: subscription_id,
-        })
+        paypalSubscription = res.success?.data
       }
+    } catch (error) {
+      console.error("Error fetching PayPal subscription details:", error)
+      errorMessage = "Could not fetch subscription details from PayPal"
     }
-  } catch (error) {
-    console.error("Error processing PayPal subscription:", error)
-    subscriptionStatus = "ERROR"
-    errorMessage =
-      error instanceof Error ? error.message : "An unexpected error occurred"
   }
 
   const getStatusIcon = (status: string) => {
@@ -104,6 +71,8 @@ const Page = async ({ params, searchParams }: Props) => {
     switch (status) {
       case "ACTIVE":
         return "Payment Successful!"
+      case "PENDING":
+        return "Payment Confirmed - Activating..."
       case "ERROR":
         return "Payment Failed"
       default:
@@ -112,14 +81,10 @@ const Page = async ({ params, searchParams }: Props) => {
   }
 
   const getStatusMessage = (status: string) => {
-    switch (status) {
-      case "ACTIVE":
-        return "Your subscription has been activated successfully. You now have access to all Invoice Pro features."
-      case "ERROR":
-        return "There was an issue processing your payment. Please try again or contact support."
-      default:
-        return "Your payment is being processed. This may take a few moments."
-    }
+    // Use the message from webhook helper for consistency
+    return (
+      message || "Your payment is being processed. This may take a few moments."
+    )
   }
 
   return (
@@ -154,16 +119,19 @@ const Page = async ({ params, searchParams }: Props) => {
               </h3>
               <div className="space-y-1 text-sm text-green-700">
                 <p>
-                  <strong>Plan:</strong> Invoice Pro
+                  <strong>Plan:</strong>{" "}
+                  {subscriptionDetails.plan || "Invoice Pro"}
                 </p>
                 <p>
                   <strong>Status:</strong> {subscriptionDetails.status}
                 </p>
                 <p>
                   <strong>Start Date:</strong>{" "}
-                  {new Date(
-                    subscriptionDetails.start_time
-                  ).toLocaleDateString()}
+                  {subscriptionDetails.startedAt
+                    ? new Date(
+                        subscriptionDetails.startedAt
+                      ).toLocaleDateString()
+                    : "N/A"}
                 </p>
                 <p>
                   <strong>Subscription ID:</strong> {subscription_id}

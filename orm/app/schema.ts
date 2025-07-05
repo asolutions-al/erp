@@ -1,9 +1,9 @@
 import { pgTable, foreignKey, uuid, timestamp, boolean, text, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
-export const plan = pgEnum("PLAN", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
+export const planId = pgEnum("PLAN_ID", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
 export const subscriptionPaymentProvider = pgEnum("SUBSCRIPTION_PAYMENT_PROVIDER", ['PAYPAL'])
-export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['ACTIVE', 'CANCELED'])
+export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['ACTIVE', 'CANCELED', 'PENDING'])
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived'])
 export const idType = pgEnum("idType", ['tin', 'id'])
@@ -284,7 +284,7 @@ export const subscription = pgTable("subscription", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	orgId: uuid().notNull(),
-	plan: plan().notNull(),
+	plan: planId().notNull(),
 	status: subscriptionStatus().notNull(),
 	startedAt: timestamp({ withTimezone: true, mode: 'string' }).notNull(),
 	canceledAt: timestamp({ withTimezone: true, mode: 'string' }),
