@@ -431,5 +431,6 @@
   "Yes, Reactivate Subscription": "Yes, Reactivate Subscription",
   "Cancel": "Cancel",
   "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan": "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan",
-  "PENDING": "Pending"
+  "PENDING": "Pending",
+  "ERROR": "Error"
 }
