@@ -278,6 +278,7 @@ const revisePayPalSub = async (
 
   if (!res.ok) {
     const errorData: ErrorRes = await res.json()
+    console.error("PayPal revision error:", errorData)
     return {
       success: null,
       error: {
@@ -286,6 +287,7 @@ const revisePayPalSub = async (
     }
   }
   const data: RevisionRes = await res.json()
+  console.log("Revision response:", data)
 
   return {
     success: { data },

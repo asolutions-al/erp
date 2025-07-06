@@ -1,6 +1,14 @@
-import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
+import {
+  getSubscriptionByOrgId,
+  updateSubscription,
+} from "@/db/app/actions/subscription"
 import { getPlanById, getPlans } from "@/db/auth/loaders"
-import { cancelPayPalSub, createPayPalSubs } from "@/lib/paypal"
+import {
+  cancelPayPalSub,
+  createPayPalSubs,
+  revisePayPalSub,
+} from "@/lib/paypal"
+import { plan } from "@/orm/auth/schema"
 import { BillingPage } from "./billing-page"
 
 type Props = {
@@ -77,6 +85,96 @@ const reactivateSubscription = async (
   }
 }
 
+const reviseSubscription = async (
+  orgId: string,
+  planId: (typeof plan.$inferSelect)["id"]
+): Promise<
+  ResT<{
+    approvalUrl: string
+  }>
+> => {
+  const subscription = await getSubscriptionByOrgId(orgId)
+
+  if (!subscription) {
+    return {
+      success: null,
+      error: { message: "No subscription found for this organization" },
+    }
+  }
+
+  if (subscription.status !== "ACTIVE") {
+    return {
+      success: null,
+      error: { message: "Subscription is not active" },
+    }
+  }
+
+  if (!subscription.externalSubscriptionId) {
+    return {
+      success: null,
+      error: { message: "No external subscription ID found" },
+    }
+  }
+
+  // Get the target plan to get its PayPal plan ID
+  const targetPlan = await getPlanById(planId)
+  if (!targetPlan) {
+    return {
+      success: null,
+      error: { message: "Target plan not found" },
+    }
+  }
+
+  // Revise the PayPal subscription
+  const paypalResult = await revisePayPalSub(
+    subscription.externalSubscriptionId,
+    targetPlan.paypalPlanId
+  )
+
+  if (paypalResult.error) {
+    return {
+      success: null,
+      error: paypalResult.error,
+    }
+  }
+
+  if (paypalResult.success) {
+    // Update the local subscription record
+    await updateSubscription({
+      id: subscription.id,
+      values: {
+        plan: planId,
+      },
+    })
+
+    // Return the approval URL for the plan change
+    const approvalLink = paypalResult.success.data.links.find(
+      (link) => link.rel === "approve"
+    )
+
+    if (!approvalLink) {
+      return {
+        success: null,
+        error: { message: "No approval link found in PayPal response" },
+      }
+    }
+
+    return {
+      success: {
+        data: {
+          approvalUrl: approvalLink.href,
+        },
+      },
+      error: null,
+    }
+  }
+
+  return {
+    success: null,
+    error: { message: "Unknown error occurred" },
+  }
+}
+
 const Page = async (props: Props) => {
   const { orgId } = await props.params
 
@@ -89,14 +187,10 @@ const Page = async (props: Props) => {
     <BillingPage
       subscription={subscription}
       plans={plans}
-      changePlan={async () => {
+      changePlan={async (planId) => {
         "use server"
-        return {
-          success: null,
-          error: {
-            message: "Plan change is not implemented yet.",
-          },
-        }
+        const res = await reviseSubscription(orgId, planId)
+        return res
       }}
       cancelSubscription={async () => {
         "use server"

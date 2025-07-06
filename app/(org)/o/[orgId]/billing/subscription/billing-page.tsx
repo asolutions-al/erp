@@ -41,7 +41,11 @@ type PlanId = (typeof planId.enumValues)[number]
 type Props = {
   subscription: SubscriptionSchemaT
   plans: PlanSchemaT[]
-  changePlan: (planId: PlanId) => Promise<ResT<true>>
+  changePlan: (planId: PlanId) => Promise<
+    ResT<{
+      approvalUrl: string
+    }>
+  >
   cancelSubscription: () => Promise<ResT<true>>
   reactivateSubscription: () => Promise<
     ResT<{
@@ -108,40 +112,17 @@ export const BillingPage = ({
 
   const currentPlan = plans.find((plan) => plan.id === subscription.plan)!
 
-  const handlePlanChange = async (planId: string) => {
+  const handleChangePlan = async (planId: PlanId) => {
     setIsUpgrading(planId)
-    try {
-      const response = await fetch("/api/paypal/upgrade-subscription", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          orgId,
-          planId,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        if (data.approvalUrl) {
-          // Redirect to PayPal for subscription revision approval
-          toast.info("Redirecting to PayPal to approve your plan change...")
-          window.location.href = data.approvalUrl
-        } else {
-          toast.success("Plan change completed successfully")
-          router.refresh()
-        }
-      } else {
-        toast.error(data.error || "Failed to change subscription plan")
-      }
-    } catch (error) {
-      console.error("Error changing subscription plan:", error)
-      toast.error("An error occurred while changing subscription plan")
-    } finally {
-      setIsUpgrading(null)
+    const res = await changePlan(planId)
+    if (res.error) {
+      toast.error(res.error.message)
     }
+    if (res.success) {
+      const { approvalUrl } = res.success.data
+      window.location.href = approvalUrl
+    }
+    setIsUpgrading(null)
   }
 
   const getStatusColor = (status: string) => {
@@ -513,8 +494,7 @@ export const BillingPage = ({
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
-                  handlePlanChange(selectedPlanForUpgrade.id)
-                  // changePlan(selectedPlanForUpgrade.id)
+                  handleChangePlan(selectedPlanForUpgrade.id)
                   setSelectedPlanForUpgrade(null)
                 }}
                 className="bg-blue-600 hover:bg-blue-700"
@@ -576,8 +556,7 @@ export const BillingPage = ({
               </AlertDialogCancel>
               <AlertDialogAction
                 onClick={() => {
-                  // handlePlanChange(selectedPlanForDowngrade.id)
-                  changePlan(selectedPlanForDowngrade.id)
+                  handleChangePlan(selectedPlanForDowngrade.id)
                   setSelectedPlanForDowngrade(null)
                 }}
                 className="bg-orange-600 hover:bg-orange-700"
