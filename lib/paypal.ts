@@ -107,12 +107,9 @@ const getAccessToken = async (): Promise<string> => {
     body: "grant_type=client_credentials",
   })
 
-  if (!res.ok) {
-    throw new Error(`Failed to get PayPal access token: ${res.statusText}`)
-  }
-
   const data: AccessTokenRes = await res.json()
-  return data.access_token
+  console.log("access_token", data.access_token)
+  return data.access_token || ""
 }
 
 const getPayPalSub = async (subscriptionId: string): Promise<ResT<SubRes>> => {
