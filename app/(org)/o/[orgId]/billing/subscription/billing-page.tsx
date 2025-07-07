@@ -41,17 +41,12 @@ type PlanId = (typeof planId.enumValues)[number]
 type Props = {
   subscription: SubscriptionSchemaT
   plans: PlanSchemaT[]
-  changePlan: (planId: PlanId) => Promise<
+  createSubscription: (planId: PlanId) => Promise<
     ResT<{
       approvalUrl: string
     }>
   >
   cancelSubscription: () => Promise<ResT<true>>
-  reactivateSubscription: () => Promise<
-    ResT<{
-      approvalUrl: string
-    }>
-  >
 }
 
 const generatePlanFeatures = (planData: PlanSchemaT) => {
@@ -95,26 +90,21 @@ const generatePlanFeatures = (planData: PlanSchemaT) => {
 export const BillingPage = ({
   subscription,
   plans,
-  changePlan,
+  createSubscription,
   cancelSubscription,
-  reactivateSubscription,
 }: Props) => {
   const t = useTranslations()
   const { orgId } = useParams()
   const router = useRouter()
   const [isCanceling, setIsCanceling] = useState(false)
-  const [isReactivating, setIsReactivating] = useState(false)
-  const [isUpgrading, setIsUpgrading] = useState<string | null>(null)
-  const [selectedPlanForUpgrade, setSelectedPlanForUpgrade] =
-    useState<PlanSchemaT | null>(null)
-  const [selectedPlanForDowngrade, setSelectedPlanForDowngrade] =
-    useState<PlanSchemaT | null>(null)
+  const [isCreating, setIsCreating] = useState<string | null>(null)
 
-  const currentPlan = plans.find((plan) => plan.id === subscription.plan)!
+  const currentPlan =
+    plans.find((plan) => plan.id === subscription.plan) || plans[0]
 
-  const handleChangePlan = async (planId: PlanId) => {
-    setIsUpgrading(planId)
-    const res = await changePlan(planId)
+  const handleCreateSubscription = async (planId: PlanId) => {
+    setIsCreating(planId)
+    const res = await createSubscription(planId)
     if (res.error) {
       toast.error(res.error.message)
     }
@@ -122,7 +112,7 @@ export const BillingPage = ({
       const { approvalUrl } = res.success.data
       window.location.href = approvalUrl
     }
-    setIsUpgrading(null)
+    setIsCreating(null)
   }
 
   const getStatusColor = (status: string) => {
@@ -151,111 +141,138 @@ export const BillingPage = ({
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <BuildingIcon className="h-5 w-5" />
-              {t("Current Plan")}
+              {subscription.status === "ACTIVE"
+                ? t("Current Plan")
+                : "Plan Status"}
             </CardTitle>
             <CardDescription>
-              {t("Your current subscription details")}
+              {subscription.status === "ACTIVE"
+                ? t("Your current subscription details")
+                : "No active subscription"}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{t("Plan")}</span>
-              <span className="text-lg font-semibold">{currentPlan.name}</span>
-            </div>
+            {subscription.status === "ACTIVE" && (
+              <>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Plan")}</span>
+                  <span className="text-lg font-semibold">
+                    {currentPlan.name}
+                  </span>
+                </div>
 
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{t("Status")}</span>
-              <Badge className={getStatusColor(subscription.status)}>
-                {t(subscription.status)}
-              </Badge>
-            </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Status")}</span>
+                  <Badge className={getStatusColor(subscription.status)}>
+                    {t(subscription.status)}
+                  </Badge>
+                </div>
 
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{t("Started")}</span>
-              <span className="text-sm text-muted-foreground">
-                {formatDate(new Date(subscription.startedAt))}
-              </span>
-            </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Started")}</span>
+                  <span className="text-sm text-muted-foreground">
+                    {formatDate(new Date(subscription.startedAt))}
+                  </span>
+                </div>
 
-            {subscription.canceledAt && (
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{t("Canceled")}</span>
-                <span className="text-sm text-muted-foreground">
-                  {formatDate(new Date(subscription.canceledAt))}
-                </span>
-              </div>
+                {subscription.canceledAt && (
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium">{t("Canceled")}</span>
+                    <span className="text-sm text-muted-foreground">
+                      {formatDate(new Date(subscription.canceledAt))}
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Price")}</span>
+                  <span className="text-lg font-semibold">
+                    ${currentPlan.monthlyPrice}/month
+                  </span>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-2">
+                  <h4 className="font-medium">{t("Plan Features")}</h4>
+                  <ul className="space-y-1">
+                    {generatePlanFeatures(currentPlan).map((feature, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        <CheckIcon className="h-4 w-4 text-green-500" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </>
             )}
 
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{t("Price")}</span>
-              <span className="text-lg font-semibold">
-                ${currentPlan.monthlyPrice}/month
-              </span>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-2">
-              <h4 className="font-medium">{t("Plan Features")}</h4>
-              <ul className="space-y-1">
-                {generatePlanFeatures(currentPlan).map((feature, index) => (
-                  <li key={index} className="flex items-center gap-2 text-sm">
-                    <CheckIcon className="h-4 w-4 text-green-500" />
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {subscription.status !== "ACTIVE" && (
+              <div className="py-8 text-center">
+                <p className="mb-4 text-muted-foreground">
+                  You don't have an active subscription. Choose a plan below to
+                  get started.
+                </p>
+                <Badge className={getStatusColor(subscription.status)}>
+                  {subscription.status === "CANCELED"
+                    ? "No Subscription"
+                    : t(subscription.status)}
+                </Badge>
+              </div>
+            )}
           </CardContent>
         </Card>
 
-        {/* Payment Information Card */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <CreditCardIcon className="h-5 w-5" />
-              {t("Payment Information")}
-            </CardTitle>
-            <CardDescription>
-              {t("Your payment method and billing details")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {subscription.paymentProvider && (
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{t("Payment Provider")}</span>
-                <span className="capitalize">
-                  {subscription.paymentProvider}
-                </span>
-              </div>
-            )}
+        {/* Payment Information Card - Only show for active subscriptions */}
+        {subscription.status === "ACTIVE" && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCardIcon className="h-5 w-5" />
+                {t("Payment Information")}
+              </CardTitle>
+              <CardDescription>
+                {t("Your payment method and billing details")}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {subscription.paymentProvider && (
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Payment Provider")}</span>
+                  <span className="capitalize">
+                    {subscription.paymentProvider}
+                  </span>
+                </div>
+              )}
 
-            {subscription.externalSubscriptionId && (
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{t("Subscription ID")}</span>
-                <span className="font-mono text-sm text-muted-foreground">
-                  {subscription.externalSubscriptionId}
-                </span>
-              </div>
-            )}
+              {subscription.externalSubscriptionId && (
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{t("Subscription ID")}</span>
+                  <span className="font-mono text-sm text-muted-foreground">
+                    {subscription.externalSubscriptionId}
+                  </span>
+                </div>
+              )}
 
-            <Separator />
+              <Separator />
 
-            <div className="space-y-3">
-              <h4 className="font-medium">{t("Billing Actions")}</h4>
+              <div className="space-y-3">
+                <h4 className="font-medium">{t("Billing Actions")}</h4>
 
-              <div className="space-y-2">
-                <Button variant="outline" className="w-full justify-start">
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {t("View Billing History")}
-                </Button>
+                <div className="space-y-2">
+                  <Button variant="outline" className="w-full justify-start">
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {t("View Billing History")}
+                  </Button>
 
-                <Button variant="outline" className="w-full justify-start">
-                  <CreditCardIcon className="mr-2 h-4 w-4" />
-                  {t("Update Payment Method")}
-                </Button>
+                  <Button variant="outline" className="w-full justify-start">
+                    <CreditCardIcon className="mr-2 h-4 w-4" />
+                    {t("Update Payment Method")}
+                  </Button>
 
-                {subscription.status === "ACTIVE" && (
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
                       <Button
@@ -303,58 +320,11 @@ export const BillingPage = ({
                       </AlertDialogFooter>
                     </AlertDialogContent>
                   </AlertDialog>
-                )}
-
-                {subscription.status === "CANCELED" && (
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <Button
-                        className="w-full justify-start"
-                        disabled={isReactivating}
-                      >
-                        {isReactivating
-                          ? t("Reactivating")
-                          : t("Reactivate Subscription")}
-                      </Button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>
-                          {t("Reactivate Subscription")}
-                        </AlertDialogTitle>
-                        <AlertDialogDescription>
-                          {t(
-                            "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan"
-                          )}
-                          .
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>{t("Cancel")}</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={async () => {
-                            setIsReactivating(true)
-                            const res = await reactivateSubscription()
-                            if (res.error) toast.error(res.error.message)
-
-                            if (res.success) {
-                              const { approvalUrl } = res.success.data
-                              window.location.href = approvalUrl
-                            }
-                            setIsReactivating(false)
-                          }}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          {t("Yes, Reactivate Subscription")}
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                )}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
       {/* Available Plans */}
@@ -362,16 +332,18 @@ export const BillingPage = ({
         <CardHeader>
           <CardTitle>{t("Available Plans")}</CardTitle>
           <CardDescription>
-            {t("Choose the plan that best fits your needs")}. Plan changes are
-            processed immediately.
+            {subscription.status === "ACTIVE"
+              ? "You are currently subscribed to a plan"
+              : "Choose a plan to get started"}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="grid gap-4 md:grid-cols-3">
             {plans.map((plan) => {
-              const isActive = subscription.plan === plan.id
-              const canUpgrade = plan.tier > currentPlan.tier
-              const isDowngrade = plan.tier < currentPlan.tier
+              const isActive =
+                subscription.plan === plan.id &&
+                subscription.status === "ACTIVE"
+              const canSubscribe = subscription.status !== "ACTIVE" // Allow subscription for non-active status
 
               return (
                 <Card
@@ -416,29 +388,23 @@ export const BillingPage = ({
                     </ul>
                     <Button
                       className="mt-4 w-full"
-                      variant={
-                        isActive
-                          ? "outline"
-                          : canUpgrade
-                            ? "default"
-                            : "secondary"
+                      variant={isActive ? "outline" : "default"}
+                      disabled={
+                        isActive || !canSubscribe || isCreating === plan.id
                       }
-                      disabled={isActive || isUpgrading === plan.id}
                       onClick={() => {
-                        if (canUpgrade) {
-                          setSelectedPlanForUpgrade(plan)
-                        } else if (isDowngrade) {
-                          setSelectedPlanForDowngrade(plan)
+                        if (canSubscribe) {
+                          handleCreateSubscription(plan.id)
                         }
                       }}
                     >
                       {isActive
                         ? t("Current Plan")
-                        : isUpgrading === plan.id
+                        : isCreating === plan.id
                           ? "Processing..."
-                          : isDowngrade
-                            ? "Downgrade"
-                            : t("Upgrade")}
+                          : canSubscribe
+                            ? "Subscribe"
+                            : "Not Available"}
                     </Button>
                   </CardContent>
                 </Card>
@@ -447,129 +413,6 @@ export const BillingPage = ({
           </div>
         </CardContent>
       </Card>
-
-      {/* Upgrade Confirmation Dialog */}
-      {selectedPlanForUpgrade && (
-        <AlertDialog
-          open={!!selectedPlanForUpgrade}
-          onOpenChange={() => setSelectedPlanForUpgrade(null)}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Upgrade to {selectedPlanForUpgrade.name}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                You are about to upgrade your subscription to the{" "}
-                {selectedPlanForUpgrade.name} plan for $
-                {selectedPlanForUpgrade.monthlyPrice}/month.
-                <br />
-                <br />
-                Your current subscription will be modified to the new plan, and
-                you'll only pay the difference. The change takes effect
-                immediately upon approval.
-                <br />
-                <br />
-                Your new plan will include:
-                <ul className="mt-2 space-y-1">
-                  {generatePlanFeatures(selectedPlanForUpgrade).map(
-                    (feature, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center gap-2 text-sm"
-                      >
-                        <CheckIcon className="h-3 w-3 text-green-500" />
-                        {feature}
-                      </li>
-                    )
-                  )}
-                </ul>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => setSelectedPlanForUpgrade(null)}
-              >
-                {t("Cancel")}
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  handleChangePlan(selectedPlanForUpgrade.id)
-                  setSelectedPlanForUpgrade(null)
-                }}
-                className="bg-blue-600 hover:bg-blue-700"
-                disabled={isUpgrading === selectedPlanForUpgrade.id}
-              >
-                {isUpgrading === selectedPlanForUpgrade.id
-                  ? "Processing..."
-                  : "Upgrade Now"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
-
-      {/* Downgrade Confirmation Dialog */}
-      {selectedPlanForDowngrade && (
-        <AlertDialog
-          open={!!selectedPlanForDowngrade}
-          onOpenChange={() => setSelectedPlanForDowngrade(null)}
-        >
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                Downgrade to {selectedPlanForDowngrade.name}
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                You are about to downgrade your subscription to the{" "}
-                {selectedPlanForDowngrade.name} plan for $
-                {selectedPlanForDowngrade.monthlyPrice}/month.
-                <br />
-                <br />
-                <strong>Important:</strong> Downgrading will reduce your plan
-                limits. Please ensure you're not exceeding the new plan's limits
-                before proceeding. The change takes effect immediately upon
-                approval.
-                <br />
-                <br />
-                Your new plan will include:
-                <ul className="mt-2 space-y-1">
-                  {generatePlanFeatures(selectedPlanForDowngrade).map(
-                    (feature, index) => (
-                      <li
-                        key={index}
-                        className="flex items-center gap-2 text-sm"
-                      >
-                        <CheckIcon className="h-3 w-3 text-green-500" />
-                        {feature}
-                      </li>
-                    )
-                  )}
-                </ul>
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => setSelectedPlanForDowngrade(null)}
-              >
-                {t("Cancel")}
-              </AlertDialogCancel>
-              <AlertDialogAction
-                onClick={() => {
-                  handleChangePlan(selectedPlanForDowngrade.id)
-                  setSelectedPlanForDowngrade(null)
-                }}
-                className="bg-orange-600 hover:bg-orange-700"
-                disabled={isUpgrading === selectedPlanForDowngrade.id}
-              >
-                {isUpgrading === selectedPlanForDowngrade.id
-                  ? "Processing..."
-                  : "Downgrade Now"}
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
-      )}
     </div>
   )
 }

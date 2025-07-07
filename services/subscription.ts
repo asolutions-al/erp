@@ -1,57 +1,45 @@
 "use server"
+import "server-only"
 
-import {
-  getSubscriptionByOrgId,
-  updateSubscription,
-} from "@/db/app/actions/subscription"
+import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getPlanById } from "@/db/auth/loaders"
-import {
-  cancelPayPalSub,
-  createPayPalSubs,
-  revisePayPalSub,
-} from "@/lib/paypal"
+import { cancelPayPalSub, createPayPalSubs } from "@/lib/paypal"
 import { plan } from "@/orm/auth/schema"
 
 const isDev = process.env.NODE_ENV === "development"
 
 /**
- * Reactivates a cancelled subscription by creating a new PayPal subscription
+ * Creates a new subscription for an organization
  */
-const reactivateSubscription = async (
-  orgId: string
+const createSubscription = async (
+  orgId: string,
+  planId: (typeof plan.$inferSelect)["id"]
 ): Promise<
   ResT<{
     approvalUrl: string
   }>
 > => {
-  const subscription = await getSubscriptionByOrgId(orgId)
+  // Check if organization already has a subscription
+  const existingSub = await getSubscriptionByOrgId(orgId)
 
-  if (!subscription) {
+  if (existingSub && existingSub.status === "ACTIVE") {
     return {
       success: null,
-      error: { message: "No subscription found for this organization" },
-    }
-  }
-
-  if (subscription.status !== "CANCELED") {
-    return {
-      success: null,
-      error: { message: "Subscription is not canceled" },
+      error: { message: "Organization already has an active subscription" },
     }
   }
 
   // Get the plan details from the database to retrieve the PayPal plan ID
-  const planData = await getPlanById(subscription.plan)
+  const planData = await getPlanById(planId)
 
   if (!planData) {
     return {
       success: null,
-      error: { message: "Invalid plan found in subscription" },
+      error: { message: "Invalid plan selected" },
     }
   }
 
-  // Since PayPal doesn't allow reactivating cancelled subscriptions,
-  // we need to create a new subscription instead
+  // Create a new PayPal subscription
   const newSubscriptionData = await createPayPalSubs(
     isDev ? planData.paypalSandboxPlanId : planData.paypalPlanId,
     orgId // Use orgId as custom_id to link PayPal subscription to your org
@@ -87,99 +75,6 @@ const reactivateSubscription = async (
 }
 
 /**
- * Revises an active subscription to a different plan
- */
-const reviseSubscription = async (
-  orgId: string,
-  planId: (typeof plan.$inferSelect)["id"]
-): Promise<
-  ResT<{
-    approvalUrl: string
-  }>
-> => {
-  const subscription = await getSubscriptionByOrgId(orgId)
-
-  if (!subscription) {
-    return {
-      success: null,
-      error: { message: "No subscription found for this organization" },
-    }
-  }
-
-  if (subscription.status !== "ACTIVE") {
-    return {
-      success: null,
-      error: { message: "Subscription is not active" },
-    }
-  }
-
-  if (!subscription.externalSubscriptionId) {
-    return {
-      success: null,
-      error: { message: "No external subscription ID found" },
-    }
-  }
-
-  // Get the target plan to get its PayPal plan ID
-  const targetPlan = await getPlanById(planId)
-  if (!targetPlan) {
-    return {
-      success: null,
-      error: { message: "Target plan not found" },
-    }
-  }
-
-  // Revise the PayPal subscription
-  const paypalResult = await revisePayPalSub(
-    subscription.externalSubscriptionId,
-    isDev ? targetPlan.paypalSandboxPlanId : targetPlan.paypalPlanId
-  )
-
-  if (paypalResult.error) {
-    return {
-      success: null,
-      error: paypalResult.error,
-    }
-  }
-
-  if (paypalResult.success) {
-    // Update the local subscription record
-    await updateSubscription({
-      id: subscription.id,
-      values: {
-        plan: planId,
-      },
-    })
-
-    // Return the approval URL for the plan change
-    const approvalLink = paypalResult.success.data.links.find(
-      (link) => link.rel === "approve"
-    )
-
-    if (!approvalLink) {
-      return {
-        success: null,
-        error: { message: "No approval link found in PayPal response" },
-      }
-    }
-
-    return {
-      success: {
-        data: {
-          approvalUrl: approvalLink.href,
-        },
-      },
-      error: null,
-    }
-  }
-
-  return {
-    success: null,
-    error: { message: "Unknown error occurred" },
-  }
-}
-
-/**
  * Cancels an active subscription
  */
 const cancelSubscription = async (orgId: string) => {
@@ -206,4 +101,4 @@ const cancelSubscription = async (orgId: string) => {
   return await cancelPayPalSub(subscription.externalSubscriptionId)
 }
 
-export { cancelSubscription, reactivateSubscription, reviseSubscription }
+export { cancelSubscription, createSubscription }
