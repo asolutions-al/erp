@@ -1,0 +1,165 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.user": {
+      "name": "user",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "email": {
+          "name": "email",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": true
+    },
+    "public.plan": {
+      "name": "plan",
+      "schema": "",
+      "columns": {
+        "product": {
+          "name": "product",
+          "type": "PRODUCT",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "monthlyPrice": {
+          "name": "monthlyPrice",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "yearlyPrice": {
+          "name": "yearlyPrice",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "id": {
+          "name": "id",
+          "type": "PLAN_ID",
+          "typeSchema": "public",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "maxInvoices": {
+          "name": "maxInvoices",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxUnits": {
+          "name": "maxUnits",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxMembers": {
+          "name": "maxMembers",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxCustomers": {
+          "name": "maxCustomers",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "maxProducts": {
+          "name": "maxProducts",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "tier": {
+          "name": "tier",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "paypalPlanId": {
+          "name": "paypalPlanId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "paypalSandboxPlanId": {
+          "name": "paypalSandboxPlanId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {},
+      "policies": {},
+      "isRLSEnabled": true
+    }
+  },
+  "enums": {
+    "public.PLAN_ID": {
+      "name": "PLAN_ID",
+      "values": [
+        "INVOICE-STARTER",
+        "INVOICE-PRO",
+        "INVOICE-BUSINESS"
+      ],
+      "schema": "public"
+    },
+    "public.PRODUCT": {
+      "name": "PRODUCT",
+      "values": [
+        "INVOICE"
+      ],
+      "schema": "public"
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {}
+  }
+}

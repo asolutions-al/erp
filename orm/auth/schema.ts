@@ -29,4 +29,5 @@ export const plan = pgTable("plan", {
 	maxProducts: bigint({ mode: "number" }).notNull(),
 	tier: smallint().notNull(),
 	paypalPlanId: text().notNull(),
+	paypalSandboxPlanId: text().notNull(),
 });

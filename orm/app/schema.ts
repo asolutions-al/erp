@@ -288,8 +288,8 @@ export const subscription = pgTable("subscription", {
 	status: subscriptionStatus().notNull(),
 	startedAt: timestamp({ withTimezone: true, mode: 'string' }).notNull(),
 	canceledAt: timestamp({ withTimezone: true, mode: 'string' }),
-	paymentProvider: subscriptionPaymentProvider(),
-	externalSubscriptionId: text(),
+	paymentProvider: subscriptionPaymentProvider().notNull(),
+	externalSubscriptionId: text().notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.orgId],
