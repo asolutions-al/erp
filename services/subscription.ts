@@ -12,6 +12,8 @@ import {
 } from "@/lib/paypal"
 import { plan } from "@/orm/auth/schema"
 
+const isDev = process.env.NODE_ENV === "development"
+
 /**
  * Reactivates a cancelled subscription by creating a new PayPal subscription
  */
@@ -51,7 +53,7 @@ const reactivateSubscription = async (
   // Since PayPal doesn't allow reactivating cancelled subscriptions,
   // we need to create a new subscription instead
   const newSubscriptionData = await createPayPalSubs(
-    planData.paypalPlanId,
+    isDev ? planData.paypalSandboxPlanId : planData.paypalPlanId,
     orgId // Use orgId as custom_id to link PayPal subscription to your org
   )
 
@@ -130,7 +132,7 @@ const reviseSubscription = async (
   // Revise the PayPal subscription
   const paypalResult = await revisePayPalSub(
     subscription.externalSubscriptionId,
-    targetPlan.paypalPlanId
+    isDev ? targetPlan.paypalSandboxPlanId : targetPlan.paypalPlanId
   )
 
   if (paypalResult.error) {
