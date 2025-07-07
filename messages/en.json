@@ -432,5 +432,10 @@
   "Cancel": "Cancel",
   "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan": "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan",
   "PENDING": "Pending",
-  "ERROR": "Error"
+  "ERROR": "Error",
+  "Coming soon": "Coming soon",
+  "No Active Subscription": "No Active Subscription",
+  "You don't have an active subscription": "You don't have an active subscription",
+  "Choose a plan below to unlock premium features and get started": "Choose a plan below to unlock premium features and get started",
+  "No Subscription": "No Subscription"
 }

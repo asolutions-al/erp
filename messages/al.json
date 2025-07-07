@@ -432,5 +432,10 @@
   "Cancel": "Anulo",
   "To reactivate your subscription, you will be redirected to PayPal to approve a new subscription with the same plan": "Për të riaktivizuar abonimin tuaj, do të ridrejtoheni në PayPal për të miratuar një abonim të ri me të njëjtin plan",
   "PENDING": "Në pritje",
-  "ERROR": "Gabim"
+  "ERROR": "Gabim",
+  "Coming soon": "Së shpejti",
+  "No Active Subscription": "Nuk ka Abonim Aktiv",
+  "You don't have an active subscription": "Nuk keni një abonim aktiv",
+  "Choose a plan below to unlock premium features and get started": "Zgjidhni një plan më poshtë për të çelur veçoritë premium dhe për të filluar",
+  "No Subscription": "Nuk ka Abonim"
 }

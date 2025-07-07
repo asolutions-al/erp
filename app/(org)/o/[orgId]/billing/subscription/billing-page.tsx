@@ -30,6 +30,7 @@ import {
   CalendarIcon,
   CheckIcon,
   CreditCardIcon,
+  XCircleIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
@@ -212,13 +213,22 @@ export const BillingPage = ({
 
             {subscription.status !== "ACTIVE" && (
               <div className="py-8 text-center">
-                <p className="mb-4 text-muted-foreground">
-                  You don't have an active subscription. Choose a plan below to
-                  get started.
+                <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+                  <CreditCardIcon className="h-6 w-6 text-gray-500" />
+                </div>
+                <h3 className="mb-2 text-lg font-semibold">
+                  {t("No Active Subscription")}
+                </h3>
+                <p className="mb-4 text-sm text-muted-foreground">
+                  {t("You don't have an active subscription")}.{" "}
+                  {t(
+                    "Choose a plan below to unlock premium features and get started"
+                  )}
+                  .
                 </p>
                 <Badge className={getStatusColor(subscription.status)}>
                   {subscription.status === "CANCELED"
-                    ? "No Subscription"
+                    ? t("No Subscription")
                     : t(subscription.status)}
                 </Badge>
               </div>
@@ -263,14 +273,28 @@ export const BillingPage = ({
                 <h4 className="font-medium">{t("Billing Actions")}</h4>
 
                 <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    disabled
+                  >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {t("View Billing History")}
+                    <Badge variant="outline" className="ml-auto">
+                      {t("Coming soon")}
+                    </Badge>
                   </Button>
 
-                  <Button variant="outline" className="w-full justify-start">
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start"
+                    disabled
+                  >
                     <CreditCardIcon className="mr-2 h-4 w-4" />
                     {t("Update Payment Method")}
+                    <Badge variant="outline" className="ml-auto">
+                      {t("Coming soon")}
+                    </Badge>
                   </Button>
 
                   <AlertDialog>
@@ -280,6 +304,7 @@ export const BillingPage = ({
                         className="w-full justify-start"
                         disabled={isCanceling}
                       >
+                        <XCircleIcon className="mr-2 h-4 w-4" />
                         {isCanceling
                           ? t("Canceling")
                           : t("Cancel Subscription")}
