@@ -65,7 +65,7 @@ const Page = async ({ params, searchParams }: Props) => {
               </Button>
 
               <Button variant="outline" asChild>
-                <Link href={`/o/${orgId}`}>Return to Dashboard</Link>
+                <Link href={`/o/${orgId}/overview`}>Return to Dashboard</Link>
               </Button>
             </div>
           </CardContent>
@@ -228,7 +228,7 @@ const Page = async ({ params, searchParams }: Props) => {
             </Button>
 
             <Button variant="outline" asChild>
-              <Link href={`/o/${orgId}`}>Return to Dashboard</Link>
+              <Link href={`/o/${orgId}/overview`}>Return to Dashboard</Link>
             </Button>
           </div>
 

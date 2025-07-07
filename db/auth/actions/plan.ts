@@ -13,7 +13,7 @@ const isDev = process.env.NODE_ENV === "development"
  */
 export async function getPlanByPayPalId(id: string) {
   return await db.query.plan.findFirst({
-    where: eq(isDev ? plan.paypalPlanId : plan.paypalSandboxPlanId, id),
+    where: eq(isDev ? plan.paypalSandboxPlanId : plan.paypalPlanId, id),
   })
 }
 
