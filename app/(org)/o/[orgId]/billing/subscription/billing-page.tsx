@@ -331,10 +331,9 @@ export const BillingPage = ({
                             const res = await cancelSubscription()
                             if (res.error) toast.error(res.error.message)
                             if (res.success) {
-                              toast.success(
-                                t("Subscription cancelled successfully")
+                              router.push(
+                                `/o/${orgId}/billing/subscription/cancellation/pending?subscription_id=${subscription.externalSubscriptionId}&plan=${currentPlan.name}`
                               )
-                              router.refresh()
                             }
                             setIsCanceling(false)
                           }}
