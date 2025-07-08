@@ -108,7 +108,7 @@ const getAccessToken = async (): Promise<string> => {
   })
 
   const data: AccessTokenRes = await res.json()
-  console.log("access_token", data.access_token)
+
   return data.access_token || ""
 }
 
@@ -287,7 +287,6 @@ const revisePayPalSub = async (
     }
   }
   const data: RevisionRes = await res.json()
-  console.log("Revision response:", data)
 
   return {
     success: { data },
