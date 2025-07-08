@@ -456,6 +456,8 @@
   "product": "produkt",
   "unitsLimit": "njësi",
   "productsLimit": "produkte",
+  "customersLimit": "klientë",
+  "invoicesLimit": "fatura",
   "You need an active subscription to access this feature": "Ju duhet një abonim aktiv për të hyrë në këtë funksion",
   "Subscription Required": "Kërkohet Abonim",
   "Please subscribe to a plan to start using our services": "Ju lutemi pajtohuni me një plan për të filluar përdorimin e shërbimeve tona",

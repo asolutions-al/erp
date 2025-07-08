@@ -11,6 +11,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { WithSubscription } from "@/components/wrapper"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import {
@@ -70,57 +71,61 @@ const Page = async (props: Props) => {
   ])
 
   return (
-    <InvoiceFormProvider
-      defaultValues={{
-        ...config,
-        // form does not accept null values
-        customerId: config?.customerId || undefined,
-        cashRegisterId: config?.cashRegisterId || undefined,
-        warehouseId: config?.warehouseId || undefined,
-      }}
-      config={config!}
-      productInventories={productInventories}
-    >
-      <PageHeader
-        title={"Create invoice"}
-        className="mb-2 max-w-none"
-        rightComp={
-          <FormActionBtns formId="invoice">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="sm" className="ml-auto">
-                  <Settings2Icon />
-                  <span className="sr-only sm:not-sr-only">
-                    {t("Additional options")}
-                  </span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent>
-                <SheetHeader className="mb-4">
-                  <SheetTitle>{t("Invoice options")}</SheetTitle>
-                  <SheetDescription>
-                    {t("Configure additional invoice settings and preferences")}
-                    .
-                  </SheetDescription>
-                </SheetHeader>
-                <InvoiceOptions />
-              </SheetContent>
-            </Sheet>
-          </FormActionBtns>
-        }
-      />
-      <InvoiceForm
-        products={products}
-        customers={customers}
-        cashRegisters={cashRegisters}
-        warehouses={warehouses}
-        invoiceConfig={config!}
-        performAction={async (values) => {
-          "use server"
-          await createInvoice({ values, orgId, unitId })
+    <WithSubscription orgId={orgId} unitId={unitId} entity="INVOICE">
+      <InvoiceFormProvider
+        defaultValues={{
+          ...config,
+          // form does not accept null values
+          customerId: config?.customerId || undefined,
+          cashRegisterId: config?.cashRegisterId || undefined,
+          warehouseId: config?.warehouseId || undefined,
         }}
-      />
-    </InvoiceFormProvider>
+        config={config!}
+        productInventories={productInventories}
+      >
+        <PageHeader
+          title={"Create invoice"}
+          className="mb-2 max-w-none"
+          rightComp={
+            <FormActionBtns formId="invoice">
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="sm" className="ml-auto">
+                    <Settings2Icon />
+                    <span className="sr-only sm:not-sr-only">
+                      {t("Additional options")}
+                    </span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent>
+                  <SheetHeader className="mb-4">
+                    <SheetTitle>{t("Invoice options")}</SheetTitle>
+                    <SheetDescription>
+                      {t(
+                        "Configure additional invoice settings and preferences"
+                      )}
+                      .
+                    </SheetDescription>
+                  </SheetHeader>
+                  <InvoiceOptions />
+                </SheetContent>
+              </Sheet>
+            </FormActionBtns>
+          }
+        />
+        <InvoiceForm
+          products={products}
+          customers={customers}
+          cashRegisters={cashRegisters}
+          warehouses={warehouses}
+          invoiceConfig={config!}
+          performAction={async (values) => {
+            "use server"
+            await createInvoice({ values, orgId, unitId })
+          }}
+        />
+      </InvoiceFormProvider>
+    </WithSubscription>
   )
 }
 

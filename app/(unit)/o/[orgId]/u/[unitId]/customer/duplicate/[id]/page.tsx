@@ -1,6 +1,7 @@
 import { FormActionBtns } from "@/components/buttons"
 import { CustomerForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
+import { WithSubscription } from "@/components/wrapper"
 import { createCustomer } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { customer } from "@/orm/app/schema"
@@ -19,19 +20,21 @@ const Page = async (props: Props) => {
   })
 
   return (
-    <CustomerFormProvider defaultValues={data}>
-      <PageHeader
-        title={"Duplicate customer"}
-        className="mb-2"
-        rightComp={<FormActionBtns formId="customer" />}
-      />
-      <CustomerForm
-        performAction={async (values) => {
-          "use server"
-          await createCustomer({ values, unitId, orgId })
-        }}
-      />
-    </CustomerFormProvider>
+    <WithSubscription orgId={orgId} unitId={unitId} entity="CUSTOMER">
+      <CustomerFormProvider defaultValues={data}>
+        <PageHeader
+          title={"Duplicate customer"}
+          className="mb-2"
+          rightComp={<FormActionBtns formId="customer" />}
+        />
+        <CustomerForm
+          performAction={async (values) => {
+            "use server"
+            await createCustomer({ values, unitId, orgId })
+          }}
+        />
+      </CustomerFormProvider>
+    </WithSubscription>
   )
 }
 

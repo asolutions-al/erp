@@ -456,6 +456,8 @@
   "product": "product",
   "unitsLimit": "units",
   "productsLimit": "products",
+  "customersLimit": "customers",
+  "invoicesLimit": "invoices",
   "You need an active subscription to access this feature": "You need an active subscription to access this feature",
   "Subscription Required": "Subscription Required",
   "Please subscribe to a plan to start using our services": "Please subscribe to a plan to start using our services",

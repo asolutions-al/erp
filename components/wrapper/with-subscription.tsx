@@ -8,7 +8,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { getSubscriptionByOrgId } from "@/db/app/actions"
-import { getProductCount, getUnitCount } from "@/db/app/loaders"
+import {
+  getCustomerCount,
+  getInvoiceMonthCount,
+  getProductCount,
+  getUnitCount,
+} from "@/db/app/loaders"
 import { getPlans } from "@/db/auth/loaders"
 import { PlanSchemaT } from "@/db/auth/schema"
 import {
@@ -22,7 +27,7 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
 
-type Entity = "UNIT" | "PRODUCT"
+type Entity = "UNIT" | "PRODUCT" | "CUSTOMER" | "INVOICE"
 
 type Props = {
   orgId: string
@@ -35,6 +40,10 @@ const getCountFn = (props: Props) => {
     UNIT: async () => getUnitCount({ orgId: props.orgId }),
     PRODUCT: async () =>
       getProductCount({ orgId: props.orgId, unitId: props.unitId! }),
+    CUSTOMER: async () =>
+      getCustomerCount({ orgId: props.orgId, unitId: props.unitId! }),
+    INVOICE: async () =>
+      getInvoiceMonthCount({ orgId: props.orgId, unitId: props.unitId! }),
   }
   const fn = MAP[props.entity]
   return fn
@@ -44,6 +53,8 @@ const getLimit = ({ plan, entity }: { plan: PlanSchemaT; entity: Entity }) => {
   const MAP: Record<Entity, number> = {
     UNIT: plan.maxUnits,
     PRODUCT: plan.maxProducts,
+    CUSTOMER: plan.maxCustomers,
+    INVOICE: plan.maxInvoices,
   }
   return MAP[entity]
 }
@@ -68,11 +79,15 @@ const LimitReached = async ({
   const entity = {
     UNIT: t("unitsLimit"),
     PRODUCT: t("productsLimit"),
+    CUSTOMER: t("customersLimit"),
+    INVOICE: t("invoicesLimit"),
   }[props.entity]
 
   const href = {
     UNIT: `/o/${orgId}/unit/list/active`,
     PRODUCT: `/o/${orgId}/u/${unitId}/product/list/active`,
+    CUSTOMER: `/o/${orgId}/u/${unitId}/customer/list/active`,
+    INVOICE: `/o/${orgId}/u/${unitId}/invoice/list/today`,
   }[props.entity]
 
   return (
