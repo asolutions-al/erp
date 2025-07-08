@@ -147,6 +147,10 @@ type CreateSubReqBody = {
     return_url: string
     cancel_url: string
     user_action: "SUBSCRIBE_NOW" | "CONTINUE"
+    shipping_preference:
+      | "NO_SHIPPING"
+      | "SET_PROVIDED_ADDRESS"
+      | "GET_FROM_FILE"
   }
 }
 
@@ -166,6 +170,7 @@ const createPayPalSubs = async (
       return_url: returnUrl,
       cancel_url: cancelUrl,
       user_action: "SUBSCRIBE_NOW",
+      shipping_preference: "NO_SHIPPING",
     },
   }
 
