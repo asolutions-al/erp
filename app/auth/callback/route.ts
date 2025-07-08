@@ -9,6 +9,7 @@ import {
   orgMember,
   product,
   user as schUser,
+  subscription,
   unit,
   warehouse,
 } from "@/orm/app/schema"
@@ -166,6 +167,19 @@ export async function GET(request: Request) {
             .returning({
               id: cashRegister.id,
             }),
+
+          /**
+           * 10. Create subscription
+           */
+          tx.insert(subscription).values({
+            orgId: orgRes.id,
+            plan: "INVOICE-STARTER",
+            status: "ACTIVE",
+            startedAt: new Date().toISOString(),
+            paymentProvider: null,
+            externalSubscriptionId: null,
+            canceledAt: null,
+          }),
         ])
 
       /**
