@@ -11,7 +11,13 @@ import { getSubscriptionByOrgId } from "@/db/app/actions"
 import { getProductCount, getUnitCount } from "@/db/app/loaders"
 import { getPlans } from "@/db/auth/loaders"
 import { PlanSchemaT } from "@/db/auth/schema"
-import { AlertTriangleIcon, ArrowUpIcon, LockIcon } from "lucide-react"
+import {
+  AlertTriangleIcon,
+  ArrowUpIcon,
+  CreditCardIcon,
+  LockIcon,
+  XCircleIcon,
+} from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -133,6 +139,172 @@ const LimitReached = async ({
   )
 }
 
+const NoSubscription = async ({ orgId }: { orgId: string }) => {
+  const t = await getTranslations()
+
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+            <CreditCardIcon className="h-6 w-6 text-red-600" />
+          </div>
+          <CardTitle className="text-xl font-semibold">
+            {t("No Active Subscription")}
+          </CardTitle>
+          <CardDescription>
+            {t("You need an active subscription to access this feature")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <AlertTriangleIcon className="h-4 w-4" />
+            <AlertTitle>{t("Subscription Required")}</AlertTitle>
+            <AlertDescription>
+              {t("Please subscribe to a plan to start using our services")}
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-3">
+            <h4 className="font-medium">{t("Get started:")}</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Choose a plan that fits your needs")}
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Start with our free trial")}
+              </li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Button asChild className="w-full">
+              <Link href={`/o/${orgId}/billing/subscription`}>
+                <CreditCardIcon className="mr-2 h-4 w-4" />
+                {t("Choose Plan")}
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+const SubscriptionNotActive = async ({ orgId }: { orgId: string }) => {
+  const t = await getTranslations()
+
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-yellow-100">
+            <XCircleIcon className="h-6 w-6 text-yellow-600" />
+          </div>
+          <CardTitle className="text-xl font-semibold">
+            {t("Subscription Inactive")}
+          </CardTitle>
+          <CardDescription>
+            {t("Your subscription is not currently active")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <AlertTriangleIcon className="h-4 w-4" />
+            <AlertTitle>{t("Access Restricted")}</AlertTitle>
+            <AlertDescription>
+              {t(
+                "Please reactivate your subscription to continue using this feature"
+              )}
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-3">
+            <h4 className="font-medium">{t("Possible reasons:")}</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Payment issue or expired card")}
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Subscription was cancelled or expired")}
+              </li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Button asChild className="w-full">
+              <Link href={`/o/${orgId}/billing/subscription`}>
+                <ArrowUpIcon className="mr-2 h-4 w-4" />
+                {t("Reactivate Subscription")}
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
+const NoPlan = async ({ orgId }: { orgId: string }) => {
+  const t = await getTranslations()
+
+  return (
+    <div className="flex min-h-[60vh] items-center justify-center p-4">
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-gray-100">
+            <AlertTriangleIcon className="h-6 w-6 text-gray-600" />
+          </div>
+          <CardTitle className="text-xl font-semibold">
+            {t("Plan Not Found")}
+          </CardTitle>
+          <CardDescription>
+            {t("The subscription plan could not be found")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Alert>
+            <AlertTriangleIcon className="h-4 w-4" />
+            <AlertTitle>{t("Configuration Error")}</AlertTitle>
+            <AlertDescription>
+              {t(
+                "There seems to be an issue with your subscription plan configuration"
+              )}
+            </AlertDescription>
+          </Alert>
+
+          <div className="space-y-3">
+            <h4 className="font-medium">{t("What you can do:")}</h4>
+            <ul className="space-y-2 text-sm text-muted-foreground">
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Contact support for assistance")}
+              </li>
+              <li className="flex items-start gap-2">
+                <ArrowUpIcon className="mt-0.5 h-3 w-3 text-blue-500" />
+                {t("Try selecting a new plan")}
+              </li>
+            </ul>
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Button asChild className="w-full">
+              <Link href={`/o/${orgId}/billing/subscription`}>
+                <CreditCardIcon className="mr-2 h-4 w-4" />
+                {t("Manage Subscription")}
+              </Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  )
+}
+
 const WithSubscription = async ({
   orgId,
   entity,
@@ -145,13 +317,14 @@ const WithSubscription = async ({
     getCountFn({ orgId, unitId, entity })(),
   ])
 
-  if (!subscription) return null
+  if (!subscription) return <NoSubscription orgId={orgId} />
 
-  if (subscription.status !== "ACTIVE") return null
+  if (subscription.status !== "ACTIVE")
+    return <SubscriptionNotActive orgId={orgId} />
 
   const plan = plans.find((p) => p.id === subscription.plan)
 
-  if (!plan) return null
+  if (!plan) return <NoPlan orgId={orgId} />
 
   const limit = getLimit({ plan, entity })
 
