@@ -4,7 +4,7 @@ import "server-only"
 import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getPlanById } from "@/db/auth/loaders"
 import { cancelPayPalSub, createPayPalSubs } from "@/lib/paypal"
-import { plan } from "@/orm/auth/schema"
+import { planId as planIdEnum } from "@/orm/app/schema"
 
 const isDev = process.env.NODE_ENV === "development"
 
@@ -13,7 +13,7 @@ const isDev = process.env.NODE_ENV === "development"
  */
 const createSubscription = async (
   orgId: string,
-  planId: (typeof plan.$inferSelect)["id"]
+  planId: (typeof planIdEnum.enumValues)[number]
 ): Promise<
   ResT<{
     approvalUrl: string
