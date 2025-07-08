@@ -53,6 +53,7 @@ const LimitReached = async ({
   limit,
   orgId,
   plan,
+  unitId,
   ...props
 }: {
   orgId: string
@@ -60,11 +61,18 @@ const LimitReached = async ({
   limit: number
   plan: PlanSchemaT
   entity: Entity
+  unitId: string | null
 }) => {
   const t = await getTranslations()
+
   const entity = {
     UNIT: t("unitsLimit"),
     PRODUCT: t("productsLimit"),
+  }[props.entity]
+
+  const href = {
+    UNIT: `/o/${orgId}/unit/list/active`,
+    PRODUCT: `/o/${orgId}/u/${unitId}/product/list/active`,
   }[props.entity]
 
   return (
@@ -126,7 +134,7 @@ const LimitReached = async ({
               </Link>
             </Button>
             <Button variant="outline" asChild className="w-full">
-              <Link href={`/o/${orgId}/units/list/active`}>
+              <Link href={href}>
                 {t("Manage {entity}", {
                   entity,
                 })}
@@ -308,7 +316,7 @@ const NoPlan = async ({ orgId }: { orgId: string }) => {
 const WithSubscription = async ({
   orgId,
   entity,
-  unitId = null,
+  unitId,
   children,
 }: PropsWithChildren<Props>) => {
   const [subscription, plans, count] = await Promise.all([
@@ -339,6 +347,7 @@ const WithSubscription = async ({
         orgId={orgId}
         plan={plan}
         entity={entity}
+        unitId={unitId}
       />
     )
 
