@@ -1,6 +1,7 @@
 import { FormActionBtns } from "@/components/buttons"
 import { ProductForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
+import { WithSubscription } from "@/components/wrapper"
 import { createProduct } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { category, warehouse } from "@/orm/app/schema"
@@ -32,21 +33,23 @@ const Page = async ({ params }: Props) => {
   ])
 
   return (
-    <ProductFormProvider>
-      <PageHeader
-        title={"Create product"}
-        className="mb-2"
-        rightComp={<FormActionBtns formId="product" />}
-      />
-      <ProductForm
-        categories={categories}
-        warehouses={warehouses}
-        performAction={async (values) => {
-          "use server"
-          await createProduct({ values, orgId, unitId })
-        }}
-      />
-    </ProductFormProvider>
+    <WithSubscription orgId={orgId} unitId={unitId} entity="PRODUCT">
+      <ProductFormProvider>
+        <PageHeader
+          title={"Create product"}
+          className="mb-2"
+          rightComp={<FormActionBtns formId="product" />}
+        />
+        <ProductForm
+          categories={categories}
+          warehouses={warehouses}
+          performAction={async (values) => {
+            "use server"
+            await createProduct({ values, orgId, unitId })
+          }}
+        />
+      </ProductFormProvider>
+    </WithSubscription>
   )
 }
 
