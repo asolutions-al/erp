@@ -56,7 +56,9 @@ export const AvailablePlansCard = ({
         <CardTitle>{t("Available Plans")}</CardTitle>
         <CardDescription>
           {subscription.status === "ACTIVE"
-            ? "You are currently subscribed to a plan"
+            ? subscription.plan === "INVOICE-STARTER"
+              ? t("Upgrade to unlock more features")
+              : "You are currently subscribed to a plan"
             : "Choose a plan to get started"}
         </CardDescription>
       </CardHeader>
@@ -64,9 +66,14 @@ export const AvailablePlansCard = ({
         <div className="grid gap-4 md:grid-cols-3">
           {plans.map((plan) => {
             const isActive =
-              subscription.plan === plan.id &&
-              subscription.status === "ACTIVE"
-            const canSubscribe = subscription.status !== "ACTIVE"
+              subscription.plan === plan.id && subscription.status === "ACTIVE"
+
+            // Allow subscription if no active subscription OR if current plan is STARTER and upgrading to PRO/BUSINESS
+            const canSubscribe =
+              subscription.status !== "ACTIVE" ||
+              (subscription.status === "ACTIVE" &&
+                subscription.plan === "INVOICE-STARTER" &&
+                (plan.id === "INVOICE-PRO" || plan.id === "INVOICE-BUSINESS"))
 
             return (
               <PlanCard

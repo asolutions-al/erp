@@ -64,9 +64,7 @@ export const PaymentInformationCard = ({
         {subscription.paymentProvider && (
           <div className="flex items-center justify-between">
             <span className="font-medium">{t("Payment Provider")}</span>
-            <span className="capitalize">
-              {subscription.paymentProvider}
-            </span>
+            <span className="capitalize">{subscription.paymentProvider}</span>
           </div>
         )}
 
@@ -85,11 +83,7 @@ export const PaymentInformationCard = ({
           <h4 className="font-medium">{t("Billing Actions")}</h4>
 
           <div className="space-y-2">
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              disabled
-            >
+            <Button variant="outline" className="w-full justify-start" disabled>
               <CalendarIcon className="mr-2 h-4 w-4" />
               {t("View Billing History")}
               <Badge variant="outline" className="ml-auto">
@@ -97,11 +91,7 @@ export const PaymentInformationCard = ({
               </Badge>
             </Button>
 
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              disabled
-            >
+            <Button variant="outline" className="w-full justify-start" disabled>
               <CreditCardIcon className="mr-2 h-4 w-4" />
               {t("Update Payment Method")}
               <Badge variant="outline" className="ml-auto">
@@ -114,12 +104,14 @@ export const PaymentInformationCard = ({
                 <Button
                   variant="destructive"
                   className="w-full justify-start"
-                  disabled={isCanceling}
+                  disabled={isCanceling || currentPlan.id === "INVOICE-STARTER"}
                 >
                   <XCircleIcon className="mr-2 h-4 w-4" />
                   {isCanceling
                     ? t("Canceling")
-                    : t("Cancel Subscription")}
+                    : currentPlan.id === "INVOICE-STARTER"
+                      ? t("Cannot Cancel Free Plan")
+                      : t("Cancel Subscription")}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>

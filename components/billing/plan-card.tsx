@@ -44,9 +44,7 @@ export const PlanCard = ({
     >
       {isActive && (
         <div className="absolute -right-2 -top-2">
-          <Badge className="bg-blue-500 text-white">
-            {t("Current")}
-          </Badge>
+          <Badge className="bg-blue-500 text-white">{t("Current")}</Badge>
         </div>
       )}
       {plan.id === "INVOICE-PRO" && !isActive && (
@@ -63,10 +61,7 @@ export const PlanCard = ({
       <CardContent>
         <ul className="space-y-2">
           {generatePlanFeatures(plan).map((feature, index) => (
-            <li
-              key={index}
-              className="flex items-center gap-2 text-sm"
-            >
+            <li key={index} className="flex items-center gap-2 text-sm">
               <CheckIcon className="h-4 w-4 text-green-500" />
               {feature}
             </li>
@@ -75,9 +70,7 @@ export const PlanCard = ({
         <Button
           className="mt-4 w-full"
           variant={isActive ? "outline" : "default"}
-          disabled={
-            isActive || !canSubscribe || isCreating
-          }
+          disabled={isActive || !canSubscribe || isCreating}
           onClick={onSubscribe}
         >
           {isActive
@@ -85,7 +78,9 @@ export const PlanCard = ({
             : isCreating
               ? "Processing..."
               : canSubscribe
-                ? "Subscribe"
+                ? plan.id === "INVOICE-STARTER"
+                  ? t("Select Free Plan")
+                  : t("Subscribe")
                 : "Not Available"}
         </Button>
       </CardContent>

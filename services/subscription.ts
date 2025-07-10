@@ -22,7 +22,13 @@ const createSubscription = async (
   // Check if organization already has a subscription
   const existingSub = await getSubscriptionByOrgId(orgId)
 
-  if (existingSub && existingSub.status === "ACTIVE") {
+  // If the organization already has an active subscription, do not allow creating a new one
+  // unless they are upgrading from the free plan
+  if (
+    existingSub &&
+    existingSub.status === "ACTIVE" &&
+    existingSub.plan !== "INVOICE-STARTER"
+  ) {
     return {
       success: null,
       error: { message: "Organization already has an active subscription" },
@@ -77,7 +83,7 @@ const createSubscription = async (
 /**
  * Cancels an active subscription
  */
-const cancelSubscription = async (orgId: string) => {
+const cancelSubscription = async (orgId: string): Promise<ResT<true>> => {
   const subscription = await getSubscriptionByOrgId(orgId)
 
   if (!subscription)
@@ -91,6 +97,13 @@ const cancelSubscription = async (orgId: string) => {
       success: null,
       error: { message: "Subscription is not active" },
     }
+
+  if (subscription.plan === "INVOICE-STARTER") {
+    return {
+      success: null,
+      error: { message: "Cannot cancel a free plan" },
+    }
+  }
 
   if (!subscription.externalSubscriptionId)
     return {
