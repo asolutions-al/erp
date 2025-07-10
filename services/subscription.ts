@@ -22,10 +22,19 @@ const createSubscription = async (
   // Check if organization already has a subscription
   const existingSub = await getSubscriptionByOrgId(orgId)
 
+  if (!existingSub) {
+    return {
+      success: null,
+      error: {
+        message:
+          "No existing subscription found for this organization. This should not happen. Please contact support.",
+      },
+    }
+  }
+
   // If the organization already has an active subscription, do not allow creating a new one
   // unless they are upgrading from the free plan
   if (
-    existingSub &&
     existingSub.status === "ACTIVE" &&
     existingSub.plan !== "INVOICE-STARTER"
   ) {
