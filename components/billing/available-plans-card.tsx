@@ -1,5 +1,6 @@
 "use client"
 
+import { PlanCard } from "@/components/cards"
 import {
   Card,
   CardContent,
@@ -13,7 +14,6 @@ import { planId } from "@/orm/auth/schema"
 import { useTranslations } from "next-intl"
 import { useState } from "react"
 import { toast } from "sonner"
-import { PlanCard } from "./plan-card"
 
 type PlanId = (typeof planId.enumValues)[number]
 
@@ -25,14 +25,12 @@ type Props = {
       approvalUrl: string
     }>
   >
-  generatePlanFeatures: (plan: PlanSchemaT) => string[]
 }
 
 export const AvailablePlansCard = ({
   subscription,
   plans,
   createSubscription,
-  generatePlanFeatures,
 }: Props) => {
   const t = useTranslations()
   const [isCreating, setIsCreating] = useState<string | null>(null)
@@ -81,13 +79,12 @@ export const AvailablePlansCard = ({
                 plan={plan}
                 isActive={isActive}
                 canSubscribe={canSubscribe}
-                isCreating={isCreating === plan.id}
+                isSubscribing={isCreating === plan.id}
                 onSubscribe={() => {
                   if (canSubscribe) {
                     handleCreateSubscription(plan.id)
                   }
                 }}
-                generatePlanFeatures={generatePlanFeatures}
               />
             )
           })}

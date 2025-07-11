@@ -14,19 +14,18 @@ import { PlanSchemaT } from "@/db/auth/schema"
 import { formatDate } from "@/lib/utils"
 import { BuildingIcon, CheckIcon, CreditCardIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { generatePlanFeatures } from "./utils"
 
 type Props = {
   subscription: SubscriptionSchemaT
   currentPlan: PlanSchemaT
   getStatusColor: (status: string) => string
-  generatePlanFeatures: (plan: PlanSchemaT) => string[]
 }
 
 export const CurrentPlanCard = ({
   subscription,
   currentPlan,
   getStatusColor,
-  generatePlanFeatures,
 }: Props) => {
   const t = useTranslations()
 
@@ -35,9 +34,7 @@ export const CurrentPlanCard = ({
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <BuildingIcon className="h-5 w-5" />
-          {subscription.status === "ACTIVE"
-            ? t("Current Plan")
-            : "Plan Status"}
+          {subscription.status === "ACTIVE" ? t("Current Plan") : "Plan Status"}
         </CardTitle>
         <CardDescription>
           {subscription.status === "ACTIVE"
@@ -50,9 +47,7 @@ export const CurrentPlanCard = ({
           <>
             <div className="flex items-center justify-between">
               <span className="font-medium">{t("Plan")}</span>
-              <span className="text-lg font-semibold">
-                {currentPlan.name}
-              </span>
+              <span className="text-lg font-semibold">{currentPlan.name}</span>
             </div>
 
             <div className="flex items-center justify-between">
@@ -91,10 +86,7 @@ export const CurrentPlanCard = ({
               <h4 className="font-medium">{t("Plan Features")}</h4>
               <ul className="space-y-1">
                 {generatePlanFeatures(currentPlan).map((feature, index) => (
-                  <li
-                    key={index}
-                    className="flex items-center gap-2 text-sm"
-                  >
+                  <li key={index} className="flex items-center gap-2 text-sm">
                     <CheckIcon className="h-4 w-4 text-green-500" />
                     {feature}
                   </li>

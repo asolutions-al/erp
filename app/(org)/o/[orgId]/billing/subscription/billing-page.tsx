@@ -3,7 +3,6 @@
 import {
   AvailablePlansCard,
   CurrentPlanCard,
-  generatePlanFeatures,
   getStatusColor,
   PaymentInformationCard,
 } from "@/components/billing"
@@ -49,7 +48,6 @@ export const BillingPage = ({
           subscription={subscription}
           currentPlan={currentPlan}
           getStatusColor={getStatusColor}
-          generatePlanFeatures={generatePlanFeatures}
         />
 
         <PaymentInformationCard
@@ -63,7 +61,6 @@ export const BillingPage = ({
         subscription={subscription}
         plans={plans}
         createSubscription={createSubscription}
-        generatePlanFeatures={generatePlanFeatures}
       />
     </div>
   )

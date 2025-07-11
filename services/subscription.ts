@@ -1,7 +1,10 @@
 "use server"
 import "server-only"
 
-import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
+import {
+  getSubscriptionByOrgId,
+  updateSubscription,
+} from "@/db/app/actions/subscription"
 import { getPlanById } from "@/db/auth/loaders"
 import { cancelPayPalSub, createPayPalSubs } from "@/lib/paypal"
 import { planId as planIdEnum } from "@/orm/app/schema"
@@ -25,7 +28,9 @@ const createSubscription = async (
   if (planId === "INVOICE-STARTER")
     return {
       success: null,
-      error: { message: "Cannot create a subscription for the free plan" },
+      error: {
+        message: t("Cannot create a subscription for the starter plan"),
+      },
     }
 
   const existing = await getSubscriptionByOrgId(orgId)
@@ -34,8 +39,7 @@ const createSubscription = async (
     return {
       success: null,
       error: {
-        message:
-          "No subscription found for this organization. This should not happen. Please contact support.",
+        message: t("No subscription found for this organization"),
       },
     }
 
@@ -43,7 +47,7 @@ const createSubscription = async (
   if (existing.status === "ACTIVE" && existing.plan !== "INVOICE-STARTER")
     return {
       success: null,
-      error: { message: "Organization already has an active subscription" },
+      error: { message: t("Organization already has an active subscription") },
     }
 
   // Get the plan details from the database to retrieve the PayPal plan ID
@@ -52,7 +56,7 @@ const createSubscription = async (
   if (!planData)
     return {
       success: null,
-      error: { message: "Invalid plan selected" },
+      error: { message: t("Invalid plan selected") },
     }
 
   // Create a new PayPal subscription
@@ -76,7 +80,7 @@ const createSubscription = async (
     return {
       success: null,
       error: {
-        message: "Failed to get approval URL for new subscription",
+        message: t("Failed to get approval URL for new subscription"),
       },
     }
 
@@ -99,30 +103,86 @@ const cancelSubscription = async (orgId: string): Promise<ResT<true>> => {
     return {
       success: null,
       error: {
-        message:
-          "No subscription found for this organization. This should not happen. Please contact support.",
+        message: t("No subscription found for this organization"),
       },
     }
 
   if (existing.status !== "ACTIVE")
     return {
       success: null,
-      error: { message: "Subscription is not active" },
+      error: { message: t("Subscription is not active") },
     }
 
   if (existing.plan === "INVOICE-STARTER")
     return {
       success: null,
-      error: { message: "Cannot cancel a free plan" },
+      error: { message: t("Cannot cancel a free plan") },
     }
 
   if (!existing.externalSubscriptionId)
     return {
       success: null,
-      error: { message: "No external subscription ID found" },
+      error: { message: t("No external subscription ID found") },
     }
 
   return await cancelPayPalSub(existing.externalSubscriptionId)
 }
 
-export { cancelSubscription, createSubscription }
+const switchToFreePlan = async (orgId: string): Promise<ResT<true>> => {
+  const t = await getTranslations()
+
+  const existing = await getSubscriptionByOrgId(orgId)
+
+  if (!existing)
+    return {
+      success: null,
+      error: {
+        message: t("No subscription found for this organization"),
+      },
+    }
+
+  if (existing.plan === "INVOICE-STARTER")
+    return {
+      success: null,
+      error: { message: t("Starter plan is already active") },
+    }
+
+  if (existing.status === "ACTIVE" || existing.status === "PENDING")
+    return {
+      success: null,
+      error: {
+        message: t(
+          "Cannot switch to starter plan while subscription is {status}",
+          {
+            status: t(existing.status),
+          }
+        ),
+      },
+    }
+
+  try {
+    await updateSubscription({
+      id: existing.id,
+      values: {
+        plan: "INVOICE-STARTER",
+        status: "ACTIVE",
+        canceledAt: null,
+        externalSubscriptionId: null,
+        paymentProvider: null,
+        startedAt: new Date().toISOString(),
+      },
+    })
+  } catch (error) {
+    return {
+      success: null,
+      error: { message: t("Failed to update subscription to starter plan") },
+    }
+  }
+
+  return {
+    success: { data: true },
+    error: null,
+  }
+}
+
+export { cancelSubscription, createSubscription, switchToFreePlan }

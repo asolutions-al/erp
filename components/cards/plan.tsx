@@ -12,23 +12,22 @@ import {
 import { PlanSchemaT } from "@/db/auth/schema"
 import { CheckIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { generatePlanFeatures } from "../billing"
 
 type Props = {
   plan: PlanSchemaT
   isActive: boolean
   canSubscribe: boolean
-  isCreating: boolean
+  isSubscribing: boolean
   onSubscribe: () => void
-  generatePlanFeatures: (plan: PlanSchemaT) => string[]
 }
 
-export const PlanCard = ({
+const PlanCard = ({
   plan,
   isActive,
   canSubscribe,
-  isCreating,
+  isSubscribing,
   onSubscribe,
-  generatePlanFeatures,
 }: Props) => {
   const t = useTranslations()
 
@@ -70,20 +69,42 @@ export const PlanCard = ({
         <Button
           className="mt-4 w-full"
           variant={isActive ? "outline" : "default"}
-          disabled={isActive || !canSubscribe || isCreating}
+          disabled={isActive || !canSubscribe || isSubscribing}
           onClick={onSubscribe}
         >
-          {isActive
-            ? t("Current Plan")
-            : isCreating
-              ? "Processing..."
-              : canSubscribe
-                ? plan.id === "INVOICE-STARTER"
-                  ? t("Select Free Plan")
-                  : t("Subscribe")
-                : "Not Available"}
+          <BtnText
+            plan={plan}
+            isActive={isActive}
+            canSubscribe={canSubscribe}
+            isSubscribing={isSubscribing}
+          />
         </Button>
       </CardContent>
     </Card>
   )
 }
+
+const BtnText = ({
+  plan,
+  canSubscribe,
+  isActive,
+  isSubscribing,
+}: {
+  plan: PlanSchemaT
+  isActive: boolean
+  canSubscribe: boolean
+  isSubscribing: boolean
+}) => {
+  const t = useTranslations()
+  if (isActive) return t("Current Plan")
+  if (isSubscribing) return t("Processing")
+  if (!canSubscribe) return t("Not Available")
+
+  // USER CAN SUBSCRIBE TO A PLAN
+
+  if (plan.id === "INVOICE-STARTER") return t("Select Starter Plan")
+
+  return t("Subscribe Now")
+}
+
+export { PlanCard }

@@ -482,5 +482,20 @@
   "There seems to be an issue with your subscription plan configuration": "There seems to be an issue with your subscription plan configuration",
   "Contact support for assistance": "Contact support for assistance",
   "Try selecting a new plan": "Try selecting a new plan",
-  "Manage Subscription": "Manage Subscription"
+  "Manage Subscription": "Manage Subscription",
+  "Cannot switch to starter plan while subscription is {status}": "Cannot switch to starter plan while subscription is {status}",
+  "No subscription found for this organization": "No subscription found for this organization",
+  "Cannot create a subscription for the starter plan": "Cannot create a subscription for the starter plan",
+  "Organization already has an active subscription": "Organization already has an active subscription",
+  "Invalid plan selected": "Invalid plan selected",
+  "Failed to get approval URL for new subscription": "Failed to get approval URL for new subscription",
+  "Subscription is not active": "Subscription is not active",
+  "Cannot cancel a free plan": "Cannot cancel a free plan",
+  "No external subscription ID found": "No external subscription ID found",
+  "Starter plan is already active": "Starter plan is already active",
+  "Failed to update subscription to starter plan": "Failed to update subscription to starter plan",
+  "Processing": "Processing",
+  "Subscribe Now": "Subscribe Now",
+  "Not Available": "Not Available",
+  "Select Starter Plan": "Select Starter Plan"
 }

@@ -482,5 +482,20 @@
   "There seems to be an issue with your subscription plan configuration": "Duket se ka një problem me konfigurimin e planit tuaj të abonimit",
   "Contact support for assistance": "Kontaktoni mbështetjen për ndihmë",
   "Try selecting a new plan": "Provoni të zgjidhni një plan të ri",
-  "Manage Subscription": "Menaxho Abonimin"
+  "Manage Subscription": "Menaxho Abonimin",
+  "Cannot switch to starter plan while subscription is {status}": "Nuk mund të kaloni në planin fillestar ndërsa abonimi është {status}",
+  "No subscription found for this organization": "Nuk u gjet abonim për këtë organizatë",
+  "Cannot create a subscription for the starter plan": "Nuk mund të krijohet një abonim për planin fillestar",
+  "Organization already has an active subscription": "Organizata tashmë ka një abonim aktiv",
+  "Invalid plan selected": "Plani i zgjedhur është i pavlefshëm",
+  "Failed to get approval URL for new subscription": "Dështoi të marrë URL-në e miratimit për abonimin e ri",
+  "Subscription is not active": "Abonimi nuk është aktiv",
+  "Cannot cancel a free plan": "Nuk mund të anulohet një plan falas",
+  "No external subscription ID found": "No external subscription ID found",
+  "Starter plan is already active": "Starter plan is already active",
+  "Failed to update subscription to starter plan": "Dështoi përditësimi i abonimit në planin fillestar",
+  "Processing": "Duke përpunuar",
+  "Subscribe Now": "Abonohu Tani",
+  "Not Available": "Nuk është e disponueshme",
+  "Select Starter Plan": "Zgjidh Planin Fillestar"
 }

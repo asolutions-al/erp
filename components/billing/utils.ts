@@ -1,5 +1,3 @@
-"use client"
-
 import { PlanSchemaT } from "@/db/auth/schema"
 
 export const generatePlanFeatures = (planData: PlanSchemaT) => {
