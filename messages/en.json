@@ -518,6 +518,8 @@
   "Your subscription has been canceled": "Your subscription has been canceled",
   "Your subscription is being processed": "Your subscription is being processed",
   "Your subscription is being processed and will be active shortly": "Your subscription is being processed and will be active shortly",
+  "Subscription setup incomplete": "Subscription setup incomplete",
+  "Please complete the payment process to activate your subscription": "Please complete the payment process to activate your subscription",
   "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active",
   "No active subscription": "No active subscription",
   "Plan Status": "Plan Status"

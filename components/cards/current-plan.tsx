@@ -166,9 +166,9 @@ const CurrentPlanCard = ({ subscription, currentPlan }: Props) => {
       bgColor: "bg-blue-50",
       textColor: "text-blue-800",
       iconColor: "text-blue-600",
-      message: t("Subscription Created"),
+      message: t("Subscription setup incomplete"),
       messageDescription: t(
-        "Your subscription is being processed and will be active shortly"
+        "Please complete the payment process to activate your subscription"
       ),
     },
   }

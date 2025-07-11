@@ -42,14 +42,7 @@ const Page = async ({ params, searchParams }: Props) => {
             <ul className="space-y-1 text-sm text-yellow-700">
               <li>• Your cancellation request is being processed</li>
               <li>• You'll receive an email confirmation once it's complete</li>
-              <li>
-                • Your subscription will remain active until the end of the
-                current billing period
-              </li>
-              <li>
-                • You can reactivate your subscription at any time before it
-                expires
-              </li>
+              <li>• You can reactivate your subscription at any time</li>
             </ul>
           </div>
 
