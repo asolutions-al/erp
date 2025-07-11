@@ -56,7 +56,6 @@ export const BillingPage = ({
           subscription={subscription}
           currentPlan={currentPlan}
           cancelSubscription={cancelSubscription}
-          switchToStarterPlan={switchToStarterPlan}
         />
       </div>
 
