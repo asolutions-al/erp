@@ -509,5 +509,6 @@
   "CREATED": "Krijuar",
   "SUSPENDED": "Pezulluar",
   "EXPIRED": "Skaduar",
-  "Cannot switch to starter plan while subscription is active": "Nuk mund të kaloni në planin fillestar ndërsa abonimi është aktiv"
+  "Cannot switch to starter plan while subscription is active": "Nuk mund të kaloni në planin fillestar ndërsa abonimi është aktiv",
+  "_DEPRECATED": "_DEPRECATED"
 }

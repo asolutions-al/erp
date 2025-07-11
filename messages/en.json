@@ -509,5 +509,6 @@
   "CREATED": "Created",
   "SUSPENDED": "Suspended",
   "EXPIRED": "Expired",
-  "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active"
+  "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active",
+  "_DEPRECATED": "_DEPRECATED"
 }
