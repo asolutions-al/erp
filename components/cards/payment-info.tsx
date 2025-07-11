@@ -22,7 +22,6 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { SubscriptionSchemaT } from "@/db/app/schema"
-import { PlanSchemaT } from "@/db/auth/schema"
 import { CalendarIcon, CreditCardIcon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
@@ -31,23 +30,14 @@ import { toast } from "sonner"
 
 type Props = {
   subscription: SubscriptionSchemaT
-  currentPlan: PlanSchemaT
   cancelSubscription: () => Promise<ResT<true>>
 }
 
-export const PaymentInformationCard = ({
-  subscription,
-  currentPlan,
-  cancelSubscription,
-}: Props) => {
+const PaymentInfoCard = ({ subscription, cancelSubscription }: Props) => {
   const t = useTranslations()
-  const { orgId } = useParams()
   const router = useRouter()
+  const { orgId } = useParams()
   const [isCanceling, setIsCanceling] = useState(false)
-
-  if (subscription.status !== "ACTIVE") {
-    return null
-  }
 
   return (
     <Card>
@@ -104,14 +94,17 @@ export const PaymentInformationCard = ({
                 <Button
                   variant="destructive"
                   className="w-full justify-start"
-                  disabled={isCanceling || currentPlan.id === "INVOICE-STARTER"}
+                  disabled={
+                    isCanceling ||
+                    subscription.plan === "INVOICE-STARTER" ||
+                    subscription.status === "CANCELED" ||
+                    subscription.status === "CREATED" ||
+                    subscription.status === "EXPIRED" ||
+                    subscription.status === "SUSPENDED"
+                  }
                 >
                   <XCircleIcon className="mr-2 h-4 w-4" />
-                  {isCanceling
-                    ? t("Canceling")
-                    : currentPlan.id === "INVOICE-STARTER"
-                      ? t("Cannot Cancel Free Plan")
-                      : t("Cancel Subscription")}
+                  {isCanceling ? t("Canceling") : t("Cancel Subscription")}
                 </Button>
               </AlertDialogTrigger>
               <AlertDialogContent>
@@ -136,7 +129,7 @@ export const PaymentInformationCard = ({
                       if (res.error) toast.error(res.error.message)
                       if (res.success) {
                         router.push(
-                          `/o/${orgId}/billing/subscription/cancellation/pending?subscription_id=${subscription.externalSubscriptionId}&plan=${currentPlan.name}`
+                          `/o/${orgId}/billing/subscription/cancellation/pending?subscription_id=${subscription.externalSubscriptionId}`
                         )
                       }
                       setIsCanceling(false)
@@ -154,3 +147,5 @@ export const PaymentInformationCard = ({
     </Card>
   )
 }
+
+export { PaymentInfoCard }

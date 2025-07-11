@@ -7,13 +7,12 @@ type Props = {
   params: Promise<{ orgId: string }>
   searchParams: Promise<{
     subscription_id?: string
-    plan?: string
   }>
 }
 
 const Page = async ({ params, searchParams }: Props) => {
   const { orgId } = await params
-  const { subscription_id, plan } = await searchParams
+  const { subscription_id } = await searchParams
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 p-4">
@@ -60,11 +59,6 @@ const Page = async ({ params, searchParams }: Props) => {
                 Cancellation Details
               </h3>
               <div className="space-y-1 text-sm text-gray-700">
-                {plan && (
-                  <p>
-                    <strong>Plan:</strong> {plan}
-                  </p>
-                )}
                 <p>
                   <strong>Status:</strong> Cancellation Pending
                 </p>

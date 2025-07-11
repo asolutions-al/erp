@@ -1,11 +1,7 @@
 "use client"
 
-import {
-  AvailablePlansCard,
-  CurrentPlanCard,
-  getStatusColor,
-  PaymentInformationCard,
-} from "@/components/billing"
+import { AvailablePlansCard, getStatusColor } from "@/components/billing"
+import { CurrentPlanCard, PaymentInfoCard } from "@/components/cards"
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
 import { planId } from "@/orm/auth/schema"
@@ -52,9 +48,8 @@ export const BillingPage = ({
           getStatusColor={getStatusColor}
         />
 
-        <PaymentInformationCard
+        <PaymentInfoCard
           subscription={subscription}
-          currentPlan={currentPlan}
           cancelSubscription={cancelSubscription}
         />
       </div>

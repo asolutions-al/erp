@@ -509,6 +509,16 @@
   "CREATED": "Created",
   "SUSPENDED": "Suspended",
   "EXPIRED": "Expired",
+  "Subscription Suspended": "Subscription Suspended",
+  "Subscription Expired": "Subscription Expired",
+  "Subscription Canceled": "Subscription Canceled",
+  "Subscription Created": "Subscription Created",
+  "Your subscription has been suspended": "Your subscription has been suspended",
+  "Your subscription has expired": "Your subscription has expired",
+  "Your subscription has been canceled": "Your subscription has been canceled",
+  "Your subscription is being processed": "Your subscription is being processed",
+  "Your subscription is being processed and will be active shortly": "Your subscription is being processed and will be active shortly",
   "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active",
-  "_DEPRECATED": "_DEPRECATED"
+  "No active subscription": "No active subscription",
+  "Plan Status": "Plan Status"
 }

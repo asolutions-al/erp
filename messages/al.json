@@ -510,5 +510,15 @@
   "SUSPENDED": "Pezulluar",
   "EXPIRED": "Skaduar",
   "Cannot switch to starter plan while subscription is active": "Nuk mund të kaloni në planin fillestar ndërsa abonimi është aktiv",
-  "_DEPRECATED": "_DEPRECATED"
+  "No active subscription": "Nuk ka abonim aktiv",
+  "Plan Status": "Statusi i Planit",
+  "Subscription Suspended": "Abonimi i Pezulluar",
+  "Subscription Expired": "Abonimi i Skaduar",
+  "Subscription Canceled": "Abonimi i Anuluar",
+  "Subscription Created": "Abonimi i Krijuar",
+  "Your subscription has been suspended": "Abonimi juaj është pezulluar",
+  "Your subscription has expired": "Abonimi juaj ka skaduar",
+  "Your subscription has been canceled": "Abonimi juaj është anuluar",
+  "Your subscription is being processed": "Abonimi juaj është duke u përpunuar",
+  "Your subscription is being processed and will be active shortly": "Abonimi juaj është duke u përpunuar dhe do të jetë aktiv së shpejti"
 }
