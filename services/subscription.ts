@@ -147,15 +147,12 @@ const switchToStarterPlan = async (orgId: string): Promise<ResT<true>> => {
       error: { message: t("Starter plan is already active") },
     }
 
-  if (existing.status === "ACTIVE" || existing.status === "PENDING")
+  if (existing.status === "ACTIVE")
     return {
       success: null,
       error: {
         message: t(
-          "Cannot switch to starter plan while subscription is {status}",
-          {
-            status: t(existing.status),
-          }
+          "Cannot switch to starter plan while subscription is active"
         ),
       },
     }
@@ -166,10 +163,8 @@ const switchToStarterPlan = async (orgId: string): Promise<ResT<true>> => {
       values: {
         plan: "INVOICE-STARTER",
         status: "ACTIVE",
-        canceledAt: null,
         externalSubscriptionId: null,
         paymentProvider: null,
-        startedAt: new Date().toISOString(),
       },
     })
   } catch (error) {

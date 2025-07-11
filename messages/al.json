@@ -505,5 +505,9 @@
   "Since your subscription has been canceled, you can switch to the free starter plan to continue using basic features": "Meqenëse abonimi juaj është anuluar, mund të kaloni në planin fillestar falas për të vazhduar përdorimin e funksioneve bazë",
   "Switching to Starter Plan": "Duke kaluar në Planin Fillestar",
   "Switch to Starter Plan": "Kalo në Planin Fillestar",
-  "Successfully switched to starter plan": "U kthye me sukses në planin fillestar"
+  "Successfully switched to starter plan": "U kthye me sukses në planin fillestar",
+  "CREATED": "Krijuar",
+  "SUSPENDED": "Pezulluar",
+  "EXPIRED": "Skaduar",
+  "Cannot switch to starter plan while subscription is active": "Nuk mund të kaloni në planin fillestar ndërsa abonimi është aktiv"
 }

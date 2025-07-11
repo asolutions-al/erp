@@ -505,5 +505,9 @@
   "Since your subscription has been canceled, you can switch to the free starter plan to continue using basic features": "Since your subscription has been canceled, you can switch to the free starter plan to continue using basic features",
   "Switching to Starter Plan": "Switching to Starter Plan",
   "Switch to Starter Plan": "Switch to Starter Plan",
-  "Successfully switched to starter plan": "Successfully switched to starter plan"
+  "Successfully switched to starter plan": "Successfully switched to starter plan",
+  "CREATED": "Created",
+  "SUSPENDED": "Suspended",
+  "EXPIRED": "Expired",
+  "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active"
 }

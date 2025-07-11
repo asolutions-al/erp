@@ -175,10 +175,8 @@ export async function GET(request: Request) {
             orgId: orgRes.id,
             plan: "INVOICE-STARTER",
             status: "ACTIVE",
-            startedAt: new Date().toISOString(),
             paymentProvider: null,
             externalSubscriptionId: null,
-            canceledAt: null,
           }),
         ])
 

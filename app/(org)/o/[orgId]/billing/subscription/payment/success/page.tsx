@@ -80,8 +80,10 @@ const Page = async ({ params, searchParams }: Props) => {
     switch (subscriptionStatus) {
       case "ACTIVE":
         return <CheckCircle className="h-16 w-16 text-green-500" />
-      case "ERROR":
-        return <XCircle className="h-16 w-16 text-red-500" />
+      case "SUSPENDED":
+        return <Clock className="h-16 w-16 text-yellow-500" />
+      case "EXPIRED":
+        return <Clock className="h-16 w-16 text-yellow-500" />
       case "CANCELED":
         return <XCircle className="h-16 w-16 text-gray-500" />
       default:
@@ -93,12 +95,12 @@ const Page = async ({ params, searchParams }: Props) => {
     switch (subscriptionStatus) {
       case "ACTIVE":
         return "Payment Successful!"
-      case "PENDING":
-        return "Payment Confirmed - Activating..."
-      case "ERROR":
-        return "Payment Failed"
       case "CANCELED":
         return "Subscription Canceled"
+      case "EXPIRED":
+        return "Subscription Expired"
+      case "SUSPENDED":
+        return "Subscription Suspended"
       default:
         return "Payment Processing"
     }
@@ -108,10 +110,6 @@ const Page = async ({ params, searchParams }: Props) => {
     switch (subscriptionStatus) {
       case "ACTIVE":
         return "Your subscription has been activated successfully. You now have access to all features."
-      case "PENDING":
-        return "Your payment was successful and we're activating your subscription. This usually takes just a few seconds."
-      case "ERROR":
-        return "There was an error processing your payment. Please try again."
       case "CANCELED":
         return "Your subscription has been canceled. You no longer have access to premium features."
       default:
@@ -146,14 +144,6 @@ const Page = async ({ params, searchParams }: Props) => {
                 </p>
                 <p>
                   <strong>Status:</strong> {subscriptionDetails.status}
-                </p>
-                <p>
-                  <strong>Start Date:</strong>{" "}
-                  {subscriptionDetails.startedAt
-                    ? new Date(
-                        subscriptionDetails.startedAt
-                      ).toLocaleDateString()
-                    : "N/A"}
                 </p>
                 <p>
                   <strong>Subscription ID:</strong> {subscription_id}
@@ -204,14 +194,6 @@ const Page = async ({ params, searchParams }: Props) => {
                 </p>
                 <p>
                   <strong>Status:</strong> {subscriptionDetails.status}
-                </p>
-                <p>
-                  <strong>Canceled Date:</strong>{" "}
-                  {subscriptionDetails.canceledAt
-                    ? new Date(
-                        subscriptionDetails.canceledAt
-                      ).toLocaleDateString()
-                    : "N/A"}
                 </p>
                 <p>
                   <strong>Subscription ID:</strong> {subscription_id}

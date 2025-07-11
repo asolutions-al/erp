@@ -11,7 +11,6 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
-import { formatDate } from "@/lib/utils"
 import { BuildingIcon, CheckIcon, CreditCardIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { generatePlanFeatures } from "./utils"
@@ -56,22 +55,6 @@ export const CurrentPlanCard = ({
                 {t(subscription.status)}
               </Badge>
             </div>
-
-            <div className="flex items-center justify-between">
-              <span className="font-medium">{t("Started")}</span>
-              <span className="text-sm text-muted-foreground">
-                {formatDate(new Date(subscription.startedAt))}
-              </span>
-            </div>
-
-            {subscription.canceledAt && (
-              <div className="flex items-center justify-between">
-                <span className="font-medium">{t("Canceled")}</span>
-                <span className="text-sm text-muted-foreground">
-                  {formatDate(new Date(subscription.canceledAt))}
-                </span>
-              </div>
-            )}
 
             <div className="flex items-center justify-between">
               <span className="font-medium">{t("Price")}</span>
