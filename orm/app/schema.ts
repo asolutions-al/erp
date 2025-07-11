@@ -3,7 +3,7 @@ import { sql } from "drizzle-orm"
 
 export const planId = pgEnum("PLAN_ID", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
 export const subscriptionPaymentProvider = pgEnum("SUBSCRIPTION_PAYMENT_PROVIDER", ['PAYPAL'])
-export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['CREATED', 'ACTIVE', 'CANCELED', 'SUSPENDED', 'EXPIRED', '_DEPRECATED'])
+export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['CREATED', 'ACTIVE', 'CANCELED', 'SUSPENDED', 'EXPIRED'])
 export const discountType = pgEnum("discountType", ['value', 'percentage'])
 export const entityStatus = pgEnum("entityStatus", ['draft', 'active', 'archived'])
 export const idType = pgEnum("idType", ['tin', 'id'])
@@ -285,9 +285,9 @@ export const subscription = pgTable("subscription", {
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	orgId: uuid().notNull(),
 	plan: planId().notNull(),
-	status: subscriptionStatus().notNull(),
 	paymentProvider: subscriptionPaymentProvider(),
 	externalSubscriptionId: text(),
+	status: subscriptionStatus().notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.orgId],
