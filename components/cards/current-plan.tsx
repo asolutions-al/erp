@@ -18,7 +18,6 @@ import { generatePlanFeatures } from "../billing/utils"
 type Props = {
   subscription: SubscriptionSchemaT
   currentPlan: PlanSchemaT
-  getStatusColor: (status: string) => string
 }
 
 type StatusConfig = {
@@ -35,12 +34,10 @@ type StatusConfig = {
 const PlanDetails = ({
   currentPlan,
   subscription,
-  getStatusColor,
   t,
 }: {
   currentPlan: PlanSchemaT
   subscription: SubscriptionSchemaT
-  getStatusColor: (status: string) => string
   t: any
 }) => (
   <>
@@ -101,11 +98,24 @@ const StatusAlert = ({ config, t }: { config: StatusConfig; t: any }) => (
   </div>
 )
 
-const CurrentPlanCard = ({
-  subscription,
-  currentPlan,
-  getStatusColor,
-}: Props) => {
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "ACTIVE":
+      return "bg-green-100 text-green-800"
+    case "CANCELED":
+      return "bg-red-100 text-red-800"
+    case "SUSPENDED":
+      return "bg-yellow-100 text-yellow-800"
+    case "EXPIRED":
+      return "bg-orange-100 text-orange-800"
+    case "CREATED":
+      return "bg-blue-100 text-blue-800"
+    default:
+      return "bg-gray-100 text-gray-800"
+  }
+}
+
+const CurrentPlanCard = ({ subscription, currentPlan }: Props) => {
   const t = useTranslations()
 
   const statusConfigs: Record<string, StatusConfig> = {
@@ -192,7 +202,6 @@ const CurrentPlanCard = ({
         <PlanDetails
           currentPlan={currentPlan}
           subscription={subscription}
-          getStatusColor={getStatusColor}
           t={t}
         />
 

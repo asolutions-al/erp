@@ -18,7 +18,7 @@ type Props = {
   plan: PlanSchemaT
   isActive: boolean
   canSubscribe: boolean
-  isSubscribing: boolean
+  isProcessing: boolean
   onSubscribe: () => void
 }
 
@@ -26,7 +26,7 @@ const PlanCard = ({
   plan,
   isActive,
   canSubscribe,
-  isSubscribing,
+  isProcessing,
   onSubscribe,
 }: Props) => {
   const t = useTranslations()
@@ -69,14 +69,14 @@ const PlanCard = ({
         <Button
           className="mt-4 w-full"
           variant={isActive ? "outline" : "default"}
-          disabled={isActive || !canSubscribe || isSubscribing}
+          disabled={isActive || !canSubscribe || isProcessing}
           onClick={onSubscribe}
         >
           <BtnText
             plan={plan}
             isActive={isActive}
             canSubscribe={canSubscribe}
-            isSubscribing={isSubscribing}
+            isProcessing={isProcessing}
           />
         </Button>
       </CardContent>
@@ -88,16 +88,16 @@ const BtnText = ({
   plan,
   canSubscribe,
   isActive,
-  isSubscribing,
+  isProcessing,
 }: {
   plan: PlanSchemaT
   isActive: boolean
   canSubscribe: boolean
-  isSubscribing: boolean
+  isProcessing: boolean
 }) => {
   const t = useTranslations()
   if (isActive) return t("Current Plan")
-  if (isSubscribing) return t("Processing")
+  if (isProcessing) return t("Processing")
   if (!canSubscribe) return t("Not Available")
 
   // USER CAN SUBSCRIBE TO A PLAN

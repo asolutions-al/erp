@@ -37,11 +37,10 @@ export const AvailablePlansCard = ({
 }: Props) => {
   const t = useTranslations()
   const router = useRouter()
-  const [isCreating, setIsCreating] = useState<string | null>(null)
-  const [isSwitchingToStarter, setIsSwitchingToStarter] = useState(false)
+  const [processingPlanId, setProcessingPlanId] = useState<PlanId | null>(null)
 
   const handleCreateSubscription = async (planId: PlanId) => {
-    setIsCreating(planId)
+    setProcessingPlanId(planId)
     const res = await createSubscription(planId)
     if (res.error) {
       toast.error(res.error.message)
@@ -50,11 +49,11 @@ export const AvailablePlansCard = ({
       const { approvalUrl } = res.success.data
       window.location.href = approvalUrl
     }
-    setIsCreating(null)
+    setProcessingPlanId(null)
   }
 
   const handleSwitchToStarter = async () => {
-    setIsSwitchingToStarter(true)
+    setProcessingPlanId("INVOICE-STARTER")
     const res = await switchToStarterPlan()
     if (res.error) {
       toast.error(res.error.message)
@@ -63,7 +62,7 @@ export const AvailablePlansCard = ({
       toast.success(t("Successfully switched to starter plan"))
       router.refresh()
     }
-    setIsSwitchingToStarter(false)
+    setProcessingPlanId(null)
   }
 
   return (
@@ -96,30 +95,18 @@ export const AvailablePlansCard = ({
                 plan.id === "INVOICE-STARTER" &&
                 subscription.plan !== "INVOICE-STARTER")
 
-            const isSubscribing =
-              plan.id === "INVOICE-STARTER"
-                ? isSwitchingToStarter
-                : isCreating === plan.id
-
             return (
               <PlanCard
                 key={plan.id}
                 plan={plan}
                 isActive={isActive}
                 canSubscribe={canSubscribe}
-                isSubscribing={isSubscribing}
-                onSubscribe={() => {
-                  if (canSubscribe) {
-                    if (
-                      plan.id === "INVOICE-STARTER" &&
-                      subscription.status !== "ACTIVE"
-                    ) {
-                      handleSwitchToStarter()
-                    } else {
-                      handleCreateSubscription(plan.id)
-                    }
-                  }
-                }}
+                isProcessing={processingPlanId === plan.id}
+                onSubscribe={() =>
+                  plan.id === "INVOICE-STARTER"
+                    ? handleSwitchToStarter()
+                    : handleCreateSubscription(plan.id)
+                }
               />
             )
           })}
