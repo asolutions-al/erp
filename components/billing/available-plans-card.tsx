@@ -12,6 +12,7 @@ import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
 import { planId } from "@/orm/auth/schema"
 import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { toast } from "sonner"
 
@@ -25,15 +26,19 @@ type Props = {
       approvalUrl: string
     }>
   >
+  switchToStarterPlan: () => Promise<ResT<true>>
 }
 
 export const AvailablePlansCard = ({
   subscription,
   plans,
   createSubscription,
+  switchToStarterPlan,
 }: Props) => {
   const t = useTranslations()
+  const router = useRouter()
   const [isCreating, setIsCreating] = useState<string | null>(null)
+  const [isSwitchingToStarter, setIsSwitchingToStarter] = useState(false)
 
   const handleCreateSubscription = async (planId: PlanId) => {
     setIsCreating(planId)
@@ -46,6 +51,19 @@ export const AvailablePlansCard = ({
       window.location.href = approvalUrl
     }
     setIsCreating(null)
+  }
+
+  const handleSwitchToStarter = async () => {
+    setIsSwitchingToStarter(true)
+    const res = await switchToStarterPlan()
+    if (res.error) {
+      toast.error(res.error.message)
+    }
+    if (res.success) {
+      toast.success(t("Successfully switched to starter plan"))
+      router.refresh()
+    }
+    setIsSwitchingToStarter(false)
   }
 
   return (
@@ -67,11 +85,21 @@ export const AvailablePlansCard = ({
               subscription.plan === plan.id && subscription.status === "ACTIVE"
 
             // Allow subscription if no active subscription OR if current plan is STARTER and upgrading to PRO/BUSINESS
+            // Also allow switching to starter plan if subscription is not active and not already starter
             const canSubscribe =
               subscription.status !== "ACTIVE" ||
               (subscription.status === "ACTIVE" &&
                 subscription.plan === "INVOICE-STARTER" &&
-                (plan.id === "INVOICE-PRO" || plan.id === "INVOICE-BUSINESS"))
+                (plan.id === "INVOICE-PRO" ||
+                  plan.id === "INVOICE-BUSINESS")) ||
+              (subscription.status !== "ACTIVE" &&
+                plan.id === "INVOICE-STARTER" &&
+                subscription.plan !== "INVOICE-STARTER")
+
+            const isSubscribing =
+              plan.id === "INVOICE-STARTER"
+                ? isSwitchingToStarter
+                : isCreating === plan.id
 
             return (
               <PlanCard
@@ -79,10 +107,17 @@ export const AvailablePlansCard = ({
                 plan={plan}
                 isActive={isActive}
                 canSubscribe={canSubscribe}
-                isSubscribing={isCreating === plan.id}
+                isSubscribing={isSubscribing}
                 onSubscribe={() => {
                   if (canSubscribe) {
-                    handleCreateSubscription(plan.id)
+                    if (
+                      plan.id === "INVOICE-STARTER" &&
+                      subscription.status !== "ACTIVE"
+                    ) {
+                      handleSwitchToStarter()
+                    } else {
+                      handleCreateSubscription(plan.id)
+                    }
                   }
                 }}
               />

@@ -1,6 +1,10 @@
 import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getPlans } from "@/db/auth/loaders"
-import { cancelSubscription, createSubscription } from "@/services/subscription"
+import {
+  cancelSubscription,
+  createSubscription,
+  switchToStarterPlan,
+} from "@/services/subscription"
 import { BillingPage } from "./billing-page"
 
 type Props = {
@@ -27,6 +31,10 @@ const Page = async (props: Props) => {
       cancelSubscription={async () => {
         "use server"
         return await cancelSubscription(orgId)
+      }}
+      switchToStarterPlan={async () => {
+        "use server"
+        return await switchToStarterPlan(orgId)
       }}
     />
   )

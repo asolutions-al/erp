@@ -497,5 +497,13 @@
   "Processing": "Processing",
   "Subscribe Now": "Subscribe Now",
   "Not Available": "Not Available",
-  "Select Starter Plan": "Select Starter Plan"
+  "Select Starter Plan": "Select Starter Plan",
+  "Subscription Actions": "Subscription Actions",
+  "Manage your subscription options": "Manage your subscription options",
+  "Canceled Date": "Canceled Date",
+  "Available Actions": "Available Actions",
+  "Since your subscription has been canceled, you can switch to the free starter plan to continue using basic features": "Since your subscription has been canceled, you can switch to the free starter plan to continue using basic features",
+  "Switching to Starter Plan": "Switching to Starter Plan",
+  "Switch to Starter Plan": "Switch to Starter Plan",
+  "Successfully switched to starter plan": "Successfully switched to starter plan"
 }

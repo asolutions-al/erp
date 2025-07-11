@@ -128,7 +128,7 @@ const cancelSubscription = async (orgId: string): Promise<ResT<true>> => {
   return await cancelPayPalSub(existing.externalSubscriptionId)
 }
 
-const switchToFreePlan = async (orgId: string): Promise<ResT<true>> => {
+const switchToStarterPlan = async (orgId: string): Promise<ResT<true>> => {
   const t = await getTranslations()
 
   const existing = await getSubscriptionByOrgId(orgId)
@@ -141,7 +141,7 @@ const switchToFreePlan = async (orgId: string): Promise<ResT<true>> => {
       },
     }
 
-  if (existing.plan === "INVOICE-STARTER")
+  if (existing.plan === "INVOICE-STARTER" && existing.status === "ACTIVE")
     return {
       success: null,
       error: { message: t("Starter plan is already active") },
@@ -185,4 +185,4 @@ const switchToFreePlan = async (orgId: string): Promise<ResT<true>> => {
   }
 }
 
-export { cancelSubscription, createSubscription, switchToFreePlan }
+export { cancelSubscription, createSubscription, switchToStarterPlan }

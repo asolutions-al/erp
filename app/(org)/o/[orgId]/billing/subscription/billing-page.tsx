@@ -22,6 +22,7 @@ type Props = {
     }>
   >
   cancelSubscription: () => Promise<ResT<true>>
+  switchToStarterPlan: () => Promise<ResT<true>>
 }
 
 export const BillingPage = ({
@@ -29,6 +30,7 @@ export const BillingPage = ({
   plans,
   createSubscription,
   cancelSubscription,
+  switchToStarterPlan,
 }: Props) => {
   const t = useTranslations()
   const currentPlan =
@@ -54,6 +56,7 @@ export const BillingPage = ({
           subscription={subscription}
           currentPlan={currentPlan}
           cancelSubscription={cancelSubscription}
+          switchToStarterPlan={switchToStarterPlan}
         />
       </div>
 
@@ -61,6 +64,7 @@ export const BillingPage = ({
         subscription={subscription}
         plans={plans}
         createSubscription={createSubscription}
+        switchToStarterPlan={switchToStarterPlan}
       />
     </div>
   )
