@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export const getAuthRedirectUrl = () => {
   const url = new URL(accountsUrl)
-  url.pathname = "/login"
+  url.pathname = "/signup"
   const redirectUrl = new URL(appUrl)
   redirectUrl.pathname = "/auth/callback"
   url.searchParams.set("redirectUrl", redirectUrl.href)
