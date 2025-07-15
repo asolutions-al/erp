@@ -522,5 +522,7 @@
   "Please complete the payment process to activate your subscription": "Please complete the payment process to activate your subscription",
   "Cannot switch to starter plan while subscription is active": "Cannot switch to starter plan while subscription is active",
   "No active subscription": "No active subscription",
-  "Plan Status": "Plan Status"
+  "Plan Status": "Plan Status",
+  "Warehouse is required": "Warehouse is required",
+  "Quantity exceeds minimum stock ( {minStock} )": "Quantity exceeds minimum stock ( {minStock} )"
 }

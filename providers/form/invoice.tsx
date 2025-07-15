@@ -3,7 +3,10 @@
 import { Form } from "@/components/ui/form"
 import { InvoiceConfigSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
-import { checkShouldTriggerCash } from "@/utils/checks"
+import {
+  checkShouldTriggerCash,
+  checkShouldTriggerInventory,
+} from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { useTranslations } from "next-intl"
@@ -25,35 +28,16 @@ const createSchema = ({
     name: (sch) => sch.name.min(1),
     price: (sch) => sch.price.min(0),
     quantity: (sch) => sch.quantity.positive(),
+  }).omit({
+    id: true,
+    createdAt: true,
+    orgId: true,
+    unitId: true,
+    invoiceId: true,
+    total: true,
+    subtotal: true,
+    tax: true,
   })
-    .omit({
-      id: true,
-      createdAt: true,
-      orgId: true,
-      unitId: true,
-      invoiceId: true,
-      total: true,
-      subtotal: true,
-      tax: true,
-    })
-    .refine(
-      (data) => {
-        const inventory = productInventories.find(
-          (inv) => inv.productId === data.productId
-        )
-
-        if (!inventory) return true
-
-        const { minStock } = inventory
-        const newStock = inventory.stock - data.quantity
-
-        return newStock >= minStock
-      },
-      {
-        path: ["quantity"],
-        message: t("Quantity exceeds minimum stock"),
-      }
-    )
 
   const schema = createInsertSchema(invoice, {
     customerId: (sch) => sch.customerId.min(1),
@@ -71,6 +55,7 @@ const createSchema = ({
     .extend({
       rows: z.array(rowSchema).min(1),
     })
+
     .refine(
       (data) => {
         if (
@@ -88,7 +73,18 @@ const createSchema = ({
         message: t("Cash register is required"),
       }
     )
-    // prevent discount value to be greater than total
+    .refine(
+      (data) => {
+        if (checkShouldTriggerInventory({ invoiceConfig: config }))
+          return !!data.warehouseId
+
+        return true
+      },
+      {
+        path: ["warehouseId"],
+        message: t("Warehouse is required"),
+      }
+    )
     .refine(
       (data) => {
         const total = data.rows.reduce(
@@ -105,6 +101,31 @@ const createSchema = ({
         message: t("Discount value cannot be greater than total"),
       }
     )
+    .superRefine((data, ctx) => {
+      // Validate inventory for each row with warehouse context
+      data.rows.forEach((row, index) => {
+        const inventory = productInventories.find(
+          (inv) =>
+            inv.productId === row.productId &&
+            inv.warehouseId === data.warehouseId
+        )
+
+        if (inventory) {
+          const { minStock } = inventory
+          const newStock = inventory.stock - row.quantity
+
+          if (newStock < minStock) {
+            ctx.addIssue({
+              code: "custom",
+              path: ["rows", index, "quantity"],
+              message: t("Quantity exceeds minimum stock ( {minStock} )", {
+                minStock,
+              }),
+            })
+          }
+        }
+      })
+    })
 
   return schema
 }
