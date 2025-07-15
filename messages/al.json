@@ -524,5 +524,8 @@
   "Subscription setup incomplete": "Konfigurimi i abonimit është i pamplotë",
   "Please complete the payment process to activate your subscription": "Ju lutemi plotësoni procesin e pagesës për të aktivizuar abonimin tuaj",
   "Warehouse is required": "Magazina është e detyrueshme",
-  "Quantity exceeds minimum stock ( {minStock} )": "Sasia tejkalon stokun minimal ( {minStock} )"
+  "Quantity exceeds minimum stock ( {minStock} )": "Sasia tejkalon stokun minimal ( {minStock} )",
+  "Category not found": "Kategoria nuk u gjet",
+  "Create new category": "Krijo kategori të re",
+  "Search category": "Kërko kategori"
 }

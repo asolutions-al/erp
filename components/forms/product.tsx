@@ -64,7 +64,7 @@ import { useParams, useRouter } from "next/navigation"
 import { useState } from "react"
 import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
-import { WarehouseCommand } from "../command"
+import { CategoryCommand, WarehouseCommand } from "../command"
 
 type SchemaT = ProductFormSchemaT
 
@@ -717,23 +717,11 @@ const CategoryTab = ({ categories }: { categories: CategorySchemaT[] }) => {
                   render={({ field }) => (
                     <FormItem className="col-span-2">
                       <FormLabel>{t("Category")}</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
+                      <CategoryCommand
+                        list={availableCategories}
                         value={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder={t("Select category")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {availableCategories.map((category) => (
-                            <SelectItem key={category.id} value={category.id}>
-                              {category.name}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={field.onChange}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}
