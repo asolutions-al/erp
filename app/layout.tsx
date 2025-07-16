@@ -10,8 +10,8 @@ import "./globals.css"
 
 export const metadata = {
   metadataBase: new URL(appUrl),
-  title: "Invoice",
-  description: "The fastest way to generate invoices",
+  title: "Erp Asolutions",
+  description: "Menaxho biznesin tënd.",
 }
 
 export default async function RootLayout({ children }: PropsWithChildren) {
