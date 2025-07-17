@@ -527,7 +527,11 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                   if (existing)
                     return form.setValue(
                       `rows.${existingIdx}.quantity`,
-                      existing.quantity + 1
+                      existing.quantity + 1,
+                      {
+                        shouldDirty: true,
+                        shouldValidate: true,
+                      }
                     )
 
                   form.setValue(
@@ -542,6 +546,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                     ],
                     {
                       shouldDirty: true,
+                      shouldValidate: true,
                     }
                   )
                 }}
@@ -654,6 +659,7 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
 
             const changeQty = (value: number) => {
               form.setValue(`rows.${index}.quantity`, value, {
+                shouldDirty: true,
                 shouldValidate: true,
               })
             }
@@ -661,7 +667,11 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
             const remove = () => {
               form.setValue(
                 "rows",
-                (rows || []).filter((_, i) => i !== index)
+                (rows || []).filter((_, i) => i !== index),
+                {
+                  shouldDirty: true,
+                  shouldValidate: true,
+                }
               )
             }
 
@@ -782,7 +792,12 @@ const PaymentCard = () => {
                   value={item}
                   key={item}
                   className="flex items-center gap-2"
-                  onClick={() => form.setValue("payMethod", item)}
+                  onClick={() =>
+                    form.setValue("payMethod", item, {
+                      shouldDirty: true,
+                      shouldValidate: true,
+                    })
+                  }
                 >
                   <Icon size={20} />
                   <span

@@ -215,7 +215,9 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
           variant="ghost"
           size="sm"
           type="button"
-          onClick={() => form.setValue("warehouseId", null)}
+          onClick={() =>
+            form.setValue("warehouseId", null, { shouldDirty: true })
+          }
         >
           <EraserIcon />
           {t("Clear")}
@@ -262,7 +264,9 @@ const CashRegisterCard = ({
           variant="ghost"
           size="sm"
           type="button"
-          onClick={() => form.setValue("cashRegisterId", null)}
+          onClick={() =>
+            form.setValue("cashRegisterId", null, { shouldDirty: true })
+          }
         >
           <EraserIcon />
           {t("Clear")}
@@ -307,7 +311,9 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
           variant="ghost"
           size="sm"
           type="button"
-          onClick={() => form.setValue("customerId", null)}
+          onClick={() =>
+            form.setValue("customerId", null, { shouldDirty: true })
+          }
         >
           <EraserIcon />
           {t("Clear")}

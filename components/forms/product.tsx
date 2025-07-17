@@ -177,7 +177,9 @@ const ImageCard = () => {
       const res = await client.storage
         .from(productImagesBucket)
         .upload(nanoid(), file)
-      form.setValue("imageBucketPath", res.data?.path)
+      form.setValue("imageBucketPath", res.data?.path, {
+        shouldDirty: true,
+      })
     } catch (error) {
       toast.error(t("An error occurred"))
     } finally {
@@ -228,7 +230,7 @@ const ImageCard = () => {
                 className="absolute right-2 top-2"
                 onClick={(e) => {
                   e.preventDefault()
-                  form.setValue("imageBucketPath", null)
+                  form.setValue("imageBucketPath", null, { shouldDirty: true })
                 }}
               >
                 <TrashIcon className="h-4 w-4" />
