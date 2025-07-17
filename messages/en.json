@@ -528,5 +528,5 @@
   "Category not found": "Category not found",
   "Create new category": "Create new category",
   "Search category": "Search category",
-  "Only {availableStock} left": "Only {availableStock} left"
+  "Only {stock} left": "Only {stock} left"
 }

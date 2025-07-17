@@ -528,5 +528,5 @@
   "Category not found": "Kategoria nuk u gjet",
   "Create new category": "Krijo kategori të re",
   "Search category": "Kërko kategori",
-  "Only {availableStock} left": "Vetëm {availableStock} të mbetur"
+  "Only {stock} left": "Vetëm {stock} të mbetur"
 }

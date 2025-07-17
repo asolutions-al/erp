@@ -52,7 +52,6 @@ const createSchema = ({
     .extend({
       rows: z.array(rowSchema).min(1),
     })
-
     .refine(
       (data) => {
         if (
@@ -81,22 +80,6 @@ const createSchema = ({
         message: t("Warehouse is required"),
       }
     )
-    .refine(
-      (data) => {
-        const total = data.rows.reduce(
-          (acc, row) => acc + row.quantity * row.price * row.taxPercentage,
-          0
-        )
-
-        if (data.discountType === "value") return data.discountValue <= total
-
-        return true
-      },
-      {
-        path: ["discountValue"],
-        message: t("Discount value cannot be greater than total"),
-      }
-    )
     .superRefine((data, ctx) => {
       // Validate inventory for each row with warehouse context
       data.rows.forEach((row, index) => {
@@ -107,21 +90,17 @@ const createSchema = ({
         )
 
         if (inventory) {
-          const { minStock } = inventory
-          const newStock = inventory.stock - row.quantity
+          const { minStock, stock } = inventory
+          const newStock = stock - row.quantity
 
           if (newStock < minStock) {
             ctx.addIssue({
               code: "custom",
               path: ["rows", index, "quantity"],
               message:
-                t("Quantity exceeds minimum stock ({minStock})", {
-                  minStock: minStock,
-                }) +
+                t("Quantity exceeds minimum stock ({minStock})", { minStock }) +
                 "." +
-                t("Only {availableStock} left", {
-                  availableStock: inventory.stock,
-                }) +
+                t("Only {stock} left", { stock }) +
                 ".",
             })
           }
