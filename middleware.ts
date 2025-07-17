@@ -1,4 +1,3 @@
-import { updateSession } from "@/utils/session-middleware"
 import { type NextRequest } from "next/server"
 
 export const config = {
@@ -16,5 +15,5 @@ export const config = {
 }
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+  // return await updateSession(request)
 }
