@@ -46,9 +46,12 @@ import { motion } from "framer-motion"
 import Fuse from "fuse.js"
 import {
   BanknoteIcon,
+  ContactIcon,
+  CreditCardIcon,
   GridIcon,
   InfoIcon,
   MinusIcon,
+  PackageIcon,
   PackageSearchIcon,
   PlusCircleIcon,
   PlusIcon,
@@ -56,6 +59,7 @@ import {
   SettingsIcon,
   ShoppingCartIcon,
   StarIcon,
+  WarehouseIcon,
   XIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -231,7 +235,10 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Customer")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <ContactIcon size={20} />
+            {t("Customer")}
+          </CardTitle>
           <CardDescription>
             {t("The person that will receive the invoice")}
           </CardDescription>
@@ -325,7 +332,10 @@ const CashRegisterCard = ({
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Cash register")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <BanknoteIcon size={20} />
+            {t("Cash register")}
+          </CardTitle>
           <CardDescription>
             {t("Where the money will be stored")}
           </CardDescription>
@@ -392,7 +402,10 @@ const WarehouseCard = ({
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Warehouse")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <WarehouseIcon size={20} />
+            {t("Warehouse")}
+          </CardTitle>
           <CardDescription>
             {t("Where the products are stored")}
           </CardDescription>
@@ -475,7 +488,10 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
       <CardHeader>
         <div className="mb-2 flex items-center justify-between">
           <div className="space-y-1.5">
-            <CardTitle>{t("Products")}</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <PackageIcon size={20} />
+              {t("Products")}
+            </CardTitle>
             <CardDescription>{t("List of products to sell")}</CardDescription>
           </div>
           <Tabs
@@ -643,7 +659,10 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Checkout")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <ShoppingCartIcon size={20} />
+          {t("Checkout")}
+        </CardTitle>
         <CardDescription>
           {t("Review the invoice and proceed to checkout")}
         </CardDescription>
@@ -778,7 +797,10 @@ const PaymentCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Payment")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CreditCardIcon size={20} />
+          {t("Payment")}
+        </CardTitle>
         <CardDescription>{t("How the customer will pay")}</CardDescription>
       </CardHeader>
       <CardContent>
