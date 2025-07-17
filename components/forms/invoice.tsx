@@ -117,6 +117,7 @@ const Form = ({
       setReceiptDialog({ open: true, data: values })
       form.reset()
       router.refresh()
+      updateTabInUrl("info")
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))

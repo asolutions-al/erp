@@ -57,63 +57,59 @@ const create = async ({
         }
       })
     )
-  })
-
-  const backgroundTasks = async () => {
-    const config = await db.query.invoiceConfig.findFirst({
+    const config = await tx.query.invoiceConfig.findFirst({
       where: eq(invoiceConfig.unitId, unitId),
     })
-    if (!config) return
 
-    const shouldTriggerCash = checkShouldTriggerCash({
-      invoiceConfig: config,
-      payMethod: values.payMethod,
-    })
-
-    if (shouldTriggerCash) {
-      await db
-        .update(cashRegister)
-        .set({
-          balance: sql`${cashRegister.balance} + ${calcs.total}`,
-        })
-        .where(eq(cashRegister.id, values.cashRegisterId!))
-    }
-
-    if (config.triggerInventoryOnInvoice) {
-      await db.transaction(async (tx) => {
-        const updates = values.rows.map((row) =>
-          tx
-            .update(productInventory)
-            .set({
-              stock: sql`${productInventory.stock} - ${row.quantity}`,
-            })
-            .where(
-              and(
-                eq(productInventory.orgId, orgId),
-                eq(productInventory.unitId, unitId),
-                eq(productInventory.warehouseId, values.warehouseId!),
-                eq(productInventory.productId, row.productId)
-              )
-            )
-        )
-
-        const movements = values.rows.map((row) =>
-          tx.insert(productInventoryMovement).values({
-            unitId,
-            orgId,
-            warehouseId: values.warehouseId!,
-            productId: row.productId,
-            amount: row.quantity,
-            reason: "SALE",
-          })
-        )
-
-        await Promise.all([...updates, ...movements])
+    if (config) {
+      const shouldTriggerCash = checkShouldTriggerCash({
+        invoiceConfig: config,
+        payMethod: values.payMethod,
       })
-    }
-  }
 
-  backgroundTasks()
+      if (shouldTriggerCash) {
+        await tx
+          .update(cashRegister)
+          .set({
+            balance: sql`${cashRegister.balance} + ${calcs.total}`,
+          })
+          .where(eq(cashRegister.id, values.cashRegisterId!))
+      }
+
+      if (config.triggerInventoryOnInvoice) {
+        await tx.transaction(async (tx) => {
+          const updates = values.rows.map((row) =>
+            tx
+              .update(productInventory)
+              .set({
+                stock: sql`${productInventory.stock} - ${row.quantity}`,
+              })
+              .where(
+                and(
+                  eq(productInventory.orgId, orgId),
+                  eq(productInventory.unitId, unitId),
+                  eq(productInventory.warehouseId, values.warehouseId!),
+                  eq(productInventory.productId, row.productId)
+                )
+              )
+          )
+
+          const movements = values.rows.map((row) =>
+            tx.insert(productInventoryMovement).values({
+              unitId,
+              orgId,
+              warehouseId: values.warehouseId!,
+              productId: row.productId,
+              amount: row.quantity,
+              reason: "SALE",
+            })
+          )
+
+          await Promise.all([...updates, ...movements])
+        })
+      }
+    }
+  })
 }
 
 export { create as createInvoice }

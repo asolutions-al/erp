@@ -3,10 +3,7 @@
 import { Form } from "@/components/ui/form"
 import { InvoiceConfigSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { invoice, invoiceRow } from "@/orm/app/schema"
-import {
-  checkShouldTriggerCash,
-  checkShouldTriggerInventory,
-} from "@/utils/checks"
+import { checkShouldTriggerCash } from "@/utils/checks"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { useTranslations } from "next-intl"
@@ -75,8 +72,7 @@ const createSchema = ({
     )
     .refine(
       (data) => {
-        if (checkShouldTriggerInventory({ invoiceConfig: config }))
-          return !!data.warehouseId
+        if (config.triggerInventoryOnInvoice) return !!data.warehouseId
 
         return true
       },

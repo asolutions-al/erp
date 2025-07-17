@@ -9,10 +9,4 @@ const checkShouldTriggerCash = ({
   payMethod: PayMethodT
 }) => invoiceConfig?.triggerCashOnInvoice && payMethod === "cash"
 
-const checkShouldTriggerInventory = ({
-  invoiceConfig,
-}: {
-  invoiceConfig: Pick<InvoiceConfigSchemaT, "triggerInventoryOnInvoice">
-}) => invoiceConfig?.triggerInventoryOnInvoice
-
-export { checkShouldTriggerCash, checkShouldTriggerInventory }
+export { checkShouldTriggerCash }
