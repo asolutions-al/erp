@@ -61,7 +61,7 @@ import {
 import { useTranslations } from "next-intl"
 import Image from "next/image"
 import Link from "next/link"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
@@ -79,6 +79,8 @@ type Props = {
   invoiceConfig: InvoiceConfigSchemaT
 }
 
+type TabT = "info" | "config"
+
 const formId: FormId = "invoice"
 
 const Form = ({
@@ -92,11 +94,21 @@ const Form = ({
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [receiptDialog, setReceiptDialog] = useState<{
     open: boolean
     data: SchemaT
   }>()
+
+  const currentTab: TabT = (searchParams.get("tab") as TabT) || "info"
+
+  // Function to update URL with current tab
+  const updateTabInUrl = (tab: TabT) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", tab)
+    window.history.replaceState(null, "", `?${params.toString()}`)
+  }
 
   const onValid = async (values: SchemaT) => {
     try {
@@ -112,7 +124,11 @@ const Form = ({
   }
 
   const onInvalid = (errors: FieldErrors<SchemaT>) => {
-    const cashRegisterError = get(errors, "cashRegisterId") //TODO: open cash sheet
+    const configTabError =
+      get(errors, "warehouseId") || get(errors, "cashRegisterId")
+
+    updateTabInUrl(configTabError ? "config" : "info")
+
     toast.error(t("Please fill in all required fields"))
   }
 
@@ -123,24 +139,21 @@ const Form = ({
         className="mx-auto"
         id={formId}
       >
-        <Tabs defaultValue="information">
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => updateTabInUrl(value as TabT)}
+        >
           <TabsList className="grid max-w-sm grid-cols-2">
-            <TabsTrigger
-              value="information"
-              className="flex items-center gap-2"
-            >
+            <TabsTrigger value="info" className="flex items-center gap-2">
               <InfoIcon size={20} />
               {t("Information")}
             </TabsTrigger>
-            <TabsTrigger
-              value="configuration"
-              className="flex items-center gap-2"
-            >
+            <TabsTrigger value="config" className="flex items-center gap-2">
               <SettingsIcon size={20} />
               {t("Configuration")}
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="information">
+          <TabsContent value="info">
             <div className="grid gap-3 lg:grid-cols-2">
               <div className="space-y-3">
                 <CustomerCard customers={customers} />
@@ -156,7 +169,7 @@ const Form = ({
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="configuration">
+          <TabsContent value="config">
             <div className="grid gap-3 lg:grid-cols-2">
               <CashRegisterCard
                 cashRegisters={cashRegisters}
