@@ -31,6 +31,7 @@ export async function sendNotification(message: string) {
 
   try {
     await webpush.sendNotification(
+      // @ts-ignore
       subscription,
       JSON.stringify({
         title: "Test Notification",
