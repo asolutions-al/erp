@@ -23,6 +23,9 @@ const Page = async (props: Props) => {
       lte(invoice.createdAt, end.toISOString())
     ),
     orderBy: desc(invoice.createdAt),
+    with: {
+      customer: true,
+    },
   })
 
   return <DataTable columns={invoiceColumns} data={data} />
