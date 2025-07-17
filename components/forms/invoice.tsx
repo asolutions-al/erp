@@ -501,6 +501,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="max-w-sm"
+          autoFocus
         />
       </CardHeader>
       <CardContent className="grid max-h-[29rem] grid-cols-2 gap-2 overflow-y-auto sm:grid-cols-3 xl:grid-cols-4">

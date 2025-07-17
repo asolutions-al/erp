@@ -114,9 +114,15 @@ const createSchema = ({
             ctx.addIssue({
               code: "custom",
               path: ["rows", index, "quantity"],
-              message: t("Quantity exceeds minimum stock ( {minStock} )", {
-                minStock,
-              }),
+              message:
+                t("Quantity exceeds minimum stock ({minStock})", {
+                  minStock: minStock,
+                }) +
+                "." +
+                t("Only {availableStock} left", {
+                  availableStock: inventory.stock,
+                }) +
+                ".",
             })
           }
         }

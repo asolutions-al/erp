@@ -524,8 +524,9 @@
   "No active subscription": "No active subscription",
   "Plan Status": "Plan Status",
   "Warehouse is required": "Warehouse is required",
-  "Quantity exceeds minimum stock ( {minStock} )": "Quantity exceeds minimum stock ( {minStock} )",
+  "Quantity exceeds minimum stock ({minStock})": "Quantity exceeds minimum stock ({minStock})",
   "Category not found": "Category not found",
   "Create new category": "Create new category",
-  "Search category": "Search category"
+  "Search category": "Search category",
+  "Only {availableStock} left": "Only {availableStock} left"
 }
