@@ -8,7 +8,7 @@ import {
 import { BillingPage } from "./billing-page"
 
 type Props = {
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async (props: Props) => {

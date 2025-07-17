@@ -81,7 +81,7 @@ type Props = {
 
 type TabT = "info" | "config"
 
-const formId: FormId = "invoice"
+const formId: FormIdT = "invoice"
 
 const Form = ({
   performAction,
@@ -94,6 +94,7 @@ const Form = ({
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const router = useRouter()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   const searchParams = useSearchParams()
 
   const [receiptDialog, setReceiptDialog] = useState<{
@@ -114,10 +115,8 @@ const Form = ({
     try {
       await performAction(values)
       toast.success(t("Invoice saved successfully"))
-      setReceiptDialog({ open: true, data: values })
-      form.reset()
-      router.refresh()
-      updateTabInUrl("info")
+      router.prefetch(`/o/${orgId}/u/${unitId}/invoice/list/today`)
+      router.push(`/o/${orgId}/u/${unitId}/invoice/list/today`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
@@ -590,7 +589,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
 
 const NoProductsFound = () => {
   const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParams>()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   return (
     <div className="col-span-full flex flex-col items-center justify-center py-8 text-muted-foreground">
       <PackageSearchIcon className="mb-4 h-12 w-12" />
@@ -607,7 +606,7 @@ const NoProductsFound = () => {
 
 const NoCashRegistersFound = () => {
   const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParams>()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   return (
     <div className="flex flex-col items-center text-muted-foreground">
       <BanknoteIcon className="mb-4 h-12 w-12" />

@@ -5,7 +5,7 @@ import { AppHeader } from "@/components/layout/app-header"
 import { UnitSidebar } from "@/components/layout/unit-sidebar"
 
 type Props = PropsWithChildren<{
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }>
 
 export const experimental_ppr = true

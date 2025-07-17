@@ -26,7 +26,7 @@ import { OrgSwitcher } from "../org-switcher"
 import { SidebarUser } from "./sidebar-user"
 
 type Props = PropsWithChildren<{
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }>
 
 const OrgSidebar = async (props: Props) => {

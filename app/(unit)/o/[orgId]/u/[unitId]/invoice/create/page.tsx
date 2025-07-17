@@ -28,7 +28,7 @@ import { Settings2Icon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 
 type Props = {
-  params: Promise<{ orgId: string; unitId: string }>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async (props: Props) => {

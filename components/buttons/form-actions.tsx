@@ -9,7 +9,7 @@ import { useFormContext, useFormState } from "react-hook-form"
 const FormActionBtns = ({
   formId,
   children,
-}: PropsWithChildren<{ formId: FormId }>) => {
+}: PropsWithChildren<{ formId: FormIdT }>) => {
   const t = useTranslations()
   const form = useFormContext()
   const { isSubmitting, isValidating, isDirty } = useFormState({

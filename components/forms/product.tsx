@@ -74,12 +74,12 @@ type Props = {
   categories: CategorySchemaT[]
 }
 
-const formId: FormId = "product"
+const formId: FormIdT = "product"
 
 const Form = ({ performAction, warehouses, categories }: Props) => {
   const t = useTranslations()
   const router = useRouter()
-  const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   const form = useFormContext<SchemaT>()
 
   const onValid = async (values: SchemaT) => {

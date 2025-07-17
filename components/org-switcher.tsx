@@ -19,7 +19,7 @@ import { getTranslations } from "next-intl/server"
 import { OrgSwitcherItem } from "./org-switcher-item"
 
 type Props = {
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }
 
 const OrgSwitcher = async (props: Props) => {

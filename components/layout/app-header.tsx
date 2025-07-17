@@ -4,7 +4,7 @@ import Image from "next/image"
 import Link from "next/link"
 
 type Props = {
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }
 
 const AppHeader = async (props: Props) => {

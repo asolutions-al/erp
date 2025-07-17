@@ -37,7 +37,7 @@ type Props = {
   performAction: (values: SchemaT) => Promise<void>
 }
 
-const formId: FormId = "unit"
+const formId: FormIdT = "unit"
 
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()

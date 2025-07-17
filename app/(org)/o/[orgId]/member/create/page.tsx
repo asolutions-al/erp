@@ -8,7 +8,7 @@ import { ProductFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ orgId: string; unitId: string }>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async ({ params }: Props) => {

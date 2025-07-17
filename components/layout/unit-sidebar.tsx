@@ -33,7 +33,7 @@ import { UnitSwitcher } from "../unit-switcher"
 import { SidebarUser } from "./sidebar-user"
 
 type Props = PropsWithChildren<{
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }>
 
 const UnitSidebar = async (props: Props) => {

@@ -5,7 +5,7 @@ import { createCategory } from "@/db/app/actions"
 import { CategoryFormProvider } from "@/providers"
 
 type Props = {
-  params: Promise<{ orgId: string; unitId: string }>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async ({ params }: Props) => {

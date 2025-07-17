@@ -38,12 +38,12 @@ type Props = {
   performAction: (values: SchemaT) => Promise<void>
 }
 
-const formId: FormId = "cashRegister"
+const formId: FormIdT = "cashRegister"
 
 const Form = ({ performAction, isUpdate }: Props) => {
   const t = useTranslations()
   const router = useRouter()
-  const { orgId, unitId } = useParams<{ orgId: string; unitId: string }>()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   const form = useFormContext<SchemaT>()
 
   const onValid = async (values: SchemaT) => {

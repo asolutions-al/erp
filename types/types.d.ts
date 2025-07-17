@@ -1,4 +1,4 @@
-type FormId =
+type FormIdT =
   | "product"
   | "invoice"
   | "unit"
@@ -17,7 +17,7 @@ type RangeT =
   | "this_month"
   | "last_month"
 
-type GlobalParams = {
+type GlobalParamsT = {
   orgId: string
   unitId: string
 }

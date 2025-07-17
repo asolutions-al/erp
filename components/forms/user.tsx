@@ -37,7 +37,7 @@ type Props = {
   orgs: OrgSchemaT[]
 }
 
-const formId: FormId = "user"
+const formId: FormIdT = "user"
 
 const Form = ({ performAction, orgs }: Props) => {
   const t = useTranslations()

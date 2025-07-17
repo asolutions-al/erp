@@ -1,11 +1,11 @@
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { PropsWithChildren } from "react"
 
-import { AppHeader } from "@/components/layout/app-header"
 import { AccountSidebar } from "@/components/layout/account-sidebar"
+import { AppHeader } from "@/components/layout/app-header"
 
 type Props = PropsWithChildren<{
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }>
 
 export const experimental_ppr = true

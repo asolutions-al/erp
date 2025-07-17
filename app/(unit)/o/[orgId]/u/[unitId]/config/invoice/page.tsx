@@ -13,7 +13,7 @@ import { InvoiceConfigFormProvider } from "@/providers"
 import { and, eq } from "drizzle-orm"
 
 type Props = {
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async ({ params }: Props) => {

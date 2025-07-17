@@ -29,7 +29,7 @@ import { useState } from "react"
 
 const Empty = () => {
   const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParams>()
+  const { orgId, unitId } = useParams<GlobalParamsT>()
   return (
     <div className="flex flex-col items-center text-muted-foreground">
       <WarehouseIcon className="mb-4 h-12 w-12" />

@@ -21,7 +21,7 @@ import Link from "next/link"
 import { UnitSwitcherItem } from "./unit-switcher-item"
 
 type Props = {
-  params: Promise<GlobalParams>
+  params: Promise<GlobalParamsT>
 }
 
 const UnitSwitcher = async (props: Props) => {

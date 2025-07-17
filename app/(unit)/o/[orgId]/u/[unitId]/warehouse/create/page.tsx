@@ -5,7 +5,7 @@ import { createWarehouse } from "@/db/app/actions"
 import { WarehouseFormProvider } from "@/providers"
 
 type Props = {
-  params: Promise<{ orgId: string; unitId: string }>
+  params: Promise<GlobalParamsT>
 }
 
 const Page = async ({ params }: Props) => {
