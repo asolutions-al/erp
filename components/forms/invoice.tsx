@@ -250,11 +250,11 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
           <TabsList>
             <TabsTrigger value="all" className="flex items-center gap-2">
               <GridIcon size={20} />
-              {t("All")}
+              <span className="sr-only sm:not-sr-only">{t("All")}</span>
             </TabsTrigger>
             <TabsTrigger value="favorite" className="flex items-center gap-2">
               <StarIcon size={20} />
-              {t("Favorite")}
+              <span className="sr-only sm:not-sr-only">{t("Favorite")}</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -317,7 +317,6 @@ const CashRegisterCard = ({
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
   const [activeTab, setActiveTab] = useState<CustomerTabT>("all")
-  const [popOverOpen, setPopOverOpen] = useState(false)
 
   const [payMethod] = useWatch({
     control: form.control,
@@ -347,11 +346,11 @@ const CashRegisterCard = ({
           <TabsList>
             <TabsTrigger value="all" className="flex items-center gap-2">
               <GridIcon size={20} />
-              {t("All")}
+              <span className="sr-only sm:not-sr-only">{t("All")}</span>
             </TabsTrigger>
             <TabsTrigger value="favorite" className="flex items-center gap-2">
               <StarIcon size={20} />
-              {t("Favorite")}
+              <span className="sr-only sm:not-sr-only">{t("Favorite")}</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -417,11 +416,11 @@ const WarehouseCard = ({
           <TabsList>
             <TabsTrigger value="all" className="flex items-center gap-2">
               <GridIcon size={20} />
-              {t("All")}
+              <span className="sr-only sm:not-sr-only">{t("All")}</span>
             </TabsTrigger>
             <TabsTrigger value="favorite" className="flex items-center gap-2">
               <StarIcon size={20} />
-              {t("Favorite")}
+              <span className="sr-only sm:not-sr-only">{t("Favorite")}</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -501,11 +500,11 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
             <TabsList>
               <TabsTrigger value="all" className="flex items-center gap-2">
                 <GridIcon size={20} />
-                {t("All")}
+                <span className="sr-only sm:not-sr-only">{t("All")}</span>
               </TabsTrigger>
               <TabsTrigger value="favorite" className="flex items-center gap-2">
                 <StarIcon size={20} />
-                {t("Favorite")}
+                <span className="sr-only sm:not-sr-only">{t("Favorite")}</span>
               </TabsTrigger>
             </TabsList>
           </Tabs>
@@ -614,23 +613,6 @@ const NoProductsFound = () => {
         <Button>
           <PlusCircleIcon />
           {t("Create new product")}
-        </Button>
-      </Link>
-    </div>
-  )
-}
-
-const NoCashRegistersFound = () => {
-  const t = useTranslations()
-  const { orgId, unitId } = useParams<GlobalParamsT>()
-  return (
-    <div className="flex flex-col items-center text-muted-foreground">
-      <BanknoteIcon className="mb-4 h-12 w-12" />
-      <p className="mb-4">{t("No cash registers found")}</p>
-      <Link href={`/o/${orgId}/u/${unitId}/cashRegister/create`} passHref>
-        <Button>
-          <PlusCircleIcon />
-          {t("Create new cash register")}
         </Button>
       </Link>
     </div>
