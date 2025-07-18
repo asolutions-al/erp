@@ -28,7 +28,7 @@ function PushNotificationManager() {
   return null
 }
 
-const PwaProvider = async ({ children }: PropsWithChildren) => {
+const PwaProvider = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
