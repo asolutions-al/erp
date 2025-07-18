@@ -17,5 +17,6 @@ export const config = {
 }
 
 export async function middleware(request: NextRequest) {
+  console.log("Middleware triggered for path:", request.nextUrl.pathname)
   return await updateSession(request)
 }
