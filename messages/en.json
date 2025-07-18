@@ -549,5 +549,6 @@
   "Sales count is on track": "Sales count is on track",
   "Sales count needs attention": "Sales count needs attention",
   "{percentage}% of total revenue": "{percentage}% of total revenue",
-  "invoices": "invoices"
+  "invoices": "invoices",
+  "{count} invoices": "{count, plural, one {# invoice} other {# invoices}}"
 }

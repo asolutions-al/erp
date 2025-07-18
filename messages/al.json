@@ -549,5 +549,6 @@
   "Sales count is on track": "Numri i shitjeve është në rregull",
   "Sales count needs attention": "Numri i shitjeve ka nevojë për vëmendje",
   "{percentage}% of total revenue": "{percentage}% e të hyrave totale",
-  "invoices": "fatura"
+  "invoices": "fatura",
+  "{count} invoices": "{count, plural, one {# faturë} other {# fatura}}"
 }
