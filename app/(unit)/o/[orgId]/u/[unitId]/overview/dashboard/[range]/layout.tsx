@@ -1,6 +1,8 @@
+import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapRangeIcon } from "@/contants/maps"
 import { cn } from "@/lib/utils"
+import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -49,6 +51,12 @@ const Layout = async (props: Props) => {
             })}
           </TabsList>
         </Tabs>
+        <Link href={`/o/${orgId}/u/${unitId}/invoice/create`} passHref>
+          <Button>
+            <PlusCircleIcon />
+            <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
+          </Button>
+        </Link>
       </div>
       {props.children}
     </>

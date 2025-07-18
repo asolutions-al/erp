@@ -530,20 +530,15 @@
   "Search category": "Search category",
   "Only {stock} left": "Only {stock} left",
   "Revenue": "Revenue",
-  "Orders": "Orders",
-  "Avg Order Value": "Avg Order Value",
   "Area": "Area",
   "Bar": "Bar",
   "Line": "Line",
   "Payment Methods": "Payment Methods",
   "Revenue breakdown by payment method": "Revenue breakdown by payment method",
-  "orders": "orders",
   "Sales Metrics Overview": "Sales Metrics Overview",
-  "Combined view of revenue, order count, and average order value": "Combined view of revenue, order count, and average order value",
   "Revenue Trend": "Revenue Trend",
   "Daily revenue over the selected period": "Daily revenue over the selected period",
   "Total Revenue": "Total Revenue",
-  "Total Orders": "Total Orders",
   "Detailed daily breakdown of sales performance": "Detailed daily breakdown of sales performance",
   "Avg sale value": "Avg sale value",
   "Avg sale value is the same": "Avg sale value is the same",
@@ -553,5 +548,6 @@
   "Sales count is the same": "Sales count is the same",
   "Sales count is on track": "Sales count is on track",
   "Sales count needs attention": "Sales count needs attention",
-  "{percentage}% of total revenue": "{percentage}% of total revenue"
+  "{percentage}% of total revenue": "{percentage}% of total revenue",
+  "invoices": "invoices"
 }
