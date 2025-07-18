@@ -108,10 +108,7 @@ const PaymentMethodSalesCard = async ({
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge
-                    variant="outline"
-                    className="rounded-md bg-muted px-2 py-1 text-xs"
-                  >
+                  <Badge variant="outline" className="bg-muted py-1">
                     {data.count} {t("orders")}
                   </Badge>
                   <span className="text-sm font-bold tabular-nums">
