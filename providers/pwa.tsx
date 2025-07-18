@@ -8,6 +8,7 @@ const isDev = process.env.NODE_ENV === "development"
 
 function ServiceWorkerRegister() {
   useEffect(() => {
+    console.log("Registering Service Worker...")
     if ("serviceWorker" in navigator) {
       console.log("Service Worker is supported")
       navigator.serviceWorker
@@ -24,6 +25,8 @@ function ServiceWorkerRegister() {
         .catch((error) => {
           console.error("Service Worker registration failed:", error)
         })
+    } else {
+      console.warn("Service Worker is not supported in this browser")
     }
   }, [])
 
