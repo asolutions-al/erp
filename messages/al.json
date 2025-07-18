@@ -552,5 +552,6 @@
   "Number of sales": "Numri i shitjeve",
   "Sales count is the same": "Numri i shitjeve është i njëjtë",
   "Sales count is on track": "Numri i shitjeve është në rregull",
-  "Sales count needs attention": "Numri i shitjeve ka nevojë për vëmendje"
+  "Sales count needs attention": "Numri i shitjeve ka nevojë për vëmendje",
+  "{percentage}% of total revenue": "{percentage}% e të hyrave totale"
 }

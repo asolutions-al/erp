@@ -53,13 +53,79 @@ const PAYMENT_ICONS = {
   other: CoinsIcon,
 } as const
 
+const CardHeaderEnhanced = ({
+  icon: Icon,
+  iconBg,
+  title,
+  description,
+  children,
+}: {
+  icon?: React.ElementType
+  iconBg?: string
+  title: string
+  description?: string
+  children?: React.ReactNode
+}) => (
+  <CardHeader className="relative flex flex-row items-center gap-4 p-6 pb-2">
+    {Icon && (
+      <div
+        className="flex h-12 w-12 items-center justify-center rounded-xl shadow-sm"
+        style={{ background: iconBg || "#f3f4f6" }}
+      >
+        <Icon className="h-6 w-6 text-white" />
+      </div>
+    )}
+    <div className="flex-1">
+      <CardDescription className="mb-1 text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        {description}
+      </CardDescription>
+      <CardTitle className="text-xl font-bold text-foreground">
+        {title}
+      </CardTitle>
+      {children}
+    </div>
+  </CardHeader>
+)
+
+const GrowthBadge = ({ diffPercent, status, sign, Icon }: any) => (
+  <Badge
+    variant="outline"
+    className={`flex gap-1 rounded-lg border-0 px-2 py-1 text-xs ${
+      status === "up"
+        ? "bg-green-100 text-green-700"
+        : status === "down"
+          ? "bg-red-100 text-red-700"
+          : "bg-muted text-muted-foreground"
+    }`}
+  >
+    <Icon className="size-3" />
+    {sign}
+    {Math.abs(diffPercent)}%
+  </Badge>
+)
+
+const CardFooterEnhanced = ({
+  status,
+  diff,
+  Icon,
+  message,
+  subMessage,
+}: any) => (
+  <CardFooter className="flex-col items-start gap-1 px-6 pb-4 pt-2 text-sm">
+    <div className="flex items-center gap-2 font-medium">
+      {message}
+      <Icon className="size-4" />
+    </div>
+    <div className="text-xs text-muted-foreground">{subMessage}</div>
+  </CardFooter>
+)
+
 const PaymentMethodSalesCard = async ({
   invoices,
 }: {
   invoices: InvoiceSchemaT[]
 }) => {
   const t = await getTranslations()
-
   const paymentMethodData: PaymentMethodData[] = Object.entries(
     invoices.reduce(
       (acc, invoice) => {
@@ -74,7 +140,6 @@ const PaymentMethodSalesCard = async ({
       const count = invoices.filter((inv) => inv.payMethod === method).length
       const totalRevenue = invoices.reduce((sum, inv) => sum + inv.total, 0)
       const percentage = totalRevenue > 0 ? (total / totalRevenue) * 100 : 0
-
       return {
         method,
         value: total,
@@ -84,49 +149,58 @@ const PaymentMethodSalesCard = async ({
       }
     })
     .sort((a, b) => b.value - a.value)
-
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("Payment Methods")}</CardTitle>
-        <CardDescription>
+      <CardHeader className="p-6 pb-2">
+        <CardTitle className="text-base font-medium text-muted-foreground">
+          {t("Payment Methods")}
+        </CardTitle>
+        <CardDescription className="text-xs">
           {t("Revenue breakdown by payment method")}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {paymentMethodData.map((data, index) => {
-            const Icon = PAYMENT_ICONS[data.method] || CoinsIcon
-            return (
-              <div key={index} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div
-                      className="h-3 w-3 rounded-full"
-                      style={{ backgroundColor: data.color }}
-                    />
-                    <Icon className="h-4 w-4" />
-                    <span className="text-sm font-medium">
-                      {t(data.method)}
-                    </span>
+      <CardContent className="space-y-4 px-6 pb-6 pt-2">
+        {paymentMethodData.map((data, index) => {
+          const Icon = PAYMENT_ICONS[data.method] || CoinsIcon
+          return (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div
+                    className="h-4 w-4 rounded-full border-2 border-white shadow"
+                    style={{ backgroundColor: data.color }}
+                  />
+                  <div
+                    className="flex h-7 w-7 items-center justify-center rounded-lg"
+                    style={{ background: data.color }}
+                  >
+                    <Icon className="h-4 w-4 text-white" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Badge variant="outline" className="text-xs">
-                      {data.count} {t("orders")}
-                    </Badge>
-                    <span className="text-sm font-medium">
-                      {formatNumber(data.value)}
-                    </span>
-                  </div>
+                  <span className="text-sm font-semibold">
+                    {t(data.method)}
+                  </span>
                 </div>
-                <Progress value={data.percentage} className="h-2" />
-                <div className="text-xs text-muted-foreground">
-                  {data.percentage.toFixed(1)}% of total revenue
+                <div className="flex items-center gap-2">
+                  <Badge
+                    variant="outline"
+                    className="rounded-md bg-muted px-2 py-1 text-xs"
+                  >
+                    {data.count} {t("orders")}
+                  </Badge>
+                  <span className="text-sm font-bold tabular-nums">
+                    {formatNumber(data.value)}
+                  </span>
                 </div>
               </div>
-            )
-          })}
-        </div>
+              <Progress value={data.percentage} className="h-2 bg-muted" />
+              <div className="text-xs text-muted-foreground">
+                {t("{percentage}% of total revenue", {
+                  percentage: data.percentage.toFixed(1),
+                })}
+              </div>
+            </div>
+          )
+        })}
       </CardContent>
     </Card>
   )
@@ -141,58 +215,52 @@ const AvgSaleValueCard = async ({
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
-
   const Icon = {
     equal: TrendingUpDown,
     up: TrendingUpIcon,
     down: TrendingDownIcon,
   }[status]
-  const sign = {
-    equal: "",
-    up: "+",
-    down: "-",
-  }[status]
-
+  const sign = { equal: "", up: "+", down: "-" }[status]
   return (
     <Card>
-      <CardHeader className="relative p-6">
-        <CardDescription>{t("Avg sale value")}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums">
-          {formatNumber(value)}
-        </CardTitle>
+      <CardHeaderEnhanced
+        icon={CreditCardIcon}
+        iconBg="#3b82f6"
+        title={formatNumber(value)}
+        description={t("Avg sale value")}
+      >
         <div className="absolute right-4 top-4">
-          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <Icon className="size-3" />
-            {sign}
-            {formatNumber(Math.abs(diffPercent))}%
-          </Badge>
+          <GrowthBadge
+            diffPercent={formatNumber(Math.abs(diffPercent))}
+            status={status}
+            sign={sign}
+            Icon={Icon}
+          />
         </div>
-      </CardHeader>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
+      </CardHeaderEnhanced>
+      <CardFooterEnhanced
+        status={status}
+        diff={diff}
+        Icon={Icon}
+        message={
           {
-            {
-              equal: t("No change this period"),
-              up: t("Up by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-              down: t("Down by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-            }[status]
-          }
-          <Icon className="size-4" />
-        </div>
-        <div className="text-muted-foreground">
+            equal: t("No change this period"),
+            up: t("Up by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+            down: t("Down by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+          }[status]
+        }
+        subMessage={
           {
-            {
-              equal: t("Avg sale value is the same"),
-              up: t("Avg sale value is on track"),
-              down: t("Avg sale value needs attention"),
-            }[status]
-          }
-        </div>
-      </CardFooter>
+            equal: t("Avg sale value is the same"),
+            up: t("Avg sale value is on track"),
+            down: t("Avg sale value needs attention"),
+          }[status]
+        }
+      />
     </Card>
   )
 }
@@ -206,58 +274,52 @@ const NewCustomersCard = async ({
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
-
   const Icon = {
     equal: TrendingUpDown,
     up: TrendingUpIcon,
     down: TrendingDownIcon,
   }[status]
-  const sign = {
-    equal: "",
-    up: "+",
-    down: "-",
-  }[status]
-
+  const sign = { equal: "", up: "+", down: "-" }[status]
   return (
     <Card>
-      <CardHeader className="relative p-6">
-        <CardDescription>{t("New customers")}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums">
-          {count}
-        </CardTitle>
+      <CardHeaderEnhanced
+        icon={HandCoinsIcon}
+        iconBg="#22c55e"
+        title={String(count)}
+        description={t("New customers")}
+      >
         <div className="absolute right-4 top-4">
-          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <Icon className="size-3" />
-            {sign}
-            {Math.abs(diffPercent)}%
-          </Badge>
+          <GrowthBadge
+            diffPercent={Math.abs(diffPercent)}
+            status={status}
+            sign={sign}
+            Icon={Icon}
+          />
         </div>
-      </CardHeader>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
+      </CardHeaderEnhanced>
+      <CardFooterEnhanced
+        status={status}
+        diff={diff}
+        Icon={Icon}
+        message={
           {
-            {
-              equal: t("No change this period"),
-              up: t("Up by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-              down: t("Down by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-            }[status]
-          }
-          <Icon className="size-4" />
-        </div>
-        <div className="text-muted-foreground">
+            equal: t("No change this period"),
+            up: t("Up by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+            down: t("Down by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+          }[status]
+        }
+        subMessage={
           {
-            {
-              equal: t("Acquisition is the same"),
-              up: t("Acquisition is on track"),
-              down: t("Acquisition needs attention"),
-            }[status]
-          }
-        </div>
-      </CardFooter>
+            equal: t("Acquisition is the same"),
+            up: t("Acquisition is on track"),
+            down: t("Acquisition needs attention"),
+          }[status]
+        }
+      />
     </Card>
   )
 }
@@ -271,61 +333,56 @@ const TotalSalesCard = async ({
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
-
   const Icon = {
     equal: TrendingUpDown,
     up: TrendingUpIcon,
     down: TrendingDownIcon,
   }[status]
-  const sign = {
-    equal: "",
-    up: "+",
-    down: "-",
-  }[status]
-
+  const sign = { equal: "", up: "+", down: "-" }[status]
   return (
     <Card>
-      <CardHeader className="relative p-6">
-        <CardDescription>{t("Total sales")}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums">
-          {formatNumber(count)}
-        </CardTitle>
+      <CardHeaderEnhanced
+        icon={CoinsIcon}
+        iconBg="#f59e0b"
+        title={formatNumber(count)}
+        description={t("Total sales")}
+      >
         <div className="absolute right-4 top-4">
-          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <Icon className="size-3" />
-            {sign}
-            {formatNumber(Math.abs(diffPercent))}%
-          </Badge>
+          <GrowthBadge
+            diffPercent={formatNumber(Math.abs(diffPercent))}
+            status={status}
+            sign={sign}
+            Icon={Icon}
+          />
         </div>
-      </CardHeader>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
+      </CardHeaderEnhanced>
+      <CardFooterEnhanced
+        status={status}
+        diff={diff}
+        Icon={Icon}
+        message={
           {
-            {
-              equal: t("No change this period"),
-              up: t("Up by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-              down: t("Down by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-            }[status]
-          }
-          <Icon className="size-4" />
-        </div>
-        <div className="text-muted-foreground">
+            equal: t("No change this period"),
+            up: t("Up by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+            down: t("Down by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+          }[status]
+        }
+        subMessage={
           {
-            {
-              equal: t("Sales is the same"),
-              up: t("Sales is on track"),
-              down: t("Sales needs attention"),
-            }[status]
-          }
-        </div>
-      </CardFooter>
+            equal: t("Sales is the same"),
+            up: t("Sales is on track"),
+            down: t("Sales needs attention"),
+          }[status]
+        }
+      />
     </Card>
   )
 }
+
 const TotalSalesCountCard = async ({
   count,
   growth,
@@ -335,58 +392,52 @@ const TotalSalesCountCard = async ({
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
-
   const Icon = {
     equal: TrendingUpDown,
     up: TrendingUpIcon,
     down: TrendingDownIcon,
   }[status]
-  const sign = {
-    equal: "",
-    up: "+",
-    down: "-",
-  }[status]
-
+  const sign = { equal: "", up: "+", down: "-" }[status]
   return (
     <Card>
-      <CardHeader className="relative p-6">
-        <CardDescription>{t("Number of sales")}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums">
-          {formatNumber(count)}
-        </CardTitle>
+      <CardHeaderEnhanced
+        icon={TrendingUpIcon}
+        iconBg="#8b5cf6"
+        title={formatNumber(count)}
+        description={t("Number of sales")}
+      >
         <div className="absolute right-4 top-4">
-          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <Icon className="size-3" />
-            {sign}
-            {formatNumber(Math.abs(diffPercent))}%
-          </Badge>
+          <GrowthBadge
+            diffPercent={formatNumber(Math.abs(diffPercent))}
+            status={status}
+            sign={sign}
+            Icon={Icon}
+          />
         </div>
-      </CardHeader>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
+      </CardHeaderEnhanced>
+      <CardFooterEnhanced
+        status={status}
+        diff={diff}
+        Icon={Icon}
+        message={
           {
-            {
-              equal: t("No change this period"),
-              up: t("Up by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-              down: t("Down by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-            }[status]
-          }
-          <Icon className="size-4" />
-        </div>
-        <div className="text-muted-foreground">
+            equal: t("No change this period"),
+            up: t("Up by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+            down: t("Down by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+          }[status]
+        }
+        subMessage={
           {
-            {
-              equal: t("Sales count is the same"),
-              up: t("Sales count is on track"),
-              down: t("Sales count needs attention"),
-            }[status]
-          }
-        </div>
-      </CardFooter>
+            equal: t("Sales count is the same"),
+            up: t("Sales count is on track"),
+            down: t("Sales count needs attention"),
+          }[status]
+        }
+      />
     </Card>
   )
 }
@@ -400,58 +451,52 @@ const LowStockProductsCard = async ({
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
-
   const Icon = {
     equal: TrendingUpDown,
     up: TrendingUpIcon,
     down: TrendingDownIcon,
   }[status]
-  const sign = {
-    equal: "",
-    up: "+",
-    down: "-",
-  }[status]
-
+  const sign = { equal: "", up: "+", down: "-" }[status]
   return (
     <Card>
-      <CardHeader className="relative p-6">
-        <CardDescription>{t("Low stock products")}</CardDescription>
-        <CardTitle className="text-2xl font-semibold tabular-nums">
-          {formatNumber(count)}
-        </CardTitle>
+      <CardHeaderEnhanced
+        icon={TrendingDownIcon}
+        iconBg="#ef4444"
+        title={formatNumber(count)}
+        description={t("Low stock products")}
+      >
         <div className="absolute right-4 top-4">
-          <Badge variant="outline" className="flex gap-1 rounded-lg text-xs">
-            <Icon className="size-3" />
-            {sign}
-            {formatNumber(Math.abs(diffPercent))}%
-          </Badge>
+          <GrowthBadge
+            diffPercent={formatNumber(Math.abs(diffPercent))}
+            status={status}
+            sign={sign}
+            Icon={Icon}
+          />
         </div>
-      </CardHeader>
-      <CardFooter className="flex-col items-start gap-1 text-sm">
-        <div className="line-clamp-1 flex gap-2 font-medium">
+      </CardHeaderEnhanced>
+      <CardFooterEnhanced
+        status={status}
+        diff={diff}
+        Icon={Icon}
+        message={
           {
-            {
-              equal: t("No change this period"),
-              up: t("Up by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-              down: t("Down by {diff} this period", {
-                diff: formatNumber(Math.abs(diff)),
-              }),
-            }[status]
-          }
-          <Icon className="size-4" />
-        </div>
-        <div className="text-muted-foreground">
+            equal: t("No change this period"),
+            up: t("Up by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+            down: t("Down by {diff} this period", {
+              diff: formatNumber(Math.abs(diff)),
+            }),
+          }[status]
+        }
+        subMessage={
           {
-            {
-              equal: t("Stock is the same"),
-              up: t("Stock is on track"),
-              down: t("Stock needs attention"),
-            }[status]
-          }
-        </div>
-      </CardFooter>
+            equal: t("Stock is the same"),
+            up: t("Stock is on track"),
+            down: t("Stock needs attention"),
+          }[status]
+        }
+      />
     </Card>
   )
 }
