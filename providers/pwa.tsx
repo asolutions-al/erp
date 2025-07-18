@@ -4,7 +4,9 @@
 
 import { PropsWithChildren, useEffect } from "react"
 
-function PushNotificationManager() {
+const isDev = process.env.NODE_ENV === "development"
+
+function ServiceWorkerRegister() {
   useEffect(() => {
     if ("serviceWorker" in navigator) {
       console.log("Service Worker is supported")
@@ -32,7 +34,7 @@ const PwaProvider = ({ children }: PropsWithChildren) => {
   return (
     <>
       {children}
-      <PushNotificationManager />
+      {isDev ? null : <ServiceWorkerRegister />}
     </>
   )
 }
