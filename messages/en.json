@@ -550,5 +550,17 @@
   "Sales count needs attention": "Sales count needs attention",
   "{percentage}% of total revenue": "{percentage}% of total revenue",
   "invoices": "invoices",
-  "{count} invoices": "{count, plural, one {# invoice} other {# invoices}}"
+  "{count} invoices": "{count, plural, one {# invoice} other {# invoices}}",
+  "Invoices total": "Invoices total",
+  "Invoices total is the same": "Invoices total is the same",
+  "Invoices total is on track": "Invoices total is on track",
+  "Invoices total needs attention": "Invoices total needs attention",
+  "Invoices count": "Invoices count",
+  "Invoices count is the same": "Invoices count is the same",
+  "Invoices count is on track": "Invoices count is on track",
+  "Invoices count needs attention": "Invoices count needs attention",
+  "Avg invoice total": "Avg invoice total",
+  "Avg invoice total is the same": "Avg invoice total is the same",
+  "Avg invoice total is on track": "Avg invoice total is on track",
+  "Avg invoice total needs attention": "Avg invoice total needs attention"
 }

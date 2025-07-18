@@ -142,13 +142,13 @@ const AvgSaleValueCard = async ({
     <GrowthCard
       Icon={CreditCardIcon}
       title={formatNumber(value)}
-      description={t("Avg sale value")}
+      description={t("Avg invoice total")}
       growth={growth}
       subMessage={
         {
-          equal: t("Avg sale value is the same"),
-          up: t("Avg sale value is on track"),
-          down: t("Avg sale value needs attention"),
+          equal: t("Avg invoice total is the same"),
+          up: t("Avg invoice total is on track"),
+          down: t("Avg invoice total needs attention"),
         }[growth.status]
       }
     />
@@ -192,13 +192,13 @@ const TotalSalesCard = async ({
     <GrowthCard
       Icon={CoinsIcon}
       title={formatNumber(count)}
-      description={t("Total sales")}
+      description={t("Invoices total")}
       growth={growth}
       subMessage={
         {
-          equal: t("Sales is the same"),
-          up: t("Sales is on track"),
-          down: t("Sales needs attention"),
+          equal: t("Invoices total is the same"),
+          up: t("Invoices total is on track"),
+          down: t("Invoices total needs attention"),
         }[growth.status]
       }
     />
@@ -217,13 +217,13 @@ const TotalSalesCountCard = async ({
     <GrowthCard
       Icon={TrendingUpIcon}
       title={formatNumber(count)}
-      description={t("Number of sales")}
+      description={t("Invoices count")}
       growth={growth}
       subMessage={
         {
-          equal: t("Sales count is the same"),
-          up: t("Sales count is on track"),
-          down: t("Sales count needs attention"),
+          equal: t("Invoices count is the same"),
+          up: t("Invoices count is on track"),
+          down: t("Invoices count needs attention"),
         }[growth.status]
       }
     />
