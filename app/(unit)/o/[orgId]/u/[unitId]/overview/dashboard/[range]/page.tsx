@@ -144,11 +144,11 @@ const AvgSaleValueCard = async ({
       title={formatNumber(value)}
       description={t("Avg invoice total")}
       growth={growth}
-      subMessage={
+      suggestion={
         {
-          equal: t("Avg invoice total is the same"),
-          up: t("Avg invoice total is on track"),
-          down: t("Avg invoice total needs attention"),
+          equal: t("Keep pricing steady and upsell"),
+          up: t("Try premium offers or price tweaks"),
+          down: t("Review pricing and add value"),
         }[growth.status]
       }
     />
@@ -169,11 +169,11 @@ const NewCustomersCard = async ({
       title={formatNumber(count)}
       description={t("New customers")}
       growth={growth}
-      subMessage={
+      suggestion={
         {
-          equal: t("Acquisition is the same"),
-          up: t("Acquisition is on track"),
-          down: t("Acquisition needs attention"),
+          equal: t("Keep new customers engaged"),
+          up: t("Boost referrals and campaigns"),
+          down: t("Increase marketing and improve onboarding"),
         }[growth.status]
       }
     />
@@ -194,11 +194,11 @@ const TotalSalesCard = async ({
       title={formatNumber(count)}
       description={t("Invoices total")}
       growth={growth}
-      subMessage={
+      suggestion={
         {
-          equal: t("Invoices total is the same"),
-          up: t("Invoices total is on track"),
-          down: t("Invoices total needs attention"),
+          equal: t("Keep current sales strategy"),
+          up: t("Expand what works or try new markets"),
+          down: t("Check funnel and fix issues"),
         }[growth.status]
       }
     />
@@ -219,11 +219,11 @@ const TotalSalesCountCard = async ({
       title={formatNumber(count)}
       description={t("Invoices count")}
       growth={growth}
-      subMessage={
+      suggestion={
         {
-          equal: t("Invoices count is the same"),
-          up: t("Invoices count is on track"),
-          down: t("Invoices count needs attention"),
+          equal: t("Keep customers engaged"),
+          up: t("Reward loyal buyers"),
+          down: t("Contact inactive customers and offer deals"),
         }[growth.status]
       }
     />
@@ -244,11 +244,11 @@ const LowStockProductsCard = async ({
       title={formatNumber(count)}
       description={t("Low stock products")}
       growth={growth}
-      subMessage={
+      suggestion={
         {
-          equal: t("Stock is the same"),
-          up: t("Stock is on track"),
-          down: t("Stock needs attention"),
+          equal: t("Monitor and reorder as needed"),
+          up: t("Optimize or buy in bulk"),
+          down: t("Restock key items soon"),
         }[growth.status]
       }
     />

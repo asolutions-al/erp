@@ -14,13 +14,13 @@ const GrowthCard = async ({
   Icon,
   title,
   description,
-  subMessage,
+  suggestion,
   growth,
 }: {
   Icon: React.ElementType
   title: string
   description: string
-  subMessage: string
+  suggestion: string
   growth: GrowthT
 }) => {
   const t = await getTranslations()
@@ -80,7 +80,7 @@ const GrowthCard = async ({
           {message}
           <TrendIcon className="size-4" />
         </div>
-        <div className="text-xs text-muted-foreground">{subMessage}</div>
+        <div className="text-xs text-muted-foreground">{suggestion}</div>
       </CardFooter>
     </Card>
   )
