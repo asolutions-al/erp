@@ -1,4 +1,4 @@
-import { SidebarItem } from "@/components/buttons"
+import { SidebarItemCollapsible, SidebarItemSimple } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -14,12 +14,9 @@ import { Skeleton } from "@/components/ui/skeleton"
 import {
   ArrowLeftIcon,
   BanknoteIcon,
-  BrickWallIcon,
   BriefcaseBusinessIcon,
-  CirclePlusIcon,
   ContactIcon,
   LayoutDashboardIcon,
-  ListTreeIcon,
   PackageIcon,
   ReceiptTextIcon,
   SettingsIcon,
@@ -60,121 +57,42 @@ const UnitSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarItem
-              text="Overview"
-              icon={<BrickWallIcon />}
+            <SidebarItemSimple
+              text="Dashboard"
+              icon={<LayoutDashboardIcon />}
               href={`/o/${orgId}/u/${unitId}/overview/dashboard/today`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/overview/dashboard/today`,
-                  text: "Dashboard",
-                  icon: <LayoutDashboardIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Product"
               icon={<PackageIcon />}
               href={`/o/${orgId}/u/${unitId}/product/list/active`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/product/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/product/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Customer"
               icon={<ContactIcon />}
               href={`/o/${orgId}/u/${unitId}/customer/list/active`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/customer/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/customer/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Invoice"
               icon={<ReceiptTextIcon />}
               href={`/o/${orgId}/u/${unitId}/invoice/list/today`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/invoice/list/today`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/invoice/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Cash register"
               icon={<BanknoteIcon />}
               href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/cashRegister/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/cashRegister/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Warehouse"
               icon={<WarehouseIcon />}
               href={`/o/${orgId}/u/${unitId}/warehouse/list/active`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/warehouse/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/warehouse/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Category"
               icon={<BriefcaseBusinessIcon />}
               href={`/o/${orgId}/u/${unitId}/category/list/active`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/category/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/u/${unitId}/category/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemCollapsible
               text="Configuration"
               icon={<SettingsIcon />}
               href={`/o/${orgId}/u/${unitId}/config/invoice`}

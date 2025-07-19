@@ -1,4 +1,4 @@
-import { SidebarItem as SidebarItemSS } from "@/components/buttons"
+import { SidebarItemCollapsible } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -40,7 +40,7 @@ const AccountSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarItemSS
+            <SidebarItemCollapsible
               text="Overview"
               href="/account/overview/orgs"
               icon={<BrickWallIcon />}
@@ -52,7 +52,7 @@ const AccountSidebar = async (props: Props) => {
                 },
               ]}
             />
-            <SidebarItemSS
+            <SidebarItemCollapsible
               text="Settings"
               href="/account/settings/general"
               icon={<SettingsIcon />}

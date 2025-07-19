@@ -28,7 +28,7 @@ type Props = Item & {
   subItems: Item[]
 }
 
-const SidebarItem = (props: Props) => {
+const SidebarItemCollapsible = (props: Props) => {
   const t = useTranslations()
   const pathname = usePathname()
   const router = useRouter()
@@ -74,4 +74,4 @@ const SidebarItem = (props: Props) => {
   )
 }
 
-export { SidebarItem }
+export { SidebarItemCollapsible }

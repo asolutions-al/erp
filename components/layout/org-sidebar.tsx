@@ -1,4 +1,4 @@
-import { SidebarItem } from "@/components/buttons"
+import { SidebarItemSimple } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -12,12 +12,9 @@ import {
 } from "@/components/ui/sidebar"
 import { Skeleton } from "@/components/ui/skeleton"
 import {
-  BrickWallIcon,
   BuildingIcon,
-  CirclePlusIcon,
   CreditCardIcon,
   LayoutDashboardIcon,
-  ListTreeIcon,
   UsersIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -43,60 +40,26 @@ const OrgSidebar = async (props: Props) => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
-
           <SidebarMenu>
-            <SidebarItem
+            <SidebarItemSimple
               text="Overview"
-              icon={<BrickWallIcon />}
+              icon={<LayoutDashboardIcon />}
               href={`/o/${orgId}/overview`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/overview`,
-                  text: "Dashboard",
-                  icon: <LayoutDashboardIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Unit"
               href={`/o/${orgId}/unit/list/active`}
               icon={<BuildingIcon />}
-              subItems={[
-                {
-                  href: `/o/${orgId}/unit/list/active`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-                {
-                  href: `/o/${orgId}/unit/create`,
-                  text: "Create",
-                  icon: <CirclePlusIcon />,
-                },
-              ]}
             />
-            <SidebarItem
+            <SidebarItemSimple
               text="Member"
               href={`/o/${orgId}/member/list`}
               icon={<UsersIcon />}
-              subItems={[
-                {
-                  href: `/o/${orgId}/member/list`,
-                  text: "List",
-                  icon: <ListTreeIcon />,
-                },
-              ]}
             />
-            <SidebarItem
-              text="Billing"
+            <SidebarItemSimple
+              text="Subscription"
               href={`/o/${orgId}/billing/subscription`}
               icon={<CreditCardIcon />}
-              subItems={[
-                {
-                  href: `/o/${orgId}/billing/subscription`,
-                  text: "Subscription",
-                  icon: <CreditCardIcon />,
-                },
-              ]}
             />
           </SidebarMenu>
         </SidebarGroup>

@@ -20,7 +20,7 @@
   "Create": "Krijo",
   "List": "Lista",
   "Product": "Produkt",
-  "Dashboard": "Dashboard",
+  "Dashboard": "Paneli",
   "History": "Historiku",
   "Return to homepage": "Kthehu në faqen kryesore",
   "Please check the URL or try navigating back to the homepage": "Ju lutemi kontrolloni URL-në ose provoni të ktheheni në faqen kryesore",
@@ -671,5 +671,8 @@
   "equal": "pa ndryshim",
   "Customer purchase patterns": "Modelet e blerjeve të klientëve",
   "Invoice value distribution": "Shpërndarja e vlerës së faturave",
-  "Organization creation will be available soon": "Krijimi i organizatës do të jetë i disponueshëm së shpejti"
+  "Organization creation will be available soon": "Krijimi i organizatës do të jetë i disponueshëm së shpejti",
+  "Overview & Settings": "Përmbledhje & Cilësimet",
+  "Management": "Menaxhimi",
+  "Operations": "Operacionet"
 }
