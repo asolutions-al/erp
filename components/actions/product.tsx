@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { markProductAsFavorite } from "@/db/app/actions"
+import { markProductAsFavorite } from "@/db/app/actions/product"
 import {
   CategorySchemaT,
   ProductCategorySchemaT,

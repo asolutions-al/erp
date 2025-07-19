@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { getInvoiceRows } from "@/db/app/loaders"
+import { getInvoiceRows } from "@/db/app/loaders/invoiceRow"
 import { InvoiceRowSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import { EyeIcon, MoreHorizontalIcon, PrinterIcon } from "lucide-react"

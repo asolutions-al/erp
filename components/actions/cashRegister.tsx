@@ -19,7 +19,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { closeCashRegister } from "@/db/app/actions"
+import { closeCashRegister } from "@/db/app/actions/cashRegister"
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {

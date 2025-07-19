@@ -10,7 +10,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getCustomerInvoices } from "@/db/app/actions"
+import { getCustomerInvoices } from "@/db/app/actions/customer"
 import { CustomerSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { useTranslations } from "next-intl"
 import { useParams } from "next/navigation"

@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { markCustomerAsFavorite } from "@/db/app/actions"
+import { markCustomerAsFavorite } from "@/db/app/actions/customer"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {

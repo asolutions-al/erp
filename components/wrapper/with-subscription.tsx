@@ -7,14 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { getSubscriptionByOrgId } from "@/db/app/actions"
-import {
-  getCustomerCount,
-  getInvoiceMonthCount,
-  getProductCount,
-  getUnitCount,
-} from "@/db/app/loaders"
-import { getPlans } from "@/db/auth/loaders"
+import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
+import { getCustomerCount } from "@/db/app/loaders/customer"
+import { getInvoiceMonthCount } from "@/db/app/loaders/invoice"
+import { getProductCount } from "@/db/app/loaders/product"
+import { getUnitCount } from "@/db/app/loaders/unit"
+import { getPlans } from "@/db/auth/loaders/plan"
 import { PlanSchemaT } from "@/db/auth/schema"
 import {
   AlertTriangleIcon,
