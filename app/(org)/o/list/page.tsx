@@ -24,12 +24,24 @@ const Page = async () => {
 
   const orgs = await db.query.organization.findMany({
     where: eq(organization.ownerId, userId),
+    with: {
+      units: {
+        columns: {
+          id: true,
+        },
+      },
+      orgMembers: {
+        columns: {
+          id: true,
+        },
+      },
+    },
   })
 
   return (
     <>
       <PageHeader
-        title="Choose organization"
+        title="Organizations"
         rightComp={
           <Tooltip>
             <TooltipTrigger asChild>
@@ -43,7 +55,7 @@ const Page = async () => {
               </span>
             </TooltipTrigger>
             <TooltipContent>
-              <p>Coming soon</p>
+              <p>{t("Organization creation will be available soon")}</p>
             </TooltipContent>
           </Tooltip>
         }
@@ -52,7 +64,13 @@ const Page = async () => {
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
         {orgs.map((org) => (
           <Link key={org.id} href={`/o/${org.id}/overview`}>
-            <OrgCard data={org} />
+            <OrgCard
+              data={{
+                ...org,
+                unitCount: org.units.length,
+                memberCount: org.orgMembers.length,
+              }}
+            />
           </Link>
         ))}
       </div>
