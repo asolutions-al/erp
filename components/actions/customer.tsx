@@ -188,13 +188,13 @@ const InvoicesSheet = ({
           <SheetTitle>
             {t("Invoices for {name}", { name: customer?.name || "" })}
           </SheetTitle>
-          <SheetDescription>
-            {loading ? (
-              <Skeleton className="h-4 w-32" />
-            ) : (
-              t("{count} invoices", { count: invoices.length })
-            )}
-          </SheetDescription>
+          {loading ? (
+            <Skeleton className="h-4 w-32" />
+          ) : (
+            <SheetDescription>
+              {t("{count} invoices", { count: invoices.length })}
+            </SheetDescription>
+          )}
         </SheetHeader>
 
         {loading ? (
