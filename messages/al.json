@@ -582,5 +582,15 @@
   "Most revenue generating products": "Produktet që gjenerojnë më shumë të ardhura",
   "{count} sold": "{count} të shitura",
   "View details": "Shiko detajet",
-  "No data for selected period": "Nuk ka të dhëna për periudhën e zgjedhur"
+  "No data for selected period": "Nuk ka të dhëna për periudhën e zgjedhur",
+  "Peak Hours Analysis": "Analiza e Orareve të Pikut",
+  "Sales performance by hour": "Performanca e shitjeve sipas orës",
+  "Peak Hour": "Ora e Pikut",
+  "Invoice Count": "Numri i Faturave",
+  "Avg/Invoice": "Mesatarja/Faturë",
+  "Max Invoice": "Fatura Maksimale",
+  "Hourly Performance": "Performanca për Orë",
+  "inv": "fat",
+  "Most Active": "Më Aktive",
+  "Least Active": "Më pak Aktive"
 }

@@ -24,6 +24,7 @@ import {
 import { calcGrowth } from "@/utils/calc"
 import { and, count, desc, eq, gte, lte, sum } from "drizzle-orm"
 import {
+  AlarmClockIcon,
   CoinsIcon,
   CreditCardIcon,
   ExternalLinkIcon,
@@ -362,6 +363,168 @@ const TopProductsCard = async ({
   )
 }
 
+const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
+  const t = await getTranslations()
+
+  // Calculate metrics by hour
+  const hourlyMetrics = invoices.reduce(
+    (acc, inv) => {
+      const hour = new Date(inv.createdAt).getHours()
+      acc[hour] = acc[hour] || {
+        total: 0,
+        count: 0,
+        maxInvoice: 0,
+        minInvoice: Infinity,
+      }
+      acc[hour].total += inv.total
+      acc[hour].count++
+      acc[hour].maxInvoice = Math.max(acc[hour].maxInvoice, inv.total)
+      acc[hour].minInvoice = Math.min(acc[hour].minInvoice, inv.total)
+      return acc
+    },
+    {} as Record<
+      number,
+      {
+        total: number
+        count: number
+        maxInvoice: number
+        minInvoice: number
+      }
+    >
+  )
+
+  // Convert to array and calculate averages
+  const hourlyData = Object.entries(hourlyMetrics)
+    .map(([hour, data]) => ({
+      hour: parseInt(hour),
+      total: data.total,
+      count: data.count,
+      avg: data.total / data.count,
+      maxInvoice: data.maxInvoice,
+      minInvoice: data.minInvoice,
+    }))
+    .sort((a, b) => b.total - a.total)
+
+  const maxTotal = Math.max(...hourlyData.map((h) => h.total))
+  const businessHours = hourlyData.filter((h) => h.count > 0)
+  const peakHour = businessHours[0]
+  const slowestHour = businessHours[businessHours.length - 1]
+
+  return (
+    <Card>
+      <CardHeader className="p-6 pb-2">
+        <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+          <AlarmClockIcon size={20} />
+          {t("Peak Hours Analysis")}
+        </CardTitle>
+        <CardDescription className="text-xs">
+          {t("Sales performance by hour")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6 px-6 pb-6 pt-2">
+        {/* Peak Hour Summary */}
+        <div className="rounded-lg bg-muted/50 p-4">
+          <h3 className="mb-3 text-sm font-medium text-muted-foreground">
+            {t("Peak Hour")} - {peakHour.hour.toString().padStart(2, "0")}:00
+          </h3>
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p className="text-xs text-muted-foreground">
+                {t("Total Revenue")}
+              </p>
+              <p className="text-lg font-bold tabular-nums">
+                {formatNumber(peakHour.total)}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">
+                {t("Invoice Count")}
+              </p>
+              <p className="text-lg font-bold tabular-nums">{peakHour.count}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">
+                {t("Avg/Invoice")}
+              </p>
+              <p className="text-lg font-bold tabular-nums">
+                {formatNumber(peakHour.avg)}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">
+                {t("Max Invoice")}
+              </p>
+              <p className="text-lg font-bold tabular-nums">
+                {formatNumber(peakHour.maxInvoice)}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Hourly Performance */}
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-muted-foreground">
+            {t("Hourly Performance")}
+          </h3>
+          <div className="space-y-3">
+            {hourlyData
+              .filter((h) => h.count > 0)
+              .map((hour) => (
+                <div key={hour.hour} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">
+                        {hour.hour.toString().padStart(2, "0")}:00
+                      </span>
+                      <Badge variant="outline" className="text-xs">
+                        {hour.count} {t("invoices")}
+                      </Badge>
+                    </div>
+                    <span className="tabular-nums">
+                      {formatNumber(hour.total)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Progress
+                      value={(hour.total / maxTotal) * 100}
+                      className="h-1.5"
+                    />
+                    <span className="text-xs tabular-nums text-muted-foreground">
+                      {formatNumber(hour.avg)}/{t("inv")}
+                    </span>
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
+
+        {/* Quick Stats */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-lg border p-3">
+            <p className="text-xs text-muted-foreground">{t("Most Active")}</p>
+            <p className="mt-1 text-2xl font-bold">
+              {peakHour.hour.toString().padStart(2, "0")}:00
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {formatNumber(peakHour.total)} ({peakHour.count} {t("invoices")})
+            </p>
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="text-xs text-muted-foreground">{t("Least Active")}</p>
+            <p className="mt-1 text-2xl font-bold">
+              {slowestHour.hour.toString().padStart(2, "0")}:00
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {formatNumber(slowestHour.total)} ({slowestHour.count}{" "}
+              {t("invoices")})
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 const Page = async (props: Props) => {
   const { params } = props
   const { unitId, orgId, range } = await params
@@ -522,6 +685,9 @@ const Page = async (props: Props) => {
             orgId={orgId}
             unitId={unitId}
           />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <PeakHoursCard invoices={invoices} />
         </div>
       </div>
     </>

@@ -582,5 +582,15 @@
   "Most revenue generating products": "Most revenue generating products",
   "{count} sold": "{count} sold",
   "View details": "View details",
-  "No data for selected period": "No data for selected period"
+  "No data for selected period": "No data for selected period",
+  "Peak Hours Analysis": "Peak Hours Analysis",
+  "Sales performance by hour": "Sales performance by hour",
+  "Peak Hour": "Peak Hour",
+  "Invoice Count": "Invoice Count",
+  "Avg/Invoice": "Avg/Invoice",
+  "Max Invoice": "Max Invoice",
+  "Hourly Performance": "Hourly Performance",
+  "inv": "inv",
+  "Most Active": "Most Active",
+  "Least Active": "Least Active"
 }
