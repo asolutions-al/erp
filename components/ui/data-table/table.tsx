@@ -12,12 +12,14 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  SortingState,
   useReactTable,
 } from "@tanstack/react-table"
-import { useState } from "react"
+import { useTranslations } from "next-intl"
+import { dateRangeFilter, numberRangeFilter } from "./filter-functions"
 import { DataTablePagination } from "./pagination"
 
 interface DataTableProps<TData, TValue> {
@@ -29,17 +31,19 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
+  const t = useTranslations()
 
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    state: {
-      sorting,
+    getFilteredRowModel: getFilteredRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    filterFns: {
+      numberRangeFilter,
+      dateRangeFilter,
     },
   })
 
@@ -99,14 +103,14 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {t("No results found")}.
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} /> {/* TODO: does this belong here? */}
+      <DataTablePagination table={table} />
     </>
   )
 }

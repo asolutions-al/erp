@@ -2,6 +2,12 @@
 
 import { CashRegisterActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
+import {
+  BooleanFilter,
+  DateFilter,
+  NumberFilter,
+  StringFilter,
+} from "@/components/ui/data-table"
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
@@ -9,16 +15,12 @@ import { useTranslations } from "next-intl"
 
 type SchemaT = CashRegisterSchemaT
 
-const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const t = useTranslations()
-  const { original } = row
-  return t(original.status)
-}
 const IsOpenCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
   return original.isOpen ? t("Yes") : t("No")
 }
+
 const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
@@ -28,47 +30,92 @@ const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => <SortBtn text="Name" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Name" column={column} />
+        <StringFilter title="Name" column={column} />
+      </div>
+    ),
   },
   {
     accessorKey: "openedAt",
-    header: ({ column }) => <SortBtn text="Opened at" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Opened at" column={column} />
+        <DateFilter title="Opened at" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatDate(new Date(row.original.openedAt)),
+    filterFn: "dateRangeFilter",
   },
   {
     accessorKey: "openingBalance",
-    header: ({ column }) => <SortBtn text="Opening balance" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Opening balance" column={column} />
+        <NumberFilter title="Opening balance" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatNumber(row.original.openingBalance),
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "balance",
-    header: ({ column }) => <SortBtn text="Balance" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Balance" column={column} />
+        <NumberFilter title="Balance" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatNumber(row.original.balance),
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "isOpen",
-    header: ({ column }) => <SortBtn text="Is open" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Is open" column={column} />
+        <BooleanFilter title="Is open" column={column} />
+      </div>
+    ),
     cell: IsOpenCell,
   },
   {
     accessorKey: "closedAt",
-    header: ({ column }) => <SortBtn text="Closed at" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Closed at" column={column} />
+        <DateFilter title="Closed at" column={column} />
+      </div>
+    ),
     cell: ({ row }) => {
       const { closedAt } = row.original
       return closedAt ? formatDate(new Date(closedAt)) : "-"
     },
+    filterFn: "dateRangeFilter",
   },
   {
     accessorKey: "closingBalanace",
-    header: ({ column }) => <SortBtn text="Closing balance" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Closing balance" column={column} />
+        <NumberFilter title="Closing balance" column={column} />
+      </div>
+    ),
     cell: ({ row }) => {
       const { closingBalanace } = row.original
       return closingBalanace ? formatNumber(closingBalanace) : "-"
     },
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "isFavorite",
-    header: ({ column }) => <SortBtn text="Favorite" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Favorite" column={column} />
+        <BooleanFilter title="Favorite" column={column} />
+      </div>
+    ),
     cell: FavoriteCell,
   },
   {

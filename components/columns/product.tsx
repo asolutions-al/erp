@@ -3,6 +3,12 @@
 import { ProductActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import {
+  BooleanFilter,
+  NumberFilter,
+  SelectFilter,
+  StringFilter,
+} from "@/components/ui/data-table"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import {
@@ -38,7 +44,12 @@ const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => <SortBtn text="Name" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Name" column={column} />
+        <StringFilter title="Name" column={column} />
+      </div>
+    ),
     cell: ({ row }) => {
       const { imageBucketPath, name } = row.original
       return (
@@ -60,33 +71,67 @@ const columns: ColumnDef<SchemaT>[] = [
   },
   {
     accessorKey: "unit",
-    header: ({ column }) => <SortBtn text="Unit" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Unit" column={column} />
+        <SelectFilter title="Unit" column={column} />
+      </div>
+    ),
     cell: UnitCell,
+    filterFn: "equals",
   },
   {
     accessorKey: "price",
-    header: ({ column }) => <SortBtn text="Price" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Price" column={column} />
+        <NumberFilter title="Price" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatNumber(row.original.price),
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "taxPercentage",
-    header: ({ column }) => <SortBtn text="Tax" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Tax" column={column} />
+        <NumberFilter title="Tax %" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatNumber(row.original.taxPercentage) + "%",
+    filterFn: "numberRangeFilter",
   },
   {
     id: "stock",
     accessorFn: (row) =>
       row.productInventories.reduce((acc, i) => acc + i.stock, 0),
-    header: ({ column }) => <SortBtn text="Stock" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Stock" column={column} />
+        <NumberFilter title="Stock" column={column} />
+      </div>
+    ),
     cell: ({ getValue }) => formatNumber(getValue() as number),
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "barcode",
-    header: ({ column }) => <SortBtn text="Barcode" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Barcode" column={column} />
+        <StringFilter title="Barcode" column={column} />
+      </div>
+    ),
   },
   {
     accessorKey: "isFavorite",
-    header: ({ column }) => <SortBtn text="Favorite" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Favorite" column={column} />
+        <BooleanFilter title="Favorite" column={column} />
+      </div>
+    ),
     cell: FavoriteCell,
   },
   {

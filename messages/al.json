@@ -160,6 +160,7 @@
   "Quantity": "Sasia",
   "Subtotal": "Nëntotali",
   "Tax": "Taksa",
+  "Tax %": "Taksa %",
   "Invoice number": "Numri i faturës",
   "Customer details": "Detajet e klientit",
   "Invoice footer": "Këmbëshkrimi i faturës",
@@ -689,5 +690,18 @@
   "Categories": "Kategoritë",
   "Configurations": "Konfigurime",
   "Subscriptions": "Abonimet",
-  "Select unit": "Zgjidh njësinë"
+  "Select unit": "Zgjidh njësinë",
+  "Search": "Kërko",
+  "Filter": "Filtro",
+  "Filter by": "Filtro sipas",
+  "Search all columns": "Kërko në krejt kolonat",
+  "Clear filters": "Pastro filtrat",
+  "Set the numeric range for this column": "Cakto intervalin numerik për këtë kolonë",
+  "Pick a date range": "Zgjidh një periudhë kohore",
+  "Min": "Minim",
+  "Max": "Maksimum",
+  "Apply": "Apliko",
+  "No results found": "Nuk u gjetën rezultate",
+  "{filtered} of {total} rows": "{filtered} nga {total} rreshta",
+  "owner": "Përdoruesi"
 }

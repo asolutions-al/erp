@@ -2,6 +2,7 @@
 
 import { UnitActions } from "@/components/actions/unit"
 import { SortBtn } from "@/components/buttons"
+import { StringFilter } from "@/components/ui/data-table"
 import { UnitSchemaT } from "@/db/app/schema"
 import { ColumnDef } from "@tanstack/react-table"
 
@@ -9,11 +10,21 @@ import { ColumnDef } from "@tanstack/react-table"
 const columns: ColumnDef<UnitSchemaT>[] = [
   {
     accessorKey: "name",
-    header: ({ column }) => <SortBtn text="Name" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Name" column={column} />
+        <StringFilter title="Name" column={column} />
+      </div>
+    ),
   },
   {
     accessorKey: "description",
-    header: ({ column }) => <SortBtn text="Description" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Description" column={column} />
+        <StringFilter title="Description" column={column} />
+      </div>
+    ),
   },
   {
     id: "actions",

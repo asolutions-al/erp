@@ -6,6 +6,12 @@
 import { InvoiceActions } from "@/components/actions/invoice"
 //
 import { SortBtn } from "@/components/buttons"
+import {
+  DateFilter,
+  NumberFilter,
+  SelectFilter,
+  StringFilter,
+} from "@/components/ui/data-table"
 import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
@@ -28,27 +34,55 @@ const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "createdAt",
-    header: ({ column }) => <SortBtn text="Date" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Date" column={column} />
+        <DateFilter title="Date" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatDate(new Date(row.original.createdAt)),
+    filterFn: "dateRangeFilter",
   },
   {
     accessorKey: "total",
-    header: ({ column }) => <SortBtn text="Total" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Total" column={column} />
+        <NumberFilter title="Total" column={column} />
+      </div>
+    ),
     cell: ({ row }) => formatNumber(row.original.total),
+    filterFn: "numberRangeFilter",
   },
   {
     accessorKey: "payMethod",
-    header: ({ column }) => <SortBtn text="Payment method" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Payment method" column={column} />
+        <SelectFilter title="Payment method" column={column} />
+      </div>
+    ),
     cell: PayMethodCell,
   },
   {
-    accessorKey: "customer.name",
-    header: ({ column }) => <SortBtn text="Customer name" column={column} />,
+    accessorKey: "customerName",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Customer name" column={column} />
+        <StringFilter title="Customer" column={column} />
+      </div>
+    ),
   },
   {
     accessorKey: "status",
-    header: ({ column }) => <SortBtn text="Status" column={column} />,
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Status" column={column} />
+        <SelectFilter title="Status" column={column} />
+      </div>
+    ),
     cell: StatusCell,
+    filterFn: "equals",
   },
   {
     id: "actions",

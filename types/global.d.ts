@@ -5,3 +5,10 @@ declare module "next-intl" {
     Messages: typeof en
   }
 }
+
+declare module "@tanstack/react-table" {
+  interface FilterFns {
+    numberRangeFilter: FilterFn<unknown>
+    dateRangeFilter: FilterFn<unknown>
+  }
+}

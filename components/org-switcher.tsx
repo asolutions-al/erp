@@ -29,7 +29,9 @@ const OrgSwitcher = async (props: Props) => {
   const {
     data: { user },
   } = await client.auth.getUser()
-  const userId = user!.id
+  const userId = user?.id
+
+  if (!userId) return null
 
   const orgs = await db.query.organization.findMany({
     where: eq(organization.ownerId, userId),
