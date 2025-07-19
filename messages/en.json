@@ -24,7 +24,6 @@
   "Please check the URL or try navigating back to the homepage": "Please check the URL or try navigating back to the homepage",
   "We're sorry, the page you requested could not be found": "We're sorry, the page you requested could not be found",
   "Page not found": "Page not found",
-  "Select unit": "Select unit",
   "Save": "Save",
   "Discard": "Discard",
   "Please fill in all required fields": "Please fill in all required fields",
@@ -684,5 +683,10 @@
   "Avg Revenue/Hour": "Avg Revenue/Hour",
   "Avg Invoices/Hour": "Avg Invoices/Hour",
   "Best Hour": "Best Hour",
-  "Hour": "Hour"
+  "Hour": "Hour",
+  "Cash registers": "Cash registers",
+  "Warehouses": "Warehouses",
+  "Categories": "Categories",
+  "Configurations": "Configurations",
+  "Subscriptions": "Subscriptions"
 }

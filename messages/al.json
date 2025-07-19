@@ -26,7 +26,6 @@
   "Please check the URL or try navigating back to the homepage": "Ju lutemi kontrolloni URL-në ose provoni të ktheheni në faqen kryesore",
   "We're sorry, the page you requested could not be found": "Na vjen keq, faqja që kërkoni nuk mund të gjendet",
   "Page not found": "Faqja nuk u gjet",
-  "Select unit": "Zgjidh njësi",
   "Save": "Ruaj",
   "Discard": "Pastro",
   "Please fill in all required fields": "Ju lutemi plotësoni të gjitha fushat e kërkuara",
@@ -83,7 +82,7 @@
   "Method of payment": "Metoda e pagesës",
   "Payment": "Pagesa",
   "List of products to sell": "Lista e produkteve për shitje",
-  "Products": "Produktet",
+  "Products": "Produkte",
   "The person that will receive the invoice": "Personi që do të marrë faturën",
   "Party": "Partia",
   "Settings": "Konfigurimet",
@@ -684,5 +683,10 @@
   "Avg Revenue/Hour": "Të ardhura mesatare/Orë",
   "Avg Invoices/Hour": "Fatura mesatare/Orë",
   "Best Hour": "Ora më e mirë",
-  "Hour": "Orë"
+  "Hour": "Orë",
+  "Cash registers": "Arka",
+  "Warehouses": "Magazina",
+  "Categories": "Kategoritë",
+  "Configurations": "Konfigurime",
+  "Subscriptions": "Abonimet"
 }

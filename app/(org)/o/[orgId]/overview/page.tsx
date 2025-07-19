@@ -22,7 +22,7 @@ const Page = async ({ params }: Props) => {
   return (
     <>
       <PageHeader
-        title="Select unit"
+        title="Units"
         rightComp={
           <Link href={`/o/${orgId}/unit/create`}>
             <Button size="sm" className="h-8 gap-1">

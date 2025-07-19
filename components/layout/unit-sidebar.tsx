@@ -63,37 +63,37 @@ const UnitSidebar = async (props: Props) => {
               href={`/o/${orgId}/u/${unitId}/overview/dashboard/today`}
             />
             <SidebarItemSimple
-              text="Product"
+              text="Products"
               icon={<PackageIcon />}
               href={`/o/${orgId}/u/${unitId}/product/list/active`}
             />
             <SidebarItemSimple
-              text="Customer"
+              text="Customers"
               icon={<ContactIcon />}
               href={`/o/${orgId}/u/${unitId}/customer/list/active`}
             />
             <SidebarItemSimple
-              text="Invoice"
+              text="Invoices"
               icon={<ReceiptTextIcon />}
               href={`/o/${orgId}/u/${unitId}/invoice/list/today`}
             />
             <SidebarItemSimple
-              text="Cash register"
+              text="Cash registers"
               icon={<BanknoteIcon />}
               href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
             />
             <SidebarItemSimple
-              text="Warehouse"
+              text="Warehouses"
               icon={<WarehouseIcon />}
               href={`/o/${orgId}/u/${unitId}/warehouse/list/active`}
             />
             <SidebarItemSimple
-              text="Category"
+              text="Categories"
               icon={<BriefcaseBusinessIcon />}
               href={`/o/${orgId}/u/${unitId}/category/list/active`}
             />
             <SidebarItemCollapsible
-              text="Configuration"
+              text="Configurations"
               icon={<SettingsIcon />}
               href={`/o/${orgId}/u/${unitId}/config/invoice`}
               subItems={[
