@@ -112,22 +112,24 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
               className="flex items-center gap-2"
             >
               <InfoIcon size={20} />
-              {t("Information")}
+              <span className="sr-only sm:not-sr-only">{t("Information")}</span>
             </TabsTrigger>
             <TabsTrigger value="inventory" className="flex items-center gap-2">
               <WarehouseIcon size={20} />
-              {t("Inventory")}
+              <span className="sr-only sm:not-sr-only">{t("Inventory")}</span>
             </TabsTrigger>
             <TabsTrigger value="category" className="flex items-center gap-2">
               <BriefcaseBusinessIcon size={20} />
-              {t("Category")}
+              <span className="sr-only sm:not-sr-only">{t("Category")}</span>
             </TabsTrigger>
             <TabsTrigger
               value="configuration"
               className="flex items-center gap-2"
             >
               <SettingsIcon size={20} />
-              {t("Configuration")}
+              <span className="sr-only sm:not-sr-only">
+                {t("Configuration")}
+              </span>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="inventory">
