@@ -1,3 +1,5 @@
+import { AvailablePlansCard } from "@/components/billing"
+import { CurrentPlanCard, PaymentInfoCard } from "@/components/cards"
 import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getPlans } from "@/db/auth/loaders"
 import {
@@ -5,7 +7,6 @@ import {
   createSubscription,
   switchToStarterPlan,
 } from "@/services/subscription"
-import { BillingPage } from "./billing-page"
 
 type Props = {
   params: Promise<GlobalParamsT>
@@ -19,24 +20,44 @@ const Page = async (props: Props) => {
 
   if (!subscription) return null
 
+  const currentPlan =
+    plans.find((plan) => plan.id === subscription.plan) || plans[0]
+
   return (
-    <BillingPage
-      subscription={subscription}
-      plans={plans}
-      createSubscription={async (planId) => {
-        "use server"
-        const res = await createSubscription(orgId, planId)
-        return res
-      }}
-      cancelSubscription={async () => {
-        "use server"
-        return await cancelSubscription(orgId)
-      }}
-      switchToStarterPlan={async () => {
-        "use server"
-        return await switchToStarterPlan(orgId)
-      }}
-    />
+    <>
+      {/* <PageHeader title="Billing" className="mb-6" /> */}
+
+      <div className="space-y-6">
+        <div className="grid gap-6 md:grid-cols-2">
+          <CurrentPlanCard
+            subscription={subscription}
+            currentPlan={currentPlan}
+          />
+
+          <PaymentInfoCard
+            subscription={subscription}
+            cancelSubscription={async () => {
+              "use server"
+              return await cancelSubscription(orgId)
+            }}
+          />
+        </div>
+
+        <AvailablePlansCard
+          subscription={subscription}
+          plans={plans}
+          createSubscription={async (planId) => {
+            "use server"
+            const res = await createSubscription(orgId, planId)
+            return res
+          }}
+          switchToStarterPlan={async () => {
+            "use server"
+            return await switchToStarterPlan(orgId)
+          }}
+        />
+      </div>
+    </>
   )
 }
 
