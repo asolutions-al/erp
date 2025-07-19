@@ -19,10 +19,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
-import {
-  getCustomerInvoices,
-  markCustomerAsFavorite,
-} from "@/db/app/actions/customer"
+import { getCustomerInvoices, markCustomerAsFavorite } from "@/db/app/actions"
 import { CustomerSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
