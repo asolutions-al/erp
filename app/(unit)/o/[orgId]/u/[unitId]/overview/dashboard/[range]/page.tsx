@@ -1139,7 +1139,8 @@ const Page = async (props: Props) => {
   }))
 
   return (
-    <>
+    <div className="space-y-4">
+      {/* Key Performance Metrics */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <TotalSalesCard
           count={invoices.reduce((acc, invoice) => acc + invoice.total, 0)}
@@ -1148,12 +1149,6 @@ const Page = async (props: Props) => {
             prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0)
           )}
         />
-
-        <TotalSalesCountCard
-          count={invoices.length}
-          growth={calcGrowth(invoices.length, prevInvoices.length)}
-        />
-
         <AvgSaleValueCard
           value={
             invoices.length > 0
@@ -1172,49 +1167,54 @@ const Page = async (props: Props) => {
               : 0
           )}
         />
-
+        <TotalSalesCountCard
+          count={invoices.length}
+          growth={calcGrowth(invoices.length, prevInvoices.length)}
+        />
         <NewCustomersCard
           count={customers.count}
           growth={calcGrowth(customers.count, prevCustomers.count)}
         />
+      </div>
 
-        <LowStockProductsCard
-          count={productInventories.count}
-          growth={calcGrowth(
-            productInventories.count,
-            prevProductInventories.count
-          )}
+      {/* Main Business Insights */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <BusinessInsightsCard invoices={invoices} />
+        <ProductInsightsCard invoiceRows={invoiceRows} inventory={inventory} />
+      </div>
+
+      {/* Sales Analysis */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <PaymentMethodSalesCard invoices={invoices} />
+        <SalesDistributionCard invoices={invoices} />
+      </div>
+
+      {/* Product and Customer Analysis */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <TopProductsCard
+          products={productsWithPercentage}
+          orgId={orgId}
+          unitId={unitId}
         />
-        <div className="col-span-1 md:col-span-2">
-          <PaymentMethodSalesCard invoices={invoices} />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <TopProductsCard
-            products={productsWithPercentage}
-            orgId={orgId}
-            unitId={unitId}
-          />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <PeakHoursCard invoices={invoices} />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <CustomerBehaviorCard invoices={invoices} />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <SalesDistributionCard invoices={invoices} />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <BusinessInsightsCard invoices={invoices} />
-        </div>
-        <div className="col-span-1 md:col-span-2">
-          <ProductInsightsCard
-            invoiceRows={invoiceRows}
-            inventory={inventory}
-          />
+        <CustomerBehaviorCard invoices={invoices} />
+      </div>
+
+      {/* Operational Insights */}
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <PeakHoursCard invoices={invoices} />
+        <div className="grid grid-cols-1 gap-4">
+          <div>
+            <LowStockProductsCard
+              count={productInventories.count}
+              growth={calcGrowth(
+                productInventories.count,
+                prevProductInventories.count
+              )}
+            />
+          </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 
