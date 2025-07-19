@@ -194,6 +194,8 @@ const InvoicesSheetContent = ({
     fetchInvoices()
   }, [customer, unitId, orgId, onClose])
 
+  return null
+
   return (
     <>
       <SheetHeader className="mb-4">
