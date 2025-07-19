@@ -366,6 +366,28 @@ const TopProductsCard = async ({
 const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
   const t = await getTranslations()
 
+  // Early return if no data
+  if (!invoices.length) {
+    return (
+      <Card>
+        <CardHeader className="p-6 pb-2">
+          <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+            <AlarmClockIcon size={20} />
+            {t("Peak Hours Analysis")}
+          </CardTitle>
+          <CardDescription className="text-xs">
+            {t("Sales performance by hour")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-2">
+          <p className="text-sm text-muted-foreground">
+            {t("No data for selected period")}
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
   // Calculate metrics by hour
   const hourlyMetrics = invoices.reduce(
     (acc, inv) => {
@@ -405,8 +427,8 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
     }))
     .sort((a, b) => b.total - a.total)
 
-  const maxTotal = Math.max(...hourlyData.map((h) => h.total))
   const businessHours = hourlyData.filter((h) => h.count > 0)
+  const maxTotal = Math.max(...businessHours.map((h) => h.total))
   const peakHour = businessHours[0]
   const slowestHour = businessHours[businessHours.length - 1]
 
@@ -429,9 +451,7 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
           </h3>
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div>
-              <p className="text-xs text-muted-foreground">
-                {t("Total Revenue")}
-              </p>
+              <p className="text-xs text-muted-foreground">{t("Revenue")}</p>
               <p className="text-lg font-bold tabular-nums">
                 {formatNumber(peakHour.total)}
               </p>
@@ -467,34 +487,32 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
             {t("Hourly Performance")}
           </h3>
           <div className="space-y-3">
-            {hourlyData
-              .filter((h) => h.count > 0)
-              .map((hour) => (
-                <div key={hour.hour} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-2">
-                      <span className="font-medium">
-                        {hour.hour.toString().padStart(2, "0")}:00
-                      </span>
-                      <Badge variant="outline" className="text-xs">
-                        {hour.count} {t("invoices")}
-                      </Badge>
-                    </div>
-                    <span className="tabular-nums">
-                      {formatNumber(hour.total)}
-                    </span>
-                  </div>
+            {businessHours.map((hour) => (
+              <div key={hour.hour} className="space-y-1">
+                <div className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
-                    <Progress
-                      value={(hour.total / maxTotal) * 100}
-                      className="h-1.5"
-                    />
-                    <span className="text-xs tabular-nums text-muted-foreground">
-                      {formatNumber(hour.avg)}/{t("inv")}
+                    <span className="font-medium">
+                      {hour.hour.toString().padStart(2, "0")}:00
                     </span>
+                    <Badge variant="outline" className="text-xs">
+                      {t("{count} invoices", { count: hour.count })}
+                    </Badge>
                   </div>
+                  <span className="tabular-nums">
+                    {formatNumber(hour.total)}
+                  </span>
                 </div>
-              ))}
+                <div className="flex items-center gap-2">
+                  <Progress
+                    value={(hour.total / maxTotal) * 100}
+                    className="h-1.5"
+                  />
+                  <span className="text-xs tabular-nums text-muted-foreground">
+                    {formatNumber(hour.avg)}/{t("inv")}
+                  </span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
@@ -506,7 +524,11 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
               {peakHour.hour.toString().padStart(2, "0")}:00
             </p>
             <p className="text-sm text-muted-foreground">
-              {formatNumber(peakHour.total)} ({peakHour.count} {t("invoices")})
+              {formatNumber(peakHour.total)} (
+              {t("{count} invoices", {
+                count: peakHour.count,
+              })}
+              )
             </p>
           </div>
           <div className="rounded-lg border p-3">
@@ -515,8 +537,11 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
               {slowestHour.hour.toString().padStart(2, "0")}:00
             </p>
             <p className="text-sm text-muted-foreground">
-              {formatNumber(slowestHour.total)} ({slowestHour.count}{" "}
-              {t("invoices")})
+              {formatNumber(slowestHour.total)} (
+              {t("{count} invoices", {
+                count: slowestHour.count,
+              })}
+              )
             </p>
           </div>
         </div>
