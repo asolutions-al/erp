@@ -33,7 +33,7 @@ const Page = async ({ params }: Props) => {
             </Button>
           </Link>
         }
-        className="mb-2"
+        className="my-4"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
         {data.map((unit) => (
