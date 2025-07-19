@@ -1,4 +1,8 @@
-import { BusinessInsightsCard, GrowthCard } from "@/components/cards"
+import {
+  BusinessInsightsCard,
+  GrowthCard,
+  ProductInsightsCard,
+} from "@/components/cards"
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -8,6 +12,12 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
@@ -30,6 +40,7 @@ import {
   CreditCardIcon,
   ExternalLinkIcon,
   HandCoinsIcon,
+  HelpCircleIcon,
   LandmarkIcon,
   TrendingDownIcon,
   TrendingUpIcon,
@@ -103,6 +114,20 @@ const PaymentMethodSalesCard = async ({
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <WalletIcon size={20} />
           {t("Payment Methods")}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  {t(
+                    "Analysis of sales by payment method, showing revenue and invoice count for each type"
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
           {t("Revenue breakdown by payment method")}
@@ -301,6 +326,20 @@ const TopProductsCard = async ({
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <TrendingUpIcon size={20} />
           {t("Top Products")}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  {t(
+                    "Products ranked by revenue contribution, showing sales quantity and percentage of total revenue"
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
           {t("Most revenue generating products")}
@@ -376,6 +415,20 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
           <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
             <AlarmClockIcon size={20} />
             {t("Peak Hours Analysis")}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">
+                    {t(
+                      "Analysis of busiest hours based on sales volume and revenue, helping identify peak business hours"
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardTitle>
           <CardDescription className="text-xs">
             {t("Sales performance by hour")}
@@ -440,6 +493,20 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <AlarmClockIcon size={20} />
           {t("Peak Hours Analysis")}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  {t(
+                    "Analysis of busiest hours based on sales volume and revenue, helping identify peak business hours"
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
           {t("Sales performance by hour")}
@@ -566,9 +633,23 @@ const SalesDistributionCard = async ({
           <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
             <BarChart2Icon size={20} />
             {t("Sales Distribution")}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">
+                    {t(
+                      "Distribution of sales across different value ranges, showing how many invoices fall into each price bracket"
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardTitle>
           <CardDescription className="text-xs">
-            {t("Sales patterns and segments")}
+            {t("Invoice value distribution")}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-6 pb-6 pt-2">
@@ -627,9 +708,23 @@ const SalesDistributionCard = async ({
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <BarChart2Icon size={20} />
           {t("Sales Distribution")}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  {t(
+                    "Distribution of sales across different value ranges, showing how many invoices fall into each price bracket"
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
-          {t("Sales patterns and segments")}
+          {t("Invoice value distribution")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6 pt-2">
@@ -724,9 +819,23 @@ const CustomerBehaviorCard = async ({
           <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
             <UsersIcon size={20} />
             {t("Customer Behavior")}
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="max-w-xs">
+                    {t(
+                      "Analysis of customer purchasing patterns, showing frequency of purchases and customer loyalty metrics"
+                    )}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </CardTitle>
           <CardDescription className="text-xs">
-            {t("Purchase patterns and loyalty")}
+            {t("Customer purchase patterns")}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-6 pb-6 pt-2">
@@ -788,9 +897,23 @@ const CustomerBehaviorCard = async ({
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <UsersIcon size={20} />
           {t("Customer Behavior")}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  {t(
+                    "Analysis of customer purchasing patterns, showing frequency of purchases and customer loyalty metrics"
+                  )}
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
-          {t("Purchase patterns and loyalty")}
+          {t("Customer purchase patterns")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6 pt-2">
@@ -913,6 +1036,8 @@ const Page = async (props: Props) => {
     [productInventories],
     [prevProductInventories],
     topProducts,
+    invoiceRows,
+    inventory,
   ] = await Promise.all([
     db
       .select({ count: count() })
@@ -993,6 +1118,17 @@ const Page = async (props: Props) => {
       .groupBy(product.id, product.name, product.imageBucketPath)
       .orderBy(desc(sum(invoiceRow.total)))
       .limit(5),
+    // Fetch invoice rows for the period
+    db.query.invoiceRow.findMany({
+      where: and(eq(invoiceRow.unitId, unitId), eq(invoiceRow.orgId, orgId)),
+    }),
+    // Fetch inventory data
+    db.query.productInventory.findMany({
+      where: and(
+        eq(productInventory.unitId, unitId),
+        eq(productInventory.orgId, orgId)
+      ),
+    }),
   ])
 
   const totalRevenue = topProducts.reduce((acc, p) => acc + p.total, 0)
@@ -1070,6 +1206,12 @@ const Page = async (props: Props) => {
         </div>
         <div className="col-span-1 md:col-span-2">
           <BusinessInsightsCard invoices={invoices} />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <ProductInsightsCard
+            invoiceRows={invoiceRows}
+            inventory={inventory}
+          />
         </div>
       </div>
     </>

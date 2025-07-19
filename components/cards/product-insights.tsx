@@ -19,29 +19,42 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { InvoiceSchemaT } from "@/db/app/schema"
+import { InvoiceRowSchemaT, ProductInventorySchemaT } from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
-import { BarChart2Icon, HelpCircleIcon } from "lucide-react"
+import { HelpCircleIcon, PackageIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Bar, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from "recharts"
 
-export function BusinessInsightsCard({
-  invoices,
+type ProductPerformance = {
+  productId: string
+  name: string
+  totalRevenue: number
+  totalQuantity: number
+  averagePrice: number
+  stockLevel: number
+  minStock: number
+  maxStock: number
+}
+
+export function ProductInsightsCard({
+  invoiceRows,
+  inventory,
 }: {
-  invoices: InvoiceSchemaT[]
+  invoiceRows: InvoiceRowSchemaT[]
+  inventory: ProductInventorySchemaT[]
 }) {
   const t = useTranslations()
 
-  if (!invoices.length) {
+  if (!invoiceRows.length) {
     return (
       <Card>
         <CardHeader className="p-6 pb-2">
           <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
-            <BarChart2Icon size={20} />
-            {t("Business Performance")}
+            <PackageIcon size={20} />
+            {t("Product Performance")}
           </CardTitle>
           <CardDescription className="text-xs">
-            {t("Daily sales analysis and trends")}
+            {t("Product sales and inventory analysis")}
           </CardDescription>
         </CardHeader>
         <CardContent className="px-6 pb-6 pt-2">
@@ -53,79 +66,81 @@ export function BusinessInsightsCard({
     )
   }
 
-  // Group data by date
-  const dailyData = invoices.reduce(
-    (acc, inv) => {
-      const date = new Date(inv.createdAt).toISOString().split("T")[0]
-      acc[date] = acc[date] || {
-        revenue: 0,
-        count: 0,
-        avgValue: 0,
-        uniqueCustomers: new Set(),
+  // Aggregate product performance data
+  const productPerformance = invoiceRows.reduce(
+    (acc, row) => {
+      const existing = acc[row.productId] || {
+        productId: row.productId,
+        name: row.name,
+        totalRevenue: 0,
+        totalQuantity: 0,
+        averagePrice: 0,
+        stockLevel: 0,
+        minStock: 0,
+        maxStock: 0,
       }
-      acc[date].revenue += inv.total
-      acc[date].count++
-      acc[date].uniqueCustomers.add(inv.customerId)
+
+      existing.totalRevenue += row.total
+      existing.totalQuantity += row.quantity
+      existing.averagePrice = existing.totalRevenue / existing.totalQuantity
+
+      // Add inventory data if available
+      const inventoryData = inventory.find(
+        (inv) => inv.productId === row.productId
+      )
+      if (inventoryData) {
+        existing.stockLevel = inventoryData.stock
+        existing.minStock = inventoryData.minStock
+        existing.maxStock = inventoryData.maxStock
+      }
+
+      acc[row.productId] = existing
       return acc
     },
-    {} as Record<
-      string,
-      {
-        revenue: number
-        count: number
-        avgValue: number
-        uniqueCustomers: Set<string>
-      }
-    >
+    {} as Record<string, ProductPerformance>
   )
 
-  // Calculate moving averages and growth
-  const dates = Object.keys(dailyData).sort()
-  const movingAverageWindow = 3
-  const revenueValues = dates.map((date) => dailyData[date].revenue)
+  // Convert to array and sort by revenue
+  const topProducts = Object.values(productPerformance)
+    .sort((a, b) => b.totalRevenue - a.totalRevenue)
+    .slice(0, 5)
 
-  const movingAverage = revenueValues.map((_, idx) => {
-    const start = Math.max(0, idx - movingAverageWindow + 1)
-    const windowValues = revenueValues.slice(start, idx + 1)
-    return Math.round(
-      windowValues.reduce((sum, val) => sum + val, 0) / windowValues.length
-    )
-  })
+  // Prepare chart data
+  const chartData = topProducts.map((product) => {
+    // Calculate stock percentage safely
+    const stockPercentage =
+      product.maxStock > 0 ? (product.stockLevel / product.maxStock) * 100 : 0
 
-  // Convert to chart data format
-  const chartData = dates.map((date, index) => {
-    const data = dailyData[date]
     return {
-      date: new Date(date).toLocaleDateString("en-US", {
-        weekday: "short",
-        month: "short",
-        day: "numeric",
-      }),
-      revenue: data.revenue,
-      count: data.count,
-      customers: data.uniqueCustomers.size,
-      trend: movingAverage[index],
-      avgOrderValue: Math.round(data.revenue / data.count),
+      name:
+        product.name.length > 15
+          ? product.name.slice(0, 15) + "..."
+          : product.name,
+      revenue: product.totalRevenue,
+      quantity: product.totalQuantity,
+      stockLevel: product.stockLevel,
+      stockPercentage: Math.min(100, Math.max(0, stockPercentage)), // Ensure percentage is between 0-100
     }
   })
 
   const config = {
     revenue: {
-      label: t("Daily Revenue"),
+      label: t("Revenue"),
       theme: {
         light: "rgb(34, 197, 94)",
         dark: "rgb(34, 197, 94)",
       },
     },
-    trend: {
-      label: t("Revenue Trend"),
+    quantity: {
+      label: t("Quantity Sold"),
       theme: {
         light: "rgb(99, 102, 241)",
         dark: "rgb(99, 102, 241)",
       },
     },
-    customers: {
-      label: t("Unique Customers"),
+    stockPercentage: {
+      // Changed from 'stock' to 'stockPercentage' to match the data key
+      label: t("Stock Level"),
       theme: {
         light: "rgb(249, 115, 22)",
         dark: "rgb(249, 115, 22)",
@@ -133,28 +148,29 @@ export function BusinessInsightsCard({
     },
   }
 
-  // Calculate summary metrics
-  const totalRevenue = chartData.reduce((sum, day) => sum + day.revenue, 0)
-  const totalCustomers = chartData.reduce((sum, day) => sum + day.customers, 0)
-  const avgDailyRevenue = Math.round(totalRevenue / chartData.length)
-  const avgCustomersPerDay = Math.round(totalCustomers / chartData.length)
-  const avgOrderValue = Math.round(
-    totalRevenue / chartData.reduce((sum, day) => sum + day.count, 0)
+  // Calculate summary metrics safely
+  const totalRevenue = topProducts.reduce(
+    (sum, product) => sum + product.totalRevenue,
+    0
   )
-
-  // Calculate growth (comparing last two days)
-  const lastDay = chartData[chartData.length - 1]
-  const previousDay = chartData[chartData.length - 2]
-  const revenueGrowth = previousDay
-    ? ((lastDay.revenue - previousDay.revenue) / previousDay.revenue) * 100
-    : 0
+  const totalQuantity = topProducts.reduce(
+    (sum, product) => sum + product.totalQuantity,
+    0
+  )
+  const avgStockLevel = Math.round(
+    topProducts.reduce((sum, product) => {
+      const percentage =
+        product.maxStock > 0 ? (product.stockLevel / product.maxStock) * 100 : 0
+      return sum + Math.min(100, Math.max(0, percentage))
+    }, 0) / topProducts.length
+  )
 
   return (
     <Card>
       <CardHeader className="p-6 pb-2">
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
-          <BarChart2Icon size={20} />
-          {t("Business Performance")}
+          <PackageIcon size={20} />
+          {t("Product Performance")}
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger>
@@ -163,7 +179,7 @@ export function BusinessInsightsCard({
               <TooltipContent>
                 <p className="max-w-xs">
                   {t(
-                    "Daily business performance showing revenue trends and customer activity"
+                    "Shows top 5 products by revenue with their sales and inventory metrics"
                   )}
                 </p>
               </TooltipContent>
@@ -171,7 +187,7 @@ export function BusinessInsightsCard({
           </TooltipProvider>
         </CardTitle>
         <CardDescription className="text-xs">
-          {t("Daily sales analysis and trends")}
+          {t("Top products by revenue and inventory status")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6 px-6 pb-6 pt-2">
@@ -179,7 +195,7 @@ export function BusinessInsightsCard({
           <div>
             <div className="flex items-center gap-1">
               <p className="text-xs text-muted-foreground">
-                {t("Avg Daily Revenue")}
+                {t("Top 5 Revenue")}
               </p>
               <TooltipProvider>
                 <Tooltip>
@@ -189,7 +205,7 @@ export function BusinessInsightsCard({
                   <TooltipContent>
                     <p className="max-w-xs">
                       {t(
-                        "Average revenue generated per day in the selected period"
+                        "Total revenue generated by the top 5 best-selling products"
                       )}
                     </p>
                   </TooltipContent>
@@ -197,17 +213,33 @@ export function BusinessInsightsCard({
               </TooltipProvider>
             </div>
             <p className="text-2xl font-bold tabular-nums">
-              {formatNumber(avgDailyRevenue)}
+              {formatNumber(totalRevenue)}
             </p>
-            <p className="text-sm text-muted-foreground">
-              {revenueGrowth > 0 ? "+" : ""}
-              {revenueGrowth.toFixed(1)}% {t("vs previous day")}
+          </div>
+          <div>
+            <div className="flex items-center gap-1">
+              <p className="text-xs text-muted-foreground">{t("Units Sold")}</p>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <HelpCircleIcon className="h-3 w-3 text-muted-foreground" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p className="max-w-xs">
+                      {t("Total number of units sold for the top 5 products")}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+            <p className="text-2xl font-bold tabular-nums">
+              {formatNumber(totalQuantity)}
             </p>
           </div>
           <div>
             <div className="flex items-center gap-1">
               <p className="text-xs text-muted-foreground">
-                {t("Avg Invoice Value")}
+                {t("Avg Stock Level")}
               </p>
               <TooltipProvider>
                 <Tooltip>
@@ -217,38 +249,14 @@ export function BusinessInsightsCard({
                   <TooltipContent>
                     <p className="max-w-xs">
                       {t(
-                        "Average value per invoice, indicating typical transaction size"
+                        "Average stock level as a percentage of maximum stock capacity across top products"
                       )}
                     </p>
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <p className="text-2xl font-bold tabular-nums">
-              {formatNumber(avgOrderValue)}
-            </p>
-          </div>
-          <div>
-            <div className="flex items-center gap-1">
-              <p className="text-xs text-muted-foreground">
-                {t("Daily Customers")}
-              </p>
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <HelpCircleIcon className="h-3 w-3 text-muted-foreground" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p className="max-w-xs">
-                      {t("Average number of unique customers served per day")}
-                    </p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
-            <p className="text-2xl font-bold tabular-nums">
-              {avgCustomersPerDay}
-            </p>
+            <p className="text-2xl font-bold tabular-nums">{avgStockLevel}%</p>
           </div>
         </div>
 
@@ -263,7 +271,7 @@ export function BusinessInsightsCard({
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis
-                dataKey="date"
+                dataKey="name"
                 angle={-15}
                 textAnchor="end"
                 height={60}
@@ -282,11 +290,12 @@ export function BusinessInsightsCard({
                 }}
               />
               <YAxis
-                yAxisId="customers"
+                yAxisId="quantity"
                 orientation="right"
+                tickFormatter={(value) => formatNumber(value)}
                 tick={{ fontSize: 12 }}
                 label={{
-                  value: t("Customers"),
+                  value: t("Quantity"),
                   angle: 90,
                   position: "insideRight",
                   offset: 10,
@@ -298,7 +307,7 @@ export function BusinessInsightsCard({
                   return (
                     <div className="rounded-lg border bg-background p-3 shadow-sm">
                       <div className="mb-2 font-medium">
-                        {payload[0]?.payload.date}
+                        {payload[0]?.payload.name}
                       </div>
                       <div className="grid gap-2">
                         <div className="flex items-center gap-2">
@@ -311,19 +320,16 @@ export function BusinessInsightsCard({
                         <div className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-[rgb(99,102,241)]" />
                           <span className="text-sm">
-                            {t("Trend")}:{" "}
+                            {t("Quantity")}:{" "}
                             {formatNumber(payload[1]?.value as number)}
                           </span>
                         </div>
                         <div className="flex items-center gap-2">
                           <div className="h-2 w-2 rounded-full bg-[rgb(249,115,22)]" />
                           <span className="text-sm">
-                            {t("Customers")}: {payload[2]?.value}
+                            {t("Stock Level")}:{" "}
+                            {formatNumber(payload[2]?.value as number)}%
                           </span>
-                        </div>
-                        <div className="mt-1 text-xs text-muted-foreground">
-                          {t("Avg Invoice")}:{" "}
-                          {formatNumber(payload[0]?.payload.avgOrderValue)}
                         </div>
                       </div>
                     </div>
@@ -339,17 +345,16 @@ export function BusinessInsightsCard({
                 strokeWidth={1}
               />
               <Line
-                yAxisId="revenue"
+                yAxisId="quantity"
                 type="monotone"
-                dataKey="trend"
+                dataKey="quantity"
                 stroke="rgb(99, 102, 241)"
                 strokeWidth={2}
-                dot={false}
               />
               <Line
-                yAxisId="customers"
+                yAxisId="quantity"
                 type="monotone"
-                dataKey="customers"
+                dataKey="stockPercentage"
                 stroke="rgb(249, 115, 22)"
                 strokeWidth={2}
               />
@@ -369,7 +374,7 @@ export function BusinessInsightsCard({
                 <TooltipContent>
                   <p className="max-w-xs">
                     {t(
-                      "Green bars show daily revenue, blue line shows revenue trend over time, and orange line shows unique customer count"
+                      "Green bars show revenue, blue line shows quantity sold, and orange line shows current stock level as % of maximum stock"
                     )}
                   </p>
                 </TooltipContent>
@@ -380,7 +385,7 @@ export function BusinessInsightsCard({
 
         <div className="text-xs text-muted-foreground">
           {t(
-            "Chart shows daily revenue (bars), revenue trend (blue line), and unique customers (orange line)"
+            "Chart shows product revenue (bars), quantity sold (blue line), and current stock level % (orange line)"
           )}
         </div>
       </CardContent>
