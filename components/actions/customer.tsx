@@ -26,7 +26,13 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet"
 
 type SchemaT = CustomerSchemaT
 
@@ -141,16 +147,16 @@ const InvoicesSheet = ({
 }) => {
   return (
     <>
-      {/* <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-        {customer && (
-          <InvoicesSheetContent
-          customer={customer}
-          onClose={() => onOpenChange(false)}
-          />
+      <Sheet open={!!customer} onOpenChange={onOpenChange}>
+        <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+          {customer && (
+            <InvoicesSheetContent
+              customer={customer}
+              onClose={() => onOpenChange(false)}
+            />
           )}
-          </SheetContent>
-    </Sheet> */}
+        </SheetContent>
+      </Sheet>
     </>
   )
 }
@@ -188,8 +194,6 @@ const InvoicesSheetContent = ({
     fetchInvoices()
   }, [customer, unitId, orgId, onClose])
 
-  return null
-
   return (
     <>
       <SheetHeader className="mb-4">
@@ -205,11 +209,12 @@ const InvoicesSheetContent = ({
         )}
       </SheetHeader>
 
-      {/* {loading ? (
+      {loading ? (
         <TableSkeleton />
       ) : (
-        <DataTable columns={invoiceColumns} data={invoices} />
-      )} */}
+        // <DataTable columns={invoiceColumns} data={invoices} />
+        <></>
+      )}
     </>
   )
 }

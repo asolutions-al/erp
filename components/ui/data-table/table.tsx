@@ -1,15 +1,4 @@
 "use client"
-"use no memo"
-
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table"
 
 import {
   Table,
@@ -19,6 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  SortingState,
+  useReactTable,
+} from "@tanstack/react-table"
 import { useState } from "react"
 import { DataTablePagination } from "./pagination"
 
