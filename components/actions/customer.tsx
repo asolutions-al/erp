@@ -1,8 +1,6 @@
 "use client"
 
-import { invoiceColumns } from "@/components/columns/invoice"
 import { Button } from "@/components/ui/button"
-import { DataTable } from "@/components/ui/data-table"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,15 +9,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet"
 import { Skeleton } from "@/components/ui/skeleton"
-import { getCustomerInvoices, markCustomerAsFavorite } from "@/db/app/actions"
+import { markCustomerAsFavorite } from "@/db/app/actions"
 import { CustomerSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
@@ -33,7 +24,7 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { toast } from "sonner"
 
 type SchemaT = CustomerSchemaT
@@ -152,56 +143,58 @@ const InvoicesSheet = ({
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const t = useTranslations()
 
-  useEffect(() => {
-    if (!customer) {
-      setInvoices([])
-      return
-    }
+  return null
 
-    const fetchInvoices = async () => {
-      setLoading(true)
-      try {
-        const result = await getCustomerInvoices({
-          customerId: customer.id,
-          unitId,
-          orgId,
-        })
-        setInvoices(result)
-      } catch (error) {
-        toast.error("Failed to load customer invoices")
-        onOpenChange(false)
-      } finally {
-        setLoading(false)
-      }
-    }
+  // useEffect(() => {
+  //   if (!customer) {
+  //     setInvoices([])
+  //     return
+  //   }
 
-    fetchInvoices()
-  }, [customer, unitId, orgId])
+  //   const fetchInvoices = async () => {
+  //     setLoading(true)
+  //     try {
+  //       const result = await getCustomerInvoices({
+  //         customerId: customer.id,
+  //         unitId,
+  //         orgId,
+  //       })
+  //       setInvoices(result)
+  //     } catch (error) {
+  //       toast.error("Failed to load customer invoices")
+  //       onOpenChange(false)
+  //     } finally {
+  //       setLoading(false)
+  //     }
+  //   }
 
-  return (
-    <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-        <SheetHeader className="mb-4">
-          <SheetTitle>
-            {t("Invoices for {name}", { name: customer?.name || "" })}
-          </SheetTitle>
-          {loading ? (
-            <Skeleton className="h-4 w-32" />
-          ) : (
-            <SheetDescription>
-              {t("{count} invoices", { count: invoices.length })}
-            </SheetDescription>
-          )}
-        </SheetHeader>
+  //   fetchInvoices()
+  // }, [customer, unitId, orgId])
 
-        {loading ? (
-          <TableSkeleton />
-        ) : customer ? (
-          <DataTable columns={invoiceColumns} data={invoices} />
-        ) : null}
-      </SheetContent>
-    </Sheet>
-  )
+  // return (
+  //   <Sheet open={!!customer} onOpenChange={onOpenChange}>
+  //     <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+  //       <SheetHeader className="mb-4">
+  //         <SheetTitle>
+  //           {t("Invoices for {name}", { name: customer?.name || "" })}
+  //         </SheetTitle>
+  //         {loading ? (
+  //           <Skeleton className="h-4 w-32" />
+  //         ) : (
+  //           <SheetDescription>
+  //             {t("{count} invoices", { count: invoices.length })}
+  //           </SheetDescription>
+  //         )}
+  //       </SheetHeader>
+
+  //       {loading ? (
+  //         <TableSkeleton />
+  //       ) : customer ? (
+  //         <DataTable columns={invoiceColumns} data={invoices} />
+  //       ) : null}
+  //     </SheetContent>
+  //   </Sheet>
+  // )
 }
 
 export { Actions as CustomerActions }
