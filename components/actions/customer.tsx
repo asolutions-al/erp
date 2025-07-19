@@ -171,6 +171,7 @@ const InvoicesSheet = ({
 
   return (
     <>
+      <TableSkeleton />
       {/* <Sheet open={!!customer} onOpenChange={onOpenChange}>
         <SheetContent className="min-w-[800px] sm:max-w-[800px]">
           <SheetHeader className="mb-4">
