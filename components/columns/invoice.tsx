@@ -1,6 +1,6 @@
 "use client"
 
-import { InvoiceActions } from "@/components/actions"
+import { InvoiceActions } from "@/components/actions/invoice"
 import { SortBtn } from "@/components/buttons"
 import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
