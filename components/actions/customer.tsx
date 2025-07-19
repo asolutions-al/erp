@@ -26,6 +26,7 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { invoiceColumns } from "../columns/invoice"
 import {
   Sheet,
   SheetContent,
@@ -193,6 +194,8 @@ const InvoicesSheetContent = ({
 
     fetchInvoices()
   }, [customer, unitId, orgId, onClose])
+
+  console.log("invoiceColumns", invoiceColumns)
 
   return (
     <>
