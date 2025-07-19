@@ -1,6 +1,6 @@
 "use client"
 
-import { CustomerInvoicesSheet } from "@/components/sheet"
+import { CustomerInvoicesSheet } from "@/components/sheet/customer-invoices"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
