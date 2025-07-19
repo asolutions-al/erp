@@ -44,4 +44,22 @@ const dateRangeFilter: FilterFn<any> = (row, columnId, value) => {
   return true
 }
 
-export { dateRangeFilter, numberRangeFilter }
+const multiSelectFilter: FilterFn<any> = (row, columnId, value) => {
+  if (!value || !Array.isArray(value) || value.length === 0) return true
+
+  const cellValue = row.getValue(columnId)
+  if (cellValue == null) return false
+
+  const stringValue = String(cellValue)
+
+  // Handle comma-separated values (like multiple categories)
+  if (stringValue.includes(", ")) {
+    const cellValues = stringValue.split(", ")
+    return cellValues.some((cv) => value.includes(cv))
+  }
+
+  // Handle single values
+  return value.includes(stringValue)
+}
+
+export { dateRangeFilter, multiSelectFilter, numberRangeFilter }

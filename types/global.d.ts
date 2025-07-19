@@ -10,5 +10,6 @@ declare module "@tanstack/react-table" {
   interface FilterFns {
     numberRangeFilter: FilterFn<unknown>
     dateRangeFilter: FilterFn<unknown>
+    multiSelectFilter: FilterFn<unknown>
   }
 }

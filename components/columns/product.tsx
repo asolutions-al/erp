@@ -5,6 +5,7 @@ import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   BooleanFilter,
+  MultiSelectFilter,
   NumberFilter,
   SelectFilter,
   StringFilter,
@@ -135,9 +136,16 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: FavoriteCell,
   },
   {
+    id: "categories",
     size: 250,
-    accessorKey: "productCategories",
-    header: ({ column }) => <SortBtn text="Category" column={column} />,
+    accessorFn: (row) =>
+      row.productCategories.map((pc) => pc.category.name).join(", "),
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Category" column={column} />
+        <MultiSelectFilter title="Category" column={column} />
+      </div>
+    ),
     cell: ({ row }) => {
       const { original } = row
       return (
@@ -150,6 +158,7 @@ const columns: ColumnDef<SchemaT>[] = [
         </div>
       )
     },
+    filterFn: "multiSelectFilter",
   },
   {
     id: "actions",

@@ -19,7 +19,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
-import { dateRangeFilter, numberRangeFilter } from "./filter-functions"
+import {
+  dateRangeFilter,
+  multiSelectFilter,
+  numberRangeFilter,
+} from "./filter-functions"
 import { DataTablePagination } from "./pagination"
 
 interface DataTableProps<TData, TValue> {
@@ -44,6 +48,7 @@ export function DataTable<TData, TValue>({
     filterFns: {
       numberRangeFilter,
       dateRangeFilter,
+      multiSelectFilter,
     },
   })
 

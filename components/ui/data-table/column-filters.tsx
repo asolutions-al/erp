@@ -2,6 +2,15 @@
 
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
+import { Checkbox } from "@/components/ui/checkbox"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -14,6 +23,7 @@ import { Column } from "@tanstack/react-table"
 import {
   CalendarIcon,
   CheckCircleIcon,
+  CheckIcon,
   EraserIcon,
   FilterIcon,
   XIcon,
@@ -447,4 +457,180 @@ const SelectFilter = <TData, TValue>({
   )
 }
 
-export { BooleanFilter, DateFilter, NumberFilter, SelectFilter, StringFilter }
+const MultiSelectFilter = <TData, TValue>({
+  column,
+  title,
+}: FilterProps<TData, TValue>) => {
+  const t = useTranslations()
+  const [isOpen, setIsOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
+  const filterValue = (column.getFilterValue() as string[]) ?? []
+
+  // Local state for temporary values
+  const [tempSelected, setTempSelected] = useState<string[]>([])
+
+  // Update local state when popover opens or filter value changes
+  // React.useEffect(() => {
+  //   setTempSelected(filterValue)
+  // }, [filterValue, isOpen])
+
+  const dynamicOptions = React.useMemo(() => {
+    const facetedValues = column.getFacetedUniqueValues()
+    const uniqueValues = Array.from(facetedValues.keys())
+      .filter((value) => value !== null && value !== undefined && value !== "")
+      .map((value) => ({
+        label: String(value),
+        value: String(value),
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+
+    return uniqueValues
+  }, [column])
+
+  const filteredOptions = dynamicOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase())
+  )
+
+  const applyFilter = () => {
+    if (tempSelected.length === 0) {
+      column.setFilterValue(undefined)
+    } else {
+      column.setFilterValue(tempSelected)
+    }
+    setIsOpen(false)
+  }
+
+  const clearFilter = () => {
+    setTempSelected([])
+    column.setFilterValue(undefined)
+    setIsOpen(false)
+  }
+
+  const toggleOption = (value: string) => {
+    setTempSelected((prev) =>
+      prev.includes(value)
+        ? prev.filter((item) => item !== value)
+        : [...prev, value]
+    )
+  }
+
+  const selectAll = () => {
+    setTempSelected(dynamicOptions.map((option) => option.value))
+  }
+
+  const deselectAll = () => {
+    setTempSelected([])
+  }
+
+  const isDirty = filterValue.length > 0
+
+  return (
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <div className="p-1.5">
+          <Button
+            variant="ghost"
+            size="sm"
+            className={cn(
+              "h-8 w-full max-w-[200px] justify-start border border-dashed text-xs",
+              isDirty && "border-solid bg-accent"
+            )}
+          >
+            <FilterIcon className="mr-2 h-3 w-3" />
+            <span className="truncate">{t(title)}</span>
+            {isDirty && (
+              <div className="ml-auto flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+                {filterValue.length}
+              </div>
+            )}
+          </Button>
+        </div>
+      </PopoverTrigger>
+      <PopoverContent className="w-[280px] p-0" align="start" side="bottom">
+        <Command>
+          <div className="p-3 pb-2">
+            <h4 className="text-sm font-medium leading-none">
+              {t("Filter by")} {t(title)}
+            </h4>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Select multiple options
+            </p>
+          </div>
+          <CommandInput
+            placeholder={`${t("Search")} ${t(title)}...`}
+            value={searchValue}
+            onValueChange={setSearchValue}
+            className="h-9"
+          />
+          <div className="border-b px-3 py-2">
+            <div className="flex gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 text-xs"
+                onClick={selectAll}
+                disabled={tempSelected.length === dynamicOptions.length}
+              >
+                {t("All")}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-6 text-xs"
+                onClick={deselectAll}
+                disabled={tempSelected.length === 0}
+              >
+                {t("Clear")}
+              </Button>
+            </div>
+          </div>
+          <CommandEmpty>No options found</CommandEmpty>
+          <CommandList>
+            <CommandGroup className="max-h-[200px] overflow-auto">
+              {filteredOptions.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  onSelect={() => toggleOption(option.value)}
+                  className="flex cursor-pointer items-center space-x-2"
+                >
+                  <Checkbox
+                    checked={tempSelected.includes(option.value)}
+                    onChange={() => toggleOption(option.value)}
+                  />
+                  <span className="flex-1">{option.label}</span>
+                  {tempSelected.includes(option.value) && (
+                    <CheckIcon className="h-4 w-4" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+          <div className="flex justify-between border-t p-3 pt-2">
+            <Button
+              variant="outline"
+              onClick={clearFilter}
+              size="sm"
+              className="text-xs"
+            >
+              <EraserIcon className="mr-1 h-3 w-3" />
+              {t("Clear")}
+            </Button>
+            <Button onClick={applyFilter} size="sm" className="text-xs">
+              <CheckCircleIcon className="mr-1 h-3 w-3" />
+              {t("Apply")}
+            </Button>
+          </div>
+        </Command>
+      </PopoverContent>
+    </Popover>
+  )
+}
+
+export {
+  BooleanFilter,
+  DateFilter,
+  MultiSelectFilter,
+  NumberFilter,
+  SelectFilter,
+  StringFilter,
+}
