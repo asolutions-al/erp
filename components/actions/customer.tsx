@@ -152,7 +152,7 @@ const InvoicesSheet = ({
 }) => {
   const [invoices, setInvoices] = useState<InvoiceSchemaT[]>([])
   const [loading, setLoading] = useState(false)
-  const { unitId, orgId } = useParams()
+  const { unitId, orgId } = useParams<GlobalParamsT>()
   const t = useTranslations()
 
   useEffect(() => {
@@ -166,8 +166,8 @@ const InvoicesSheet = ({
       try {
         const result = await getCustomerInvoices({
           customerId: customer.id,
-          unitId: unitId as string,
-          orgId: orgId as string,
+          unitId,
+          orgId,
         })
         setInvoices(result)
       } catch (error) {
@@ -179,7 +179,7 @@ const InvoicesSheet = ({
     }
 
     fetchInvoices()
-  }, [customer, unitId, orgId, onOpenChange])
+  }, [customer, unitId, orgId])
 
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
