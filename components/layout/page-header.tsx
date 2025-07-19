@@ -8,15 +8,17 @@ const PageHeader = async ({
   title,
   className = "",
   rightComp,
+  backButtonDisabled,
 }: {
   title: keyof Messages
   className?: string
   rightComp?: ReactNode
+  backButtonDisabled?: boolean
 }) => {
   const t = await getTranslations()
   return (
     <div className={cn("mx-auto flex max-w-4xl items-center", className)}>
-      <BackButton />
+      <BackButton disabled={backButtonDisabled} />
       <h1 className="ml-2 text-xl font-semibold">{t(title)}</h1>
 
       {rightComp && <div className="ml-auto">{rightComp}</div>}

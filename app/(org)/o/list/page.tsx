@@ -42,6 +42,7 @@ const Page = async () => {
     <>
       <PageHeader
         title="Organizations"
+        backButtonDisabled
         rightComp={
           <Tooltip>
             <TooltipTrigger asChild>
