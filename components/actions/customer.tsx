@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
-import { markCustomerAsFavorite } from "@/db/app/actions"
+import { getCustomerInvoices, markCustomerAsFavorite } from "@/db/app/actions"
 import { CustomerSchemaT, InvoiceSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
@@ -24,7 +24,7 @@ import {
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 
 type SchemaT = CustomerSchemaT
@@ -143,33 +143,33 @@ const InvoicesSheet = ({
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const t = useTranslations()
 
+  useEffect(() => {
+    if (!customer) {
+      setInvoices([])
+      return
+    }
+
+    const fetchInvoices = async () => {
+      setLoading(true)
+      try {
+        const result = await getCustomerInvoices({
+          customerId: customer.id,
+          unitId,
+          orgId,
+        })
+        setInvoices(result)
+      } catch (error) {
+        toast.error("Failed to load customer invoices")
+        onOpenChange(false)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchInvoices()
+  }, [customer, unitId, orgId])
+
   return null
-
-  // useEffect(() => {
-  //   if (!customer) {
-  //     setInvoices([])
-  //     return
-  //   }
-
-  //   const fetchInvoices = async () => {
-  //     setLoading(true)
-  //     try {
-  //       const result = await getCustomerInvoices({
-  //         customerId: customer.id,
-  //         unitId,
-  //         orgId,
-  //       })
-  //       setInvoices(result)
-  //     } catch (error) {
-  //       toast.error("Failed to load customer invoices")
-  //       onOpenChange(false)
-  //     } finally {
-  //       setLoading(false)
-  //     }
-  //   }
-
-  //   fetchInvoices()
-  // }, [customer, unitId, orgId])
 
   // return (
   //   <Sheet open={!!customer} onOpenChange={onOpenChange}>
