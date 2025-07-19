@@ -25,6 +25,7 @@ import { calcGrowth } from "@/utils/calc"
 import { and, count, desc, eq, gte, lte, sum } from "drizzle-orm"
 import {
   AlarmClockIcon,
+  BarChart2Icon,
   CoinsIcon,
   CreditCardIcon,
   ExternalLinkIcon,
@@ -32,6 +33,7 @@ import {
   LandmarkIcon,
   TrendingDownIcon,
   TrendingUpIcon,
+  UsersIcon,
   WalletIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -550,6 +552,352 @@ const PeakHoursCard = async ({ invoices }: { invoices: InvoiceSchemaT[] }) => {
   )
 }
 
+const SalesDistributionCard = async ({
+  invoices,
+}: {
+  invoices: InvoiceSchemaT[]
+}) => {
+  const t = await getTranslations()
+
+  if (!invoices.length) {
+    return (
+      <Card>
+        <CardHeader className="p-6 pb-2">
+          <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+            <BarChart2Icon size={20} />
+            {t("Sales Distribution")}
+          </CardTitle>
+          <CardDescription className="text-xs">
+            {t("Sales patterns and segments")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-2">
+          <p className="text-sm text-muted-foreground">
+            {t("No data for selected period")}
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Calculate invoice size segments
+  const segments = invoices.reduce(
+    (acc, inv) => {
+      if (inv.total < 1000) acc.small++
+      else if (inv.total < 5000) acc.medium++
+      else acc.large++
+      return acc
+    },
+    { small: 0, medium: 0, large: 0 }
+  )
+
+  // Calculate average items per invoice
+  const avgItemsPerInvoice = Math.round(
+    invoices.reduce((acc, inv) => acc + inv.discountValue, 0) / invoices.length
+  )
+
+  // Calculate repeat vs new customers
+  const customerFrequency = invoices.reduce(
+    (acc, inv) => {
+      acc[inv.customerId] = (acc[inv.customerId] || 0) + 1
+      return acc
+    },
+    {} as Record<string, number>
+  )
+
+  const repeatCustomers = Object.values(customerFrequency).filter(
+    (freq) => freq > 1
+  ).length
+  const totalCustomers = Object.keys(customerFrequency).length
+
+  // Calculate discount stats
+  const totalDiscount = invoices.reduce(
+    (acc, inv) => acc + inv.discountValue,
+    0
+  )
+  const invoicesWithDiscount = invoices.filter(
+    (inv) => inv.discountValue > 0
+  ).length
+  const avgDiscountPerInvoice =
+    invoicesWithDiscount > 0 ? totalDiscount / invoicesWithDiscount : 0
+
+  return (
+    <Card>
+      <CardHeader className="p-6 pb-2">
+        <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+          <BarChart2Icon size={20} />
+          {t("Sales Distribution")}
+        </CardTitle>
+        <CardDescription className="text-xs">
+          {t("Sales patterns and segments")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6 px-6 pb-6 pt-2">
+        {/* Invoice Size Distribution */}
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-muted-foreground">
+            {t("Invoice Size Distribution")}
+          </h3>
+          <div className="space-y-3">
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span>{t("Small")} (&lt; 1000)</span>
+                <Badge variant="outline">
+                  {t("{count} invoices", { count: segments.small })}
+                </Badge>
+              </div>
+              <Progress
+                value={(segments.small / invoices.length) * 100}
+                className="h-1.5"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span>{t("Medium")} (1000-5000)</span>
+                <Badge variant="outline">
+                  {t("{count} invoices", { count: segments.medium })}
+                </Badge>
+              </div>
+              <Progress
+                value={(segments.medium / invoices.length) * 100}
+                className="h-1.5"
+              />
+            </div>
+            <div className="space-y-1">
+              <div className="flex items-center justify-between text-sm">
+                <span>{t("Large")} (&gt; 5000)</span>
+                <Badge variant="outline">
+                  {t("{count} invoices", { count: segments.large })}
+                </Badge>
+              </div>
+              <Progress
+                value={(segments.large / invoices.length) * 100}
+                className="h-1.5"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Customer Insights */}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="rounded-lg border p-3">
+            <p className="text-xs text-muted-foreground">
+              {t("Customer Retention")}
+            </p>
+            <p className="mt-1 text-2xl font-bold">
+              {Math.round((repeatCustomers / totalCustomers) * 100)}%
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {t("{count} repeat customers", { count: repeatCustomers })}
+            </p>
+          </div>
+          <div className="rounded-lg border p-3">
+            <p className="text-xs text-muted-foreground">
+              {t("Discount Usage")}
+            </p>
+            <p className="mt-1 text-2xl font-bold">
+              {Math.round((invoicesWithDiscount / invoices.length) * 100)}%
+            </p>
+            <p className="text-sm text-muted-foreground">
+              {t("avg {amount}/invoice", {
+                amount: formatNumber(avgDiscountPerInvoice),
+              })}
+            </p>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+const CustomerBehaviorCard = async ({
+  invoices,
+}: {
+  invoices: InvoiceSchemaT[]
+}) => {
+  const t = await getTranslations()
+
+  if (!invoices.length) {
+    return (
+      <Card>
+        <CardHeader className="p-6 pb-2">
+          <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+            <UsersIcon size={20} />
+            {t("Customer Behavior")}
+          </CardTitle>
+          <CardDescription className="text-xs">
+            {t("Purchase patterns and loyalty")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="px-6 pb-6 pt-2">
+          <p className="text-sm text-muted-foreground">
+            {t("No data for selected period")}
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
+
+  // Group invoices by customer
+  const customerInvoices = invoices.reduce(
+    (acc, inv) => {
+      acc[inv.customerId] = acc[inv.customerId] || []
+      acc[inv.customerId].push(inv)
+      return acc
+    },
+    {} as Record<string, InvoiceSchemaT[]>
+  )
+
+  // Calculate customer metrics
+  const customerMetrics = Object.entries(customerInvoices).map(
+    ([id, invs]) => ({
+      id,
+      name: invs[0].customerName,
+      invoiceCount: invs.length,
+      totalSpent: invs.reduce((sum, inv) => sum + inv.total, 0),
+      avgInvoiceValue:
+        invs.reduce((sum, inv) => sum + inv.total, 0) / invs.length,
+      lastPurchase: new Date(
+        Math.max(...invs.map((inv) => new Date(inv.createdAt).getTime()))
+      ),
+    })
+  )
+
+  // Find top customers by spend
+  const topSpenders = [...customerMetrics]
+    .sort((a, b) => b.totalSpent - a.totalSpent)
+    .slice(0, 3)
+
+  // Find most frequent customers
+  const frequentCustomers = [...customerMetrics]
+    .sort((a, b) => b.invoiceCount - a.invoiceCount)
+    .slice(0, 3)
+
+  // Calculate average values
+  const avgOrderValue =
+    customerMetrics.reduce((sum, c) => sum + c.avgInvoiceValue, 0) /
+    customerMetrics.length
+  const totalCustomers = customerMetrics.length
+  const multiPurchaseCustomers = customerMetrics.filter(
+    (c) => c.invoiceCount > 1
+  ).length
+
+  return (
+    <Card>
+      <CardHeader className="p-6 pb-2">
+        <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+          <UsersIcon size={20} />
+          {t("Customer Behavior")}
+        </CardTitle>
+        <CardDescription className="text-xs">
+          {t("Purchase patterns and loyalty")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-6 px-6 pb-6 pt-2">
+        {/* Overview Stats */}
+        <div className="grid grid-cols-3 gap-4">
+          <div>
+            <p className="text-xs text-muted-foreground">
+              {t("Total Customers")}
+            </p>
+            <p className="text-2xl font-bold tabular-nums">{totalCustomers}</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">{t("Returning")}</p>
+            <p className="text-2xl font-bold tabular-nums">
+              {Math.round((multiPurchaseCustomers / totalCustomers) * 100)}%
+            </p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">{t("Avg Invoice")}</p>
+            <p className="text-2xl font-bold tabular-nums">
+              {formatNumber(avgOrderValue)}
+            </p>
+          </div>
+        </div>
+
+        {/* Top Spenders */}
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-muted-foreground">
+            {t("Top Spenders")}
+          </h3>
+          <div className="space-y-3">
+            {topSpenders.map((customer, index) => (
+              <div key={customer.id} className="space-y-1">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      className="min-w-[1.5rem] justify-center"
+                    >
+                      {index + 1}
+                    </Badge>
+                    <span className="font-medium">{customer.name}</span>
+                  </div>
+                  <span className="tabular-nums">
+                    {formatNumber(customer.totalSpent)}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Progress
+                    value={
+                      (customer.totalSpent / topSpenders[0].totalSpent) * 100
+                    }
+                    className="h-1.5"
+                  />
+                  <span className="text-xs text-muted-foreground">
+                    {t("{count} invoices", { count: customer.invoiceCount })}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Frequent Buyers */}
+        <div>
+          <h3 className="mb-3 text-sm font-medium text-muted-foreground">
+            {t("Most Frequent")}
+          </h3>
+          <div className="space-y-3">
+            {frequentCustomers.map((customer, index) => (
+              <div key={customer.id} className="space-y-1">
+                <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <Badge
+                      variant="outline"
+                      className="min-w-[1.5rem] justify-center"
+                    >
+                      {index + 1}
+                    </Badge>
+                    <span className="font-medium">{customer.name}</span>
+                  </div>
+                  <Badge variant="outline">
+                    {t("{count} invoices", { count: customer.invoiceCount })}
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Progress
+                    value={
+                      (customer.invoiceCount /
+                        frequentCustomers[0].invoiceCount) *
+                      100
+                    }
+                    className="h-1.5"
+                  />
+                  <span className="text-xs tabular-nums text-muted-foreground">
+                    {formatNumber(customer.avgInvoiceValue)}/{t("order")}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
 const Page = async (props: Props) => {
   const { params } = props
   const { unitId, orgId, range } = await params
@@ -713,6 +1061,12 @@ const Page = async (props: Props) => {
         </div>
         <div className="col-span-1 md:col-span-2">
           <PeakHoursCard invoices={invoices} />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <CustomerBehaviorCard invoices={invoices} />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <SalesDistributionCard invoices={invoices} />
         </div>
       </div>
     </>
