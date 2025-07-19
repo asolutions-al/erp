@@ -50,6 +50,7 @@
   "Duplicate product": "Duplicate product",
   "Update product": "Update product",
   "New invoice": "New invoice",
+  "View invoices": "View invoices",
   "Total": "Total",
   "Date": "Date",
   "Currency": "Currency",
@@ -674,5 +675,6 @@
   "Organization creation will be available soon": "Organization creation will be available soon",
   "Overview & Settings": "Overview & Settings",
   "Management": "Management",
-  "Operations": "Operations"
+  "Operations": "Operations",
+  "Invoices for {name}": "Invoices for {name}"
 }

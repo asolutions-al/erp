@@ -52,6 +52,7 @@
   "Duplicate product": "Dubliko produktin",
   "Update product": "Përditëso produktin",
   "New invoice": "Faturë e re",
+  "View invoices": "Shiko faturat",
   "Total": "Totali",
   "Date": "Data",
   "Currency": "Monedha",
@@ -674,5 +675,6 @@
   "Organization creation will be available soon": "Krijimi i organizatës do të jetë i disponueshëm së shpejti",
   "Overview & Settings": "Përmbledhje & Cilësimet",
   "Management": "Menaxhimi",
-  "Operations": "Operacionet"
+  "Operations": "Operacionet",
+  "Invoices for {name}": "Faturat për {name}"
 }

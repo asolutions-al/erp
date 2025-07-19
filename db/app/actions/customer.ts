@@ -2,9 +2,9 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { customer, invoiceConfig } from "@/orm/app/schema"
+import { customer, invoice, invoiceConfig } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
-import { eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 
 type FormSchemaT = CustomerFormSchemaT
 
@@ -48,8 +48,33 @@ const markAsFavorite = async ({
   await db.update(customer).set({ isFavorite }).where(eq(customer.id, id))
 }
 
+const getCustomerInvoices = async ({
+  customerId,
+  unitId,
+  orgId,
+}: {
+  customerId: string
+  unitId: string
+  orgId: string
+}) => {
+  const invoices = await db.query.invoice.findMany({
+    where: and(
+      eq(invoice.customerId, customerId),
+      eq(invoice.unitId, unitId),
+      eq(invoice.orgId, orgId)
+    ),
+    orderBy: desc(invoice.createdAt),
+    with: {
+      customer: true,
+    },
+  })
+
+  return invoices
+}
+
 export {
   create as createCustomer,
+  getCustomerInvoices,
   markAsFavorite as markCustomerAsFavorite,
   update as updateCustomer,
 }
