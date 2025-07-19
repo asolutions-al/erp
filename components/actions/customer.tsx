@@ -26,6 +26,15 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { invoiceColumns } from "../columns/invoice"
+import { DataTable } from "../ui/data-table"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet"
 
 type SchemaT = CustomerSchemaT
 
@@ -169,32 +178,30 @@ const InvoicesSheet = ({
     fetchInvoices()
   }, [customer, unitId, orgId])
 
-  return null
+  return (
+    <Sheet open={!!customer} onOpenChange={onOpenChange}>
+      <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+        <SheetHeader className="mb-4">
+          <SheetTitle>
+            {t("Invoices for {name}", { name: customer?.name || "" })}
+          </SheetTitle>
+          {loading ? (
+            <Skeleton className="h-4 w-32" />
+          ) : (
+            <SheetDescription>
+              {t("{count} invoices", { count: invoices.length })}
+            </SheetDescription>
+          )}
+        </SheetHeader>
 
-  // return (
-  //   <Sheet open={!!customer} onOpenChange={onOpenChange}>
-  //     <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-  //       <SheetHeader className="mb-4">
-  //         <SheetTitle>
-  //           {t("Invoices for {name}", { name: customer?.name || "" })}
-  //         </SheetTitle>
-  //         {loading ? (
-  //           <Skeleton className="h-4 w-32" />
-  //         ) : (
-  //           <SheetDescription>
-  //             {t("{count} invoices", { count: invoices.length })}
-  //           </SheetDescription>
-  //         )}
-  //       </SheetHeader>
-
-  //       {loading ? (
-  //         <TableSkeleton />
-  //       ) : customer ? (
-  //         <DataTable columns={invoiceColumns} data={invoices} />
-  //       ) : null}
-  //     </SheetContent>
-  //   </Sheet>
-  // )
+        {loading ? (
+          <TableSkeleton />
+        ) : customer ? (
+          <DataTable columns={invoiceColumns} data={invoices} />
+        ) : null}
+      </SheetContent>
+    </Sheet>
+  )
 }
 
 export { Actions as CustomerActions }
