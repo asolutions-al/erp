@@ -1,4 +1,4 @@
-import { GrowthCard } from "@/components/cards"
+import { BusinessInsightsCard, GrowthCard } from "@/components/cards"
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -886,7 +886,7 @@ const CustomerBehaviorCard = async ({
                     className="h-1.5"
                   />
                   <span className="text-xs tabular-nums text-muted-foreground">
-                    {formatNumber(customer.avgInvoiceValue)}/{t("order")}
+                    {t("{count} invoices", { count: customer.invoiceCount })}
                   </span>
                 </div>
               </div>
@@ -1067,6 +1067,9 @@ const Page = async (props: Props) => {
         </div>
         <div className="col-span-1 md:col-span-2">
           <SalesDistributionCard invoices={invoices} />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <BusinessInsightsCard invoices={invoices} />
         </div>
       </div>
     </>
