@@ -26,6 +26,15 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
+import { invoiceColumns } from "../columns/invoice"
+import { DataTable } from "../ui/data-table"
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "../ui/sheet"
 
 type SchemaT = CustomerSchemaT
 
@@ -138,17 +147,33 @@ const InvoicesSheet = ({
   customer: CustomerSchemaT | null
   onOpenChange: (open: boolean) => void
 }) => {
+  return (
+    <Sheet open={!!customer} onOpenChange={onOpenChange}>
+      <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+        {customer && (
+          <InvoicesSheetContent
+            customer={customer}
+            onClose={() => onOpenChange(false)}
+          />
+        )}
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+const InvoicesSheetContent = ({
+  customer,
+  onClose,
+}: {
+  customer: CustomerSchemaT
+  onClose: () => void
+}) => {
   const [invoices, setInvoices] = useState<InvoiceSchemaT[]>([])
   const [loading, setLoading] = useState(false)
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const t = useTranslations()
 
   useEffect(() => {
-    if (!customer) {
-      setInvoices([])
-      return
-    }
-
     const fetchInvoices = async () => {
       setLoading(true)
       try {
@@ -160,40 +185,35 @@ const InvoicesSheet = ({
         setInvoices(result)
       } catch (error) {
         toast.error("Failed to load customer invoices")
-        onOpenChange(false)
+        onClose()
       } finally {
         setLoading(false)
       }
     }
 
     fetchInvoices()
-  }, [customer, unitId, orgId])
+  }, [customer, unitId, orgId, onClose])
 
   return (
     <>
-      <TableSkeleton />
-      {/* <Sheet open={!!customer} onOpenChange={onOpenChange}>
-        <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-          <SheetHeader className="mb-4">
-            <SheetTitle>
-              {t("Invoices for {name}", { name: customer?.name || "" })}
-            </SheetTitle>
-            {loading ? (
-              <Skeleton className="h-4 w-32" />
-            ) : (
-              <SheetDescription>
-                {t("{count} invoices", { count: invoices.length })}
-              </SheetDescription>
-            )}
-          </SheetHeader> */}
+      <SheetHeader className="mb-4">
+        <SheetTitle>
+          {t("Invoices for {name}", { name: customer.name })}
+        </SheetTitle>
+        {loading ? (
+          <Skeleton className="h-4 w-32" />
+        ) : (
+          <SheetDescription>
+            {t("{count} invoices", { count: invoices.length })}
+          </SheetDescription>
+        )}
+      </SheetHeader>
 
-      {/* {loading ? (
+      {loading ? (
         <TableSkeleton />
-      ) : customer ? (
+      ) : (
         <DataTable columns={invoiceColumns} data={invoices} />
-      ) : null} */}
-      {/* </SheetContent>
-      </Sheet> */}
+      )}
     </>
   )
 }
