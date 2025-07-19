@@ -93,6 +93,7 @@ const PaymentMethodSalesCard = async ({
       }
     })
     .sort((a, b) => b.value - a.value)
+
   return (
     <Card>
       <CardHeader className="p-6 pb-2">
@@ -105,39 +106,45 @@ const PaymentMethodSalesCard = async ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 px-6 pb-6 pt-2">
-        {paymentMethodData.map((data, index) => {
-          const Icon = PAYMENT_ICONS[data.method] || CoinsIcon
-          return (
-            <div key={index} className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div
-                    className="h-4 w-4 rounded-full border-2 border-white shadow"
-                    style={{ backgroundColor: data.color }}
-                  />
-                  <Icon className="ml-1" size={17} />
-                  <span className="text-sm font-semibold">
-                    {t(data.method)}
-                  </span>
+        {paymentMethodData.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            {t("No data for selected period")}
+          </p>
+        ) : (
+          paymentMethodData.map((data, index) => {
+            const Icon = PAYMENT_ICONS[data.method] || CoinsIcon
+            return (
+              <div key={index} className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="h-4 w-4 rounded-full border-2 border-white shadow"
+                      style={{ backgroundColor: data.color }}
+                    />
+                    <Icon className="ml-1" size={17} />
+                    <span className="text-sm font-semibold">
+                      {t(data.method)}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="bg-muted py-1">
+                      {t("{count} invoices", { count: data.count })}
+                    </Badge>
+                    <span className="text-sm font-bold tabular-nums">
+                      {formatNumber(data.value)}
+                    </span>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="bg-muted py-1">
-                    {t("{count} invoices", { count: data.count })}
-                  </Badge>
-                  <span className="text-sm font-bold tabular-nums">
-                    {formatNumber(data.value)}
-                  </span>
+                <Progress value={data.percentage} className="h-2 bg-muted" />
+                <div className="text-xs text-muted-foreground">
+                  {t("{percentage}% of total revenue", {
+                    percentage: data.percentage.toFixed(1),
+                  })}
                 </div>
               </div>
-              <Progress value={data.percentage} className="h-2 bg-muted" />
-              <div className="text-xs text-muted-foreground">
-                {t("{percentage}% of total revenue", {
-                  percentage: data.percentage.toFixed(1),
-                })}
-              </div>
-            </div>
-          )
-        })}
+            )
+          })
+        )}
       </CardContent>
     </Card>
   )
@@ -297,53 +304,59 @@ const TopProductsCard = async ({
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4 px-6 pb-6 pt-2">
-        {products.map((data, index) => (
-          <div key={index} className="space-y-2">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="relative h-10 w-10 overflow-hidden rounded-md">
-                  <Image
-                    src={
-                      data.imageBucketPath
-                        ? `${publicStorageUrl}/${productImagesBucket}/${data.imageBucketPath}`
-                        : "/placeholder.svg"
-                    }
-                    alt={data.name}
-                    className="object-cover"
-                    fill
-                    sizes="40px"
-                  />
+        {products.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            {t("No data for selected period")}
+          </p>
+        ) : (
+          products.map((data, index) => (
+            <div key={index} className="space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="relative h-10 w-10 overflow-hidden rounded-md">
+                    <Image
+                      src={
+                        data.imageBucketPath
+                          ? `${publicStorageUrl}/${productImagesBucket}/${data.imageBucketPath}`
+                          : "/placeholder.svg"
+                      }
+                      alt={data.name}
+                      className="object-cover"
+                      fill
+                      sizes="40px"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-sm font-semibold">{data.name}</span>
+                    <Link
+                      href={`/o/${orgId}/u/${unitId}/product/update/${data.id}`}
+                      className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLinkIcon size={12} />
+                      {t("View details")}
+                    </Link>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-semibold">{data.name}</span>
-                  <Link
-                    href={`/o/${orgId}/u/${unitId}/product/update/${data.id}`}
-                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLinkIcon size={12} />
-                    {t("View details")}
-                  </Link>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="bg-muted py-1">
+                    {t("{count} sold", { count: formatNumber(data.quantity) })}
+                  </Badge>
+                  <span className="text-sm font-bold tabular-nums">
+                    {formatNumber(data.total)}
+                  </span>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="bg-muted py-1">
-                  {t("{count} sold", { count: formatNumber(data.quantity) })}
-                </Badge>
-                <span className="text-sm font-bold tabular-nums">
-                  {formatNumber(data.total)}
-                </span>
+              <Progress value={data.percentage} className="h-2 bg-muted" />
+              <div className="text-xs text-muted-foreground">
+                {t("{percentage}% of total revenue", {
+                  percentage: data.percentage.toFixed(1),
+                })}
               </div>
             </div>
-            <Progress value={data.percentage} className="h-2 bg-muted" />
-            <div className="text-xs text-muted-foreground">
-              {t("{percentage}% of total revenue", {
-                percentage: data.percentage.toFixed(1),
-              })}
-            </div>
-          </div>
-        ))}
+          ))
+        )}
       </CardContent>
     </Card>
   )
