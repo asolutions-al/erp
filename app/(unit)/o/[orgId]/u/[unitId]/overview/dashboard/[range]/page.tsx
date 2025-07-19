@@ -8,25 +8,37 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
+import { productImagesBucket } from "@/contants/bucket"
+import { publicStorageUrl } from "@/contants/consts"
 import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
 import { db } from "@/db/app/instance"
 import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
-import { customer, invoice, productInventory } from "@/orm/app/schema"
+import {
+  customer,
+  invoice,
+  invoiceRow,
+  product,
+  productInventory,
+} from "@/orm/app/schema"
 import { calcGrowth } from "@/utils/calc"
-import { and, count, desc, eq, gte, lte } from "drizzle-orm"
+import { and, count, desc, eq, gte, lte, sum } from "drizzle-orm"
 import {
   CoinsIcon,
   CreditCardIcon,
+  ExternalLinkIcon,
   HandCoinsIcon,
   LandmarkIcon,
   TrendingDownIcon,
   TrendingUpIcon,
+  WalletIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import Image from "next/image"
+import Link from "next/link"
 
 type Props = {
-  params: Promise<{ unitId: string; range: RangeT }>
+  params: Promise<{ unitId: string; orgId: string; range: RangeT }>
   searchParams: Promise<{ range?: RangeT }>
 }
 
@@ -84,7 +96,8 @@ const PaymentMethodSalesCard = async ({
   return (
     <Card>
       <CardHeader className="p-6 pb-2">
-        <CardTitle className="text-base font-medium text-muted-foreground">
+        <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+          <WalletIcon size={20} />
           {t("Payment Methods")}
         </CardTitle>
         <CardDescription className="text-xs">
@@ -142,7 +155,7 @@ const AvgSaleValueCard = async ({
     <GrowthCard
       Icon={CreditCardIcon}
       title={formatNumber(value)}
-      description={t("Avg invoice total")}
+      description={t("Avg invoice value")}
       growth={growth}
       suggestion={
         {
@@ -255,9 +268,90 @@ const LowStockProductsCard = async ({
   )
 }
 
+const TopProductsCard = async ({
+  products,
+  orgId,
+  unitId,
+}: {
+  products: {
+    id: string
+    name: string
+    quantity: number
+    total: number
+    percentage: number
+    imageBucketPath?: string | null
+  }[]
+  orgId: string
+  unitId: string
+}) => {
+  const t = await getTranslations()
+  return (
+    <Card>
+      <CardHeader className="p-6 pb-2">
+        <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
+          <TrendingUpIcon size={20} />
+          {t("Top Products")}
+        </CardTitle>
+        <CardDescription className="text-xs">
+          {t("Most revenue generating products")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4 px-6 pb-6 pt-2">
+        {products.map((data, index) => (
+          <div key={index} className="space-y-2">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="relative h-10 w-10 overflow-hidden rounded-md">
+                  <Image
+                    src={
+                      data.imageBucketPath
+                        ? `${publicStorageUrl}/${productImagesBucket}/${data.imageBucketPath}`
+                        : "/placeholder.svg"
+                    }
+                    alt={data.name}
+                    className="object-cover"
+                    fill
+                    sizes="40px"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-sm font-semibold">{data.name}</span>
+                  <Link
+                    href={`/o/${orgId}/u/${unitId}/product/update/${data.id}`}
+                    className="flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ExternalLinkIcon size={12} />
+                    {t("View details")}
+                  </Link>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <Badge variant="outline" className="bg-muted py-1">
+                  {t("{count} sold", { count: formatNumber(data.quantity) })}
+                </Badge>
+                <span className="text-sm font-bold tabular-nums">
+                  {formatNumber(data.total)}
+                </span>
+              </div>
+            </div>
+            <Progress value={data.percentage} className="h-2 bg-muted" />
+            <div className="text-xs text-muted-foreground">
+              {t("{percentage}% of total revenue", {
+                percentage: data.percentage.toFixed(1),
+              })}
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  )
+}
+
 const Page = async (props: Props) => {
   const { params } = props
-  const { unitId, range } = await params
+  const { unitId, orgId, range } = await params
 
   const [start, end] = mapRangeToStartEnd(range)
   const [prevStart, prevEnd] = mapRangeToPrevStartEnd(range)
@@ -269,6 +363,7 @@ const Page = async (props: Props) => {
     prevInvoices,
     [productInventories],
     [prevProductInventories],
+    topProducts,
   ] = await Promise.all([
     db
       .select({ count: count() })
@@ -328,7 +423,35 @@ const Page = async (props: Props) => {
           lte(productInventory.stock, productInventory.lowStock)
         )
       ),
+    db
+      .select({
+        id: product.id,
+        name: product.name,
+        imageBucketPath: product.imageBucketPath,
+        quantity: sum(invoiceRow.quantity).mapWith(Number),
+        total: sum(invoiceRow.total).mapWith(Number),
+      })
+      .from(invoiceRow)
+      .innerJoin(invoice, eq(invoice.id, invoiceRow.invoiceId))
+      .innerJoin(product, eq(product.id, invoiceRow.productId))
+      .where(
+        and(
+          eq(invoice.unitId, unitId),
+          gte(invoice.createdAt, start.toISOString()),
+          lte(invoice.createdAt, end.toISOString())
+        )
+      )
+      .groupBy(product.id, product.name, product.imageBucketPath)
+      .orderBy(desc(sum(invoiceRow.total)))
+      .limit(5),
   ])
+
+  const totalRevenue = topProducts.reduce((acc, p) => acc + p.total, 0)
+
+  const productsWithPercentage = topProducts.map((product) => ({
+    ...product,
+    percentage: (product.total / totalRevenue) * 100,
+  }))
 
   return (
     <>
@@ -379,6 +502,13 @@ const Page = async (props: Props) => {
         />
         <div className="col-span-1 md:col-span-2">
           <PaymentMethodSalesCard invoices={invoices} />
+        </div>
+        <div className="col-span-1 md:col-span-2">
+          <TopProductsCard
+            products={productsWithPercentage}
+            orgId={orgId}
+            unitId={unitId}
+          />
         </div>
       </div>
     </>

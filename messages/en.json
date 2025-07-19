@@ -574,8 +574,12 @@
   "Invoices count is the same": "Invoices count is the same",
   "Invoices count is on track": "Invoices count is on track",
   "Invoices count needs attention": "Invoices count needs attention",
-  "Avg invoice total": "Avg invoice total",
-  "Avg invoice total is the same": "Avg invoice total is the same",
-  "Avg invoice total is on track": "Avg invoice total is on track",
-  "Avg invoice total needs attention": "Avg invoice total needs attention"
+  "Avg invoice value": "Avg invoice value",
+  "Avg invoice value is the same": "Avg invoice value is the same",
+  "Avg invoice value is on track": "Avg invoice value is on track",
+  "Avg invoice value needs attention": "Avg invoice value needs attention",
+  "Top Products": "Top Products",
+  "Most revenue generating products": "Most revenue generating products",
+  "{count} sold": "{count} sold",
+  "View details": "View details"
 }

@@ -574,8 +574,12 @@
   "Invoices count is the same": "Numri i faturave është i njëjtë",
   "Invoices count is on track": "Numri i faturave është në rregull",
   "Invoices count needs attention": "Numri i faturave ka nevojë për vëmendje",
-  "Avg invoice total": "Totali mesatar i faturës",
-  "Avg invoice total is the same": "Totali mesatar i faturës është i njëjtë",
-  "Avg invoice total is on track": "Totali mesatar i faturës është në rregull",
-  "Avg invoice total needs attention": "Totali mesatar i faturës ka nevojë për vëmendje"
+  "Avg invoice value": "Vlera mesatare e faturës",
+  "Avg invoice value is the same": "Vlera mesatare e faturës është i njëjtë",
+  "Avg invoice value is on track": "Vlera mesatare e faturës është në rregull",
+  "Avg invoice value needs attention": "Vlera mesatare e faturës ka nevojë për vëmendje",
+  "Top Products": "Produktet Kryesore",
+  "Most revenue generating products": "Produktet që gjenerojnë më shumë të ardhura",
+  "{count} sold": "{count} të shitura",
+  "View details": "Shiko detajet"
 }
