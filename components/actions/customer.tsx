@@ -150,12 +150,12 @@ const InvoicesSheet = ({
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
       <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-        {customer && (
+        {/* {customer && (
           <InvoicesSheetContent
             customer={customer}
             onClose={() => onOpenChange(false)}
           />
-        )}
+        )} */}
       </SheetContent>
     </Sheet>
   )
