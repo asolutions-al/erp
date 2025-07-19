@@ -23,7 +23,7 @@ export function AnimatedLogoSvg() {
 
       <path
         d="m 150 200 l -15 -30 l 50 0 l 15 30 h -50 "
-        fill="red"
+        fill="#2e6f40"
         opacity="0"
       >
         <animate
