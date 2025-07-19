@@ -26,8 +26,6 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { toast } from "sonner"
-import { invoiceColumns } from "../columns/invoice"
-import { DataTable } from "../ui/data-table"
 
 type SchemaT = CustomerSchemaT
 
@@ -188,11 +186,11 @@ const InvoicesSheet = ({
             )}
           </SheetHeader> */}
 
-      {loading ? (
+      {/* {loading ? (
         <TableSkeleton />
       ) : customer ? (
         <DataTable columns={invoiceColumns} data={invoices} />
-      ) : null}
+      ) : null} */}
       {/* </SheetContent>
       </Sheet> */}
     </>
