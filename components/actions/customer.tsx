@@ -28,13 +28,7 @@ import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { invoiceColumns } from "../columns/invoice"
 import { DataTable } from "../ui/data-table"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "../ui/sheet"
+import { Sheet, SheetDescription, SheetHeader, SheetTitle } from "../ui/sheet"
 
 type SchemaT = CustomerSchemaT
 
@@ -149,14 +143,14 @@ const InvoicesSheet = ({
 }) => {
   return (
     <Sheet open={!!customer} onOpenChange={onOpenChange}>
-      <SheetContent className="min-w-[800px] sm:max-w-[800px]">
-        {/* {customer && (
+      {/* <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+        {customer && (
           <InvoicesSheetContent
             customer={customer}
             onClose={() => onOpenChange(false)}
           />
-        )} */}
-      </SheetContent>
+        )}
+      </SheetContent> */}
     </Sheet>
   )
 }
