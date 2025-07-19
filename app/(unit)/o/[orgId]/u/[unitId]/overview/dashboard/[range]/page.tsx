@@ -3,6 +3,7 @@ import {
   GrowthCard,
   ProductInsightsCard,
 } from "@/components/cards"
+import { SalesVelocityCard } from "@/components/charts"
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -1187,6 +1188,11 @@ const Page = async (props: Props) => {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <PaymentMethodSalesCard invoices={invoices} />
         <SalesDistributionCard invoices={invoices} />
+      </div>
+
+      {/* Sales Velocity Analysis */}
+      <div className="grid grid-cols-1 gap-4">
+        <SalesVelocityCard invoices={invoices} />
       </div>
 
       {/* Product and Customer Analysis */}

@@ -676,5 +676,13 @@
   "Overview & Settings": "Overview & Settings",
   "Management": "Management",
   "Operations": "Operations",
-  "Invoices for {name}": "Invoices for {name}"
+  "Invoices for {name}": "Invoices for {name}",
+  "Sales Velocity": "Sales Velocity",
+  "Sales rate and revenue distribution by hour of day": "Sales rate and revenue distribution by hour of day",
+  "Hourly sales performance and business activity": "Hourly sales performance and business activity",
+  "Active Hours": "Active Hours",
+  "Avg Revenue/Hour": "Avg Revenue/Hour",
+  "Avg Invoices/Hour": "Avg Invoices/Hour",
+  "Best Hour": "Best Hour",
+  "Hour": "Hour"
 }

@@ -676,5 +676,13 @@
   "Overview & Settings": "Përmbledhje & Cilësimet",
   "Management": "Menaxhimi",
   "Operations": "Operacionet",
-  "Invoices for {name}": "Faturat për {name}"
+  "Invoices for {name}": "Faturat për {name}",
+  "Sales Velocity": "Shpejtësia e Shitjeve",
+  "Sales rate and revenue distribution by hour of day": "Norma e shitjeve dhe shpërndarja e të ardhurave sipas orës së ditës",
+  "Hourly sales performance and business activity": "Performanca orare e shitjeve dhe aktiviteti i biznesit",
+  "Active Hours": "Orët Aktive",
+  "Avg Revenue/Hour": "Të ardhura mesatare/Orë",
+  "Avg Invoices/Hour": "Fatura mesatare/Orë",
+  "Best Hour": "Ora më e mirë",
+  "Hour": "Orë"
 }
