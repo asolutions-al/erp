@@ -1,6 +1,5 @@
 "use client"
 
-import { CustomerInvoicesSheet } from "@/components/sheet/customer-invoices"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -16,7 +15,6 @@ import { CellContext } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
   EditIcon,
-  FileTextIcon,
   MoreHorizontalIcon,
   StarIcon,
   StarOffIcon,
@@ -48,11 +46,11 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => setSelectedCustomer(original)}>
+          {/* <DropdownMenuItem onClick={() => setSelectedCustomer(original)}>
             <FileTextIcon />
             {t("View invoices")}
           </DropdownMenuItem>
-          <DropdownMenuSeparator />
+          <DropdownMenuSeparator /> */}
           <Link
             href={`/o/${orgId}/u/${unitId}/customer/update/${original.id}`}
             passHref
@@ -94,12 +92,12 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <CustomerInvoicesSheet
+      {/* <CustomerInvoicesSheet
         customer={selectedCustomer}
         onOpenChange={(open) => {
           if (!open) setSelectedCustomer(null)
         }}
-      />
+      /> */}
     </>
   )
 }
