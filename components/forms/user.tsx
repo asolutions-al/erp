@@ -60,9 +60,12 @@ const Form = ({ performAction, orgs }: Props) => {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto max-w-4xl"
         id={formId}
+        className="mx-auto max-w-4xl"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <div className="space-y-2">
           <Card>

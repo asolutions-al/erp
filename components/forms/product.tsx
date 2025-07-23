@@ -101,9 +101,12 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto max-w-4xl"
         id={formId}
+        className="mx-auto max-w-4xl"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <Tabs defaultValue="information">
           <TabsList className="grid max-w-xl grid-cols-4">

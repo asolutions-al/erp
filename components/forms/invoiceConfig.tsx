@@ -83,9 +83,12 @@ const Form = ({
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto max-w-4xl"
         id={formId}
+        className="mx-auto max-w-4xl"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <div className="grid gap-2 sm:grid-cols-2">
           <PayMethodCard />

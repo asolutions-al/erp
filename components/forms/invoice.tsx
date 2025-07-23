@@ -139,9 +139,12 @@ const Form = ({
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto"
         id={formId}
+        className="mx-auto"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <Tabs
           value={currentTab}
@@ -469,7 +472,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
   })
 
   const fuse = new Fuse<(typeof products)[0]>(products, {
-    keys: ["name", "unit", "price"],
+    keys: ["name", "unit", "price", "barcode"],
     threshold: 0.3,
   })
 
@@ -481,6 +484,56 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
     activeTab === "all"
       ? seachFilteredProducts
       : seachFilteredProducts.filter((product) => product.isFavorite)
+
+  // Helper to add product to form (cart)
+  const addProductToForm = (product: ProductSchemaT) => {
+    const existingIdx = rows.findIndex((row) => row.productId === product.id)
+
+    const isExisting = existingIdx !== -1
+
+    if (isExisting) {
+      form.setValue(
+        `rows.${existingIdx}.quantity`,
+        rows[existingIdx].quantity + 1,
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        }
+      )
+    } else {
+      form.setValue(
+        "rows",
+        [
+          ...rows,
+          {
+            ...product,
+            quantity: 1,
+            productId: product.id,
+          },
+        ],
+        {
+          shouldDirty: true,
+          shouldValidate: true,
+        }
+      )
+    }
+  }
+
+  // Barcode scanner support
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && search.trim() !== "") {
+      // Try to find a product by barcode
+      const product = products.find(
+        (p) =>
+          p.barcode && p.barcode.trim() !== "" && p.barcode === search.trim()
+      )
+      if (product) {
+        addProductToForm(product)
+        setSearch("") // Clear input after adding
+        e.preventDefault()
+      }
+    }
+  }
 
   return (
     <Card>
@@ -511,9 +564,10 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
         </div>
         <Input
           type="text"
-          placeholder={t("Name, price") + "..."}
+          placeholder={t("Name, price, barcode") + "..."}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={handleSearchKeyDown}
           className="max-w-sm"
           autoFocus
         />
@@ -538,33 +592,7 @@ const ProductsCard = ({ products }: { products: ProductSchemaT[] }) => {
                   "group relative cursor-pointer select-none overflow-hidden transition-shadow duration-300 hover:shadow-md",
                   quantity > 0 && "bg-primary/5"
                 )}
-                onClick={() => {
-                  if (existing)
-                    return form.setValue(
-                      `rows.${existingIdx}.quantity`,
-                      existing.quantity + 1,
-                      {
-                        shouldDirty: true,
-                        shouldValidate: true,
-                      }
-                    )
-
-                  form.setValue(
-                    "rows",
-                    [
-                      ...rows,
-                      {
-                        ...product,
-                        quantity: 1,
-                        productId: product.id,
-                      },
-                    ],
-                    {
-                      shouldDirty: true,
-                      shouldValidate: true,
-                    }
-                  )
-                }}
+                onClick={() => addProductToForm(product)}
               >
                 <figure className="relative group-hover:opacity-90">
                   {quantity > 0 && (

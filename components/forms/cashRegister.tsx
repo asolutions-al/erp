@@ -67,9 +67,12 @@ const Form = ({ performAction, isUpdate }: Props) => {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto max-w-4xl"
         id={formId}
+        className="mx-auto max-w-4xl"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="space-y-2 lg:col-span-2">

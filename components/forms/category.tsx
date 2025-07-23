@@ -56,9 +56,12 @@ const Form = ({ performAction }: Props) => {
   return (
     <>
       <form
-        onSubmit={form.handleSubmit(onValid, onInvalid)}
-        className="mx-auto max-w-4xl"
         id={formId}
+        className="mx-auto max-w-4xl"
+        onSubmit={form.handleSubmit(onValid, onInvalid)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") e.preventDefault()
+        }}
       >
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <DetailsCard />

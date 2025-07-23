@@ -703,5 +703,6 @@
   "Apply": "Apliko",
   "No results found": "Nuk u gjetën rezultate",
   "{filtered} of {total} rows": "{filtered} nga {total} rreshta",
-  "owner": "Përdoruesi"
+  "owner": "Përdoruesi",
+  "Name, price, barcode": "Emri, çmimi, barkodi"
 }
