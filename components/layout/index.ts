@@ -1,6 +1,5 @@
 export * from "./account-sidebar"
 export * from "./app-header"
-export * from "./demo-banner"
 export * from "./loading"
 export * from "./org-sidebar"
 export * from "./page-header"

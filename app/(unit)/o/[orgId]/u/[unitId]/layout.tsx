@@ -1,8 +1,8 @@
+import { DemoBanner } from "@/components/banner"
+import { AppHeader } from "@/components/layout"
+import { UnitSidebar } from "@/components/layout/unit-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { PropsWithChildren } from "react"
-
-import { AppHeader, DemoBanner } from "@/components/layout"
-import { UnitSidebar } from "@/components/layout/unit-sidebar"
 
 type Props = PropsWithChildren<{
   params: Promise<GlobalParamsT>
