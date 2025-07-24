@@ -76,8 +76,22 @@ const close = async (id: string) => {
   })
 }
 
+const markAsFavorite = async ({
+  id,
+  isFavorite,
+}: {
+  id: string
+  isFavorite: boolean
+}) => {
+  await db
+    .update(cashRegister)
+    .set({ isFavorite })
+    .where(eq(cashRegister.id, id))
+}
+
 export {
   close as closeCashRegister,
   create as createCashRegister,
+  markAsFavorite as markCashRegisterAsFavorite,
   update as updateCashRegister,
 }

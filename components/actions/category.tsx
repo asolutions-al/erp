@@ -9,19 +9,27 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { markCategoryAsFavorite } from "@/db/app/actions"
 import { CategorySchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
-import { CopyPlusIcon, EditIcon, MoreHorizontalIcon } from "lucide-react"
+import {
+  CopyPlusIcon,
+  EditIcon,
+  MoreHorizontalIcon,
+  StarIcon,
+  StarOffIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type SchemaT = CategorySchemaT
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  const { unitId, orgId } = useParams()
+  const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
 
   return (
@@ -54,6 +62,25 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
             {t("Duplicate")}
           </DropdownMenuItem>
         </Link>
+        <DropdownMenuItem
+          onClick={async () => {
+            try {
+              await markCategoryAsFavorite({
+                id: original.id,
+                isFavorite: !original.isFavorite,
+              })
+              toast.success(t("Category saved successfully"))
+              router.refresh()
+            } catch (error) {
+              toast.error(t("An error occurred"))
+            }
+          }}
+        >
+          {original.isFavorite ? <StarOffIcon /> : <StarIcon />}
+          {original.isFavorite
+            ? t("Unmark as favorite")
+            : t("Mark as favorite")}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

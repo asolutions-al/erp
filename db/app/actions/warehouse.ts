@@ -38,4 +38,18 @@ const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
   })
 }
 
-export { create as createWarehouse, update as updateWarehouse }
+const markAsFavorite = async ({
+  id,
+  isFavorite,
+}: {
+  id: string
+  isFavorite: boolean
+}) => {
+  await db.update(warehouse).set({ isFavorite }).where(eq(warehouse.id, id))
+}
+
+export {
+  create as createWarehouse,
+  markAsFavorite as markWarehouseAsFavorite,
+  update as updateWarehouse,
+}

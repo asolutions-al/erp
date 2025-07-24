@@ -746,5 +746,7 @@
   "All linked invoice configurations will be unassigned from this cash register": "Të gjitha konfigurimet e faturave të lidhura do të ç'caktohen nga kjo arkë",
   "This action is final and cannot be undone": "Ky veprim është përfundimtar dhe nuk mund të zhbëhet",
   "Do you want to close the cash register": "Dëshironi të mbyllni arkën",
-  "No options found": "Nuk u gjet asnjë opsion"
+  "No options found": "Nuk u gjet asnjë opsion",
+  "Cash register saved successfully": "Arka u ruajt me sukses",
+  "Warehouse saved successfully": "Magazina u ruajt me sukses"
 }

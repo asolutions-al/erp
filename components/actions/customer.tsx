@@ -46,7 +46,7 @@ type SchemaT = CustomerSchemaT
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  const { unitId, orgId } = useParams()
+  const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
   const [selectedCustomer, setSelectedCustomer] =
     useState<CustomerSchemaT | null>(null)

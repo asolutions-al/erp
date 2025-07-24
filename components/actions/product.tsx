@@ -39,7 +39,7 @@ type SchemaT = ProductSchemaT & {
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  const { unitId, orgId } = useParams()
+  const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
 
   return (

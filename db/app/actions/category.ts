@@ -28,4 +28,18 @@ const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
   await db.update(category).set(values).where(eq(category.id, id))
 }
 
-export { create as createCategory, update as updateCategory }
+const markAsFavorite = async ({
+  id,
+  isFavorite,
+}: {
+  id: string
+  isFavorite: boolean
+}) => {
+  await db.update(category).set({ isFavorite }).where(eq(category.id, id))
+}
+
+export {
+  create as createCategory,
+  markAsFavorite as markCategoryAsFavorite,
+  update as updateCategory,
+}

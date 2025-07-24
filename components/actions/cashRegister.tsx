@@ -19,7 +19,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { closeCashRegister } from "@/db/app/actions/cashRegister"
+import {
+  closeCashRegister,
+  markCashRegisterAsFavorite,
+} from "@/db/app/actions/cashRegister"
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
@@ -28,6 +31,8 @@ import {
   EditIcon,
   KeyRoundIcon,
   MoreHorizontalIcon,
+  StarIcon,
+  StarOffIcon,
   XCircleIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
@@ -40,7 +45,7 @@ type SchemaT = CashRegisterSchemaT
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  const { unitId, orgId } = useParams()
+  const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
 
   const { isOpen } = row.original
@@ -84,6 +89,26 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
                 </DropdownMenuItem>
               </AlertDialogTrigger>
             )}
+
+            <DropdownMenuItem
+              onClick={async () => {
+                try {
+                  await markCashRegisterAsFavorite({
+                    id: original.id,
+                    isFavorite: !original.isFavorite,
+                  })
+                  toast.success(t("Cash register saved successfully"))
+                  router.refresh()
+                } catch (error) {
+                  toast.error(t("An error occurred"))
+                }
+              }}
+            >
+              {original.isFavorite ? <StarOffIcon /> : <StarIcon />}
+              {original.isFavorite
+                ? t("Unmark as favorite")
+                : t("Mark as favorite")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
 
