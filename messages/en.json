@@ -706,5 +706,7 @@
   "Name, price, barcode": "Name, price, barcode",
   "Drag & drop or click to upload": "Drag & drop or click to upload",
   "Uploading": "Uploading",
-  "Demo description": "Demo description"
+  "Demo description": "Demo description",
+  "Purchase Price": "Purchase Price",
+  "Selling Price": "Selling Price"
 }

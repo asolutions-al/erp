@@ -85,11 +85,22 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "price",
     header: ({ column }) => (
       <div>
-        <SortBtn text="Price" column={column} />
-        <NumberFilter title="Price" column={column} />
+        <SortBtn text="Selling Price" column={column} />
+        <NumberFilter title="Selling Price" column={column} />
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.price),
+    filterFn: "numberRangeFilter",
+  },
+  {
+    accessorKey: "purchasePrice",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Purchase Price" column={column} />
+        <NumberFilter title="Purchase Price" column={column} />
+      </div>
+    ),
+    cell: ({ row }) => formatNumber(row.original.purchasePrice),
     filterFn: "numberRangeFilter",
   },
   {

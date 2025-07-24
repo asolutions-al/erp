@@ -13,6 +13,7 @@ const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
   const productSchema = createInsertSchema(product, {
     name: (sch) => sch.name.min(1),
     price: (sch) => sch.price.min(0),
+    purchasePrice: (sch) => sch.purchasePrice.min(0),
     taxPercentage: (sch) => sch.taxPercentage.min(0).max(100),
   }).omit({
     id: true,
@@ -69,6 +70,7 @@ const defaultValues: SchemaT = {
   status: "active",
   unit: "XPP",
   price: 0,
+  purchasePrice: 0,
   isFavorite: false,
   description: null,
   barcode: null,

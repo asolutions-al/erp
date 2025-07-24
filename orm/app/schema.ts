@@ -225,6 +225,8 @@ export const product = pgTable("product", {
 	isFavorite: boolean().notNull(),
 	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
 	taxPercentage: bigint({ mode: "number" }).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	purchasePrice: bigint({ mode: "number" }).default(sql`'0'`).notNull(),
 }, (table) => [
 	foreignKey({
 			columns: [table.orgId],

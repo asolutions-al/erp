@@ -707,5 +707,7 @@
   "Name, price, barcode": "Emri, çmimi, barkodi",
   "Drag & drop or click to upload": "Drag & drop ose kliko për të ngarkuar",
   "Uploading": "Duke u ngarkuar",
-  "Demo description": "Përshkrim demo"
+  "Demo description": "Përshkrim demo",
+  "Purchase Price": "Çmimi i blerjes",
+  "Selling Price": "Çmimi i shitjes"
 }

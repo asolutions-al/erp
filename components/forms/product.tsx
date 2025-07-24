@@ -289,7 +289,26 @@ const PriceCard = () => {
           name="price"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Price")}</FormLabel>
+              <FormLabel>{t("Selling Price")}</FormLabel>
+              <FormControl>
+                <Input
+                  {...field}
+                  type="number"
+                  placeholder="0.00"
+                  onChange={(e) => field.onChange(parseFloat(e.target.value))}
+                  onFocus={(e) => e.target.select()}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="purchasePrice"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t("Purchase Price")}</FormLabel>
               <FormControl>
                 <Input
                   {...field}
