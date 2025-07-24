@@ -1,6 +1,5 @@
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { appUrl } from "@/contants/consts"
 import { ThemeProvider, TranslationProvider } from "@/providers"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
@@ -9,7 +8,7 @@ import { PropsWithChildren } from "react"
 import "./globals.css"
 
 export const metadata = {
-  metadataBase: new URL(appUrl),
+  metadataBase: new URL(process.env.APP_URL!),
   title: "Erp Asolutions",
   description: "Menaxho biznesin tënd.",
 }

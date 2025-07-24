@@ -1,4 +1,3 @@
-import { accountsUrl, appUrl } from "@/contants/consts"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -7,9 +6,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const getAuthRedirectUrl = () => {
-  const url = new URL(accountsUrl)
+  const url = new URL(process.env.ACCOUNTS_URL!)
   url.pathname = "/login"
-  const redirectUrl = new URL(appUrl)
+  const redirectUrl = new URL(process.env.APP_URL!)
   redirectUrl.pathname = "/auth/callback"
   url.searchParams.set("redirectUrl", redirectUrl.href)
   return url
