@@ -110,17 +110,6 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: ({ row }) => row.original.cashRegister?.name || "-",
   },
   {
-    accessorKey: "status",
-    header: ({ column }) => (
-      <div>
-        <SortBtn text="Status" column={column} />
-        <SelectFilter title="Status" column={column} />
-      </div>
-    ),
-    cell: StatusCell,
-    filterFn: "equals",
-  },
-  {
     id: "actions",
     cell: InvoiceActions,
   },
