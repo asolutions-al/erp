@@ -1,9 +1,9 @@
 "use client"
 
 import { signOut } from "@/db/auth/actions"
-import { DropdownMenuItem } from "@radix-ui/react-dropdown-menu"
 import { LogOut } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { DropdownMenuItem } from "../ui/dropdown-menu"
 
 const LogOutBtn = () => {
   const t = useTranslations()
