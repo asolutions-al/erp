@@ -26,7 +26,10 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { InvoiceReceipt } from "../invoice-receipt"
 
-type SchemaT = InvoiceSchemaT
+type SchemaT = InvoiceSchemaT & {
+  warehouse: WarehouseSchemaT | null
+  cashRegister: CashRegisterSchemaT | null
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()

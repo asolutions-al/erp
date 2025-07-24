@@ -444,7 +444,7 @@ const SelectFilter = <TData, TValue>({
             onValueChange={setSearchValue}
             className="h-9"
           />
-          <CommandEmpty>No options found</CommandEmpty>
+          <CommandEmpty>{t("No options found")}</CommandEmpty>
           <CommandList>
             <CommandGroup className="max-h-[200px] overflow-auto">
               <CommandItem
@@ -603,7 +603,7 @@ const MultiSelectFilter = <TData, TValue>({
               </Button>
             </div>
           </div>
-          <CommandEmpty>No options found</CommandEmpty>
+          <CommandEmpty>{t("No options found")}</CommandEmpty>
           <CommandList>
             <CommandGroup className="max-h-[200px] overflow-auto">
               {filteredOptions.map((option) => (

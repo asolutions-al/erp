@@ -25,9 +25,10 @@ const Page = async (props: Props) => {
     orderBy: desc(invoice.createdAt),
     with: {
       customer: true,
+      cashRegister: true,
+      warehouse: true,
     },
   })
-
   return <DataTable columns={invoiceColumns} data={data} />
 }
 

@@ -744,5 +744,6 @@
   "You will not be able to select this cash register for new sales": "You will not be able to select this cash register for new sales",
   "All linked invoice configurations will be unassigned from this cash register": "All linked invoice configurations will be unassigned from this cash register",
   "This action is final and cannot be undone": "This action is final and cannot be undone",
-  "Do you want to close the cash register": "Do you want to close the cash register"
+  "Do you want to close the cash register": "Do you want to close the cash register",
+  "No options found": "No options found"
 }

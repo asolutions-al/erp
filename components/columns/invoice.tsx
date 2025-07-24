@@ -12,12 +12,19 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
-import { InvoiceSchemaT } from "@/db/app/schema"
+import {
+  CashRegisterSchemaT,
+  InvoiceSchemaT,
+  WarehouseSchemaT,
+} from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
 
-type SchemaT = InvoiceSchemaT
+type SchemaT = InvoiceSchemaT & {
+  warehouse: WarehouseSchemaT | null
+  cashRegister: CashRegisterSchemaT | null
+}
 
 const PayMethodCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
@@ -72,6 +79,26 @@ const columns: ColumnDef<SchemaT>[] = [
         <StringFilter title="Customer" column={column} />
       </div>
     ),
+  },
+  {
+    accessorKey: "warehouse.name",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Warehouse" column={column} />
+        <SelectFilter title="Warehouse" column={column} />
+      </div>
+    ),
+    cell: ({ row }) => row.original.warehouse?.name || "-",
+  },
+  {
+    accessorKey: "cashRegister.name",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Cash register" column={column} />
+        <SelectFilter title="Cash register" column={column} />
+      </div>
+    ),
+    cell: ({ row }) => row.original.cashRegister?.name || "-",
   },
   {
     accessorKey: "status",
