@@ -66,6 +66,8 @@ const getCustomerInvoices = async ({
     orderBy: desc(invoice.createdAt),
     with: {
       customer: true,
+      warehouse: true,
+      cashRegister: true,
     },
   })
 

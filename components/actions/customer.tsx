@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Skeleton } from "@/components/ui/skeleton"
 import { getCustomerInvoices, markCustomerAsFavorite } from "@/db/app/actions"
-import { CustomerSchemaT, InvoiceSchemaT } from "@/db/app/schema"
+import {
+  CashRegisterSchemaT,
+  CustomerSchemaT,
+  InvoiceSchemaT,
+  WarehouseSchemaT,
+} from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
@@ -170,7 +175,12 @@ const InvoicesSheetContent = ({
   customer: CustomerSchemaT
   onClose: () => void
 }) => {
-  const [invoices, setInvoices] = useState<InvoiceSchemaT[]>([])
+  const [invoices, setInvoices] = useState<
+    (InvoiceSchemaT & {
+      warehouse: WarehouseSchemaT | null
+      cashRegister: CashRegisterSchemaT | null
+    })[]
+  >([])
   const [loading, setLoading] = useState(false)
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const t = useTranslations()
