@@ -8,10 +8,10 @@ import Link from "next/link"
 import { PropsWithChildren } from "react"
 
 type Props = PropsWithChildren<{
-  params: Promise<{ orgId: string; unitId: string; range: RangeT }>
+  params: Promise<{ orgId: string; unitId: string; period: PeriodT }>
 }>
 
-const LIST: RangeT[] = [
+const LIST: PeriodT[] = [
   "today",
   // "yesterday",
   "this_week",
@@ -22,7 +22,7 @@ const LIST: RangeT[] = [
 
 const Layout = async (props: Props) => {
   const { params } = props
-  const { orgId, unitId, range: rangeParam } = await params
+  const { orgId, unitId, period: rangeParam } = await params
   const t = await getTranslations()
 
   return (
@@ -30,17 +30,17 @@ const Layout = async (props: Props) => {
       <div className="mb-3 flex flex-row justify-between">
         <Tabs defaultValue={rangeParam}>
           <TabsList>
-            {LIST.map((range) => {
-              const Icon = mapRangeIcon(range)
-              const isActive = range === rangeParam
+            {LIST.map((period) => {
+              const Icon = mapRangeIcon(period)
+              const isActive = period === rangeParam
               return (
                 <Link
-                  href={`/o/${orgId}/u/${unitId}/overview/dashboard/${range}`}
-                  key={range}
+                  href={`/o/${orgId}/u/${unitId}/invoice/list/${period}`}
+                  key={period}
                   passHref
                 >
                   <TabsTrigger
-                    value={range}
+                    value={period}
                     className="flex items-center gap-2"
                   >
                     <Icon size={20} />
@@ -50,7 +50,7 @@ const Layout = async (props: Props) => {
                         isActive && "not-sr-only"
                       )}
                     >
-                      {t(range)}
+                      {t(period)}
                     </span>
                   </TabsTrigger>
                 </Link>

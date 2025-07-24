@@ -16,7 +16,7 @@ const StatusTabs = ({
 }) => {
   const t = useTranslations()
   const pathname = usePathname()
-  const param = useSearchParams().get("range") || defaultValue
+  const param = useSearchParams().get("period") || defaultValue
   const router = useRouter()
 
   return (

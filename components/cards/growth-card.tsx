@@ -16,14 +16,14 @@ const GrowthCard = async ({
   description,
   suggestion,
   growth,
-  range,
+  period,
 }: {
   Icon: React.ElementType
   title: string
   description: string
   suggestion: string
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   const { diffPercent, status, diff } = growth
@@ -37,16 +37,16 @@ const GrowthCard = async ({
   }[status]
 
   const message = {
-    equal: t("Same as {range}", {
-      range,
+    equal: t("Same as {period}", {
+      period,
     }),
-    up: t("{diff} more than {range}", {
+    up: t("{diff} more than {period}", {
       diff: formatNumber(Math.abs(diff)),
-      range,
+      period,
     }),
-    down: t("{diff} less than {range}", {
+    down: t("{diff} less than {period}", {
       diff: formatNumber(Math.abs(diff)),
-      range,
+      period,
     }),
   }[status]
 

@@ -730,10 +730,10 @@
   "Margin %": "Marzhi %",
   "Green bars show revenue, red bars show costs, and blue line shows profit margin percentage": "Shtyllat e gjelbërta tregojnë të ardhurat, shtyllat e kuqe tregojnë kostot dhe vija blu tregon përqindjen e marzhit të fitimit",
   "Margin": "Marzhi",
-  "No change compared to {range}": "Ska ndryshim nga {range, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
-  "Down by {diff} compared to {range}": "Ulje me {diff} krahasuar me {range, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
-  "Up by {diff} compared to {range}": "Rritje me {diff} krahasuar me {range, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
-  "{diff} more than {range}": "{diff} më shumë se {range, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
-  "{diff} less than {range}": "{diff} më pak se {range, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
-  "Same as {range}": "E njëjtë me {range, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}"
+  "No change compared to {period}": "Ska ndryshim nga {period, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
+  "Down by {diff} compared to {period}": "Ulje me {diff} krahasuar me {period, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
+  "Up by {diff} compared to {period}": "Rritje me {diff} krahasuar me {period, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
+  "{diff} more than {period}": "{diff} më shumë se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
+  "{diff} less than {period}": "{diff} më pak se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
+  "Same as {period}": "E njëjtë me {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}"
 }

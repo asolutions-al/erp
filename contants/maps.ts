@@ -38,8 +38,8 @@ const mapPayMethodIcon = (value: PayMethodT) => {
   }
   return MAP[value]
 }
-const mapRangeIcon = (value: RangeT) => {
-  const MAP: Record<RangeT, IconT> = {
+const mapRangeIcon = (value: PeriodT) => {
+  const MAP: Record<PeriodT, IconT> = {
     today: CalendarIcon,
     yesterday: CalendarDaysIcon,
     this_week: CalendarRangeIcon,
@@ -58,10 +58,10 @@ const mapStatusIcon = (value: EntityStatusT) => {
   return MAP[value]
 }
 
-const mapRangeToStartEnd = (range: RangeT) => {
+const mapRangeToStartEnd = (period: PeriodT) => {
   const weekStartsOn = 1
 
-  const MAP: Record<RangeT, [Date, Date]> = {
+  const MAP: Record<PeriodT, [Date, Date]> = {
     today: [startOfToday(), endOfToday()],
     yesterday: [startOfYesterday(), endOfYesterday()],
     this_week: [
@@ -78,13 +78,13 @@ const mapRangeToStartEnd = (range: RangeT) => {
       endOfMonth(subMonths(new Date(), 1)),
     ],
   }
-  return MAP[range]
+  return MAP[period]
 }
 
-const mapRangeToPrevStartEnd = (range: RangeT) => {
+const mapRangeToPrevStartEnd = (period: PeriodT) => {
   const weekStartsOn = 1
 
-  const MAP: Record<RangeT, [Date, Date]> = {
+  const MAP: Record<PeriodT, [Date, Date]> = {
     today: [startOfYesterday(), endOfYesterday()],
     yesterday: [
       startOfDay(subDays(new Date(), 2)),
@@ -107,7 +107,7 @@ const mapRangeToPrevStartEnd = (range: RangeT) => {
       endOfMonth(subMonths(new Date(), 2)),
     ],
   }
-  return MAP[range]
+  return MAP[period]
 }
 
 export {

@@ -9,7 +9,7 @@ type FormIdT =
   | "warehouse"
   | "category"
 
-type RangeT =
+type PeriodT =
   | "today"
   | "yesterday"
   | "this_week"

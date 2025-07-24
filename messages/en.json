@@ -729,10 +729,10 @@
   "Margin %": "Margin %",
   "Green bars show revenue, red bars show costs, and blue line shows profit margin percentage": "Green bars show revenue, red bars show costs, and blue line shows profit margin percentage",
   "Margin": "Margin",
-  "No change compared to {range}": "No change compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
-  "Down by {diff} compared to {range}": "Down by {diff} compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
-  "Up by {diff} compared to {range}": "Up by {diff} compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
-  "{diff} more than {range}": "{diff} more than {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
-  "{diff} less than {range}": "{diff} less than {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
-  "Same as {range}": "Same as {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}"
+  "No change compared to {period}": "No change compared to {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "Down by {diff} compared to {period}": "Down by {diff} compared to {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "Up by {diff} compared to {period}": "Up by {diff} compared to {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "{diff} more than {period}": "{diff} more than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
+  "{diff} less than {period}": "{diff} less than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
+  "Same as {period}": "Same as {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}"
 }

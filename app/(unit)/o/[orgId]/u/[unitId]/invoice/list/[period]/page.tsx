@@ -6,15 +6,15 @@ import { invoice } from "@/orm/app/schema"
 import { and, desc, eq, gte, lte } from "drizzle-orm"
 
 type Props = {
-  params: Promise<{ unitId: string; range: RangeT }>
-  searchParams: Promise<{ range?: RangeT }>
+  params: Promise<{ unitId: string; period: PeriodT }>
+  searchParams: Promise<{ period?: PeriodT }>
 }
 
 const Page = async (props: Props) => {
   const { params } = props
-  const { unitId, range } = await params
+  const { unitId, period } = await params
 
-  const [start, end] = mapRangeToStartEnd(range)
+  const [start, end] = mapRangeToStartEnd(period)
 
   const data = await db.query.invoice.findMany({
     where: and(

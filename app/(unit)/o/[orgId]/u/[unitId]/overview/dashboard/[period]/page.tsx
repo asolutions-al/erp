@@ -58,8 +58,8 @@ import Image from "next/image"
 import Link from "next/link"
 
 type Props = {
-  params: Promise<{ unitId: string; orgId: string; range: RangeT }>
-  searchParams: Promise<{ range?: RangeT }>
+  params: Promise<{ unitId: string; orgId: string; period: PeriodT }>
+  searchParams: Promise<{ period?: PeriodT }>
 }
 
 type PaymentMethodData = {
@@ -187,11 +187,11 @@ const PaymentMethodSalesCard = async ({
 const AvgSaleValueCard = async ({
   value,
   growth,
-  range,
+  period,
 }: {
   value: number
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   return (
@@ -200,7 +200,7 @@ const AvgSaleValueCard = async ({
       title={formatNumber(value)}
       description={t("Avg invoice value")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Keep pricing steady and upsell"),
@@ -215,11 +215,11 @@ const AvgSaleValueCard = async ({
 const NewCustomersCard = async ({
   count,
   growth,
-  range,
+  period,
 }: {
   count: number
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   return (
@@ -228,7 +228,7 @@ const NewCustomersCard = async ({
       title={formatNumber(count)}
       description={t("New customers")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Keep new customers engaged"),
@@ -243,11 +243,11 @@ const NewCustomersCard = async ({
 const TotalSalesCard = async ({
   count,
   growth,
-  range,
+  period,
 }: {
   count: number
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   return (
@@ -256,7 +256,7 @@ const TotalSalesCard = async ({
       title={formatNumber(count)}
       description={t("Invoices total")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Keep current sales strategy"),
@@ -271,11 +271,11 @@ const TotalSalesCard = async ({
 const TotalSalesCountCard = async ({
   count,
   growth,
-  range,
+  period,
 }: {
   count: number
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   return (
@@ -284,7 +284,7 @@ const TotalSalesCountCard = async ({
       title={formatNumber(count)}
       description={t("Invoices count")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Keep customers engaged"),
@@ -299,11 +299,11 @@ const TotalSalesCountCard = async ({
 const LowStockProductsCard = async ({
   count,
   growth,
-  range,
+  period,
 }: {
   count: number
   growth: GrowthT
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
   return (
@@ -312,7 +312,7 @@ const LowStockProductsCard = async ({
       title={formatNumber(count)}
       description={t("Low stock products")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Monitor and reorder as needed"),
@@ -327,11 +327,11 @@ const LowStockProductsCard = async ({
 const ProfitMarginGrowthCard = async ({
   currentMargin,
   previousMargin,
-  range,
+  period,
 }: {
   currentMargin: number
   previousMargin: number
-  range: RangeT
+  period: PeriodT
 }) => {
   const t = await getTranslations()
 
@@ -343,7 +343,7 @@ const ProfitMarginGrowthCard = async ({
       title={`${formatNumber(currentMargin)}%`}
       description={t("Avg Profit Margin")}
       growth={growth}
-      range={range}
+      period={period}
       suggestion={
         {
           equal: t("Maintain current pricing strategy"),
@@ -1075,10 +1075,10 @@ const CustomerBehaviorCard = async ({
 
 const Page = async (props: Props) => {
   const { params } = props
-  const { unitId, orgId, range } = await params
+  const { unitId, orgId, period } = await params
 
-  const [start, end] = mapRangeToStartEnd(range)
-  const [prevStart, prevEnd] = mapRangeToPrevStartEnd(range)
+  const [start, end] = mapRangeToStartEnd(period)
+  const [prevStart, prevEnd] = mapRangeToPrevStartEnd(period)
 
   const [
     [customers],
@@ -1242,7 +1242,7 @@ const Page = async (props: Props) => {
             invoices.reduce((acc, invoice) => acc + invoice.total, 0),
             prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0)
           )}
-          range={range}
+          period={period}
         />
         <AvgSaleValueCard
           value={
@@ -1261,22 +1261,22 @@ const Page = async (props: Props) => {
                   prevInvoices.length
               : 0
           )}
-          range={range}
+          period={period}
         />
         <TotalSalesCountCard
           count={invoices.length}
           growth={calcGrowth(invoices.length, prevInvoices.length)}
-          range={range}
+          period={period}
         />
         <NewCustomersCard
           count={customers.count}
           growth={calcGrowth(customers.count, prevCustomers.count)}
-          range={range}
+          period={period}
         />
         <ProfitMarginGrowthCard
           currentMargin={calculateProfitMargin(invoiceRows)}
           previousMargin={calculateProfitMargin(prevInvoiceRows)}
-          range={range}
+          period={period}
         />
         <LowStockProductsCard
           count={productInventories.count}
@@ -1284,7 +1284,7 @@ const Page = async (props: Props) => {
             productInventories.count,
             prevProductInventories.count
           )}
-          range={range}
+          period={period}
         />
       </div>
 

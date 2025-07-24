@@ -7,7 +7,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
 
-type RangeT =
+type PeriodT =
   | "today"
   | "yesterday"
   | "this_week"
@@ -15,7 +15,7 @@ type RangeT =
   | "this_month"
   | "last_month"
 
-const LIST: RangeT[] = [
+const LIST: PeriodT[] = [
   "today",
   // "yesterday",
   "this_week",
@@ -24,14 +24,14 @@ const LIST: RangeT[] = [
   // "last_month",
 ]
 
-const RangeTabs = ({
+const PeriodTabs = ({
   defaultValue,
 }: {
   defaultValue: (typeof LIST)[number]
 }) => {
   const t = useTranslations()
   const pathname = usePathname()
-  const param = useSearchParams().get("range") || defaultValue
+  const param = useSearchParams().get("period") || defaultValue
 
   return (
     <Tabs defaultValue={defaultValue}>
@@ -44,7 +44,7 @@ const RangeTabs = ({
               key={item}
               href={{
                 pathname,
-                query: { range: item },
+                query: { period: item },
               }}
               passHref
             >
@@ -67,4 +67,4 @@ const RangeTabs = ({
   )
 }
 
-export { RangeTabs }
+export { PeriodTabs }
