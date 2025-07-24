@@ -66,6 +66,7 @@ export async function GET(request: Request) {
         .insert(organization)
         .values({
           name: t("Demo organization"),
+          description: t("Demo description"),
           ownerId: userId,
         })
         .returning({
@@ -78,6 +79,7 @@ export async function GET(request: Request) {
         .insert(unit)
         .values({
           name: t("Demo unit"),
+          description: t("Demo description"),
           orgId: orgRes.id,
         })
         .returning({
@@ -110,6 +112,7 @@ export async function GET(request: Request) {
             orgId: orgRes.id,
             unitId: unitRes.id,
             name: t("Demo product"),
+            description: t("Demo description"),
             unit: "XPP",
             price: 1,
             status: "active",
@@ -125,6 +128,7 @@ export async function GET(request: Request) {
               orgId: orgRes.id,
               unitId: unitRes.id,
               name: t("Demo customer"),
+              description: t("Demo description"),
               status: "active",
               isFavorite: false,
               idType: "id",
