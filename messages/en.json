@@ -722,5 +722,17 @@
   "Avg Profit Margin": "Avg Profit Margin",
   "Maintain current pricing strategy": "Maintain current pricing strategy",
   "Excellent profitability - consider expanding": "Excellent profitability - consider expanding",
-  "Review costs and pricing strategy": "Review costs and pricing strategy"
+  "Review costs and pricing strategy": "Review costs and pricing strategy",
+  "Cost": "Cost",
+  "Profit Margin %": "Profit Margin %",
+  "Amount": "Amount",
+  "Margin %": "Margin %",
+  "Green bars show revenue, red bars show costs, and blue line shows profit margin percentage": "Green bars show revenue, red bars show costs, and blue line shows profit margin percentage",
+  "Margin": "Margin",
+  "No change compared to {range}": "No change compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "Down by {diff} compared to {range}": "Down by {diff} compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "Up by {diff} compared to {range}": "Up by {diff} compared to {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
+  "{diff} more than {range}": "{diff} more than {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
+  "{diff} less than {range}": "{diff} less than {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
+  "Same as {range}": "Same as {range, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}"
 }

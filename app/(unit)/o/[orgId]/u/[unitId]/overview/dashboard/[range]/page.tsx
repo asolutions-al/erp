@@ -187,9 +187,11 @@ const PaymentMethodSalesCard = async ({
 const AvgSaleValueCard = async ({
   value,
   growth,
+  range,
 }: {
   value: number
   growth: GrowthT
+  range: RangeT
 }) => {
   const t = await getTranslations()
   return (
@@ -198,6 +200,7 @@ const AvgSaleValueCard = async ({
       title={formatNumber(value)}
       description={t("Avg invoice value")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Keep pricing steady and upsell"),
@@ -212,9 +215,11 @@ const AvgSaleValueCard = async ({
 const NewCustomersCard = async ({
   count,
   growth,
+  range,
 }: {
   count: number
   growth: GrowthT
+  range: RangeT
 }) => {
   const t = await getTranslations()
   return (
@@ -223,6 +228,7 @@ const NewCustomersCard = async ({
       title={formatNumber(count)}
       description={t("New customers")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Keep new customers engaged"),
@@ -237,9 +243,11 @@ const NewCustomersCard = async ({
 const TotalSalesCard = async ({
   count,
   growth,
+  range,
 }: {
   count: number
   growth: GrowthT
+  range: RangeT
 }) => {
   const t = await getTranslations()
   return (
@@ -248,6 +256,7 @@ const TotalSalesCard = async ({
       title={formatNumber(count)}
       description={t("Invoices total")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Keep current sales strategy"),
@@ -262,9 +271,11 @@ const TotalSalesCard = async ({
 const TotalSalesCountCard = async ({
   count,
   growth,
+  range,
 }: {
   count: number
   growth: GrowthT
+  range: RangeT
 }) => {
   const t = await getTranslations()
   return (
@@ -273,6 +284,7 @@ const TotalSalesCountCard = async ({
       title={formatNumber(count)}
       description={t("Invoices count")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Keep customers engaged"),
@@ -287,9 +299,11 @@ const TotalSalesCountCard = async ({
 const LowStockProductsCard = async ({
   count,
   growth,
+  range,
 }: {
   count: number
   growth: GrowthT
+  range: RangeT
 }) => {
   const t = await getTranslations()
   return (
@@ -298,6 +312,7 @@ const LowStockProductsCard = async ({
       title={formatNumber(count)}
       description={t("Low stock products")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Monitor and reorder as needed"),
@@ -312,9 +327,11 @@ const LowStockProductsCard = async ({
 const ProfitMarginGrowthCard = async ({
   currentMargin,
   previousMargin,
+  range,
 }: {
   currentMargin: number
   previousMargin: number
+  range: RangeT
 }) => {
   const t = await getTranslations()
 
@@ -326,6 +343,7 @@ const ProfitMarginGrowthCard = async ({
       title={`${formatNumber(currentMargin)}%`}
       description={t("Avg Profit Margin")}
       growth={growth}
+      range={range}
       suggestion={
         {
           equal: t("Maintain current pricing strategy"),
@@ -1224,6 +1242,7 @@ const Page = async (props: Props) => {
             invoices.reduce((acc, invoice) => acc + invoice.total, 0),
             prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0)
           )}
+          range={range}
         />
         <AvgSaleValueCard
           value={
@@ -1242,18 +1261,22 @@ const Page = async (props: Props) => {
                   prevInvoices.length
               : 0
           )}
+          range={range}
         />
         <TotalSalesCountCard
           count={invoices.length}
           growth={calcGrowth(invoices.length, prevInvoices.length)}
+          range={range}
         />
         <NewCustomersCard
           count={customers.count}
           growth={calcGrowth(customers.count, prevCustomers.count)}
+          range={range}
         />
         <ProfitMarginGrowthCard
           currentMargin={calculateProfitMargin(invoiceRows)}
           previousMargin={calculateProfitMargin(prevInvoiceRows)}
+          range={range}
         />
         <LowStockProductsCard
           count={productInventories.count}
@@ -1261,6 +1284,7 @@ const Page = async (props: Props) => {
             productInventories.count,
             prevProductInventories.count
           )}
+          range={range}
         />
       </div>
 

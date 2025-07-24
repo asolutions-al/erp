@@ -42,10 +42,10 @@ const mapRangeIcon = (value: RangeT) => {
   const MAP: Record<RangeT, IconT> = {
     today: CalendarIcon,
     yesterday: CalendarDaysIcon,
-    this_week: CalendarIcon, //TODO:
-    last_week: CalendarIcon, // TODO:
+    this_week: CalendarRangeIcon,
+    last_week: CalendarRangeIcon,
     this_month: CalendarRangeIcon,
-    last_month: CalendarIcon, // TODO:
+    last_month: CalendarRangeIcon, // TODO:
   }
   return MAP[value]
 }

@@ -17,8 +17,8 @@ type RangeT =
 
 const LIST: RangeT[] = [
   "today",
-  "yesterday",
-  // "this_week",
+  // "yesterday",
+  "this_week",
   // "last_week",
   "this_month",
   // "last_month",

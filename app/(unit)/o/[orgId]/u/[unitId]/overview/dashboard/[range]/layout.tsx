@@ -11,7 +11,14 @@ type Props = PropsWithChildren<{
   params: Promise<{ orgId: string; unitId: string; range: RangeT }>
 }>
 
-const LIST: RangeT[] = ["today", "yesterday", "this_month"]
+const LIST: RangeT[] = [
+  "today",
+  // "yesterday",
+  "this_week",
+  // "last_week",
+  "this_month",
+  // "last_month",
+]
 
 const Layout = async (props: Props) => {
   const { params } = props
