@@ -301,6 +301,8 @@
   "This action cannot be undone": "Ky veprim nuk mund të zhbëhet",
   "Are you absolutely sure": "A jeni të sigurt",
   "This will permanently close the cash register": "Kjo do të mbyllë përgjithmonë arkën",
+  "Cash register closure description": "Mbyllja e arkës do të finalizojë të gjitha transaksionet, do të llogarisë bilancin përfundimtar, dhe do të parandalojë përpunimin e transaksioneve të reja. Ky veprim nuk mund të anullohet.",
+  "Yes, close": "Po, mbyll",
   "Cash register closed successfully": "Arka u mbyll me sukses",
   "Cash register 1": "Arka 1",
   "Helps you quickly find the cash register": "Ju ndihmon të gjeni shpejt arkën",
@@ -736,5 +738,12 @@
   "{diff} more than {period}": "{diff} më shumë se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
   "{diff} less than {period}": "{diff} më pak se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
   "Same as {period}": "E njëjtë me {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
-  "Quick actions": "Veprime të shpejta"
+  "Quick actions": "Veprime të shpejta",
+  "When you close the cash register": "Kur të mbyllet arka",
+  "The cash register will be archived and no longer available for new transactions": "Arka do të arkivohet dhe nuk do të jetë më e disponueshme për transaksionet e reja",
+  "The closing balance will be recorded and locked": "Bilanci mbyllës do të regjistrohet dhe bllokohet",
+  "You will not be able to select this cash register for new sales": "Nuk do të mund të zgjidhni këtë arkë për shitje të reja",
+  "All linked invoice configurations will be unassigned from this cash register": "Të gjitha konfigurimet e faturave të lidhura do të ç'caktohen nga kjo arkë",
+  "This action is final and cannot be undone": "Ky veprim është përfundimtar dhe nuk mund të zhbëhet",
+  "Do you want to close the cash register": "Dëshironi të mbyllni arkën"
 }

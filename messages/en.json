@@ -299,6 +299,8 @@
   "This action cannot be undone": "This action cannot be undone",
   "Are you absolutely sure": "Are you absolutely sure",
   "This will permanently close the cash register": "This will permanently close the cash register",
+  "Cash register closure description": "Closing the cash register will finalize all transactions, calculate the final balance, and prevent any new transactions from being processed. This action cannot be undone.",
+  "Yes, close": "Yes, close",
   "Cash register closed successfully": "Cash register closed successfully",
   "Cash register 1": "Cash register 1",
   "Helps you quickly find the cash register": "Helps you quickly find the cash register",
@@ -735,5 +737,12 @@
   "{diff} more than {period}": "{diff} more than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
   "{diff} less than {period}": "{diff} less than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
   "Same as {period}": "Same as {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
-  "Quick actions": "Quick actions"
+  "Quick actions": "Quick actions",
+  "When you close the cash register": "When you close the cash register",
+  "The cash register will be archived and no longer available for new transactions": "The cash register will be archived and no longer available for new transactions",
+  "The closing balance will be recorded and locked": "The closing balance will be recorded and locked",
+  "You will not be able to select this cash register for new sales": "You will not be able to select this cash register for new sales",
+  "All linked invoice configurations will be unassigned from this cash register": "All linked invoice configurations will be unassigned from this cash register",
+  "This action is final and cannot be undone": "This action is final and cannot be undone",
+  "Do you want to close the cash register": "Do you want to close the cash register"
 }

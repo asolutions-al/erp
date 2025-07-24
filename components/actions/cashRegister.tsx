@@ -23,10 +23,12 @@ import { closeCashRegister } from "@/db/app/actions/cashRegister"
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
+  CheckCircleIcon,
   CopyPlusIcon,
   EditIcon,
   KeyRoundIcon,
   MoreHorizontalIcon,
+  XCircleIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
@@ -87,14 +89,37 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
 
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("Are you absolutely sure")}?</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("Do you want to close the cash register")}?
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              {t("This action cannot be undone")}.{" "}
-              {t("This will permanently close the cash register")}.
+              <p>{t("When you close the cash register")}:</p>
+              <ul className="list-inside list-disc">
+                <li>
+                  {t(
+                    "The cash register will be archived and no longer available for new transactions"
+                  )}
+                </li>
+                <li>{t("The closing balance will be recorded and locked")}</li>
+                <li>
+                  {t(
+                    "You will not be able to select this cash register for new sales"
+                  )}
+                </li>
+                <li>
+                  {t(
+                    "All linked invoice configurations will be unassigned from this cash register"
+                  )}
+                </li>
+                <li>{t("This action is final and cannot be undone")}</li>
+              </ul>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogCancel>
+              <XCircleIcon />
+              {t("Cancel")}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={async () => {
                 try {
@@ -106,7 +131,8 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
                 }
               }}
             >
-              Continue
+              <CheckCircleIcon />
+              {t("Yes, close")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
