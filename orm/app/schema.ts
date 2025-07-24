@@ -178,6 +178,36 @@ export const invoiceRow = pgTable("invoiceRow", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
+export const product = pgTable("product", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	price: doublePrecision().notNull(),
+	status: entityStatus().notNull(),
+	barcode: text(),
+	description: text(),
+	imageBucketPath: text(),
+	orgId: uuid().notNull(),
+	unit: productUnit().notNull(),
+	isFavorite: boolean().notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	taxPercentage: bigint({ mode: "number" }).notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	purchasePrice: bigint({ mode: "number" }).notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "product_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "product_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const productInventoryMovement = pgTable("productInventoryMovement", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -207,36 +237,6 @@ export const productInventoryMovement = pgTable("productInventoryMovement", {
 			columns: [table.warehouseId],
 			foreignColumns: [warehouse.id],
 			name: "productInventory_duplicate_warehouseId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
-export const product = pgTable("product", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid().notNull(),
-	name: text().notNull(),
-	price: doublePrecision().notNull(),
-	status: entityStatus().notNull(),
-	barcode: text(),
-	description: text(),
-	imageBucketPath: text(),
-	orgId: uuid().notNull(),
-	unit: productUnit().notNull(),
-	isFavorite: boolean().notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	taxPercentage: bigint({ mode: "number" }).notNull(),
-	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
-	purchasePrice: bigint({ mode: "number" }).default(sql`'0'`).notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "product_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.unitId],
-			foreignColumns: [unit.id],
-			name: "product_unitId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

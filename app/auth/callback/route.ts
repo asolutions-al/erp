@@ -115,6 +115,7 @@ export async function GET(request: Request) {
             description: t("Demo description"),
             unit: "XPP",
             price: 1,
+            purchasePrice: 0.5,
             status: "active",
             isFavorite: false,
             taxPercentage: 0,

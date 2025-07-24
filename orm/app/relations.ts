@@ -70,8 +70,8 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 		references: [user.id]
 	}),
 	invoiceRows: many(invoiceRow),
-	productInventoryMovements: many(productInventoryMovement),
 	products: many(product),
+	productInventoryMovements: many(productInventoryMovement),
 	categories: many(category),
 	invitations: many(invitation),
 	subscriptions: many(subscription),
@@ -91,8 +91,8 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 	}),
 	productCategories: many(productCategory),
 	invoiceRows: many(invoiceRow),
-	productInventoryMovements: many(productInventoryMovement),
 	products: many(product),
+	productInventoryMovements: many(productInventoryMovement),
 	categories: many(category),
 	cashRegisters: many(cashRegister),
 	invoices: many(invoice),
@@ -149,7 +149,6 @@ export const categoryRelations = relations(category, ({one, many}) => ({
 export const productRelations = relations(product, ({one, many}) => ({
 	productCategories: many(productCategory),
 	invoiceRows: many(invoiceRow),
-	productInventoryMovements: many(productInventoryMovement),
 	organization: one(organization, {
 		fields: [product.orgId],
 		references: [organization.id]
@@ -158,6 +157,7 @@ export const productRelations = relations(product, ({one, many}) => ({
 		fields: [product.unitId],
 		references: [unit.id]
 	}),
+	productInventoryMovements: many(productInventoryMovement),
 	productInventories: many(productInventory),
 }));
 
