@@ -30,6 +30,7 @@ const SidebarItemSimple = (props: Props) => {
         tooltip={t(props.text)}
         asChild
         isActive={pathname === props.href}
+        className="h-10 p-4"
       >
         <Link href={props.href}>
           {props.icon}

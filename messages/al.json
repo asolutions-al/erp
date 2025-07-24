@@ -735,5 +735,6 @@
   "Up by {diff} compared to {period}": "Rritje me {diff} krahasuar me {period, select, today {dje} this_week {kjo javë} this_month {muaji i kaluar} other {}}",
   "{diff} more than {period}": "{diff} më shumë se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
   "{diff} less than {period}": "{diff} më pak se {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
-  "Same as {period}": "E njëjtë me {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}"
+  "Same as {period}": "E njëjtë me {period, select, today {dje} this_week {javën e kaluar} this_month {muajin e kaluar} other {}}",
+  "Quick actions": "Veprime të shpejta"
 }

@@ -1,4 +1,4 @@
-import { SidebarItemCollapsible, SidebarItemSimple } from "@/components/buttons"
+import { SidebarItemSimple } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -18,9 +18,11 @@ import {
   ContactIcon,
   LayoutDashboardIcon,
   PackageIcon,
+  PlusCircleIcon,
   ReceiptTextIcon,
   SettingsIcon,
   WarehouseIcon,
+  ZapIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -55,7 +57,33 @@ const UnitSidebar = async (props: Props) => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <ZapIcon className="mr-1" />
+            {t("Quick actions")}
+          </SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarItemSimple
+              text="New invoice"
+              icon={<PlusCircleIcon />}
+              href={`/o/${orgId}/u/${unitId}/invoice/create`}
+            />
+            <SidebarItemSimple
+              text="New product"
+              icon={<PlusCircleIcon />}
+              href={`/o/${orgId}/u/${unitId}/product/create`}
+            />
+            <SidebarItemSimple
+              text="New customer"
+              icon={<PlusCircleIcon />}
+              href={`/o/${orgId}/u/${unitId}/customer/create`}
+            />
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <PackageIcon className="mr-1" />
+            {t("Menu")}
+          </SidebarGroupLabel>
           <SidebarMenu>
             <SidebarItemSimple
               text="Dashboard"
@@ -92,17 +120,10 @@ const UnitSidebar = async (props: Props) => {
               icon={<BriefcaseBusinessIcon />}
               href={`/o/${orgId}/u/${unitId}/category/list/active`}
             />
-            <SidebarItemCollapsible
+            <SidebarItemSimple
               text="Configurations"
               icon={<SettingsIcon />}
               href={`/o/${orgId}/u/${unitId}/config/invoice`}
-              subItems={[
-                {
-                  href: `/o/${orgId}/u/${unitId}/config/invoice`,
-                  text: "Invoice",
-                  icon: <ReceiptTextIcon />,
-                },
-              ]}
             />
           </SidebarMenu>
         </SidebarGroup>

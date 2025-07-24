@@ -734,5 +734,6 @@
   "Up by {diff} compared to {period}": "Up by {diff} compared to {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {other}}",
   "{diff} more than {period}": "{diff} more than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
   "{diff} less than {period}": "{diff} less than {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
-  "Same as {period}": "Same as {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}"
+  "Same as {period}": "Same as {period, select, today {yesterday} this_week {previous week} this_month {previous month} other {}}",
+  "Quick actions": "Quick actions"
 }

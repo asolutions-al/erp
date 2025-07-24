@@ -17,12 +17,5 @@ const calcGrowth = ({
     status: diffPercent === 0 ? "equal" : diffPercent > 0 ? "up" : "down",
   }
 }
-/**
- * @formula ((revenue - cost) / revenue) * 100
- */
-const calcProfitMargin = (data: { revenue: number; cost: number }) => {
-  const { revenue, cost } = data
-  return revenue > 0 ? ((revenue - cost) / revenue) * 100 : 0
-}
 
-export { calcGrowth, calcProfitMargin }
+export { calcGrowth }
