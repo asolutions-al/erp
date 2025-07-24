@@ -704,5 +704,7 @@
   "No results found": "Nuk u gjetën rezultate",
   "{filtered} of {total} rows": "{filtered} nga {total} rreshta",
   "owner": "Përdoruesi",
-  "Name, price, barcode": "Emri, çmimi, barkodi"
+  "Name, price, barcode": "Emri, çmimi, barkodi",
+  "Drag & drop or click to upload": "Drag & drop ose kliko për të ngarkuar",
+  "Uploading": "Duke u ngarkuar"
 }

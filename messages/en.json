@@ -703,5 +703,7 @@
   "Configurations": "Configurations",
   "Subscriptions": "Subscriptions",
   "Select unit": "Select unit",
-  "Name, price, barcode": "Name, price, barcode"
+  "Name, price, barcode": "Name, price, barcode",
+  "Drag & drop or click to upload": "Drag & drop or click to upload",
+  "Uploading": "Uploading"
 }

@@ -1,6 +1,5 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -16,6 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { ImageUploader } from "@/components/ui/image-uploader"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -27,16 +27,11 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { customerImageBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
-import { createClient } from "@/db/app/client"
 import { entityStatus, idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
-import { TrashIcon } from "lucide-react"
-import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
-import Image from "next/image"
 import { useParams, useRouter } from "next/navigation"
-import { useFormContext, useWatch } from "react-hook-form"
+import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 
 type SchemaT = CustomerFormSchemaT
@@ -133,81 +128,14 @@ const Form = ({ performAction }: Props) => {
 }
 
 const ImageCard = () => {
-  const t = useTranslations()
-  const form = useFormContext<SchemaT>()
-
-  const imgBucketPath = useWatch({
-    control: form.control,
-    name: "imageBucketPath",
-  })
-
-  const upload = async (file: File) => {
-    try {
-      const client = createClient()
-      const res = await client.storage
-        .from(customerImageBucket)
-        .upload(nanoid(), file)
-      form.setValue("imageBucketPath", res.data?.path, { shouldDirty: true })
-    } catch (error) {
-      toast.error(t("An error occurred"))
-    } finally {
-    }
-  }
-
+  // Remove the old ImageCard implementation and use the reusable component
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t("Images")}</CardTitle>
-        <CardDescription>
-          {t("Appealing images of the customer")}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <div className="grid gap-4">
-          <div
-            className="relative cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault()
-              const input = document.createElement("input")
-              input.type = "file"
-              input.accept = "image/*"
-              input.onchange = async (e) => {
-                const files = (e.target as HTMLInputElement).files
-                const file = files?.[0]
-                if (!file) return
-                upload(file)
-              }
-              input.click()
-            }}
-          >
-            <Image
-              alt={t("Product image")}
-              className="aspect-square w-full rounded-md object-cover"
-              height="300"
-              src={
-                imgBucketPath
-                  ? `${publicStorageUrl}/${customerImageBucket}/${imgBucketPath}`
-                  : "/placeholder.svg"
-              }
-              width="300"
-            />
-            {imgBucketPath && (
-              <Button
-                variant="destructive"
-                size="icon"
-                className="absolute right-2 top-2"
-                onClick={(e) => {
-                  e.preventDefault()
-                  form.setValue("imageBucketPath", null, { shouldDirty: true })
-                }}
-              >
-                <TrashIcon className="h-4 w-4" />
-              </Button>
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <ImageUploader
+      bucket={customerImageBucket}
+      field="imageBucketPath"
+      title="Images"
+      description="Appealing images of the customer"
+    />
   )
 }
 
