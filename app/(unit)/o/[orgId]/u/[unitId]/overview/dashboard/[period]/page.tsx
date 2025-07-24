@@ -37,7 +37,7 @@ import {
   product,
   productInventory,
 } from "@/orm/app/schema"
-import { calcGrowth } from "@/utils/calc"
+import { calcGrowth, calcProfitMargin } from "@/utils/formulas"
 import { and, count, desc, eq, gte, lte, sum } from "drizzle-orm"
 import {
   AlarmClockIcon,
@@ -325,22 +325,37 @@ const LowStockProductsCard = async ({
 }
 
 const ProfitMarginGrowthCard = async ({
-  currentMargin,
-  previousMargin,
   period,
+  invoiceRows,
+  prevInvoiceRows,
 }: {
-  currentMargin: number
-  previousMargin: number
   period: PeriodT
+  invoiceRows: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
+  prevInvoiceRows: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
 }) => {
   const t = await getTranslations()
 
-  const growth = calcGrowth(currentMargin, previousMargin)
+  const current = calcProfitMargin({
+    revenue: invoiceRows.reduce((acc, row) => acc + row.total, 0),
+    cost: invoiceRows.reduce(
+      (acc, row) => acc + row.product.purchasePrice * row.quantity,
+      0
+    ),
+  })
+  const previous = calcProfitMargin({
+    revenue: prevInvoiceRows.reduce((acc, row) => acc + row.total, 0),
+    cost: prevInvoiceRows.reduce(
+      (acc, row) => acc + row.product.purchasePrice * row.quantity,
+      0
+    ),
+  })
+
+  const growth = calcGrowth({ current, previous })
 
   return (
     <GrowthCard
       Icon={TrendingUpIcon}
-      title={`${formatNumber(currentMargin)}%`}
+      title={`${formatNumber(current)}%`}
       description={t("Avg Profit Margin")}
       growth={growth}
       period={period}
@@ -1210,38 +1225,19 @@ const Page = async (props: Props) => {
     percentage: (product.total / totalRevenue) * 100,
   }))
 
-  // Calculate profit margins for current and previous periods using joined product data
-  const calculateProfitMargin = (
-    invoiceRowsData: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
-  ) => {
-    if (!invoiceRowsData.length) return 0
-
-    let totalRevenue = 0
-    let totalCost = 0
-
-    invoiceRowsData.forEach((row) => {
-      const product = row.product
-      if (product) {
-        totalRevenue += row.total
-        totalCost += product.purchasePrice * row.quantity
-      }
-    })
-
-    return totalRevenue > 0
-      ? ((totalRevenue - totalCost) / totalRevenue) * 100
-      : 0
-  }
-
   return (
     <div className="space-y-4">
       {/* Key Performance Metrics */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
         <TotalSalesCard
           count={invoices.reduce((acc, invoice) => acc + invoice.total, 0)}
-          growth={calcGrowth(
-            invoices.reduce((acc, invoice) => acc + invoice.total, 0),
-            prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0)
-          )}
+          growth={calcGrowth({
+            current: invoices.reduce((acc, invoice) => acc + invoice.total, 0),
+            previous: prevInvoices.reduce(
+              (acc, invoice) => acc + invoice.total,
+              0
+            ),
+          })}
           period={period}
         />
         <AvgSaleValueCard
@@ -1251,39 +1247,49 @@ const Page = async (props: Props) => {
                 invoices.length
               : 0
           }
-          growth={calcGrowth(
-            invoices.length > 0
-              ? invoices.reduce((acc, invoice) => acc + invoice.total, 0) /
+          growth={calcGrowth({
+            current:
+              invoices.length > 0
+                ? invoices.reduce((acc, invoice) => acc + invoice.total, 0) /
                   invoices.length
-              : 0,
-            prevInvoices.length > 0
-              ? prevInvoices.reduce((acc, invoice) => acc + invoice.total, 0) /
-                  prevInvoices.length
-              : 0
-          )}
+                : 0,
+            previous:
+              prevInvoices.length > 0
+                ? prevInvoices.reduce(
+                    (acc, invoice) => acc + invoice.total,
+                    0
+                  ) / prevInvoices.length
+                : 0,
+          })}
           period={period}
         />
         <TotalSalesCountCard
           count={invoices.length}
-          growth={calcGrowth(invoices.length, prevInvoices.length)}
+          growth={calcGrowth({
+            current: invoices.length,
+            previous: prevInvoices.length,
+          })}
           period={period}
         />
         <NewCustomersCard
           count={customers.count}
-          growth={calcGrowth(customers.count, prevCustomers.count)}
+          growth={calcGrowth({
+            current: customers.count,
+            previous: prevCustomers.count,
+          })}
           period={period}
         />
         <ProfitMarginGrowthCard
-          currentMargin={calculateProfitMargin(invoiceRows)}
-          previousMargin={calculateProfitMargin(prevInvoiceRows)}
           period={period}
+          invoiceRows={invoiceRows}
+          prevInvoiceRows={prevInvoiceRows}
         />
         <LowStockProductsCard
           count={productInventories.count}
-          growth={calcGrowth(
-            productInventories.count,
-            prevProductInventories.count
-          )}
+          growth={calcGrowth({
+            current: productInventories.count,
+            previous: prevProductInventories.count,
+          })}
           period={period}
         />
       </div>
