@@ -24,11 +24,7 @@ import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
 import { db } from "@/db/app/instance"
-import {
-  InvoiceRowSchemaT,
-  InvoiceSchemaT,
-  ProductSchemaT,
-} from "@/db/app/schema"
+import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
 import {
   customer,
@@ -37,7 +33,7 @@ import {
   product,
   productInventory,
 } from "@/orm/app/schema"
-import { calcGrowth, calcProfitMargin } from "@/utils/formulas"
+import { calcGrowth } from "@/utils/formulas"
 import { and, count, desc, eq, gte, lte, sum } from "drizzle-orm"
 import {
   AlarmClockIcon,
@@ -48,7 +44,6 @@ import {
   HandCoinsIcon,
   HelpCircleIcon,
   LandmarkIcon,
-  TrendingDownIcon,
   TrendingUpIcon,
   UsersIcon,
   WalletIcon,
@@ -290,80 +285,6 @@ const TotalSalesCountCard = async ({
           equal: t("Keep customers engaged"),
           up: t("Reward loyal buyers"),
           down: t("Contact inactive customers and offer deals"),
-        }[growth.status]
-      }
-    />
-  )
-}
-
-const LowStockProductsCard = async ({
-  count,
-  growth,
-  period,
-}: {
-  count: number
-  growth: GrowthT
-  period: PeriodT
-}) => {
-  const t = await getTranslations()
-  return (
-    <GrowthCard
-      Icon={TrendingDownIcon}
-      title={formatNumber(count)}
-      description={t("Low stock products")}
-      growth={growth}
-      period={period}
-      suggestion={
-        {
-          equal: t("Monitor and reorder as needed"),
-          up: t("Optimize or buy in bulk"),
-          down: t("Restock key items soon"),
-        }[growth.status]
-      }
-    />
-  )
-}
-
-const ProfitMarginGrowthCard = async ({
-  period,
-  invoiceRows,
-  prevInvoiceRows,
-}: {
-  period: PeriodT
-  invoiceRows: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
-  prevInvoiceRows: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
-}) => {
-  const t = await getTranslations()
-
-  const current = calcProfitMargin({
-    revenue: invoiceRows.reduce((acc, row) => acc + row.total, 0),
-    cost: invoiceRows.reduce(
-      (acc, row) => acc + row.product.purchasePrice * row.quantity,
-      0
-    ),
-  })
-  const previous = calcProfitMargin({
-    revenue: prevInvoiceRows.reduce((acc, row) => acc + row.total, 0),
-    cost: prevInvoiceRows.reduce(
-      (acc, row) => acc + row.product.purchasePrice * row.quantity,
-      0
-    ),
-  })
-
-  const growth = calcGrowth({ current, previous })
-
-  return (
-    <GrowthCard
-      Icon={TrendingUpIcon}
-      title={`${formatNumber(current)}%`}
-      description={t("Avg Profit Margin")}
-      growth={growth}
-      period={period}
-      suggestion={
-        {
-          equal: t("Maintain current pricing strategy"),
-          up: t("Excellent profitability - consider expanding"),
-          down: t("Review costs and pricing strategy"),
         }[growth.status]
       }
     />
@@ -1276,19 +1197,6 @@ const Page = async (props: Props) => {
           growth={calcGrowth({
             current: customers.count,
             previous: prevCustomers.count,
-          })}
-          period={period}
-        />
-        <ProfitMarginGrowthCard
-          period={period}
-          invoiceRows={invoiceRows}
-          prevInvoiceRows={prevInvoiceRows}
-        />
-        <LowStockProductsCard
-          count={productInventories.count}
-          growth={calcGrowth({
-            current: productInventories.count,
-            previous: prevProductInventories.count,
           })}
           period={period}
         />
