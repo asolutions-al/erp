@@ -27,12 +27,13 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
 import { customerImageBucket } from "@/contants/bucket"
-import { entityStatus, idType } from "@/orm/app/schema"
+import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { EntityStatusSelect } from "../select/entity-status"
 
 type SchemaT = CustomerFormSchemaT
 
@@ -94,23 +95,10 @@ const Form = ({ performAction }: Props) => {
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <Select
+                      <EntityStatusSelect
                         value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <FormControl>
-                          <SelectTrigger aria-label={t("Select status")}>
-                            <SelectValue placeholder={t("Select status")} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {entityStatus.enumValues.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {t(item)}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                        onChange={field.onChange}
+                      />
                       <FormMessage />
                     </FormItem>
                   )}

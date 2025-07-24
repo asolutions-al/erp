@@ -31,20 +31,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { productImagesBucket } from "@/contants/bucket"
 import type { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
-import { entityStatus, productUnit } from "@/orm/app/schema"
+import { productUnit } from "@/orm/app/schema"
 import type { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
@@ -62,6 +55,7 @@ import { useState } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { CategoryCommand, WarehouseCommand } from "../command"
+import { EntityStatusSelect } from "../select/entity-status"
 
 type SchemaT = ProductFormSchemaT
 
@@ -417,20 +411,10 @@ const StatusCard = () => {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger aria-label={t("Select status")}>
-                    <SelectValue placeholder={t("Select status")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {entityStatus.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <EntityStatusSelect
+                value={field.value}
+                onChange={field.onChange}
+              />
               <FormMessage />
             </FormItem>
           )}

@@ -16,20 +16,13 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { entityStatus } from "@/orm/app/schema"
 import { CashRegisterFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { EntityStatusSelect } from "../select/entity-status"
 
 type SchemaT = CashRegisterFormSchemaT
 
@@ -158,21 +151,10 @@ const StatusCard = () => {
           name="status"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>{t("Status")}</FormLabel>
-              <Select value={field.value} onValueChange={field.onChange}>
-                <FormControl>
-                  <SelectTrigger aria-label={t("Select status")}>
-                    <SelectValue placeholder={t("Select status")} />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {entityStatus.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <EntityStatusSelect
+                value={field.value}
+                onChange={field.onChange}
+              />
               <FormMessage />
             </FormItem>
           )}
