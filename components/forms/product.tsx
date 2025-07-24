@@ -513,9 +513,10 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
                         <Input
                           type="number"
                           {...field}
-                          onChange={(e) =>
+                          onChange={(e) => {
                             field.onChange(Number.parseInt(e.target.value, 10))
-                          }
+                            form.trigger("inventoryRows")
+                          }}
                           onFocus={(e) => e.target.select()}
                         />
                       </FormControl>
@@ -553,9 +554,10 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
                         <Input
                           type="number"
                           {...field}
-                          onChange={(e) =>
+                          onChange={(e) => {
                             field.onChange(Number.parseInt(e.target.value, 10))
-                          }
+                            form.trigger("inventoryRows")
+                          }}
                           onFocus={(e) => e.target.select()}
                         />
                       </FormControl>
@@ -573,9 +575,10 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
                         <Input
                           type="number"
                           {...field}
-                          onChange={(e) =>
+                          onChange={(e) => {
                             field.onChange(Number.parseInt(e.target.value, 10))
-                          }
+                            form.trigger("inventoryRows")
+                          }}
                           onFocus={(e) => e.target.select()}
                         />
                       </FormControl>
