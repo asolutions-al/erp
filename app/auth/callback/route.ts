@@ -81,6 +81,7 @@ export async function GET(request: Request) {
           name: t("Demo unit"),
           description: t("Demo description"),
           orgId: orgRes.id,
+          status: "active",
         })
         .returning({
           id: unit.id,

@@ -81,21 +81,6 @@ export const customer = pgTable("customer", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const unit = pgTable("unit", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	orgId: uuid().notNull(),
-	name: text().notNull(),
-	description: text(),
-	status: entityStatus().default('active').notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "unit_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
 export const productCategory = pgTable("productCategory", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -237,6 +222,21 @@ export const productInventoryMovement = pgTable("productInventoryMovement", {
 			columns: [table.warehouseId],
 			foreignColumns: [warehouse.id],
 			name: "productInventory_duplicate_warehouseId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
+export const unit = pgTable("unit", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	name: text().notNull(),
+	description: text(),
+	status: entityStatus().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "unit_orgId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
