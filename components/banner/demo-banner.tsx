@@ -1,9 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Button } from "@/components/ui/button"
 import { createAuthClient } from "@/db/auth/client"
 import { InfoIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
-import Link from "next/link"
+import { DemoBannerCtaBtn } from "../button"
 
 const DemoBanner = async () => {
   const t = await getTranslations()
@@ -29,14 +28,7 @@ const DemoBanner = async () => {
               {t("All data and changes are for demonstration purposes only")}.
             </AlertDescription>
           </div>
-          <Button
-            asChild
-            variant="outline"
-            size="sm"
-            className="ml-4 shrink-0 border-blue-300 bg-white text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:bg-blue-900 dark:text-blue-100 dark:hover:bg-blue-800"
-          >
-            <Link href="/signup">{t("Sign Up")}</Link>
-          </Button>
+          <DemoBannerCtaBtn />
         </div>
       </Alert>
     </div>

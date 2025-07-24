@@ -43,7 +43,7 @@ export async function updateSession(request: NextRequest) {
   )
 
   if (!user && isAtProtectedRoutes)
-    return NextResponse.redirect(getAuthRedirectUrl())
+    return NextResponse.redirect(getAuthRedirectUrl({ pathname: "/login" }))
 
   return response
 }

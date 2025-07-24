@@ -1,4 +1,5 @@
-import { AppHeader, DemoBanner } from "@/components/layout"
+import { DemoBanner } from "@/components/banner"
+import { AppHeader } from "@/components/layout"
 import { AccountSidebar } from "@/components/layout/account-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { PropsWithChildren } from "react"

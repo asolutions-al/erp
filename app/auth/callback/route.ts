@@ -34,7 +34,8 @@ export async function GET(request: Request) {
    * 1. User authentication was not successful
    * 2. Trying to access this route directly
    */
-  if (!userId) return NextResponse.redirect(getAuthRedirectUrl())
+  if (!userId)
+    return NextResponse.redirect(getAuthRedirectUrl({ pathname: "/login" }))
 
   const existingUser = await db.query.user.findFirst({
     where: eq(schUser.id, userId),

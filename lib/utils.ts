@@ -5,9 +5,13 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const getAuthRedirectUrl = () => {
+export const getAuthRedirectUrl = ({
+  pathname,
+}: {
+  pathname: "/login" | "/signup"
+}) => {
   const url = new URL(process.env.ACCOUNTS_URL!)
-  url.pathname = "/login"
+  url.pathname = pathname
   const redirectUrl = new URL(process.env.APP_URL!)
   redirectUrl.pathname = "/auth/callback"
   url.searchParams.set("redirectUrl", redirectUrl.href)

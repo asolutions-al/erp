@@ -2,7 +2,6 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -12,10 +11,10 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { signOut } from "@/db/auth/actions"
 import { createAuthClient } from "@/db/auth/client"
-import { ChevronsUpDown, LogOut } from "lucide-react"
+import { ChevronsUpDown } from "lucide-react"
 import { getTranslations } from "next-intl/server"
+import { LogOutBtn } from "../button"
 import { LanguageSwitcher } from "../language-switcher"
 import { ThemeSwitcher } from "../theme-switcher"
 import { SidebarUserSetting } from "./sidebar-user-setting"
@@ -79,10 +78,7 @@ const SidebarUser = async () => {
             <SidebarUserSetting />
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={signOut}>
-              <LogOut />
-              {t("Log out")}
-            </DropdownMenuItem>
+            <LogOutBtn />
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>
