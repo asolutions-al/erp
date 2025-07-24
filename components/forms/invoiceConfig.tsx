@@ -23,6 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { mapPayMethodIcon } from "@/contants/maps"
 import {
   CashRegisterSchemaT,
   CustomerSchemaT,
@@ -125,11 +126,17 @@ const PayMethodCard = () => {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {payMethod.enumValues.map((item) => (
-                    <SelectItem key={item} value={item}>
-                      {t(item)}
-                    </SelectItem>
-                  ))}
+                  {payMethod.enumValues.map((item) => {
+                    const Icon = mapPayMethodIcon(item)
+                    return (
+                      <SelectItem key={item} value={item}>
+                        <span className="flex items-center gap-1">
+                          <Icon size={15} />
+                          {t(item)}
+                        </span>
+                      </SelectItem>
+                    )
+                  })}
                 </SelectContent>
               </Select>
               <FormMessage />
