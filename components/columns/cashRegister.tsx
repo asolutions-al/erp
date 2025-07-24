@@ -11,15 +11,24 @@ import {
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
+import { CheckCircleIcon, XCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { FavoriteCell } from "../cell"
+import { Badge } from "../ui/badge"
 
 type SchemaT = CashRegisterSchemaT
 
 const IsOpenCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  return original.isOpen ? t("Yes") : t("No")
+  const Icon = original.isOpen ? CheckCircleIcon : XCircleIcon
+
+  return (
+    <Badge variant="outline">
+      <Icon className="mr-1" size={15} />
+      {original.isOpen ? t("Yes") : t("No")}
+    </Badge>
+  )
 }
 
 const columns: ColumnDef<SchemaT>[] = [

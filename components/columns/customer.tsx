@@ -11,10 +11,17 @@ import {
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
-import { ColumnDef } from "@tanstack/react-table"
+import { CellContext, ColumnDef } from "@tanstack/react-table"
+import { useTranslations } from "next-intl"
 import { FavoriteCell } from "../cell"
 
 type SchemaT = CustomerSchemaT
+
+const IdTypeCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const t = useTranslations()
+  const { original } = row
+  return t(original.idType)
+}
 
 const columns: ColumnDef<SchemaT>[] = [
   {
@@ -62,6 +69,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     filterFn: "equals",
+    cell: IdTypeCell,
   },
   {
     accessorKey: "address",
