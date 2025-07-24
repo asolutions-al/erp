@@ -5,7 +5,7 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { UnitSchemaT } from "@/db/app/schema"
-import { BuildingIcon, CheckIcon } from "lucide-react"
+import { BuildingIcon, CheckCircleIcon } from "lucide-react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
 
@@ -33,7 +33,7 @@ const UnitSwitcherItem = (props: Props) => {
         {data.name}
         {isActive && (
           <DropdownMenuShortcut>
-            <CheckIcon />
+            <CheckCircleIcon />
           </DropdownMenuShortcut>
         )}
       </DropdownMenuItem>

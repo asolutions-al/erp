@@ -18,7 +18,7 @@ import { CategorySchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import {
   BriefcaseBusinessIcon,
-  CheckIcon,
+  CheckCircleIcon,
   ChevronsUpDownIcon,
   PlusCircleIcon,
 } from "lucide-react"
@@ -91,7 +91,7 @@ const CategoryCommand = ({
                     }}
                   >
                     <span>{name}</span>
-                    <CheckIcon
+                    <CheckCircleIcon
                       size={16}
                       className={cn(
                         "ml-auto",

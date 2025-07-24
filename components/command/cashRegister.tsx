@@ -17,7 +17,7 @@ import {
 import { CashRegisterSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import {
-  CheckIcon,
+  CheckCircleIcon,
   ChevronsUpDownIcon,
   PlusCircleIcon,
   WarehouseIcon,
@@ -91,7 +91,7 @@ const CashRegisterCommand = ({
                     }}
                   >
                     <span>{name}</span>
-                    <CheckIcon
+                    <CheckCircleIcon
                       size={16}
                       className={cn(
                         "ml-auto",

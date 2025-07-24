@@ -23,7 +23,6 @@ import { Column } from "@tanstack/react-table"
 import {
   CalendarIcon,
   CheckCircleIcon,
-  CheckIcon,
   EraserIcon,
   FilterIcon,
   XIcon,
@@ -382,6 +381,7 @@ const SelectFilter = <TData, TValue>({
 }: FilterProps<TData, TValue>) => {
   const t = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
+  const [searchValue, setSearchValue] = useState("")
   const filterValue = column.getFilterValue() as string | undefined
 
   const dynamicOptions = React.useMemo(() => {
@@ -389,13 +389,25 @@ const SelectFilter = <TData, TValue>({
     const uniqueValues = Array.from(facetedValues.keys())
       .filter((value) => value !== null && value !== undefined && value !== "")
       .map((value) => ({
-        label: String(value),
+        label: t(value as keyof Messages),
         value: String(value),
       }))
       .sort((a, b) => a.label.localeCompare(b.label))
 
     return uniqueValues
   }, [column])
+
+  const filteredOptions = dynamicOptions.filter((option) =>
+    option.label.toLowerCase().includes(searchValue.toLowerCase())
+  )
+
+  const setFilter = (value: string | undefined) => {
+    column.setFilterValue(value)
+    setIsOpen(false)
+    setSearchValue("")
+  }
+
+  const isDirty = filterValue !== undefined
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -406,12 +418,12 @@ const SelectFilter = <TData, TValue>({
             size="sm"
             className={cn(
               "h-8 w-full max-w-[150px] justify-start border border-dashed text-xs",
-              filterValue && "border-solid bg-accent"
+              isDirty && "border-solid bg-accent"
             )}
           >
             <FilterIcon className="mr-2 h-3 w-3" />
             <span className="truncate">{t(title)}</span>
-            {filterValue && (
+            {isDirty && (
               <div className="ml-auto flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
                 1
               </div>
@@ -419,39 +431,46 @@ const SelectFilter = <TData, TValue>({
           </Button>
         </div>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-3" align="start" side="bottom">
-        <div className="space-y-3">
-          <div className="space-y-1">
+      <PopoverContent className="w-[200px] p-0" align="start" side="bottom">
+        <Command>
+          <div className="p-3 pb-2">
             <h4 className="text-sm font-medium leading-none">
               {t("Filter by")} {t(title)}
             </h4>
           </div>
-          <div className="space-y-1">
-            <Button
-              variant={filterValue === undefined ? "default" : "ghost"}
-              className="h-8 w-full justify-start text-xs"
-              onClick={() => {
-                column.setFilterValue(undefined)
-                setIsOpen(false)
-              }}
-            >
-              {t("All")}
-            </Button>
-            {dynamicOptions.map((option) => (
-              <Button
-                key={option.value}
-                variant={filterValue === option.value ? "default" : "ghost"}
-                className="h-8 w-full justify-start text-xs"
-                onClick={() => {
-                  column.setFilterValue(option.value)
-                  setIsOpen(false)
-                }}
+          <CommandInput
+            placeholder={`${t("Search")} ${t(title)}...`}
+            value={searchValue}
+            onValueChange={setSearchValue}
+            className="h-9"
+          />
+          <CommandEmpty>No options found</CommandEmpty>
+          <CommandList>
+            <CommandGroup className="max-h-[200px] overflow-auto">
+              <CommandItem
+                onSelect={() => setFilter(undefined)}
+                className="flex cursor-pointer items-center space-x-2"
               >
-                {t(option.label as keyof Messages)}
-              </Button>
-            ))}
-          </div>
-        </div>
+                <span className="flex-1">{t("All")}</span>
+                {filterValue === undefined && (
+                  <CheckCircleIcon className="h-4 w-4" />
+                )}
+              </CommandItem>
+              {filteredOptions.map((option) => (
+                <CommandItem
+                  key={option.value}
+                  onSelect={() => setFilter(option.value)}
+                  className="flex cursor-pointer items-center space-x-2"
+                >
+                  <span className="flex-1">{option.label}</span>
+                  {filterValue === option.value && (
+                    <CheckCircleIcon className="h-4 w-4" />
+                  )}
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
       </PopoverContent>
     </Popover>
   )
@@ -599,7 +618,7 @@ const MultiSelectFilter = <TData, TValue>({
                   />
                   <span className="flex-1">{option.label}</span>
                   {tempSelected.includes(option.value) && (
-                    <CheckIcon className="h-4 w-4" />
+                    <CheckCircleIcon className="h-4 w-4" />
                   )}
                 </CommandItem>
               ))}

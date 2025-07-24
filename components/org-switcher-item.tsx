@@ -5,7 +5,7 @@ import {
   DropdownMenuShortcut,
 } from "@/components/ui/dropdown-menu"
 import { OrgSchemaT } from "@/db/app/schema"
-import { CheckIcon, StoreIcon } from "lucide-react"
+import { CheckCircleIcon, StoreIcon } from "lucide-react"
 import Link from "next/link"
 import { useParams, usePathname } from "next/navigation"
 
@@ -33,7 +33,7 @@ const OrgSwitcherItem = (props: Props) => {
         {data.name}
         {isActive && (
           <DropdownMenuShortcut>
-            <CheckIcon />
+            <CheckCircleIcon />
           </DropdownMenuShortcut>
         )}
       </DropdownMenuItem>

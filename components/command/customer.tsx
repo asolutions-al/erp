@@ -20,7 +20,7 @@ import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import {
-  CheckIcon,
+  CheckCircleIcon,
   ChevronsUpDownIcon,
   ContactIcon,
   PlusCircleIcon,
@@ -111,7 +111,7 @@ const CustomerCommand = ({
                         </span>
                       )}
                     </div>
-                    <CheckIcon
+                    <CheckCircleIcon
                       size={16}
                       className={cn(
                         "ml-auto",

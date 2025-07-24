@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { PlanSchemaT } from "@/db/auth/schema"
-import { CheckIcon } from "lucide-react"
+import { CheckCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { generatePlanFeatures } from "../billing"
 
@@ -61,7 +61,7 @@ const PlanCard = ({
         <ul className="space-y-2">
           {generatePlanFeatures(plan).map((feature, index) => (
             <li key={index} className="flex items-center gap-2 text-sm">
-              <CheckIcon className="h-4 w-4 text-green-500" />
+              <CheckCircleIcon className="h-4 w-4 text-green-500" />
               {feature}
             </li>
           ))}

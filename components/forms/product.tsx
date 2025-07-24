@@ -48,7 +48,7 @@ import { entityStatus, productUnit } from "@/orm/app/schema"
 import type { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
-  CheckIcon,
+  CheckCircleIcon,
   ChevronsUpDownIcon,
   InfoIcon,
   PlusIcon,
@@ -248,7 +248,7 @@ const DetailsCard = () => {
                                 }}
                               >
                                 <span>{label}</span>
-                                <CheckIcon
+                                <CheckCircleIcon
                                   size={16}
                                   className={cn(
                                     "ml-auto",

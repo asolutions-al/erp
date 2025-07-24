@@ -11,7 +11,7 @@ import {
 import { Separator } from "@/components/ui/separator"
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
-import { BuildingIcon, CheckIcon, CreditCardIcon } from "lucide-react"
+import { BuildingIcon, CheckCircleIcon, CreditCardIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { generatePlanFeatures } from "../billing/utils"
 
@@ -76,7 +76,7 @@ const PlanFeatures = ({
     <ul className="space-y-1">
       {generatePlanFeatures(currentPlan).map((feature, index) => (
         <li key={index} className="flex items-center gap-2 text-sm">
-          <CheckIcon className="h-4 w-4 text-green-500" />
+          <CheckCircleIcon className="h-4 w-4 text-green-500" />
           {feature}
         </li>
       ))}
