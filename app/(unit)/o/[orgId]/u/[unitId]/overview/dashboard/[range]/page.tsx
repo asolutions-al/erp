@@ -1121,13 +1121,20 @@ const Page = async (props: Props) => {
       .limit(5),
     // Fetch invoice rows for the period
     db.query.invoiceRow.findMany({
-      where: and(eq(invoiceRow.unitId, unitId), eq(invoiceRow.orgId, orgId)),
+      where: and(
+        eq(invoiceRow.unitId, unitId),
+        eq(invoiceRow.orgId, orgId),
+        gte(invoiceRow.createdAt, start.toISOString()),
+        lte(invoiceRow.createdAt, end.toISOString())
+      ),
     }),
     // Fetch inventory data
     db.query.productInventory.findMany({
       where: and(
         eq(productInventory.unitId, unitId),
-        eq(productInventory.orgId, orgId)
+        eq(productInventory.orgId, orgId),
+        gte(productInventory.createdAt, start.toISOString()),
+        lte(productInventory.createdAt, end.toISOString())
       ),
     }),
   ])
