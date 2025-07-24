@@ -2,6 +2,7 @@ import {
   BusinessInsightsCard,
   GrowthCard,
   ProductInsightsCard,
+  ProfitMarginCard,
 } from "@/components/cards"
 import { SalesVelocityCard } from "@/components/charts"
 import { Badge } from "@/components/ui/badge"
@@ -23,7 +24,11 @@ import { productImagesBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
 import { db } from "@/db/app/instance"
-import { InvoiceSchemaT } from "@/db/app/schema"
+import {
+  InvoiceRowSchemaT,
+  InvoiceSchemaT,
+  ProductSchemaT,
+} from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"
 import {
   customer,
@@ -298,6 +303,34 @@ const LowStockProductsCard = async ({
           equal: t("Monitor and reorder as needed"),
           up: t("Optimize or buy in bulk"),
           down: t("Restock key items soon"),
+        }[growth.status]
+      }
+    />
+  )
+}
+
+const ProfitMarginGrowthCard = async ({
+  currentMargin,
+  previousMargin,
+}: {
+  currentMargin: number
+  previousMargin: number
+}) => {
+  const t = await getTranslations()
+
+  const growth = calcGrowth(currentMargin, previousMargin)
+
+  return (
+    <GrowthCard
+      Icon={TrendingUpIcon}
+      title={`${formatNumber(currentMargin)}%`}
+      description={t("Avg Profit Margin")}
+      growth={growth}
+      suggestion={
+        {
+          equal: t("Maintain current pricing strategy"),
+          up: t("Excellent profitability - consider expanding"),
+          down: t("Review costs and pricing strategy"),
         }[growth.status]
       }
     />
@@ -1038,6 +1071,7 @@ const Page = async (props: Props) => {
     [prevProductInventories],
     topProducts,
     invoiceRows,
+    prevInvoiceRows,
     inventory,
   ] = await Promise.all([
     db
@@ -1119,7 +1153,6 @@ const Page = async (props: Props) => {
       .groupBy(product.id, product.name, product.imageBucketPath)
       .orderBy(desc(sum(invoiceRow.total)))
       .limit(5),
-    // Fetch invoice rows for the period
     db.query.invoiceRow.findMany({
       where: and(
         eq(invoiceRow.unitId, unitId),
@@ -1127,8 +1160,21 @@ const Page = async (props: Props) => {
         gte(invoiceRow.createdAt, start.toISOString()),
         lte(invoiceRow.createdAt, end.toISOString())
       ),
+      with: {
+        product: true,
+      },
     }),
-    // Fetch inventory data
+    db.query.invoiceRow.findMany({
+      where: and(
+        eq(invoiceRow.unitId, unitId),
+        eq(invoiceRow.orgId, orgId),
+        gte(invoiceRow.createdAt, prevStart.toISOString()),
+        lte(invoiceRow.createdAt, prevEnd.toISOString())
+      ),
+      with: {
+        product: true,
+      },
+    }),
     db.query.productInventory.findMany({
       where: and(
         eq(productInventory.unitId, unitId),
@@ -1145,6 +1191,28 @@ const Page = async (props: Props) => {
     ...product,
     percentage: (product.total / totalRevenue) * 100,
   }))
+
+  // Calculate profit margins for current and previous periods using joined product data
+  const calculateProfitMargin = (
+    invoiceRowsData: (InvoiceRowSchemaT & { product: ProductSchemaT })[]
+  ) => {
+    if (!invoiceRowsData.length) return 0
+
+    let totalRevenue = 0
+    let totalCost = 0
+
+    invoiceRowsData.forEach((row) => {
+      const product = row.product
+      if (product) {
+        totalRevenue += row.total
+        totalCost += product.purchasePrice * row.quantity
+      }
+    })
+
+    return totalRevenue > 0
+      ? ((totalRevenue - totalCost) / totalRevenue) * 100
+      : 0
+  }
 
   return (
     <div className="space-y-4">
@@ -1183,11 +1251,26 @@ const Page = async (props: Props) => {
           count={customers.count}
           growth={calcGrowth(customers.count, prevCustomers.count)}
         />
+        <ProfitMarginGrowthCard
+          currentMargin={calculateProfitMargin(invoiceRows)}
+          previousMargin={calculateProfitMargin(prevInvoiceRows)}
+        />
+        <LowStockProductsCard
+          count={productInventories.count}
+          growth={calcGrowth(
+            productInventories.count,
+            prevProductInventories.count
+          )}
+        />
       </div>
 
       {/* Main Business Insights */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <BusinessInsightsCard invoices={invoices} />
+        <ProfitMarginCard invoiceRows={invoiceRows} />
+      </div>
+
+      <div className="grid grid-cols-1 gap-4">
         <ProductInsightsCard invoiceRows={invoiceRows} inventory={inventory} />
       </div>
 
@@ -1215,17 +1298,6 @@ const Page = async (props: Props) => {
       {/* Operational Insights */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <PeakHoursCard invoices={invoices} />
-        <div className="grid grid-cols-1 gap-4">
-          <div>
-            <LowStockProductsCard
-              count={productInventories.count}
-              growth={calcGrowth(
-                productInventories.count,
-                prevProductInventories.count
-              )}
-            />
-          </div>
-        </div>
       </div>
     </div>
   )

@@ -708,5 +708,19 @@
   "Uploading": "Uploading",
   "Demo description": "Demo description",
   "Purchase Price": "Purchase Price",
-  "Selling Price": "Selling Price"
+  "Selling Price": "Selling Price",
+  "Profit Margin Analysis": "Profit Margin Analysis",
+  "Product profitability and margin insights": "Product profitability and margin insights",
+  "Total Profit": "Total Profit",
+  "Overall Margin": "Overall Margin",
+  "Avg Margin": "Avg Margin",
+  "Analysis of product profitability showing profit margins based on selling price vs purchase price": "Analysis of product profitability showing profit margins based on selling price vs purchase price",
+  "Total profit from top 5 most profitable products": "Total profit from top 5 most profitable products",
+  "Overall profit margin across all top profitable products": "Overall profit margin across all top profitable products",
+  "Average profit margin across top performing products": "Average profit margin across top performing products",
+  "Chart shows revenue vs costs (bars) and profit margin percentage (blue line) for top 5 most profitable products": "Chart shows revenue vs costs (bars) and profit margin percentage (blue line) for top 5 most profitable products",
+  "Avg Profit Margin": "Avg Profit Margin",
+  "Maintain current pricing strategy": "Maintain current pricing strategy",
+  "Excellent profitability - consider expanding": "Excellent profitability - consider expanding",
+  "Review costs and pricing strategy": "Review costs and pricing strategy"
 }
