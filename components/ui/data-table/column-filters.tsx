@@ -378,7 +378,16 @@ const BooleanFilter = <TData, TValue>({
 const SelectFilter = <TData, TValue>({
   column,
   title,
-}: FilterProps<TData, TValue>) => {
+  isTranslated = false,
+}: FilterProps<TData, TValue> & {
+  /**
+   * value is translated and does not need to be translated again,
+   * in most cases, the value will need translation, therefore, it is false by default
+   * but this is useful for columns whose values are entity names written by the user,
+   * for example, customer name, warehouse name, etc.
+   */
+  isTranslated?: boolean
+}) => {
   const t = useTranslations()
   const [isOpen, setIsOpen] = useState(false)
   const [searchValue, setSearchValue] = useState("")
@@ -389,7 +398,7 @@ const SelectFilter = <TData, TValue>({
     const uniqueValues = Array.from(facetedValues.keys())
       .filter((value) => value !== null && value !== undefined && value !== "")
       .map((value) => ({
-        label: t(value as keyof Messages),
+        label: isTranslated ? value : t(value as keyof Messages),
         value: String(value),
       }))
       .sort((a, b) => a.label.localeCompare(b.label))

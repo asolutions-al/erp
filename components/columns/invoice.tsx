@@ -6,12 +6,14 @@
 import { InvoiceActions } from "@/components/actions/invoice"
 //
 import { SortBtn } from "@/components/buttons"
+import { Badge } from "@/components/ui/badge"
 import {
   DateFilter,
   NumberFilter,
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
+import { mapPayMethodIcon } from "@/contants/maps"
 import {
   CashRegisterSchemaT,
   InvoiceSchemaT,
@@ -29,7 +31,14 @@ type SchemaT = InvoiceSchemaT & {
 const PayMethodCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { original } = row
-  return t(original.payMethod)
+  const Icon = mapPayMethodIcon(original.payMethod)
+
+  return (
+    <Badge variant="secondary">
+      <Icon className="mr-1" size={15} />
+      {t(original.payMethod)}
+    </Badge>
+  )
 }
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -85,7 +94,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => (
       <div>
         <SortBtn text="Warehouse" column={column} />
-        <SelectFilter title="Warehouse" column={column} />
+        <SelectFilter title="Warehouse" column={column} isTranslated />
       </div>
     ),
     cell: ({ row }) => row.original.warehouse?.name || "-",
@@ -95,7 +104,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => (
       <div>
         <SortBtn text="Cash register" column={column} />
-        <SelectFilter title="Cash register" column={column} />
+        <SelectFilter title="Cash register" column={column} isTranslated />
       </div>
     ),
     cell: ({ row }) => row.original.cashRegister?.name || "-",
