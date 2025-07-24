@@ -4,16 +4,10 @@ import { CategoryActions } from "@/components/actions"
 import { SortBtn } from "@/components/buttons"
 import { BooleanFilter, StringFilter } from "@/components/ui/data-table"
 import { CategorySchemaT } from "@/db/app/schema"
-import { CellContext, ColumnDef } from "@tanstack/react-table"
-import { useTranslations } from "next-intl"
+import { ColumnDef } from "@tanstack/react-table"
+import { FavoriteCell } from "../cell"
 
 type SchemaT = CategorySchemaT
-
-const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const { original } = row
-  const t = useTranslations()
-  return original.isFavorite ? t("Yes") : t("No")
-}
 
 const columns: ColumnDef<SchemaT>[] = [
   {

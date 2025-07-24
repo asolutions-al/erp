@@ -12,6 +12,7 @@ import { CashRegisterSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
+import { FavoriteCell } from "../cell"
 
 type SchemaT = CashRegisterSchemaT
 
@@ -19,12 +20,6 @@ const IsOpenCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
   return original.isOpen ? t("Yes") : t("No")
-}
-
-const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const { original } = row
-  const t = useTranslations()
-  return original.isFavorite ? t("Yes") : t("No")
 }
 
 const columns: ColumnDef<SchemaT>[] = [

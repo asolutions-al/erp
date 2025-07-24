@@ -11,16 +11,10 @@ import {
 import { customerImageBucket } from "@/contants/bucket"
 import { publicStorageUrl } from "@/contants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
-import { CellContext, ColumnDef } from "@tanstack/react-table"
-import { useTranslations } from "next-intl"
+import { ColumnDef } from "@tanstack/react-table"
+import { FavoriteCell } from "../cell"
 
 type SchemaT = CustomerSchemaT
-
-const FavoriteCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const { original } = row
-  const t = useTranslations()
-  return original.isFavorite ? t("Yes") : t("No")
-}
 
 const columns: ColumnDef<SchemaT>[] = [
   {
