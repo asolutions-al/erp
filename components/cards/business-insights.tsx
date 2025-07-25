@@ -24,6 +24,7 @@ import { formatNumber } from "@/lib/utils"
 import { BarChart2Icon, HelpCircleIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { Bar, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from "recharts"
+import { Tip } from "../tip"
 
 export function BusinessInsightsCard({
   invoices,
@@ -155,20 +156,13 @@ export function BusinessInsightsCard({
         <CardTitle className="flex items-center gap-2 text-base font-medium text-muted-foreground">
           <BarChart2Icon size={20} />
           {t("Business Performance")}
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <p className="max-w-xs">
-                  {t(
-                    "Daily business performance showing revenue trends and customer activity"
-                  )}
-                </p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tip
+            content={t(
+              "Daily business performance showing revenue trends and customer activity"
+            )}
+          >
+            <HelpCircleIcon className="h-4 w-4 text-muted-foreground" />
+          </Tip>
         </CardTitle>
         <CardDescription className="text-xs">
           {t("Daily sales analysis and trends")}
