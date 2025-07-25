@@ -77,6 +77,7 @@ const Page = async (props: Props) => {
           ...config,
           // form does not accept null values
           customerId: config?.customerId || undefined,
+          payMethod: config?.payMethod || undefined,
         }}
         config={config!}
         productInventories={productInventories}

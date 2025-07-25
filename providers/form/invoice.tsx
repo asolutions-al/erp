@@ -113,7 +113,7 @@ const createSchema = ({
 
 type SchemaT = z.infer<ReturnType<typeof createSchema>>
 
-const defaultValues: SchemaT = {
+const defaultValues: Partial<SchemaT> = {
   rows: [],
   customerId: "",
   customerName: "",
@@ -121,7 +121,7 @@ const defaultValues: SchemaT = {
   customerIdValue: "",
   discountType: "value",
   discountValue: 0,
-  payMethod: "cash",
+  // payMethod: undefined,
   status: "completed",
   cashRegisterId: null,
   notes: "",

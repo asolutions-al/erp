@@ -128,7 +128,6 @@ const Form = ({
   }
 
   const onInvalid = (errors: FieldErrors<SchemaT>) => {
-    console.log("errors", errors)
     const configTabError =
       get(errors, "warehouseId") || get(errors, "cashRegisterId")
 

@@ -19,19 +19,14 @@ import { NextResponse } from "next/server"
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
-  console.log("requestUrl", requestUrl)
   const t = await getTranslations()
   const { origin } = requestUrl
-  console.log("origin", origin)
 
   const authClient = await createAuthClient()
-  console.log("authClient", authClient)
   const {
     data: { user },
   } = await authClient.auth.getUser()
-  console.log("user", user)
   const userId = user?.id
-  console.log("userId", userId)
 
   /**
    * If user is not present, redirect to authenticate page.
@@ -40,21 +35,18 @@ export async function GET(request: Request) {
    * 2. Trying to access this route directly
    */
   if (!userId) {
-    console.log("redirecting to login")
     return NextResponse.redirect(getAuthRedirectUrl({ pathname: "/login" }))
   }
 
   const existingUser = await db.query.user.findFirst({
     where: eq(schUser.id, userId),
   })
-  console.log("existingUser", existingUser)
   /**
    * Being an existing user means:
    * User creation process has been run at least once.
    * Therefore, We skip this process.
    */
   if (existingUser) {
-    console.log("redirecting to home")
     return NextResponse.redirect(origin)
   }
 
@@ -62,12 +54,10 @@ export async function GET(request: Request) {
    * Start onboarding process
    */
   try {
-    console.log("starting onboarding process")
     await db.transaction(async (tx) => {
       /**
        * 1. Create user
        */
-      console.log("creating user")
       await tx.insert(schUser).values({
         id: userId, // use same id as auth user
         email: user.email!, // TODO: are we sure email is always present?
@@ -75,7 +65,6 @@ export async function GET(request: Request) {
       /**
        * 2. Create organization
        */
-      console.log("creating organization")
       const [orgRes] = await tx
         .insert(organization)
         .values({
@@ -89,7 +78,6 @@ export async function GET(request: Request) {
       /**
        * 3. Create unit
        */
-      console.log("creating unit")
       const [unitRes] = await tx
         .insert(unit)
         .values({
@@ -105,7 +93,6 @@ export async function GET(request: Request) {
       /**
        * 4. Update user with default org
        */
-      console.log("updating user with default org")
       await tx
         .update(schUser)
         .set({
@@ -115,7 +102,6 @@ export async function GET(request: Request) {
       /**
        * 5. Create org member
        */
-      console.log("creating org member")
       await tx.insert(orgMember).values({
         userId,
         orgId: orgRes.id,
@@ -124,7 +110,6 @@ export async function GET(request: Request) {
       /**
        * 6. Create product
        */
-      console.log("creating product")
       await tx.insert(product).values({
         orgId: orgRes.id,
         unitId: unitRes.id,
@@ -140,7 +125,6 @@ export async function GET(request: Request) {
       /**
        * 7. Create customer
        */
-      console.log("creating customer")
       const [customerRes] = await tx
         .insert(customer)
         .values({
@@ -158,7 +142,6 @@ export async function GET(request: Request) {
       /**
        * 8. Create warehouse
        */
-      console.log("creating warehouse")
       const [warehouseRes] = await tx
         .insert(warehouse)
         .values({
@@ -174,7 +157,6 @@ export async function GET(request: Request) {
       /**
        * 9. Create cash register
        */
-      console.log("creating cash register")
       const [cashRegisterRes] = await tx
         .insert(cashRegister)
         .values({
@@ -196,7 +178,6 @@ export async function GET(request: Request) {
       /**
        * 10. Create subscription
        */
-      console.log("creating subscription")
       await tx.insert(subscription).values({
         orgId: orgRes.id,
         plan: "INVOICE-STARTER",
@@ -207,7 +188,6 @@ export async function GET(request: Request) {
       /**
        * 10. Create default invoice config
        */
-      console.log("creating invoice config")
       await tx.insert(invoiceConfig).values({
         unitId: unitRes.id,
         orgId: orgRes.id,
@@ -219,13 +199,10 @@ export async function GET(request: Request) {
         cashRegisterId: cashRegisterRes.id,
       })
     })
-    console.log("onboarding process done")
   } catch (error) {
-    console.log("caught error", error)
     // TODO: where to redirect?
     return NextResponse.redirect(origin)
   }
 
-  console.log("redirecting to home")
   return NextResponse.redirect(origin)
 }
