@@ -299,7 +299,6 @@
   "This action cannot be undone": "This action cannot be undone",
   "Are you absolutely sure": "Are you absolutely sure",
   "This will permanently close the cash register": "This will permanently close the cash register",
-  "Cash register closure description": "Closing the cash register will finalize all transactions, calculate the final balance, and prevent any new transactions from being processed. This action cannot be undone.",
   "Yes, close": "Yes, close",
   "Cash register closed successfully": "Cash register closed successfully",
   "Cash register 1": "Cash register 1",

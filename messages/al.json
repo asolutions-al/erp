@@ -301,7 +301,6 @@
   "This action cannot be undone": "Ky veprim nuk mund të zhbëhet",
   "Are you absolutely sure": "A jeni të sigurt",
   "This will permanently close the cash register": "Kjo do të mbyllë përgjithmonë arkën",
-  "Cash register closure description": "Mbyllja e arkës do të finalizojë të gjitha transaksionet, do të llogarisë bilancin përfundimtar, dhe do të parandalojë përpunimin e transaksioneve të reja. Ky veprim nuk mund të anullohet.",
   "Yes, close": "Po, mbyll",
   "Cash register closed successfully": "Arka u mbyll me sukses",
   "Cash register 1": "Arka 1",
