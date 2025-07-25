@@ -750,5 +750,8 @@
   "Sign Up": "Sign Up",
   "No units found": "No units found",
   "Get started by creating your first unit to organize your business operations": "Get started by creating your first unit to organize your business operations",
-  "Create your first unit": "Create your first unit"
+  "Create your first unit": "Create your first unit",
+  "admin": "Admin",
+  "owner": "Owner",
+  "member": "Member"
 }

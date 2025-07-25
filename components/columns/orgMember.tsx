@@ -3,10 +3,17 @@
 import { SortBtn } from "@/components/buttons"
 import { SelectFilter, StringFilter } from "@/components/ui/data-table"
 import { OrgMemberSchemaT, UserSchemaT } from "@/db/app/schema"
-import { ColumnDef } from "@tanstack/react-table"
+import { CellContext, ColumnDef } from "@tanstack/react-table"
+import { useTranslations } from "next-intl"
 
 type SchemaT = OrgMemberSchemaT & {
   user: UserSchemaT
+}
+
+const RoleCell = ({ row }: CellContext<SchemaT, unknown>) => {
+  const { original } = row
+  const t = useTranslations()
+  return <div>{t(original.role)}</div>
 }
 
 const columns: ColumnDef<SchemaT>[] = [
@@ -28,6 +35,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     filterFn: "equals",
+    cell: RoleCell,
   },
 ]
 
