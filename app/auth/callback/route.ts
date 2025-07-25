@@ -102,106 +102,108 @@ export async function GET(request: Request) {
           id: unit.id,
         })
 
-      console.log("starting promises")
-      const [[], [], [], [customerRes], [warehouseRes], [cashRegisterRes]] =
-        await Promise.all([
-          /**
-           * 4. Update user with default org
-           */
-          tx
-            .update(schUser)
-            .set({
-              defaultOrgId: orgRes.id,
-            })
-            .where(eq(schUser.id, userId)),
-          /**
-           * 5. Create org member
-           */
-          tx.insert(orgMember).values({
-            userId,
-            orgId: orgRes.id,
-            role: "owner",
-          }),
-          /**
-           * 6. Create product
-           */
-          tx.insert(product).values({
-            orgId: orgRes.id,
-            unitId: unitRes.id,
-            name: t("Demo product"),
-            description: t("Demo description"),
-            unit: "XPP",
-            price: 10,
-            purchasePrice: 9,
-            status: "active",
-            isFavorite: false,
-            taxPercentage: 0,
-          }),
-          /**
-           * 7. Create customer
-           */
-          tx
-            .insert(customer)
-            .values({
-              orgId: orgRes.id,
-              unitId: unitRes.id,
-              name: t("Demo customer"),
-              description: t("Demo description"),
-              status: "active",
-              isFavorite: false,
-              idType: "id",
-            })
-            .returning({
-              id: customer.id,
-            }),
-          /**
-           * 8. Create warehouse
-           */
-          tx
-            .insert(warehouse)
-            .values({
-              name: t("Demo warehouse"),
-              orgId: orgRes.id,
-              unitId: unitRes.id,
-              status: "active",
-              isFavorite: false,
-            })
-            .returning({
-              id: warehouse.id,
-            }),
-          /**
-           * 9. Create cash register
-           */
-          tx
-            .insert(cashRegister)
-            .values({
-              orgId: orgRes.id,
-              unitId: unitRes.id,
-              name: t("Demo cash register"),
-              status: "active",
-              isFavorite: false,
-              balance: 0,
-              isOpen: true,
-              openedAt: new Date().toISOString(),
-              openedBy: userId,
-              openingBalance: 0,
-            })
-            .returning({
-              id: cashRegister.id,
-            }),
+      /**
+       * 4. Update user with default org
+       */
+      console.log("updating user with default org")
+      await tx
+        .update(schUser)
+        .set({
+          defaultOrgId: orgRes.id,
+        })
+        .where(eq(schUser.id, userId))
+      /**
+       * 5. Create org member
+       */
+      console.log("creating org member")
+      await tx.insert(orgMember).values({
+        userId,
+        orgId: orgRes.id,
+        role: "owner",
+      })
+      /**
+       * 6. Create product
+       */
+      console.log("creating product")
+      await tx.insert(product).values({
+        orgId: orgRes.id,
+        unitId: unitRes.id,
+        name: t("Demo product"),
+        description: t("Demo description"),
+        unit: "XPP",
+        price: 10,
+        purchasePrice: 9,
+        status: "active",
+        isFavorite: false,
+        taxPercentage: 0,
+      })
+      /**
+       * 7. Create customer
+       */
+      console.log("creating customer")
+      const [customerRes] = await tx
+        .insert(customer)
+        .values({
+          orgId: orgRes.id,
+          unitId: unitRes.id,
+          name: t("Demo customer"),
+          description: t("Demo description"),
+          status: "active",
+          isFavorite: false,
+          idType: "id",
+        })
+        .returning({
+          id: customer.id,
+        })
+      /**
+       * 8. Create warehouse
+       */
+      console.log("creating warehouse")
+      const [warehouseRes] = await tx
+        .insert(warehouse)
+        .values({
+          name: t("Demo warehouse"),
+          orgId: orgRes.id,
+          unitId: unitRes.id,
+          status: "active",
+          isFavorite: false,
+        })
+        .returning({
+          id: warehouse.id,
+        })
+      /**
+       * 9. Create cash register
+       */
+      console.log("creating cash register")
+      const [cashRegisterRes] = await tx
+        .insert(cashRegister)
+        .values({
+          orgId: orgRes.id,
+          unitId: unitRes.id,
+          name: t("Demo cash register"),
+          status: "active",
+          isFavorite: false,
+          balance: 0,
+          isOpen: true,
+          openedAt: new Date().toISOString(),
+          openedBy: userId,
+          openingBalance: 0,
+        })
+        .returning({
+          id: cashRegister.id,
+        })
 
-          /**
-           * 10. Create subscription
-           */
-          tx.insert(subscription).values({
-            orgId: orgRes.id,
-            plan: "INVOICE-STARTER",
-            status: "ACTIVE",
-            paymentProvider: null,
-            externalSubscriptionId: null,
-          }),
-        ])
-      console.log("promises done")
+      /**
+       * 10. Create subscription
+       */
+      console.log("creating subscription")
+      await tx.insert(subscription).values({
+        orgId: orgRes.id,
+        plan: "INVOICE-STARTER",
+        status: "ACTIVE",
+        paymentProvider: null,
+        externalSubscriptionId: null,
+      })
       /**
        * 10. Create default invoice config
        */
@@ -216,7 +218,6 @@ export async function GET(request: Request) {
         customerId: customerRes.id,
         cashRegisterId: cashRegisterRes.id,
       })
-      console.log("invoice config created")
     })
     console.log("onboarding process done")
   } catch (error) {
