@@ -1,4 +1,4 @@
-import { pgTable, foreignKey, uuid, timestamp, boolean, text, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, foreignKey, uuid, timestamp, text, boolean, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const planId = pgEnum("PLAN_ID", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
@@ -14,12 +14,40 @@ export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 
 
+export const customer = pgTable("customer", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	status: entityStatus().notNull(),
+	description: text(),
+	imageBucketPath: text(),
+	idType: idType().notNull(),
+	email: text(),
+	address: text(),
+	city: text(),
+	idValue: text(),
+	orgId: uuid().notNull(),
+	isFavorite: boolean().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "customer_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "customer_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const invoiceConfig = pgTable("invoiceConfig", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
 	orgId: uuid().notNull(),
 	unitId: uuid().notNull(),
-	payMethod: payMethod().notNull(),
+	payMethod: payMethod(),
 	triggerCashOnInvoice: boolean().notNull(),
 	triggerInventoryOnInvoice: boolean().notNull(),
 	warehouseId: uuid(),
@@ -50,34 +78,6 @@ export const invoiceConfig = pgTable("invoiceConfig", {
 			columns: [table.warehouseId],
 			foreignColumns: [warehouse.id],
 			name: "invoiceConfig_warehouseId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
-export const customer = pgTable("customer", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	unitId: uuid().notNull(),
-	name: text().notNull(),
-	status: entityStatus().notNull(),
-	description: text(),
-	imageBucketPath: text(),
-	idType: idType().notNull(),
-	email: text(),
-	address: text(),
-	city: text(),
-	idValue: text(),
-	orgId: uuid().notNull(),
-	isFavorite: boolean().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "customer_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.unitId],
-			foreignColumns: [unit.id],
-			name: "customer_unitId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 

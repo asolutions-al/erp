@@ -128,6 +128,7 @@ const Form = ({
   }
 
   const onInvalid = (errors: FieldErrors<SchemaT>) => {
+    console.log("errors", errors)
     const configTabError =
       get(errors, "warehouseId") || get(errors, "cashRegisterId")
 
@@ -802,7 +803,6 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
 const PaymentCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
-  const defaultValue = useWatch({ name: "payMethod", control: form.control })
 
   return (
     <Card>
@@ -814,37 +814,46 @@ const PaymentCard = () => {
         <CardDescription>{t("How the customer will pay")}</CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue={defaultValue}>
-          <TabsList>
-            {payMethod.enumValues.map((item) => {
-              const Icon = mapPayMethodIcon(item)
-              const isActive = defaultValue === item
-              return (
-                <TabsTrigger
-                  value={item}
-                  key={item}
-                  className="flex items-center gap-2"
-                  onClick={() =>
-                    form.setValue("payMethod", item, {
-                      shouldDirty: true,
-                      shouldValidate: true,
-                    })
-                  }
-                >
-                  <Icon size={20} />
-                  <span
-                    className={cn(
-                      "sr-only sm:not-sr-only",
-                      isActive && "not-sr-only"
-                    )}
-                  >
-                    {t(item)}
-                  </span>
-                </TabsTrigger>
-              )
-            })}
-          </TabsList>
-        </Tabs>
+        <FormField
+          control={form.control}
+          name="payMethod"
+          render={({ field }) => (
+            <>
+              <Tabs value={field.value}>
+                <TabsList>
+                  {payMethod.enumValues.map((item) => {
+                    const Icon = mapPayMethodIcon(item)
+                    const isActive = field.value === item
+                    return (
+                      <TabsTrigger
+                        value={item}
+                        key={item}
+                        className="flex items-center gap-2"
+                        onClick={() =>
+                          form.setValue("payMethod", item, {
+                            shouldDirty: true,
+                            shouldValidate: true,
+                          })
+                        }
+                      >
+                        <Icon size={20} />
+                        <span
+                          className={cn(
+                            "sr-only sm:not-sr-only",
+                            isActive && "not-sr-only"
+                          )}
+                        >
+                          {t(item)}
+                        </span>
+                      </TabsTrigger>
+                    )
+                  })}
+                </TabsList>
+              </Tabs>
+              <FormMessage />
+            </>
+          )}
+        />
       </CardContent>
     </Card>
   )

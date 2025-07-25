@@ -1,5 +1,58 @@
 import { relations } from "drizzle-orm/relations";
-import { cashRegister, invoiceConfig, customer, organization, unit, warehouse, category, productCategory, product, user, invoice, invoiceRow, productInventoryMovement, invitation, subscription, orgMember, productInventory } from "./schema";
+import { organization, customer, unit, cashRegister, invoiceConfig, warehouse, category, productCategory, product, user, invoice, invoiceRow, productInventoryMovement, invitation, subscription, orgMember, productInventory } from "./schema";
+
+export const customerRelations = relations(customer, ({one, many}) => ({
+	organization: one(organization, {
+		fields: [customer.orgId],
+		references: [organization.id]
+	}),
+	unit: one(unit, {
+		fields: [customer.unitId],
+		references: [unit.id]
+	}),
+	invoiceConfigs: many(invoiceConfig),
+	invoices: many(invoice),
+}));
+
+export const organizationRelations = relations(organization, ({one, many}) => ({
+	customers: many(customer),
+	invoiceConfigs: many(invoiceConfig),
+	productCategories: many(productCategory),
+	user: one(user, {
+		fields: [organization.ownerId],
+		references: [user.id]
+	}),
+	invoiceRows: many(invoiceRow),
+	products: many(product),
+	productInventoryMovements: many(productInventoryMovement),
+	units: many(unit),
+	categories: many(category),
+	invitations: many(invitation),
+	subscriptions: many(subscription),
+	cashRegisters: many(cashRegister),
+	invoices: many(invoice),
+	orgMembers: many(orgMember),
+	productInventories: many(productInventory),
+	warehouses: many(warehouse),
+}));
+
+export const unitRelations = relations(unit, ({one, many}) => ({
+	customers: many(customer),
+	invoiceConfigs: many(invoiceConfig),
+	productCategories: many(productCategory),
+	invoiceRows: many(invoiceRow),
+	products: many(product),
+	productInventoryMovements: many(productInventoryMovement),
+	organization: one(organization, {
+		fields: [unit.orgId],
+		references: [organization.id]
+	}),
+	categories: many(category),
+	cashRegisters: many(cashRegister),
+	invoices: many(invoice),
+	productInventories: many(productInventory),
+	warehouses: many(warehouse),
+}));
 
 export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({
 	cashRegister: one(cashRegister, {
@@ -45,59 +98,6 @@ export const cashRegisterRelations = relations(cashRegister, ({one, many}) => ({
 		references: [unit.id]
 	}),
 	invoices: many(invoice),
-}));
-
-export const customerRelations = relations(customer, ({one, many}) => ({
-	invoiceConfigs: many(invoiceConfig),
-	organization: one(organization, {
-		fields: [customer.orgId],
-		references: [organization.id]
-	}),
-	unit: one(unit, {
-		fields: [customer.unitId],
-		references: [unit.id]
-	}),
-	invoices: many(invoice),
-}));
-
-export const organizationRelations = relations(organization, ({one, many}) => ({
-	invoiceConfigs: many(invoiceConfig),
-	customers: many(customer),
-	productCategories: many(productCategory),
-	user: one(user, {
-		fields: [organization.ownerId],
-		references: [user.id]
-	}),
-	invoiceRows: many(invoiceRow),
-	products: many(product),
-	productInventoryMovements: many(productInventoryMovement),
-	units: many(unit),
-	categories: many(category),
-	invitations: many(invitation),
-	subscriptions: many(subscription),
-	cashRegisters: many(cashRegister),
-	invoices: many(invoice),
-	orgMembers: many(orgMember),
-	productInventories: many(productInventory),
-	warehouses: many(warehouse),
-}));
-
-export const unitRelations = relations(unit, ({one, many}) => ({
-	invoiceConfigs: many(invoiceConfig),
-	customers: many(customer),
-	productCategories: many(productCategory),
-	invoiceRows: many(invoiceRow),
-	products: many(product),
-	productInventoryMovements: many(productInventoryMovement),
-	organization: one(organization, {
-		fields: [unit.orgId],
-		references: [organization.id]
-	}),
-	categories: many(category),
-	cashRegisters: many(cashRegister),
-	invoices: many(invoice),
-	productInventories: many(productInventory),
-	warehouses: many(warehouse),
 }));
 
 export const warehouseRelations = relations(warehouse, ({one, many}) => ({

@@ -106,12 +106,27 @@ const Form = ({
 const PayMethodCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const value = useWatch({ control: form.control, name: "payMethod" })
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>{t("Pay method")}</CardTitle>
-        <CardDescription>{t("How the customer will pay")}</CardDescription>
+      <CardHeader className="flex-row justify-between">
+        <div className="space-y-1.5">
+          <CardTitle>{t("Pay method")}</CardTitle>
+          <CardDescription>{t("How the customer will pay")}</CardDescription>
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          type="button"
+          disabled={!value}
+          onClick={() =>
+            form.setValue("payMethod", null, { shouldDirty: true })
+          }
+        >
+          <EraserIcon />
+          {t("Clear")}
+        </Button>
       </CardHeader>
       <CardContent>
         <FormField
@@ -119,7 +134,7 @@ const PayMethodCard = () => {
           name="payMethod"
           render={({ field }) => (
             <FormItem>
-              <Select value={field.value} onValueChange={field.onChange}>
+              <Select value={field.value || ""} onValueChange={field.onChange}>
                 <FormControl>
                   <SelectTrigger aria-label={t("Select pay method")}>
                     <SelectValue placeholder={t("Select pay method")} />
