@@ -34,7 +34,7 @@ import { InvoiceConfigFormSchemaT } from "@/providers"
 import { EraserIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
-import { useFormContext } from "react-hook-form"
+import { useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import {
   CashRegisterCommand,
@@ -211,6 +211,7 @@ const SettingsCard = () => {
 const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const value = useWatch({ control: form.control, name: "warehouseId" })
 
   return (
     <Card>
@@ -225,6 +226,7 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
           variant="ghost"
           size="sm"
           type="button"
+          disabled={!value}
           onClick={() =>
             form.setValue("warehouseId", null, { shouldDirty: true })
           }
@@ -262,6 +264,10 @@ const CashRegisterCard = ({
 }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const value = useWatch({
+    control: form.control,
+    name: "cashRegisterId",
+  })
 
   return (
     <Card>
@@ -274,6 +280,7 @@ const CashRegisterCard = ({
           variant="ghost"
           size="sm"
           type="button"
+          disabled={!value}
           onClick={() =>
             form.setValue("cashRegisterId", null, { shouldDirty: true })
           }
@@ -307,6 +314,10 @@ const CashRegisterCard = ({
 const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const value = useWatch({
+    control: form.control,
+    name: "customerId",
+  })
 
   return (
     <Card>
@@ -321,6 +332,7 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
           variant="ghost"
           size="sm"
           type="button"
+          disabled={!value}
           onClick={() =>
             form.setValue("customerId", null, { shouldDirty: true })
           }
