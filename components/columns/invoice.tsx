@@ -41,12 +41,6 @@ const PayMethodCell = ({ row }: CellContext<SchemaT, unknown>) => {
   )
 }
 
-const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const t = useTranslations()
-  const { original } = row
-  return t(original.status)
-}
-
 const columns: ColumnDef<SchemaT>[] = [
   {
     accessorKey: "createdAt",
