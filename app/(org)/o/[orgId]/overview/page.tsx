@@ -1,10 +1,11 @@
 import { UnitCard } from "@/components/cards"
+import { EmptyState } from "@/components/empty-state"
 import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { db } from "@/db/app/instance"
 import { unit } from "@/orm/app/schema"
 import { and, eq } from "drizzle-orm"
-import { PlusCircle } from "lucide-react"
+import { Building2, PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 
@@ -35,16 +36,27 @@ const Page = async ({ params }: Props) => {
         }
         className="my-4"
       />
-      <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
-        {data.map((unit) => (
-          <Link
-            key={unit.id}
-            href={`/o/${orgId}/u/${unit.id}/overview/dashboard/today`}
-          >
-            <UnitCard data={unit} />
-          </Link>
-        ))}
-      </div>
+      {data.length > 0 ? (
+        <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
+          {data.map((unit) => (
+            <Link
+              key={unit.id}
+              href={`/o/${orgId}/u/${unit.id}/overview/dashboard/today`}
+            >
+              <UnitCard data={unit} />
+            </Link>
+          ))}
+        </div>
+      ) : (
+        <EmptyState
+          icon={Building2}
+          title={t("No units found")}
+          description={t(
+            "Get started by creating your first unit to organize your business operations"
+          )}
+          className="py-12"
+        />
+      )}
     </>
   )
 }

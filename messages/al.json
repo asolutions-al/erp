@@ -749,5 +749,8 @@
   "No options found": "Nuk u gjet asnjë opsion",
   "Cash register saved successfully": "Arka u ruajt me sukses",
   "Warehouse saved successfully": "Magazina u ruajt me sukses",
-  "Sign Up": "Regjistrohu"
+  "Sign Up": "Regjistrohu",
+  "No units found": "Nuk u gjetën njësi",
+  "Get started by creating your first unit to organize your business operations": "Fillo duke krijuar njësinë tuaj të parë për të organizuar veprimtaritë e biznesit",
+  "Create your first unit": "Krijoni njësinë tuaj të parë"
 }
