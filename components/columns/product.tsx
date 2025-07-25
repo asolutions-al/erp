@@ -131,16 +131,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
   },
-  {
-    accessorKey: "isFavorite",
-    header: ({ column }) => (
-      <div>
-        <SortBtn text="Favorite" column={column} />
-        <BooleanFilter title="Favorite" column={column} />
-      </div>
-    ),
-    cell: FavoriteCell,
-  },
+
   {
     id: "categories",
     size: 250,
@@ -165,6 +156,16 @@ const columns: ColumnDef<SchemaT>[] = [
       )
     },
     filterFn: "multiSelectFilter",
+  },
+  {
+    accessorKey: "isFavorite",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Favorite" column={column} />
+        <BooleanFilter title="Favorite" column={column} />
+      </div>
+    ),
+    cell: FavoriteCell,
   },
   {
     id: "actions",
