@@ -47,7 +47,7 @@ const Page = async () => {
           <Tooltip>
             <TooltipTrigger asChild>
               <span tabIndex={0}>
-                <Button size="sm" className="h-8 gap-1" disabled>
+                <Button size="sm" disabled>
                   <PlusCircle className="h-3.5 w-3.5" />
                   <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
                     {t("Create a new organization")}

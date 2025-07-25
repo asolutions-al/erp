@@ -59,7 +59,7 @@ const Layout = async (props: Props) => {
           </TabsList>
         </Tabs>
         <Link href={`/o/${orgId}/u/${unitId}/invoice/create`} passHref>
-          <Button>
+          <Button size="sm">
             <PlusCircleIcon />
             <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
           </Button>

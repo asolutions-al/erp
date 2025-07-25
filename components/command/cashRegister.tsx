@@ -35,7 +35,7 @@ const Empty = () => {
       <WarehouseIcon className="mb-4 h-12 w-12" />
       <p className="mb-4">{t("No cash registers found")}</p>
       <Link href={`/o/${orgId}/u/${unitId}/cashRegister/create`} passHref>
-        <Button>
+        <Button size="sm">
           <PlusCircleIcon />
           {t("Create new cash register")}
         </Button>
