@@ -1,48 +1,30 @@
 import { FormActionBtns } from "@/components/buttons"
-import { ProductForm } from "@/components/forms"
+import { InvitationForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
-import { createProduct } from "@/db/app/actions"
-import { db } from "@/db/app/instance"
-import { category, warehouse } from "@/orm/app/schema"
-import { ProductFormProvider } from "@/providers"
-import { and, eq } from "drizzle-orm"
+import { createInvitation } from "@/db/app/actions"
+import { InvitationFormProvider } from "@/providers"
 
 type Props = {
-  params: Promise<GlobalParamsT>
+  params: Promise<{ orgId: string }>
 }
 
 const Page = async ({ params }: Props) => {
-  const { orgId, unitId } = await params
-
-  const [warehouses, categories] = await Promise.all([
-    db.query.warehouse.findMany({
-      where: and(eq(warehouse.orgId, orgId), eq(warehouse.unitId, unitId)),
-    }),
-    db.query.category.findMany({
-      where: and(
-        eq(category.orgId, orgId),
-        eq(category.unitId, unitId),
-        eq(category.status, "active")
-      ),
-    }),
-  ])
+  const { orgId } = await params
 
   return (
-    <ProductFormProvider>
+    <InvitationFormProvider>
       <PageHeader
-        title={"Create product"}
+        title="New member"
         className="mb-2"
-        rightComp={<FormActionBtns formId="product" />}
+        rightComp={<FormActionBtns formId="invitation" />}
       />
-      <ProductForm
-        categories={categories}
-        warehouses={warehouses}
+      <InvitationForm
         performAction={async (values) => {
           "use server"
-          await createProduct({ values, orgId, unitId })
+          return await createInvitation({ values, orgId })
         }}
       />
-    </ProductFormProvider>
+    </InvitationFormProvider>
   )
 }
 

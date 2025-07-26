@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/tooltip"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
-import { organization } from "@/orm/app/schema"
+import { orgMember } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -22,17 +22,21 @@ const Page = async () => {
   } = await client.auth.getUser()
   const userId = user!.id
 
-  const orgs = await db.query.organization.findMany({
-    where: eq(organization.ownerId, userId),
+  const orgs = await db.query.orgMember.findMany({
+    where: eq(orgMember.userId, userId),
     with: {
-      units: {
-        columns: {
-          id: true,
-        },
-      },
-      orgMembers: {
-        columns: {
-          id: true,
+      organization: {
+        with: {
+          units: {
+            columns: {
+              id: true,
+            },
+          },
+          orgMembers: {
+            columns: {
+              id: true,
+            },
+          },
         },
       },
     },
@@ -63,13 +67,13 @@ const Page = async () => {
         className="my-4"
       />
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
-        {orgs.map((org) => (
-          <Link key={org.id} href={`/o/${org.id}/overview`}>
+        {orgs.map(({ organization }) => (
+          <Link key={organization.id} href={`/o/${organization.id}/overview`}>
             <OrgCard
               data={{
-                ...org,
-                unitCount: org.units.length,
-                memberCount: org.orgMembers.length,
+                ...organization,
+                unitCount: organization.units.length,
+                memberCount: organization.orgMembers.length,
               }}
             />
           </Link>

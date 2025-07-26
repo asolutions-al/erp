@@ -1,6 +1,7 @@
 export * from "./cashRegister"
 export * from "./category"
 export * from "./customer"
+export * from "./invitation"
 export * from "./invoice"
 export * from "./product"
 export * from "./subscription"

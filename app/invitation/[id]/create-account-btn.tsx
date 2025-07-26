@@ -2,23 +2,24 @@
 
 import { Button } from "@/components/ui/button"
 import { signOut } from "@/db/auth/actions"
+import { UserPlusIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { usePathname } from "next/navigation"
 
-const DemoBannerCtaBtn = () => {
+const CreateAccountBtn = () => {
   const t = useTranslations()
   const returnTo = usePathname()
-
   return (
     <Button
       variant="outline"
-      size="sm"
-      className="ml-4 shrink-0 border-blue-300 bg-white text-blue-700 hover:bg-blue-50 dark:border-blue-600 dark:bg-blue-900 dark:text-blue-100 dark:hover:bg-blue-800"
+      className="w-full"
+      size="lg"
       onClick={() => signOut({ returnTo, page: "/signup" })}
     >
-      {t("Sign Up")}
+      <UserPlusIcon />
+      {t("Create an account")}
     </Button>
   )
 }
 
-export { DemoBannerCtaBtn }
+export { CreateAccountBtn }

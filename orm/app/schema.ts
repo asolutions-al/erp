@@ -1,6 +1,7 @@
 import { pgTable, foreignKey, uuid, timestamp, text, boolean, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
+export const invitationStatus = pgEnum("INVITATION_STATUS", ['PENDING', 'ACCEPTED', 'REJECTED'])
 export const planId = pgEnum("PLAN_ID", ['INVOICE-STARTER', 'INVOICE-PRO', 'INVOICE-BUSINESS'])
 export const subscriptionPaymentProvider = pgEnum("SUBSCRIPTION_PAYMENT_PROVIDER", ['PAYPAL'])
 export const subscriptionStatus = pgEnum("SUBSCRIPTION_STATUS", ['CREATED', 'ACTIVE', 'CANCELED', 'SUSPENDED', 'EXPIRED'])
@@ -13,6 +14,27 @@ export const reason = pgEnum("reason", ['SALE', 'PURCHASE', 'ADJUSMENT', 'INITIA
 export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 
+
+export const invitation = pgTable("invitation", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	role: role().notNull(),
+	invitedBy: uuid().notNull(),
+	status: invitationStatus().notNull(),
+	email: text().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.invitedBy],
+			foreignColumns: [user.id],
+			name: "invitation_invitedBy_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invitation_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
 
 export const customer = pgTable("customer", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
@@ -263,25 +285,6 @@ export const category = pgTable("category", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const invitation = pgTable("invitation", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	userId: uuid().notNull(),
-	orgId: uuid().notNull(),
-	role: role().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "invitation_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.userId],
-			foreignColumns: [user.id],
-			name: "invitation_userId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
 export const subscription = pgTable("subscription", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -384,25 +387,6 @@ export const invoice = pgTable("invoice", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const orgMember = pgTable("orgMember", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	orgId: uuid().notNull(),
-	userId: uuid().notNull(),
-	role: role().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "orgMember_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.userId],
-			foreignColumns: [user.id],
-			name: "orgMember_userId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
 export const productInventory = pgTable("productInventory", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -467,5 +451,24 @@ export const warehouse = pgTable("warehouse", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "warehouse_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
+export const orgMember = pgTable("orgMember", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	userId: uuid().notNull(),
+	role: role().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "orgMember_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.userId],
+			foreignColumns: [user.id],
+			name: "orgMember_userId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);

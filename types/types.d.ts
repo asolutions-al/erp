@@ -8,6 +8,7 @@ type FormIdT =
   | "cashRegister"
   | "warehouse"
   | "category"
+  | "invitation"
 
 type PeriodT =
   | "today"

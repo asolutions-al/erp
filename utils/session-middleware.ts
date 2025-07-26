@@ -1,4 +1,4 @@
-import { getAuthRedirectUrl } from "@/lib/utils"
+import { getAuthUrl } from "@/lib/utils"
 import { createServerClient } from "@supabase/ssr"
 import { NextRequest, NextResponse } from "next/server"
 
@@ -6,7 +6,7 @@ const isDev = process.env.NODE_ENV === "development"
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request })
-  const { pathname, searchParams } = request.nextUrl
+  const { pathname } = request.nextUrl
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_AUTH_SUPABASE_URL!,
@@ -43,7 +43,9 @@ export async function updateSession(request: NextRequest) {
   )
 
   if (!user && isAtProtectedRoutes)
-    return NextResponse.redirect(getAuthRedirectUrl({ pathname: "/login" }))
+    return NextResponse.redirect(
+      getAuthUrl({ returnTo: pathname, page: "/login" })
+    )
 
   return response
 }
