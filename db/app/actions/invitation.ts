@@ -1,6 +1,7 @@
 "use server"
 import "server-only"
 
+import { APP_URL } from "@/contants/env"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { sendInvitationEmail } from "@/lib/resend"
@@ -86,7 +87,7 @@ const createInvitation = async ({
         orgName: newInvData.organization.name,
         inviterName: newInvData.user.email,
         inviterEmail: newInvData.user.email,
-        acceptUrl: `${process.env.APP_URL}/invitation/${newInvData.id}`,
+        acceptUrl: `${APP_URL}/invitation/${newInvData.id}`,
         expiresAt: new Date().toISOString(),
       })
   } catch (error) {

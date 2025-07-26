@@ -1,3 +1,4 @@
+import { APP_URL } from "@/contants/env"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -14,7 +15,7 @@ export const getAuthUrl = ({
 }) => {
   const url = new URL(process.env.ACCOUNTS_URL!)
   url.pathname = page
-  const redirectUrl = new URL(process.env.APP_URL!)
+  const redirectUrl = new URL(APP_URL)
   redirectUrl.pathname = "/auth/callback"
   redirectUrl.searchParams.set("returnTo", returnTo)
   url.searchParams.set("redirectUrl", redirectUrl.href)

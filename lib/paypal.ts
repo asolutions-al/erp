@@ -1,7 +1,8 @@
+import { APP_URL } from "@/contants/env"
+
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID!
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET!
 const PAYPAL_API_BASE = process.env.PAYPAL_API_BASE!
-const APP_URL = process.env.APP_URL!
 
 const brand_name = "Invoice Asolutions" // This can be customized as needed
 
