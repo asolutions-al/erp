@@ -6,7 +6,7 @@ const IS_DEV = process.env.NODE_ENV === "development"
  */
 const APP_URL = IS_DEV
   ? "http://localhost:3000"
-  : `https://${process.env.APP_URL || process.env.VERCEL_URL}`
+  : `https://${process.env.APP_URL}`
 
 /**
  * Production: AUTH_URL
