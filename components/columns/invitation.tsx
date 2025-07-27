@@ -15,6 +15,7 @@ import { Mail, MoreHorizontal, TrashIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
+import { RoleCell } from "../cell"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import {
@@ -25,12 +26,6 @@ import {
 } from "../ui/dropdown-menu"
 
 type SchemaT = InvitationSchemaT
-
-const RoleCell = ({ row }: CellContext<SchemaT, unknown>) => {
-  const { original } = row
-  const t = useTranslations()
-  return t(original.role)
-}
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row

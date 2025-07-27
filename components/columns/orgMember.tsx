@@ -19,7 +19,7 @@ import { MoreHorizontal, TrashIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { Badge } from "../ui/badge"
+import { RoleCell } from "../cell"
 import { Button } from "../ui/button"
 import {
   DropdownMenu,
@@ -37,18 +37,6 @@ type SchemaT = OrgMemberSchemaT & {
 type TableMeta = {
   userId: string
   role: "owner" | "admin" | "member"
-}
-
-const RoleCell = ({ row, table }: CellContext<SchemaT, unknown>) => {
-  const { original } = row
-  const t = useTranslations()
-  const Icon = mapOrgMemberRoleIcon(original.role)
-  return (
-    <Badge variant="outline">
-      <Icon className="mr-2 h-4 w-4" />
-      {t(original.role)}
-    </Badge>
-  )
 }
 
 const PromoteDropdown = ({
