@@ -26,7 +26,6 @@ const Page = async ({ params }: Props) => {
     }),
     db.query.invitation.findMany({
       where: and(eq(invitation.orgId, orgId)),
-      with: { user: true },
     }),
   ])
 

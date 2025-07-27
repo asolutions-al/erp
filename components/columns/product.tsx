@@ -5,7 +5,6 @@ import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   BooleanFilter,
-  MultiSelectFilter,
   NumberFilter,
   SelectFilter,
   StringFilter,
@@ -85,7 +84,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.price),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "purchasePrice",
@@ -96,7 +95,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.purchasePrice),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "taxPercentage",
@@ -107,7 +106,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.taxPercentage) + "%",
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     id: "stock",
@@ -120,7 +119,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ getValue }) => formatNumber(getValue() as number),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "barcode",
@@ -140,7 +139,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => (
       <div>
         <SortBtn text="Category" column={column} />
-        <MultiSelectFilter title="Category" column={column} />
+        <multiSelect title="Category" column={column} />
       </div>
     ),
     cell: ({ row }) => {
@@ -155,7 +154,7 @@ const columns: ColumnDef<SchemaT>[] = [
         </div>
       )
     },
-    filterFn: "multiSelectFilter",
+    filterFn: "multiSelect",
   },
   {
     accessorKey: "isFavorite",

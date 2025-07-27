@@ -484,7 +484,7 @@ const SelectFilter = <TData, TValue>({
   )
 }
 
-const MultiSelectFilter = <TData, TValue>({
+const multiSelect = <TData, TValue>({
   column,
   title,
 }: FilterProps<TData, TValue>) => {
@@ -656,7 +656,7 @@ const MultiSelectFilter = <TData, TValue>({
 export {
   BooleanFilter,
   DateFilter,
-  MultiSelectFilter,
+  multiSelect,
   NumberFilter,
   SelectFilter,
   StringFilter,

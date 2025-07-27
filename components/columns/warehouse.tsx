@@ -44,7 +44,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <NumberFilter title="Stock" column={column} />
       </div>
     ),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "city",

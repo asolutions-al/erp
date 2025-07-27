@@ -1,6 +1,6 @@
 import { FilterFn } from "@tanstack/react-table"
 
-const numberRangeFilter: FilterFn<any> = (row, columnId, value) => {
+const numberRange: FilterFn<any> = (row, columnId, value) => {
   if (!value || !Array.isArray(value)) return true
   const [min, max] = value
   if (min === 0 && max === 0) return true
@@ -22,7 +22,7 @@ const numberRangeFilter: FilterFn<any> = (row, columnId, value) => {
   return true
 }
 
-const dateRangeFilter: FilterFn<any> = (row, columnId, value) => {
+const dateRange: FilterFn<any> = (row, columnId, value) => {
   if (!value || !Array.isArray(value)) return true
   const [from, to] = value
   if (!from && !to) return true
@@ -44,7 +44,7 @@ const dateRangeFilter: FilterFn<any> = (row, columnId, value) => {
   return true
 }
 
-const multiSelectFilter: FilterFn<any> = (row, columnId, value) => {
+const multiSelect: FilterFn<any> = (row, columnId, value) => {
   if (!value || !Array.isArray(value) || value.length === 0) return true
 
   const cellValue = row.getValue(columnId)
@@ -62,4 +62,4 @@ const multiSelectFilter: FilterFn<any> = (row, columnId, value) => {
   return value.includes(stringValue)
 }
 
-export { dateRangeFilter, multiSelectFilter, numberRangeFilter }
+export { dateRange, multiSelect, numberRange }

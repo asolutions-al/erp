@@ -26,7 +26,7 @@ type SchemaT = InvitationSchemaT
 const RoleCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-  return <div>{t(original.role)}</div>
+  return t(original.role)
 }
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -55,6 +55,8 @@ const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const ActionsCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
+
+  if (original.status === "ACCEPTED") return null
 
   return (
     <DropdownMenu>
@@ -123,11 +125,12 @@ const columns: ColumnDef<SchemaT>[] = [
     accessorKey: "createdAt",
     header: ({ column }) => (
       <div>
-        <SortBtn text="Invited" column={column} />
-        <DateFilter title="Invited" column={column} />
+        <SortBtn text="Invitation date" column={column} />
+        <DateFilter title="Invitation date" column={column} />
       </div>
     ),
     cell: ({ row }) => formatDate(new Date(row.original.createdAt)),
+    filterFn: "dateRange",
   },
   {
     id: "actions",
@@ -136,4 +139,3 @@ const columns: ColumnDef<SchemaT>[] = [
 ]
 
 export { columns as invitationColumns, type SchemaT as InvitationColsT }
-

@@ -8,8 +8,8 @@ declare module "next-intl" {
 
 declare module "@tanstack/react-table" {
   interface FilterFns {
-    numberRangeFilter: FilterFn<unknown>
-    dateRangeFilter: FilterFn<unknown>
-    multiSelectFilter: FilterFn<unknown>
+    numberRange: FilterFn<unknown>
+    dateRange: FilterFn<unknown>
+    multiSelect: FilterFn<unknown>
   }
 }

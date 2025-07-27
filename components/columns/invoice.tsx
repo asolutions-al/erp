@@ -51,7 +51,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatDate(new Date(row.original.createdAt)),
-    filterFn: "dateRangeFilter",
+    filterFn: "dateRange",
   },
   {
     accessorKey: "total",
@@ -62,7 +62,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.total),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "payMethod",

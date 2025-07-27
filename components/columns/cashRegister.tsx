@@ -50,7 +50,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatDate(new Date(row.original.openedAt)),
-    filterFn: "dateRangeFilter",
+    filterFn: "dateRange",
   },
   {
     accessorKey: "openingBalance",
@@ -61,7 +61,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.openingBalance),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "balance",
@@ -72,7 +72,7 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => formatNumber(row.original.balance),
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "isOpen",
@@ -96,7 +96,7 @@ const columns: ColumnDef<SchemaT>[] = [
       const { closedAt } = row.original
       return closedAt ? formatDate(new Date(closedAt)) : "-"
     },
-    filterFn: "dateRangeFilter",
+    filterFn: "dateRange",
   },
   {
     accessorKey: "closingBalanace",
@@ -110,7 +110,7 @@ const columns: ColumnDef<SchemaT>[] = [
       const { closingBalanace } = row.original
       return closingBalanace ? formatNumber(closingBalanace) : "-"
     },
-    filterFn: "numberRangeFilter",
+    filterFn: "numberRange",
   },
   {
     accessorKey: "isFavorite",

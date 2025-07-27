@@ -824,5 +824,6 @@
   "Invitation accepted": "Invitation accepted",
   "Invitation rejected": "Invitation rejected",
   "Sign in with a different email": "Sign in with a different email",
-  "You must be logged in to reject an invitation": "You must be logged in to reject an invitation"
+  "You must be logged in to reject an invitation": "You must be logged in to reject an invitation",
+  "Invitation date": "Invitation date"
 }
