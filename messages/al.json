@@ -827,5 +827,7 @@
   "Joined date": "Data e bashkimit",
   "Promote to {role}": "Promovo në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
   "Demote to {role}": "Zbrit në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
-  "Created by": "Krijuar nga"
+  "Created by": "Krijuar nga",
+  "Configure additional customer settings": "Cakto cilësimet e mëtejshme të klientit",
+  "Mark this customer as a favorite": "Shënon këtë klient si të parapëlqyer"
 }

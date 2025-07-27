@@ -29,17 +29,21 @@ import { Textarea } from "@/components/ui/textarea"
 import { customerImageBucket } from "@/constants/bucket"
 import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
+import { InfoIcon, SettingsIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { EntityStatusSelect } from "../select/entity-status"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs"
 
 type SchemaT = CustomerFormSchemaT
 
 type Props = {
   performAction: (values: SchemaT) => Promise<void>
 }
+
+type TabT = "info" | "config"
 
 const formId: FormIdT = "customer"
 
@@ -48,6 +52,16 @@ const Form = ({ performAction }: Props) => {
   const router = useRouter()
   const { orgId, unitId } = useParams<GlobalParamsT>()
   const form = useFormContext<SchemaT>()
+
+  const searchParams = useSearchParams()
+  const currentTab: TabT = (searchParams.get("tab") as TabT) || "info"
+
+  // Function to update URL with current tab
+  const updateTabInUrl = (tab: TabT) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", tab)
+    window.history.replaceState(null, "", `?${params.toString()}`)
+  }
 
   const onValid = async (values: SchemaT) => {
     try {
@@ -75,41 +89,42 @@ const Form = ({ performAction }: Props) => {
           if (e.key === "Enter") e.preventDefault()
         }}
       >
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="space-y-2 lg:col-span-2">
-            <IdentityCard />
-            <LocationCard />
-            <AdditionalCard />
-          </div>
-          <div className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>{t("Status")}</CardTitle>
-                <CardDescription>
-                  {t("Current status of the customer")}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="status"
-                  render={({ field }) => (
-                    <FormItem>
-                      <EntityStatusSelect
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-            </Card>
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => updateTabInUrl(value as TabT)}
+        >
+          <TabsList className="grid max-w-xl grid-cols-2">
+            <TabsTrigger value="info" className="flex items-center gap-2">
+              <InfoIcon size={20} />
+              <span className="sr-only sm:not-sr-only">{t("Information")}</span>
+            </TabsTrigger>
 
+            <TabsTrigger value="config" className="flex items-center gap-2">
+              <SettingsIcon size={20} />
+              <span className="sr-only sm:not-sr-only">
+                {t("Configuration")}
+              </span>
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent
+            value="info"
+            className="grid grid-cols-1 gap-2 sm:grid-cols-3"
+          >
+            <div className="space-y-2 lg:col-span-2">
+              <IdentityCard />
+              <LocationCard />
+              <AdditionalCard />
+            </div>
+            <div>
+              <ImageCard />
+            </div>
+          </TabsContent>
+          <TabsContent value="config" className="grid gap-2 sm:grid-cols-2">
+            <StatusCard />
             <SettingsCard />
-            <ImageCard />
-          </div>
-        </div>
+          </TabsContent>
+        </Tabs>
       </form>
     </>
   )
@@ -311,7 +326,7 @@ const SettingsCard = () => {
       <CardHeader>
         <CardTitle>{t("Settings")}</CardTitle>
         <CardDescription>
-          {t("Configure additional product settings")}
+          {t("Configure additional customer settings")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -323,7 +338,7 @@ const SettingsCard = () => {
               <div className="space-y-0.5">
                 <FormLabel>{t("Favorite")}</FormLabel>
                 <FormDescription>
-                  {t("Mark this product as a favorite")}
+                  {t("Mark this customer as a favorite")}
                 </FormDescription>
               </div>
               <FormControl>
@@ -336,6 +351,35 @@ const SettingsCard = () => {
           )}
         />
         {/* Add more toggles here as needed */}
+      </CardContent>
+    </Card>
+  )
+}
+
+const StatusCard = () => {
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t("Status")}</CardTitle>
+        <CardDescription>{t("Current status of the customer")}</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <EntityStatusSelect
+                value={field.value}
+                onChange={field.onChange}
+              />
+              <FormMessage />
+            </FormItem>
+          )}
+        />
       </CardContent>
     </Card>
   )

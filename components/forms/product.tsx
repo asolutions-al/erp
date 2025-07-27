@@ -50,7 +50,7 @@ import {
   WarehouseIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
@@ -65,6 +65,8 @@ type Props = {
   categories: CategorySchemaT[]
 }
 
+type TabT = "info" | "inv" | "cat" | "config"
+
 const formId: FormIdT = "product"
 
 const Form = ({ performAction, warehouses, categories }: Props) => {
@@ -72,6 +74,16 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
   const router = useRouter()
   const { orgId, unitId } = useParams<GlobalParamsT>()
   const form = useFormContext<SchemaT>()
+
+  const searchParams = useSearchParams()
+  const currentTab: TabT = (searchParams.get("tab") as TabT) || "info"
+
+  // Function to update URL with current tab
+  const updateTabInUrl = (tab: TabT) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set("tab", tab)
+    window.history.replaceState(null, "", `?${params.toString()}`)
+  }
 
   const onValid = async (values: SchemaT) => {
     try {
@@ -99,41 +111,38 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
           if (e.key === "Enter") e.preventDefault()
         }}
       >
-        <Tabs defaultValue="information">
+        <Tabs
+          value={currentTab}
+          onValueChange={(value) => updateTabInUrl(value as TabT)}
+        >
           <TabsList className="grid max-w-xl grid-cols-4">
-            <TabsTrigger
-              value="information"
-              className="flex items-center gap-2"
-            >
+            <TabsTrigger value="info" className="flex items-center gap-2">
               <InfoIcon size={20} />
               <span className="sr-only sm:not-sr-only">{t("Information")}</span>
             </TabsTrigger>
-            <TabsTrigger value="inventory" className="flex items-center gap-2">
+            <TabsTrigger value="inv" className="flex items-center gap-2">
               <WarehouseIcon size={20} />
               <span className="sr-only sm:not-sr-only">{t("Inventory")}</span>
             </TabsTrigger>
-            <TabsTrigger value="category" className="flex items-center gap-2">
+            <TabsTrigger value="cat" className="flex items-center gap-2">
               <BriefcaseBusinessIcon size={20} />
               <span className="sr-only sm:not-sr-only">{t("Category")}</span>
             </TabsTrigger>
-            <TabsTrigger
-              value="configuration"
-              className="flex items-center gap-2"
-            >
+            <TabsTrigger value="config" className="flex items-center gap-2">
               <SettingsIcon size={20} />
               <span className="sr-only sm:not-sr-only">
                 {t("Configuration")}
               </span>
             </TabsTrigger>
           </TabsList>
-          <TabsContent value="inventory">
+          <TabsContent value="inv">
             <InventoryTab warehouses={warehouses} />
           </TabsContent>
-          <TabsContent value="category">
+          <TabsContent value="cat">
             <CategoryTab categories={categories} />
           </TabsContent>
           <TabsContent
-            value="information"
+            value="info"
             className="grid grid-cols-1 gap-2 sm:grid-cols-3"
           >
             <div className="space-y-2 sm:col-span-2">
@@ -145,10 +154,7 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
               <ImageCard />
             </div>
           </TabsContent>
-          <TabsContent
-            value="configuration"
-            className="grid gap-2 sm:grid-cols-2"
-          >
+          <TabsContent value="config" className="grid gap-2 sm:grid-cols-2">
             <StatusCard />
             <SettingsCard />
           </TabsContent>
