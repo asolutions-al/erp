@@ -10,6 +10,7 @@ import {
   product,
   user as schUser,
   subscription,
+  supplier,
   unit,
   warehouse,
 } from "@/orm/app/schema"
@@ -139,7 +140,24 @@ export async function GET(request: Request) {
         id: customer.id,
       })
     /**
-     * 8. Create warehouse
+     * 8. Create supplier
+     */
+    const [supplierRes] = await tx
+      .insert(supplier)
+      .values({
+        orgId: orgRes.id,
+        unitId: unitRes.id,
+        name: t("Demo supplier"),
+        description: t("Demo description"),
+        status: "active",
+        isFavorite: false,
+        idType: "id",
+      })
+      .returning({
+        id: supplier.id,
+      })
+    /**
+     * 9. Create warehouse
      */
     const [warehouseRes] = await tx
       .insert(warehouse)
@@ -154,7 +172,7 @@ export async function GET(request: Request) {
         id: warehouse.id,
       })
     /**
-     * 9. Create cash register
+     * 10. Create cash register
      */
     const [cashRegisterRes] = await tx
       .insert(cashRegister)
@@ -175,7 +193,7 @@ export async function GET(request: Request) {
       })
 
     /**
-     * 10. Create subscription
+     * 11. Create subscription
      */
     await tx.insert(subscription).values({
       orgId: orgRes.id,
@@ -185,7 +203,7 @@ export async function GET(request: Request) {
       externalSubscriptionId: null,
     })
     /**
-     * 10. Create default invoice config
+     * 12. Create default invoice config
      */
     await tx.insert(invoiceConfig).values({
       unitId: unitRes.id,
