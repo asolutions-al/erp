@@ -11,6 +11,7 @@ import { Messages, useTranslations } from "use-intl"
 
 type Props = {
   href: string
+  activeHref: string
   text: keyof Messages
   icon: React.ReactNode
 }
@@ -29,7 +30,7 @@ const SidebarItemSimple = (props: Props) => {
       <SidebarMenuButton
         tooltip={t(props.text)}
         asChild
-        isActive={pathname === props.href}
+        isActive={pathname.startsWith(props.activeHref)}
         className="h-10 p-4"
       >
         <Link href={props.href}>

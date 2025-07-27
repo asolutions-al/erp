@@ -18,11 +18,9 @@ import {
   ContactIcon,
   LayoutDashboardIcon,
   PackageIcon,
-  PlusCircleIcon,
   ReceiptTextIcon,
   SettingsIcon,
   WarehouseIcon,
-  ZapIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
@@ -66,54 +64,49 @@ const UnitSidebar = async (props: Props) => {
               text="Dashboard"
               icon={<LayoutDashboardIcon />}
               href={`/o/${orgId}/u/${unitId}/overview/dashboard/today`}
+              activeHref={`/o/${orgId}/u/${unitId}/overview`}
             />
             <SidebarItemSimple
               text="Products"
               icon={<PackageIcon />}
               href={`/o/${orgId}/u/${unitId}/product/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/product`}
             />
             <SidebarItemSimple
               text="Customers"
               icon={<ContactIcon />}
               href={`/o/${orgId}/u/${unitId}/customer/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/customer`}
             />
             <SidebarItemSimple
               text="Invoices"
               icon={<ReceiptTextIcon />}
               href={`/o/${orgId}/u/${unitId}/invoice/list/today`}
+              activeHref={`/o/${orgId}/u/${unitId}/invoice`}
             />
             <SidebarItemSimple
               text="Cash registers"
               icon={<BanknoteIcon />}
               href={`/o/${orgId}/u/${unitId}/cashRegister/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/cashRegister`}
             />
             <SidebarItemSimple
               text="Warehouses"
               icon={<WarehouseIcon />}
               href={`/o/${orgId}/u/${unitId}/warehouse/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/warehouse`}
             />
             <SidebarItemSimple
               text="Categories"
               icon={<BriefcaseBusinessIcon />}
               href={`/o/${orgId}/u/${unitId}/category/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/category`}
             />
             <SidebarItemSimple
               text="Configurations"
               icon={<SettingsIcon />}
               href={`/o/${orgId}/u/${unitId}/config/invoice`}
-            />
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>
-            <ZapIcon className="mr-1" />
-            {t("Quick actions")}
-          </SidebarGroupLabel>
-          <SidebarMenu>
-            <SidebarItemSimple
-              text="New invoice"
-              icon={<PlusCircleIcon />}
-              href={`/o/${orgId}/u/${unitId}/invoice/create`}
+              activeHref={`/o/${orgId}/u/${unitId}/config`}
             />
           </SidebarMenu>
         </SidebarGroup>

@@ -49,21 +49,25 @@ const OrgSidebar = async (props: Props) => {
               text="Overview"
               icon={<LayoutDashboardIcon />}
               href={`/o/${orgId}/overview`}
+              activeHref={`/o/${orgId}/overview`}
             />
             <SidebarItemSimple
               text="Units"
               href={`/o/${orgId}/unit/list/active`}
               icon={<BuildingIcon />}
+              activeHref={`/o/${orgId}/unit`}
             />
             <SidebarItemSimple
               text="Members"
               href={`/o/${orgId}/member/list`}
               icon={<UsersIcon />}
+              activeHref={`/o/${orgId}/member`}
             />
             <SidebarItemSimple
               text="Subscriptions"
               href={`/o/${orgId}/billing/subscription`}
               icon={<CreditCardIcon />}
+              activeHref={`/o/${orgId}/billing`}
             />
           </SidebarMenu>
         </SidebarGroup>
