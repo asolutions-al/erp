@@ -83,7 +83,7 @@
     "@types/web-push": "^3.6.4",
     "drizzle-kit": "^0.31.4",
     "encoding": "^0.1.13",
-    "prettier": "^3.4.2",
+    "prettier": "^3.5.3",
     "prettier-plugin-tailwindcss": "^0.6.11"
   }
 }
