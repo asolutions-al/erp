@@ -25,6 +25,7 @@ import {
   CheckCircleIcon,
   EraserIcon,
   FilterIcon,
+  XCircleIcon,
 } from "lucide-react"
 import { Messages, useTranslations } from "next-intl"
 import React, { useState } from "react"
@@ -484,7 +485,7 @@ const SelectFilter = <TData, TValue>({
   )
 }
 
-const multiSelect = <TData, TValue>({
+const MultiSelectFilter = <TData, TValue>({
   column,
   title,
 }: FilterProps<TData, TValue>) => {
@@ -656,7 +657,7 @@ const multiSelect = <TData, TValue>({
 export {
   BooleanFilter,
   DateFilter,
-  multiSelect,
+  MultiSelectFilter,
   NumberFilter,
   SelectFilter,
   StringFilter,

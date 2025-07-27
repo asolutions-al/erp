@@ -5,6 +5,7 @@ import { SortBtn } from "@/components/buttons"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   BooleanFilter,
+  MultiSelectFilter,
   NumberFilter,
   SelectFilter,
   StringFilter,
@@ -139,7 +140,7 @@ const columns: ColumnDef<SchemaT>[] = [
     header: ({ column }) => (
       <div>
         <SortBtn text="Category" column={column} />
-        <multiSelect title="Category" column={column} />
+        <MultiSelectFilter title="Category" column={column} />
       </div>
     ),
     cell: ({ row }) => {
