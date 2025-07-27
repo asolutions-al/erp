@@ -200,7 +200,7 @@ const DetailsCard = () => {
             <FormItem>
               <FormLabel>{t("Name")}</FormLabel>
               <FormControl>
-                <Input placeholder="Pizza" {...field} />
+                <Input placeholder="Pizza" {...field} autoFocus />
               </FormControl>
               <FormMessage />
             </FormItem>

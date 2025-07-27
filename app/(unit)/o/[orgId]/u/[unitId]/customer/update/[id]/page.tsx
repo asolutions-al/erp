@@ -21,7 +21,7 @@ const Page = async (props: Props) => {
   return (
     <CustomerFormProvider defaultValues={data}>
       <PageHeader
-        title={"Update customer"}
+        title="Update customer"
         className="mb-2"
         rightComp={<FormActionBtns formId="customer" />}
       />

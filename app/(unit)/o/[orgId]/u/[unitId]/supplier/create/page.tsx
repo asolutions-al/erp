@@ -1,9 +1,9 @@
 import { FormActionBtns } from "@/components/buttons"
-import { CustomerForm } from "@/components/forms"
+import { SupplierForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { WithSubscription } from "@/components/wrapper"
-import { createCustomer } from "@/db/app/actions"
-import { CustomerFormProvider } from "@/providers"
+import { createSupplier } from "@/db/app/actions"
+import { SupplierFormProvider } from "@/providers"
 
 type Props = {
   params: Promise<{ unitId: string; orgId: string }>
@@ -14,19 +14,19 @@ const Page = async ({ params }: Props) => {
 
   return (
     <WithSubscription orgId={orgId} unitId={unitId} entity="CUSTOMER">
-      <CustomerFormProvider>
+      <SupplierFormProvider>
         <PageHeader
-          title="Create customer"
+          title="Create supplier"
           className="mb-2"
-          rightComp={<FormActionBtns formId="customer" />}
+          rightComp={<FormActionBtns formId="supplier" />}
         />
-        <CustomerForm
+        <SupplierForm
           performAction={async (values) => {
             "use server"
-            await createCustomer({ values, unitId, orgId })
+            await createSupplier({ values, unitId, orgId })
           }}
         />
-      </CustomerFormProvider>
+      </SupplierFormProvider>
     </WithSubscription>
   )
 }

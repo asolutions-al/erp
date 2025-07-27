@@ -90,7 +90,7 @@ const Page = async (props: Props) => {
         productInventories={productInventories}
       >
         <PageHeader
-          title={"Create invoice"}
+          title="Create invoice"
           className="mb-2 max-w-none"
           rightComp={
             <FormActionBtns formId="invoice">

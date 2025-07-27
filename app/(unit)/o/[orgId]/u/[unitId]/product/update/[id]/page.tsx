@@ -56,7 +56,7 @@ const Page = async (props: Props) => {
       }}
     >
       <PageHeader
-        title={"Update product"}
+        title="Update product"
         className="mb-2"
         rightComp={<FormActionBtns formId="product" />}
       />

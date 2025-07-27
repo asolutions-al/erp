@@ -850,5 +850,17 @@
   "Demote to {role}": "Demote to {role, select, owner {Owner} admin {Admin} member {Member} other {}}",
   "Created by": "Created by",
   "Configure additional customer settings": "Configure additional customer settings",
-  "Mark this customer as a favorite": "Mark this customer as a favorite"
+  "Mark this customer as a favorite": "Mark this customer as a favorite",
+  "Suppliers": "Suppliers",
+  "New supplier": "New supplier",
+  "Create supplier": "Create supplier",
+  "Duplicate supplier": "Duplicate supplier",
+  "Update supplier": "Update supplier",
+  "Supplier saved successfully": "Supplier saved successfully",
+  "Basic details of the supplier": "Basic details of the supplier",
+  "Address details of the supplier": "Address details of the supplier",
+  "Extra details of the supplier": "Extra details of the supplier",
+  "Configure additional supplier settings": "Configure additional supplier settings",
+  "Mark this supplier as a favorite": "Mark this supplier as a favorite",
+  "Current status of the supplier": "Current status of the supplier"
 }

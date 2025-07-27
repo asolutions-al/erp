@@ -4,6 +4,7 @@ type FormIdT =
   | "unit"
   | "user"
   | "customer"
+  | "supplier"
   | "invoiceConfig"
   | "cashRegister"
   | "warehouse"

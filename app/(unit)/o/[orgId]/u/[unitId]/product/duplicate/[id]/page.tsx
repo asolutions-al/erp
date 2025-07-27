@@ -58,7 +58,7 @@ const Page = async (props: Props) => {
         }}
       >
         <PageHeader
-          title={"Duplicate product"}
+          title="Duplicate product"
           className="mb-2"
           rightComp={<FormActionBtns formId="product" />}
         />

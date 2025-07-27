@@ -1,11 +1,11 @@
 import { FormActionBtns } from "@/components/buttons"
-import { CustomerForm } from "@/components/forms"
+import { SupplierForm } from "@/components/forms"
 import { PageHeader } from "@/components/layout/page-header"
 import { WithSubscription } from "@/components/wrapper"
-import { createCustomer } from "@/db/app/actions"
+import { createSupplier } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { customer } from "@/orm/app/schema"
-import { CustomerFormProvider } from "@/providers"
+import { supplier } from "@/orm/app/schema"
+import { SupplierFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
 
 type Props = {
@@ -15,25 +15,25 @@ type Props = {
 const Page = async (props: Props) => {
   const { orgId, unitId, id } = await props.params
 
-  const data = await db.query.customer.findFirst({
-    where: eq(customer.id, id),
+  const data = await db.query.supplier.findFirst({
+    where: eq(supplier.id, id),
   })
 
   return (
     <WithSubscription orgId={orgId} unitId={unitId} entity="CUSTOMER">
-      <CustomerFormProvider defaultValues={data}>
+      <SupplierFormProvider defaultValues={data}>
         <PageHeader
-          title="Duplicate customer"
+          title="Duplicate supplier"
           className="mb-2"
-          rightComp={<FormActionBtns formId="customer" />}
+          rightComp={<FormActionBtns formId="supplier" />}
         />
-        <CustomerForm
+        <SupplierForm
           performAction={async (values) => {
             "use server"
-            await createCustomer({ values, unitId, orgId })
+            await createSupplier({ values, unitId, orgId })
           }}
         />
-      </CustomerFormProvider>
+      </SupplierFormProvider>
     </WithSubscription>
   )
 }

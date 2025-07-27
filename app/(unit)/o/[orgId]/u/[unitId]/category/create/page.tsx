@@ -14,7 +14,7 @@ const Page = async ({ params }: Props) => {
   return (
     <CategoryFormProvider>
       <PageHeader
-        title={"Create category"}
+        title="Create category"
         className="mb-2"
         rightComp={<FormActionBtns formId="category" />}
       />

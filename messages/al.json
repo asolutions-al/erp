@@ -829,5 +829,17 @@
   "Demote to {role}": "Zbrit në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
   "Created by": "Krijuar nga",
   "Configure additional customer settings": "Cakto cilësimet e mëtejshme të klientit",
-  "Mark this customer as a favorite": "Shënon këtë klient si të parapëlqyer"
+  "Mark this customer as a favorite": "Shënon këtë klient si të parapëlqyer",
+  "Suppliers": "Furnitorët",
+  "New supplier": "Furnitor i ri",
+  "Create supplier": "Krijo furnitor",
+  "Duplicate supplier": "Kopjo furnitor",
+  "Update supplier": "Përditëso furnitorin",
+  "Supplier saved successfully": "Furnitori u ruajt me sukses",
+  "Basic details of the supplier": "Detajet bazë të furnitorit",
+  "Address details of the supplier": "Detajet e vendndodhjes së furnitorit",
+  "Extra details of the supplier": "Detajet e mëtejshme të furnitorit",
+  "Configure additional supplier settings": "Cakto cilësimet e mëtejshme të furnitorit",
+  "Mark this supplier as a favorite": "Shënon këtë furnitor si të parapëlqyer",
+  "Current status of the supplier": "Gjendja aktuale e furnitorit"
 }

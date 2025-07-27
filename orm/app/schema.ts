@@ -15,6 +15,34 @@ export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 
 
+export const supplier = pgTable("supplier", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	unitId: uuid().notNull(),
+	name: text().notNull(),
+	status: entityStatus().notNull(),
+	description: text(),
+	imageBucketPath: text(),
+	idType: idType().notNull(),
+	email: text(),
+	address: text(),
+	city: text(),
+	idValue: text(),
+	orgId: uuid().notNull(),
+	isFavorite: boolean().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "supplier_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.unitId],
+			foreignColumns: [unit.id],
+			name: "supplier_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const customer = pgTable("customer", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),

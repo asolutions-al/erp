@@ -36,7 +36,7 @@ const Page = async ({ params }: Props) => {
     <WithSubscription orgId={orgId} unitId={unitId} entity="PRODUCT">
       <ProductFormProvider>
         <PageHeader
-          title={"Create product"}
+          title="Create product"
           className="mb-2"
           rightComp={<FormActionBtns formId="product" />}
         />

@@ -34,7 +34,7 @@ const Page = async (props: Props) => {
   return (
     <UserFormProvider defaultValues={userData}>
       <PageHeader
-        title={"Account settings"}
+        title="Account settings"
         className="mb-2"
         rightComp={<FormActionBtns formId="user" />}
       />

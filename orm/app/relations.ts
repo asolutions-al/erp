@@ -1,20 +1,19 @@
 import { relations } from "drizzle-orm/relations";
-import { organization, customer, unit, cashRegister, invoiceConfig, warehouse, category, productCategory, product, user, invoice, invoiceRow, productInventoryMovement, invitation, subscription, productInventory, orgMember } from "./schema";
+import { organization, supplier, unit, customer, cashRegister, invoiceConfig, warehouse, category, productCategory, product, user, invoice, invoiceRow, productInventoryMovement, invitation, subscription, productInventory, orgMember } from "./schema";
 
-export const customerRelations = relations(customer, ({one, many}) => ({
+export const supplierRelations = relations(supplier, ({one}) => ({
 	organization: one(organization, {
-		fields: [customer.orgId],
+		fields: [supplier.orgId],
 		references: [organization.id]
 	}),
 	unit: one(unit, {
-		fields: [customer.unitId],
+		fields: [supplier.unitId],
 		references: [unit.id]
 	}),
-	invoiceConfigs: many(invoiceConfig),
-	invoices: many(invoice),
 }));
 
 export const organizationRelations = relations(organization, ({one, many}) => ({
+	suppliers: many(supplier),
 	customers: many(customer),
 	invoiceConfigs: many(invoiceConfig),
 	productCategories: many(productCategory),
@@ -37,6 +36,7 @@ export const organizationRelations = relations(organization, ({one, many}) => ({
 }));
 
 export const unitRelations = relations(unit, ({one, many}) => ({
+	suppliers: many(supplier),
 	customers: many(customer),
 	invoiceConfigs: many(invoiceConfig),
 	productCategories: many(productCategory),
@@ -52,6 +52,19 @@ export const unitRelations = relations(unit, ({one, many}) => ({
 	invoices: many(invoice),
 	productInventories: many(productInventory),
 	warehouses: many(warehouse),
+}));
+
+export const customerRelations = relations(customer, ({one, many}) => ({
+	organization: one(organization, {
+		fields: [customer.orgId],
+		references: [organization.id]
+	}),
+	unit: one(unit, {
+		fields: [customer.unitId],
+		references: [unit.id]
+	}),
+	invoiceConfigs: many(invoiceConfig),
+	invoices: many(invoice),
 }));
 
 export const invoiceConfigRelations = relations(invoiceConfig, ({one}) => ({

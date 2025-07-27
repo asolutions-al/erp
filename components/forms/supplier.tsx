@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { customerImageBucket } from "@/constants/bucket"
+import { supplierImageBucket } from "@/constants/bucket"
 import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
 import { InfoIcon, SettingsIcon } from "lucide-react"
@@ -45,7 +45,7 @@ type Props = {
 
 type TabT = "info" | "config"
 
-const formId: FormIdT = "customer"
+const formId: FormIdT = "supplier"
 
 const Form = ({ performAction }: Props) => {
   const t = useTranslations()
@@ -66,9 +66,9 @@ const Form = ({ performAction }: Props) => {
   const onValid = async (values: SchemaT) => {
     try {
       await performAction(values)
-      toast.success(t("Customer saved successfully"))
-      router.prefetch(`/o/${orgId}/u/${unitId}/customer/list/${values.status}`)
-      router.push(`/o/${orgId}/u/${unitId}/customer/list/${values.status}`)
+      toast.success(t("Supplier saved successfully"))
+      router.prefetch(`/o/${orgId}/u/${unitId}/supplier/list/${values.status}`)
+      router.push(`/o/${orgId}/u/${unitId}/supplier/list/${values.status}`)
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
@@ -134,10 +134,10 @@ const ImageCard = () => {
   // Remove the old ImageCard implementation and use the reusable component
   return (
     <ImageUploader
-      bucket={customerImageBucket}
+      bucket={supplierImageBucket}
       field="imageBucketPath"
       title="Images"
-      description="Appealing images of the customer"
+      description="Appealing images of the supplier"
     />
   )
 }
@@ -150,7 +150,7 @@ const IdentityCard = () => {
     <Card>
       <CardHeader>
         <CardTitle>{t("Identity")}</CardTitle>
-        <CardDescription>{t("Basic details of the customer")}</CardDescription>
+        <CardDescription>{t("Basic details of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent>
         <FormField
@@ -222,7 +222,7 @@ const LocationCard = () => {
       <CardHeader>
         <CardTitle>{t("Location")}</CardTitle>
         <CardDescription>
-          {t("Address details of the customer")}
+          {t("Address details of the supplier")}
         </CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
@@ -273,7 +273,7 @@ const AdditionalCard = () => {
     <Card>
       <CardHeader>
         <CardTitle>{t("Additional")}</CardTitle>
-        <CardDescription>{t("Extra details of the customer")}</CardDescription>
+        <CardDescription>{t("Extra details of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
         <FormField
@@ -326,7 +326,7 @@ const SettingsCard = () => {
       <CardHeader>
         <CardTitle>{t("Settings")}</CardTitle>
         <CardDescription>
-          {t("Configure additional customer settings")}
+          {t("Configure additional supplier settings")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -338,7 +338,7 @@ const SettingsCard = () => {
               <div className="space-y-0.5">
                 <FormLabel>{t("Favorite")}</FormLabel>
                 <FormDescription>
-                  {t("Mark this customer as a favorite")}
+                  {t("Mark this supplier as a favorite")}
                 </FormDescription>
               </div>
               <FormControl>
@@ -364,7 +364,7 @@ const StatusCard = () => {
     <Card>
       <CardHeader>
         <CardTitle>{t("Status")}</CardTitle>
-        <CardDescription>{t("Current status of the customer")}</CardDescription>
+        <CardDescription>{t("Current status of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent>
         <FormField
@@ -385,4 +385,4 @@ const StatusCard = () => {
   )
 }
 
-export { Form as CustomerForm }
+export { Form as SupplierForm }

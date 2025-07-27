@@ -20,6 +20,7 @@ import {
   PackageIcon,
   ReceiptTextIcon,
   SettingsIcon,
+  TruckIcon,
   WarehouseIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -77,6 +78,12 @@ const UnitSidebar = async (props: Props) => {
               icon={<ContactIcon />}
               href={`/o/${orgId}/u/${unitId}/customer/list/active`}
               activeHref={`/o/${orgId}/u/${unitId}/customer`}
+            />
+            <SidebarItemSimple
+              text="Suppliers"
+              icon={<TruckIcon />}
+              href={`/o/${orgId}/u/${unitId}/supplier/list/active`}
+              activeHref={`/o/${orgId}/u/${unitId}/supplier`}
             />
             <SidebarItemSimple
               text="Invoices"

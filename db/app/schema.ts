@@ -12,6 +12,7 @@ import {
   productCategory,
   productInventory,
   subscription,
+  supplier,
   unit,
   user,
   warehouse,
@@ -31,6 +32,9 @@ export type ProductSchemaT = z.infer<typeof productSchema>
 /////////////CUSTOMER/////////////////////
 const customerSchema = createSelectSchema(customer)
 export type CustomerSchemaT = z.infer<typeof customerSchema>
+/////////////SUPPLIER/////////////////////
+const supplierSchema = createSelectSchema(supplier)
+export type SupplierSchemaT = z.infer<typeof supplierSchema>
 /////////////INVOICE/////////////////////
 const invoiceSchema = createSelectSchema(invoice)
 export type InvoiceSchemaT = z.infer<typeof invoiceSchema>
