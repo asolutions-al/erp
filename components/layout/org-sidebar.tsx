@@ -15,6 +15,7 @@ import {
   BuildingIcon,
   CreditCardIcon,
   LayoutDashboardIcon,
+  PackageIcon,
   UsersIcon,
 } from "lucide-react"
 import { getTranslations } from "next-intl/server"
@@ -39,7 +40,10 @@ const OrgSidebar = async (props: Props) => {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <PackageIcon className="mr-1" />
+            {t("Menu")}
+          </SidebarGroupLabel>
           <SidebarMenu>
             <SidebarItemSimple
               text="Overview"

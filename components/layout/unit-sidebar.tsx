@@ -58,29 +58,6 @@ const UnitSidebar = async (props: Props) => {
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>
-            <ZapIcon className="mr-1" />
-            {t("Quick actions")}
-          </SidebarGroupLabel>
-          <SidebarMenu>
-            <SidebarItemSimple
-              text="New invoice"
-              icon={<PlusCircleIcon />}
-              href={`/o/${orgId}/u/${unitId}/invoice/create`}
-            />
-            <SidebarItemSimple
-              text="New product"
-              icon={<PlusCircleIcon />}
-              href={`/o/${orgId}/u/${unitId}/product/create`}
-            />
-            <SidebarItemSimple
-              text="New customer"
-              icon={<PlusCircleIcon />}
-              href={`/o/${orgId}/u/${unitId}/customer/create`}
-            />
-          </SidebarMenu>
-        </SidebarGroup>
-        <SidebarGroup>
-          <SidebarGroupLabel>
             <PackageIcon className="mr-1" />
             {t("Menu")}
           </SidebarGroupLabel>
@@ -124,6 +101,19 @@ const UnitSidebar = async (props: Props) => {
               text="Configurations"
               icon={<SettingsIcon />}
               href={`/o/${orgId}/u/${unitId}/config/invoice`}
+            />
+          </SidebarMenu>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>
+            <ZapIcon className="mr-1" />
+            {t("Quick actions")}
+          </SidebarGroupLabel>
+          <SidebarMenu>
+            <SidebarItemSimple
+              text="New invoice"
+              icon={<PlusCircleIcon />}
+              href={`/o/${orgId}/u/${unitId}/invoice/create`}
             />
           </SidebarMenu>
         </SidebarGroup>
