@@ -20,7 +20,7 @@ const Page = async (props: Props) => {
   })
 
   return (
-    <WithSubscription orgId={orgId} unitId={unitId} entity="CUSTOMER">
+    <WithSubscription orgId={orgId} unitId={unitId} entity="SUPPLIER">
       <SupplierFormProvider defaultValues={data}>
         <PageHeader
           title="Duplicate supplier"

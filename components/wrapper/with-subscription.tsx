@@ -11,6 +11,7 @@ import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getCustomerCount } from "@/db/app/loaders/customer"
 import { getInvoiceMonthCount } from "@/db/app/loaders/invoice"
 import { getProductCount } from "@/db/app/loaders/product"
+import { getSupplierCount } from "@/db/app/loaders/supplier"
 import { getUnitCount } from "@/db/app/loaders/unit"
 import { getPlans } from "@/db/auth/loaders/plan"
 import { PlanSchemaT } from "@/db/auth/schema"
@@ -25,7 +26,7 @@ import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
 
-type Entity = "UNIT" | "PRODUCT" | "CUSTOMER" | "INVOICE"
+type Entity = "UNIT" | "PRODUCT" | "CUSTOMER" | "INVOICE" | "SUPPLIER"
 
 type Props = {
   orgId: string
@@ -42,6 +43,8 @@ const getCountFn = (props: Props) => {
       getCustomerCount({ orgId: props.orgId, unitId: props.unitId! }),
     INVOICE: async () =>
       getInvoiceMonthCount({ orgId: props.orgId, unitId: props.unitId! }),
+    SUPPLIER: async () =>
+      getSupplierCount({ orgId: props.orgId, unitId: props.unitId! }),
   }
   const fn = MAP[props.entity]
   return fn
@@ -53,6 +56,7 @@ const getLimit = ({ plan, entity }: { plan: PlanSchemaT; entity: Entity }) => {
     PRODUCT: plan.maxProducts,
     CUSTOMER: plan.maxCustomers,
     INVOICE: plan.maxInvoices,
+    SUPPLIER: plan.maxSuppliers,
   }
   return MAP[entity]
 }
@@ -74,19 +78,15 @@ const LimitReached = async ({
 }) => {
   const t = await getTranslations()
 
-  const entity = {
-    UNIT: t("unitsLimit"),
-    PRODUCT: t("productsLimit"),
-    CUSTOMER: t("customersLimit"),
-    INVOICE: t("invoicesLimit"),
-  }[props.entity]
+  const { entity } = props
 
   const href = {
     UNIT: `/o/${orgId}/unit/list/active`,
     PRODUCT: `/o/${orgId}/u/${unitId}/product/list/active`,
     CUSTOMER: `/o/${orgId}/u/${unitId}/customer/list/active`,
     INVOICE: `/o/${orgId}/u/${unitId}/invoice/list/today`,
-  }[props.entity]
+    SUPPLIER: `/o/${orgId}/u/${unitId}/supplier/list/active`,
+  }[entity]
 
   return (
     <div className="flex min-h-[60vh] items-center justify-center p-4">

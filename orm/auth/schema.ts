@@ -30,4 +30,6 @@ export const plan = pgTable("plan", {
 	tier: smallint().notNull(),
 	paypalPlanId: text().notNull(),
 	paypalSandboxPlanId: text().notNull(),
+	// You can use { mode: "bigint" } if numbers are exceeding js number limitations
+	maxSuppliers: bigint({ mode: "number" }).notNull(),
 });

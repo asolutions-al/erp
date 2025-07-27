@@ -13,7 +13,7 @@ const Page = async ({ params }: Props) => {
   const { unitId, orgId } = await params
 
   return (
-    <WithSubscription orgId={orgId} unitId={unitId} entity="CUSTOMER">
+    <WithSubscription orgId={orgId} unitId={unitId} entity="SUPPLIER">
       <SupplierFormProvider>
         <PageHeader
           title="Create supplier"
