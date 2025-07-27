@@ -1,7 +1,7 @@
 "use client"
 
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { mapRangeIcon } from "@/contants/maps"
+import { mapRangeIcon } from "@/constants/maps"
 import { cn } from "@/lib/utils"
 import { useTranslations } from "next-intl"
 import Link from "next/link"

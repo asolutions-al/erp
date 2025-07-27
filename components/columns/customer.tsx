@@ -8,8 +8,8 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
-import { customerImageBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
+import { customerImageBucket } from "@/constants/bucket"
+import { publicStorageUrl } from "@/constants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"

@@ -6,7 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { publicStorageUrl } from "@/contants/consts"
+import { publicStorageUrl } from "@/constants/consts"
 import { createClient } from "@/db/app/client"
 import { cn } from "@/lib/utils"
 import { TrashIcon } from "lucide-react"

@@ -1,7 +1,7 @@
 "use server"
 import "server-only"
 
-import { APP_URL } from "@/contants/env"
+import { APP_URL } from "@/constants/env"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { sendInvitationEmail } from "@/lib/resend"

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { mapStatusIcon } from "@/contants/maps"
+import { mapStatusIcon } from "@/constants/maps"
 import { cn } from "@/lib/utils"
 import { entityStatus } from "@/orm/app/schema"
 import { EntityStatusT } from "@/types/enum"

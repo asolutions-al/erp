@@ -1,4 +1,4 @@
-import { DOMAIN } from "@/contants/env"
+import { DOMAIN } from "@/constants/env"
 import { getAuthUrl } from "@/lib/utils"
 import { createServerClient } from "@supabase/ssr"
 import { NextRequest, NextResponse } from "next/server"

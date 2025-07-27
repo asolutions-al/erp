@@ -27,9 +27,9 @@ import { Input } from "@/components/ui/input"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Separator } from "@/components/ui/separator"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { productImagesBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
-import { mapPayMethodIcon } from "@/contants/maps"
+import { productImagesBucket } from "@/constants/bucket"
+import { publicStorageUrl } from "@/constants/consts"
+import { mapPayMethodIcon } from "@/constants/maps"
 import {
   CashRegisterSchemaT,
   CustomerSchemaT,

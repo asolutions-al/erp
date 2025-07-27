@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { mapRangeIcon } from "@/contants/maps"
+import { mapRangeIcon } from "@/constants/maps"
 import { cn } from "@/lib/utils"
 import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"

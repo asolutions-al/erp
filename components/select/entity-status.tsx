@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { mapStatusIcon } from "@/contants/maps"
+import { mapStatusIcon } from "@/constants/maps"
 import { entityStatus } from "@/orm/app/schema"
 import { useTranslations } from "next-intl"
 

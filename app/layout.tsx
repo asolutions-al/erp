@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { APP_URL } from "@/contants/env"
+import { APP_URL } from "@/constants/env"
 import { ThemeProvider, TranslationProvider } from "@/providers"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"

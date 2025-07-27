@@ -1,7 +1,7 @@
 "use server"
 import "server-only"
 
-import { IS_DEV } from "@/contants/env"
+import { IS_DEV } from "@/constants/env"
 import { db } from "@/db/auth/instance"
 import { plan } from "@/orm/auth/schema"
 import { eq } from "drizzle-orm"

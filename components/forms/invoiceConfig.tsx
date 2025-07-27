@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { mapPayMethodIcon } from "@/contants/maps"
+import { mapPayMethodIcon } from "@/constants/maps"
 import {
   CashRegisterSchemaT,
   CustomerSchemaT,

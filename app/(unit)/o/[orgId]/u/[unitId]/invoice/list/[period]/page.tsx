@@ -1,6 +1,6 @@
 import { invoiceColumns } from "@/components/columns/invoice"
 import { DataTable } from "@/components/ui/data-table"
-import { mapRangeToStartEnd } from "@/contants/maps"
+import { mapRangeToStartEnd } from "@/constants/maps"
 import { db } from "@/db/app/instance"
 import { invoice } from "@/orm/app/schema"
 import { and, desc, eq, gte, lte } from "drizzle-orm"

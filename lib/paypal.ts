@@ -1,4 +1,4 @@
-import { APP_URL } from "@/contants/env"
+import { APP_URL } from "@/constants/env"
 
 const PAYPAL_CLIENT_ID = process.env.PAYPAL_CLIENT_ID!
 const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET!

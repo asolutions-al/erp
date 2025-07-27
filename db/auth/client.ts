@@ -1,4 +1,4 @@
-import { DOMAIN } from "@/contants/env"
+import { DOMAIN } from "@/constants/env"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
 

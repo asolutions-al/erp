@@ -10,8 +10,8 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
-import { productImagesBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
+import { productImagesBucket } from "@/constants/bucket"
+import { publicStorageUrl } from "@/constants/consts"
 import {
   CategorySchemaT,
   ProductCategorySchemaT,

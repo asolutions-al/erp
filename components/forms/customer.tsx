@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { customerImageBucket } from "@/contants/bucket"
+import { customerImageBucket } from "@/constants/bucket"
 import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"

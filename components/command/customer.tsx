@@ -15,8 +15,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { customerImageBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
+import { customerImageBucket } from "@/constants/bucket"
+import { publicStorageUrl } from "@/constants/consts"
 import { CustomerSchemaT } from "@/db/app/schema"
 import { cn } from "@/lib/utils"
 import {

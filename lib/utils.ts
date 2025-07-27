@@ -1,4 +1,4 @@
-import { APP_URL, AUTH_URL } from "@/contants/env"
+import { APP_URL, AUTH_URL } from "@/constants/env"
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 

@@ -20,9 +20,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { productImagesBucket } from "@/contants/bucket"
-import { publicStorageUrl } from "@/contants/consts"
-import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/contants/maps"
+import { productImagesBucket } from "@/constants/bucket"
+import { publicStorageUrl } from "@/constants/consts"
+import { mapRangeToPrevStartEnd, mapRangeToStartEnd } from "@/constants/maps"
 import { db } from "@/db/app/instance"
 import { InvoiceSchemaT } from "@/db/app/schema"
 import { formatNumber } from "@/lib/utils"

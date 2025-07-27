@@ -13,7 +13,7 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
-import { mapPayMethodIcon } from "@/contants/maps"
+import { mapPayMethodIcon } from "@/constants/maps"
 import {
   CashRegisterSchemaT,
   InvoiceSchemaT,
