@@ -1,4 +1,9 @@
-import { EntityStatusT, InvitationStatusT, PayMethodT } from "@/types/enum"
+import {
+  EntityStatusT,
+  InvitationStatusT,
+  OrgMemberRoleT,
+  PayMethodT,
+} from "@/types/enum"
 import {
   endOfDay,
   endOfMonth,
@@ -23,9 +28,12 @@ import {
   ClockIcon,
   CoinsIcon,
   CreditCardIcon,
+  CrownIcon,
   FileIcon,
   HandCoinsIcon,
   LandmarkIcon,
+  ShieldIcon,
+  UserIcon,
   XCircleIcon,
 } from "lucide-react"
 
@@ -65,6 +73,15 @@ const mapInvitationStatusIcon = (value: InvitationStatusT) => {
     ACCEPTED: CircleCheckIcon,
     PENDING: ClockIcon,
     REJECTED: XCircleIcon,
+  }
+  return MAP[value]
+}
+
+const mapOrgMemberRoleIcon = (value: OrgMemberRoleT) => {
+  const MAP: Record<OrgMemberRoleT, IconT> = {
+    owner: CrownIcon,
+    admin: ShieldIcon,
+    member: UserIcon,
   }
   return MAP[value]
 }
@@ -123,6 +140,7 @@ const mapRangeToPrevStartEnd = (period: PeriodT) => {
 
 export {
   mapInvitationStatusIcon,
+  mapOrgMemberRoleIcon,
   mapPayMethodIcon,
   mapRangeIcon,
   mapRangeToPrevStartEnd,

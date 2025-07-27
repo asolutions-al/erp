@@ -1,10 +1,14 @@
 import { invitationColumns } from "@/components/columns/invitation"
-import { orgMemberColumns } from "@/components/columns/orgMember"
+import {
+  orgMemberColumns,
+  OrgMemberTableMeta,
+} from "@/components/columns/orgMember"
 import { PageHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/ui/data-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { db } from "@/db/app/instance"
+import { createAuthClient } from "@/db/auth/client"
 import { invitation, orgMember } from "@/orm/app/schema"
 import { and, eq } from "drizzle-orm"
 import { PlusCircle, UserPlus, Users } from "lucide-react"
@@ -19,7 +23,13 @@ const Page = async ({ params }: Props) => {
   const { orgId } = await params
   const t = await getTranslations()
 
-  const [members, invitations] = await Promise.all([
+  const authClient = await createAuthClient()
+  const {
+    data: { user: authUser },
+  } = await authClient.auth.getUser()
+  const userId = authUser!.id
+
+  const [members, invitations, currentMember] = await Promise.all([
     db.query.orgMember.findMany({
       where: eq(orgMember.orgId, orgId),
       with: { user: true },
@@ -27,7 +37,18 @@ const Page = async ({ params }: Props) => {
     db.query.invitation.findMany({
       where: and(eq(invitation.orgId, orgId)),
     }),
+    db.query.orgMember.findFirst({
+      where: and(eq(orgMember.orgId, orgId), eq(orgMember.userId, userId)),
+      columns: {
+        role: true,
+      },
+    }),
   ])
+
+  const meta: OrgMemberTableMeta = {
+    userId,
+    role: currentMember?.role ?? "member",
+  }
 
   return (
     <>
@@ -62,7 +83,7 @@ const Page = async ({ params }: Props) => {
           </TabsList>
 
           <TabsContent value="members">
-            <DataTable columns={orgMemberColumns} data={members} />
+            <DataTable columns={orgMemberColumns} data={members} meta={meta} />
           </TabsContent>
 
           <TabsContent value="invitations">

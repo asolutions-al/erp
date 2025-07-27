@@ -16,6 +16,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  TableMeta,
   useReactTable,
 } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
@@ -25,11 +26,13 @@ import { DataTablePagination } from "./pagination"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  meta?: TableMeta<TData>
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  meta,
 }: DataTableProps<TData, TValue>) {
   const t = useTranslations()
 
@@ -46,6 +49,7 @@ export function DataTable<TData, TValue>({
       dateRange: dateRange,
       multiSelect: multiSelect,
     },
+    meta,
   })
 
   return (

@@ -811,5 +811,20 @@
   "Cannot delete invitation that is not pending": "Nuk mund të fshihet ftesa që nuk është në gjendje e pranueshme",
   "Delete Invitation": "Fshij ftesën",
   "Invitation resent": "Ftesa u dërgua përsëri",
-  "Invitation deleted": "Ftesa u fshi"
+  "Invitation deleted": "Ftesa u fshi",
+  "Member not found": "Anëtari nuk u gjet",
+  "You don't have permission to perform this action": "Nuk keni leje për të kryer këtë veprim",
+  "You don't have permission to remove members": "Nuk keni leje për të hequr anëtarët",
+  "You can only remove members": "Mund të hiqni vetëm anëtarët",
+  "You cannot remove yourself from the organization": "Nuk mund të hiqni veten nga organizata",
+  "Cannot remove the last owner from the organization": "Nuk mund të hiqet pronari i fundit nga organizata",
+  "Only owners can change member roles": "Vetëm pronarët mund të ndryshojnë rolet e anëtarëve",
+  "You cannot change your own role": "Nuk mund të ndryshoni rolin tuaj",
+  "Cannot demote the last owner": "Nuk mund të zbritet pronari i fundit",
+  "Member removed": "Anëtari u hoq",
+  "Role updated": "Roli u përditësua",
+  "Demote to Admin": "Zbrit në Admin",
+  "Joined date": "Data e bashkimit",
+  "Promote to {role}": "Promovo në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
+  "Demote to {role}": "Zbrit në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}"
 }
