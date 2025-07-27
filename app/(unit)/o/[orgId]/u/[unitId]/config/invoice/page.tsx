@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { InvoiceConfigForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateInvoiceConfig } from "@/db/app/actions/invoiceConfig"
 import { db } from "@/db/app/instance"
 import {
@@ -39,23 +38,21 @@ const Page = async ({ params }: Props) => {
 
   return (
     <InvoiceConfigFormProvider defaultValues={config}>
-      <PageHeader
-        title="Invoice configuration"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="invoiceConfig" />}
-      />
-      <InvoiceConfigForm
-        cashRegisters={cashRegisters}
-        customers={customers}
-        warehouses={warehouses}
-        performAction={async (values) => {
-          "use server"
+      <PageFormHeader title="Invoice configuration" formId="invoiceConfig" />
+      <PageContent>
+        <InvoiceConfigForm
+          cashRegisters={cashRegisters}
+          customers={customers}
+          warehouses={warehouses}
+          performAction={async (values) => {
+            "use server"
 
-          if (!config) return // config is created when unit is created, so it should always exist
+            if (!config) return // config is created when unit is created, so it should always exist
 
-          await updateInvoiceConfig({ values, id: config?.id })
-        }}
-      />
+            await updateInvoiceConfig({ values, id: config?.id })
+          }}
+        />
+      </PageContent>
     </InvoiceConfigFormProvider>
   )
 }

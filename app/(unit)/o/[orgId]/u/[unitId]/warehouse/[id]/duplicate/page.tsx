@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { WarehouseForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { createWarehouse } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { warehouse } from "@/orm/app/schema"
@@ -20,17 +19,15 @@ const Page = async ({ params }: Props) => {
 
   return (
     <WarehouseFormProvider defaultValues={data}>
-      <PageHeader
-        title="Duplicate warehouse"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="warehouse" />}
-      />
-      <WarehouseForm
-        performAction={async (values) => {
-          "use server"
-          await createWarehouse({ values, orgId, unitId })
-        }}
-      />
+      <PageFormHeader title="Duplicate warehouse" formId="warehouse" />
+      <PageContent>
+        <WarehouseForm
+          performAction={async (values) => {
+            "use server"
+            await createWarehouse({ values, orgId, unitId })
+          }}
+        />
+      </PageContent>
     </WarehouseFormProvider>
   )
 }

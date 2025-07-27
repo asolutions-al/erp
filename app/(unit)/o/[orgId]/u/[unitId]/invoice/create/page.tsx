@@ -1,7 +1,6 @@
-import { FormActionBtns } from "@/components/buttons"
 import { InvoiceForm } from "@/components/forms"
 import { InvoiceOptions } from "@/components/invoice-options"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { Button } from "@/components/ui/button"
 import {
   Sheet,
@@ -89,47 +88,40 @@ const Page = async (props: Props) => {
         config={config!}
         productInventories={productInventories}
       >
-        <PageHeader
-          title="Create invoice"
-          className="mb-2 max-w-none"
-          rightComp={
-            <FormActionBtns formId="invoice">
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="sm" className="ml-auto">
-                    <Settings2Icon />
-                    <span className="sr-only sm:not-sr-only">
-                      {t("Additional options")}
-                    </span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent>
-                  <SheetHeader className="mb-4">
-                    <SheetTitle>{t("Invoice options")}</SheetTitle>
-                    <SheetDescription>
-                      {t(
-                        "Configure additional invoice settings and preferences"
-                      )}
-                      .
-                    </SheetDescription>
-                  </SheetHeader>
-                  <InvoiceOptions />
-                </SheetContent>
-              </Sheet>
-            </FormActionBtns>
-          }
-        />
-        <InvoiceForm
-          products={products}
-          customers={customers}
-          cashRegisters={cashRegisters}
-          warehouses={warehouses}
-          invoiceConfig={config!}
-          performAction={async (values) => {
-            "use server"
-            await createInvoice({ values, orgId, unitId, userId })
-          }}
-        />
+        <PageFormHeader title="Create invoice" formId="invoice">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="sm" className="ml-auto">
+                <Settings2Icon />
+                <span className="sr-only sm:not-sr-only">
+                  {t("Additional options")}
+                </span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader className="mb-4">
+                <SheetTitle>{t("Invoice options")}</SheetTitle>
+                <SheetDescription>
+                  {t("Configure additional invoice settings and preferences")}.
+                </SheetDescription>
+              </SheetHeader>
+              <InvoiceOptions />
+            </SheetContent>
+          </Sheet>
+        </PageFormHeader>
+        <PageContent>
+          <InvoiceForm
+            products={products}
+            customers={customers}
+            cashRegisters={cashRegisters}
+            warehouses={warehouses}
+            invoiceConfig={config!}
+            performAction={async (values) => {
+              "use server"
+              await createInvoice({ values, orgId, unitId, userId })
+            }}
+          />
+        </PageContent>
       </InvoiceFormProvider>
     </WithSubscription>
   )

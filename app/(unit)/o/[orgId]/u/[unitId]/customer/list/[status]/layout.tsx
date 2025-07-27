@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button"
+import { PageContent, PageListHeader } from "@/components/layout"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapStatusIcon } from "@/constants/maps"
 import { cn } from "@/lib/utils"
 import { entityStatus } from "@/orm/app/schema"
 import { EntityStatusT } from "@/types/enum"
-import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -22,8 +21,15 @@ const Layout = async (props: Props) => {
 
   return (
     <>
-      <div className="mb-3 flex flex-row justify-between">
-        <Tabs defaultValue={statusParam}>
+      <PageListHeader
+        title="Customers"
+        button={{
+          text: "New customer",
+          href: `/o/${orgId}/u/${unitId}/customer/create`,
+        }}
+      />
+      <PageContent>
+        <Tabs defaultValue={statusParam} className="pb-1.5">
           <TabsList>
             {LIST.map((status) => {
               const Icon = mapStatusIcon(status)
@@ -53,14 +59,8 @@ const Layout = async (props: Props) => {
             })}
           </TabsList>
         </Tabs>
-        <Link href={`/o/${orgId}/u/${unitId}/customer/create`} passHref>
-          <Button size="sm">
-            <PlusCircleIcon />
-            <span className="sr-only sm:not-sr-only">{t("New customer")}</span>
-          </Button>
-        </Link>
-      </div>
-      {props.children}
+        {props.children}
+      </PageContent>
     </>
   )
 }

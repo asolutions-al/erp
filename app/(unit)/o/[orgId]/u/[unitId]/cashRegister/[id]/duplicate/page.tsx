@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { CashRegisterForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { createCashRegister } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { cashRegister } from "@/orm/app/schema"
@@ -20,17 +19,15 @@ const Page = async ({ params }: Props) => {
 
   return (
     <CashRegisterFormProvider defaultValues={data}>
-      <PageHeader
-        title="Duplicate cash register"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="cashRegister" />}
-      />
-      <CashRegisterForm
-        performAction={async (values) => {
-          "use server"
-          await createCashRegister({ values, orgId, unitId })
-        }}
-      />
+      <PageFormHeader title="Duplicate cash register" formId="cashRegister" />
+      <PageContent>
+        <CashRegisterForm
+          performAction={async (values) => {
+            "use server"
+            await createCashRegister({ values, orgId, unitId })
+          }}
+        />
+      </PageContent>
     </CashRegisterFormProvider>
   )
 }

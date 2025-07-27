@@ -1,5 +1,4 @@
 import { DemoBanner } from "@/components/banner"
-import { AppHeader } from "@/components/layout"
 import { OrgSidebar } from "@/components/layout/org-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 import { WithOrg } from "@/components/wrapper"
@@ -18,9 +17,8 @@ const Layout = async (props: Props) => {
       <SidebarProvider>
         <OrgSidebar {...props} />
         <SidebarInset className="w-full">
-          <AppHeader {...props} />
           <DemoBanner />
-          <div className="m-1.5 flex-1 md:m-2 lg:m-2.5">{children}</div>
+          {children}
         </SidebarInset>
       </SidebarProvider>
     </WithOrg>

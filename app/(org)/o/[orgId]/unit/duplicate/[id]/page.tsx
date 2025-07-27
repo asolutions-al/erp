@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { UnitForm } from "@/components/forms/unit"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { WithSubscription } from "@/components/wrapper"
 import { createUnit } from "@/db/app/actions/unit"
 import { db } from "@/db/app/instance"
@@ -21,17 +20,15 @@ const Page = async ({ params }: Props) => {
   return (
     <WithSubscription orgId={orgId} unitId={null} entity="UNIT">
       <UnitFormProvider defaultValues={data}>
-        <PageHeader
-          title="Duplicate"
-          className="mb-2"
-          rightComp={<FormActionBtns formId="unit" />}
-        />
-        <UnitForm
-          performAction={async (values) => {
-            "use server"
-            await createUnit({ orgId, values })
-          }}
-        />
+        <PageFormHeader title="Duplicate" formId="unit" />
+        <PageContent>
+          <UnitForm
+            performAction={async (values) => {
+              "use server"
+              await createUnit({ orgId, values })
+            }}
+          />
+        </PageContent>
       </UnitFormProvider>
     </WithSubscription>
   )

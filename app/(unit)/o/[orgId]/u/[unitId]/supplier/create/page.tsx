@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { SupplierForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { WithSubscription } from "@/components/wrapper"
 import { createSupplier } from "@/db/app/actions"
 import { SupplierFormProvider } from "@/providers"
@@ -15,17 +14,15 @@ const Page = async ({ params }: Props) => {
   return (
     <WithSubscription orgId={orgId} unitId={unitId} entity="SUPPLIER">
       <SupplierFormProvider>
-        <PageHeader
-          title="Create supplier"
-          className="mb-2"
-          rightComp={<FormActionBtns formId="supplier" />}
-        />
-        <SupplierForm
-          performAction={async (values) => {
-            "use server"
-            await createSupplier({ values, unitId, orgId })
-          }}
-        />
+        <PageFormHeader title="Create supplier" formId="supplier" />
+        <PageContent>
+          <SupplierForm
+            performAction={async (values) => {
+              "use server"
+              await createSupplier({ values, unitId, orgId })
+            }}
+          />
+        </PageContent>
       </SupplierFormProvider>
     </WithSubscription>
   )

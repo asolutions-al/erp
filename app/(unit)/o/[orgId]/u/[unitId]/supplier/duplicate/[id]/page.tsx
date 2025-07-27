@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { SupplierForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { WithSubscription } from "@/components/wrapper"
 import { createSupplier } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
@@ -22,17 +21,15 @@ const Page = async (props: Props) => {
   return (
     <WithSubscription orgId={orgId} unitId={unitId} entity="SUPPLIER">
       <SupplierFormProvider defaultValues={data}>
-        <PageHeader
-          title="Duplicate supplier"
-          className="mb-2"
-          rightComp={<FormActionBtns formId="supplier" />}
-        />
-        <SupplierForm
-          performAction={async (values) => {
-            "use server"
-            await createSupplier({ values, unitId, orgId })
-          }}
-        />
+        <PageFormHeader title="Duplicate supplier" formId="supplier" />
+        <PageContent>
+          <SupplierForm
+            performAction={async (values) => {
+              "use server"
+              await createSupplier({ values, unitId, orgId })
+            }}
+          />
+        </PageContent>
       </SupplierFormProvider>
     </WithSubscription>
   )

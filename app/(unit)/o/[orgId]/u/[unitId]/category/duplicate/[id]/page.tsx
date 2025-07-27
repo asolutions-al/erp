@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { CategoryForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { createCategory } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { category } from "@/orm/app/schema"
@@ -20,17 +19,15 @@ const Page = async (props: Props) => {
 
   return (
     <CategoryFormProvider defaultValues={data}>
-      <PageHeader
-        title="Duplicate category"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="category" />}
-      />
-      <CategoryForm
-        performAction={async (values) => {
-          "use server"
-          await createCategory({ values, orgId, unitId })
-        }}
-      />
+      <PageFormHeader title="Duplicate category" formId="category" />
+      <PageContent>
+        <CategoryForm
+          performAction={async (values) => {
+            "use server"
+            await createCategory({ values, orgId, unitId })
+          }}
+        />
+      </PageContent>
     </CategoryFormProvider>
   )
 }

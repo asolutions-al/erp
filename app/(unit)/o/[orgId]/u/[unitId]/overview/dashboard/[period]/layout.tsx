@@ -1,8 +1,7 @@
-import { Button } from "@/components/ui/button"
+import { PageContent, PageListHeader } from "@/components/layout"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapRangeIcon } from "@/constants/maps"
 import { cn } from "@/lib/utils"
-import { PlusCircleIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren } from "react"
@@ -27,8 +26,15 @@ const Layout = async (props: Props) => {
 
   return (
     <>
-      <div className="mb-3 flex flex-row justify-between">
-        <Tabs defaultValue={rangeParam}>
+      <PageListHeader
+        title="Invoices"
+        button={{
+          text: "New invoice",
+          href: `/o/${orgId}/u/${unitId}/invoice/create`,
+        }}
+      />
+      <PageContent>
+        <Tabs defaultValue={rangeParam} className="pb-1.5">
           <TabsList>
             {LIST.map((period) => {
               const Icon = mapRangeIcon(period)
@@ -58,14 +64,8 @@ const Layout = async (props: Props) => {
             })}
           </TabsList>
         </Tabs>
-        <Link href={`/o/${orgId}/u/${unitId}/invoice/create`} passHref>
-          <Button size="sm">
-            <PlusCircleIcon />
-            <span className="sr-only sm:not-sr-only">{t("New invoice")}</span>
-          </Button>
-        </Link>
-      </div>
-      {props.children}
+        {props.children}
+      </PageContent>
     </>
   )
 }

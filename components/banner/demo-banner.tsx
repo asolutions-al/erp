@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server"
 import { DemoBannerCtaBtn } from "../button"
 
 const DemoBanner = async () => {
+  return null
   const t = await getTranslations()
   const client = await createAuthClient()
   const { data } = await client.auth.getUser()

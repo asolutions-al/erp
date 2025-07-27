@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { SupplierForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateSupplier } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { supplier } from "@/orm/app/schema"
@@ -20,17 +19,15 @@ const Page = async (props: Props) => {
 
   return (
     <SupplierFormProvider defaultValues={data}>
-      <PageHeader
-        title="Update supplier"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="supplier" />}
-      />
-      <SupplierForm
-        performAction={async (values) => {
-          "use server"
-          await updateSupplier({ values, id })
-        }}
-      />
+      <PageFormHeader title="Update supplier" formId="supplier" />
+      <PageContent>
+        <SupplierForm
+          performAction={async (values) => {
+            "use server"
+            await updateSupplier({ values, id })
+          }}
+        />
+      </PageContent>
     </SupplierFormProvider>
   )
 }

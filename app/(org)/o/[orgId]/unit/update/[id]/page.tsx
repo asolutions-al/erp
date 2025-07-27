@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { UnitForm } from "@/components/forms/unit"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateUnit } from "@/db/app/actions/unit"
 import { db } from "@/db/app/instance"
 import { unit } from "@/orm/app/schema"
@@ -19,17 +18,15 @@ const Page = async ({ params }: Props) => {
 
   return (
     <UnitFormProvider defaultValues={data}>
-      <PageHeader
-        title="Edit"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="unit" />}
-      />
-      <UnitForm
-        performAction={async (values) => {
-          "use server"
-          await updateUnit({ id, orgId, values })
-        }}
-      />
+      <PageFormHeader title="Edit unit" formId="unit" />
+      <PageContent>
+        <UnitForm
+          performAction={async (values) => {
+            "use server"
+            await updateUnit({ id, orgId, values })
+          }}
+        />
+      </PageContent>
     </UnitFormProvider>
   )
 }

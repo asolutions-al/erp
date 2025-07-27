@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { CustomerForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateCustomer } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { customer } from "@/orm/app/schema"
@@ -20,17 +19,15 @@ const Page = async (props: Props) => {
 
   return (
     <CustomerFormProvider defaultValues={data}>
-      <PageHeader
-        title="Update customer"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="customer" />}
-      />
-      <CustomerForm
-        performAction={async (values) => {
-          "use server"
-          await updateCustomer({ values, id })
-        }}
-      />
+      <PageFormHeader title="Update customer" formId="customer" />
+      <PageContent>
+        <CustomerForm
+          performAction={async (values) => {
+            "use server"
+            await updateCustomer({ values, id })
+          }}
+        />
+      </PageContent>
     </CustomerFormProvider>
   )
 }

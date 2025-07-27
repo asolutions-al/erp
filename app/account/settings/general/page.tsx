@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { UserForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
 import { orgMember, user } from "@/orm/app/schema"
@@ -33,24 +32,22 @@ const Page = async (props: Props) => {
 
   return (
     <UserFormProvider defaultValues={userData}>
-      <PageHeader
-        title="Account settings"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="user" />}
-      />
-      <UserForm
-        orgs={orgs}
-        performAction={async (values) => {
-          "use server"
+      <PageFormHeader title="Account settings" formId="user" />
+      <PageContent>
+        <UserForm
+          orgs={orgs}
+          performAction={async (values) => {
+            "use server"
 
-          await db
-            .update(user)
-            .set({
-              displayName: values.displayName,
-            })
-            .where(eq(user.id, userId))
-        }}
-      />
+            await db
+              .update(user)
+              .set({
+                displayName: values.displayName,
+              })
+              .where(eq(user.id, userId))
+          }}
+        />
+      </PageContent>
     </UserFormProvider>
   )
 }

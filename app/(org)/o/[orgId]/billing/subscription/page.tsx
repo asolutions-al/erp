@@ -1,5 +1,6 @@
 import { AvailablePlansCard } from "@/components/billing"
 import { CurrentPlanCard, PaymentInfoCard } from "@/components/cards"
+import { PageContent, PageListHeader } from "@/components/layout"
 import { getSubscriptionByOrgId } from "@/db/app/actions/subscription"
 import { getPlans } from "@/db/auth/loaders"
 import {
@@ -25,38 +26,39 @@ const Page = async (props: Props) => {
 
   return (
     <>
-      {/* <PageHeader title="Billing" className="mb-6" /> */}
+      <PageListHeader title="Subscription" />
+      <PageContent>
+        <div className="space-y-6">
+          <div className="grid gap-6 md:grid-cols-2">
+            <CurrentPlanCard
+              subscription={subscription}
+              currentPlan={currentPlan}
+            />
 
-      <div className="space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
-          <CurrentPlanCard
-            subscription={subscription}
-            currentPlan={currentPlan}
-          />
+            <PaymentInfoCard
+              subscription={subscription}
+              cancelSubscription={async () => {
+                "use server"
+                return await cancelSubscription(orgId)
+              }}
+            />
+          </div>
 
-          <PaymentInfoCard
+          <AvailablePlansCard
             subscription={subscription}
-            cancelSubscription={async () => {
+            plans={plans}
+            createSubscription={async (planId) => {
               "use server"
-              return await cancelSubscription(orgId)
+              const res = await createSubscription(orgId, planId)
+              return res
+            }}
+            switchToStarterPlan={async () => {
+              "use server"
+              return await switchToStarterPlan(orgId)
             }}
           />
         </div>
-
-        <AvailablePlansCard
-          subscription={subscription}
-          plans={plans}
-          createSubscription={async (planId) => {
-            "use server"
-            const res = await createSubscription(orgId, planId)
-            return res
-          }}
-          switchToStarterPlan={async () => {
-            "use server"
-            return await switchToStarterPlan(orgId)
-          }}
-        />
-      </div>
+      </PageContent>
     </>
   )
 }

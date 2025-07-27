@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { CashRegisterForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateCashRegister } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { cashRegister } from "@/orm/app/schema"
@@ -20,18 +19,16 @@ const Page = async ({ params }: Props) => {
 
   return (
     <CashRegisterFormProvider defaultValues={data}>
-      <PageHeader
-        title="Update cash register"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="cashRegister" />}
-      />
-      <CashRegisterForm
-        isUpdate
-        performAction={async (values) => {
-          "use server"
-          await updateCashRegister({ values, id })
-        }}
-      />
+      <PageFormHeader title="Update cash register" formId="cashRegister" />
+      <PageContent>
+        <CashRegisterForm
+          isUpdate
+          performAction={async (values) => {
+            "use server"
+            await updateCashRegister({ values, id })
+          }}
+        />
+      </PageContent>
     </CashRegisterFormProvider>
   )
 }

@@ -1,6 +1,5 @@
-import { FormActionBtns } from "@/components/buttons"
 import { ProductForm } from "@/components/forms"
-import { PageHeader } from "@/components/layout/page-header"
+import { PageContent, PageFormHeader } from "@/components/layout"
 import { updateProduct } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import {
@@ -55,19 +54,17 @@ const Page = async (props: Props) => {
         categoryRows,
       }}
     >
-      <PageHeader
-        title="Update product"
-        className="mb-2"
-        rightComp={<FormActionBtns formId="product" />}
-      />
-      <ProductForm
-        categories={categories}
-        warehouses={warehouses}
-        performAction={async (values) => {
-          "use server"
-          await updateProduct({ values, id, orgId, unitId })
-        }}
-      />
+      <PageFormHeader title="Update product" formId="product" />
+      <PageContent>
+        <ProductForm
+          categories={categories}
+          warehouses={warehouses}
+          performAction={async (values) => {
+            "use server"
+            await updateProduct({ values, id, orgId, unitId })
+          }}
+        />
+      </PageContent>
     </ProductFormProvider>
   )
 }
