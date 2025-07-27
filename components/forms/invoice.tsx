@@ -70,7 +70,6 @@ import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
 import { CashRegisterCommand } from "../command/cashRegister"
-import { CashRegisterCommand } from "../command/cashRegister"
 
 type SchemaT = InvoiceFormSchemaT
 
@@ -903,6 +902,5 @@ const Summary = () => {
     </Card>
   )
 }
-export { Form as InvoiceForm }
 
 export { Form as InvoiceForm }

@@ -825,5 +825,12 @@
   "Invitation rejected": "Invitation rejected",
   "Sign in with a different email": "Sign in with a different email",
   "You must be logged in to reject an invitation": "You must be logged in to reject an invitation",
-  "Invitation date": "Invitation date"
+  "Invitation date": "Invitation date",
+  "Cannot resend invitation that is not pending": "Cannot resend invitation that is not pending",
+  "You don't have permission to delete this invitation": "You don't have permission to delete this invitation",
+  "You don't have permission to resend this invitation": "You don't have permission to resend this invitation",
+  "Cannot delete invitation that is not pending": "Cannot delete invitation that is not pending",
+  "Delete Invitation": "Delete Invitation",
+  "Invitation resent": "Invitation resent",
+  "Invitation deleted": "Invitation deleted"
 }

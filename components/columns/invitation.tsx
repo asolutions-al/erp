@@ -7,11 +7,14 @@ import {
   StringFilter,
 } from "@/components/ui/data-table"
 import { mapInvitationStatusIcon } from "@/constants/maps"
+import { deleteInvitation, resendInvitation } from "@/db/app/actions"
 import { InvitationSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
-import { Mail, MoreHorizontal, X } from "lucide-react"
+import { Mail, MoreHorizontal, TrashIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import {
@@ -55,8 +58,7 @@ const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
 const ActionsCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
-
-  if (original.status === "ACCEPTED") return null
+  const router = useRouter()
 
   return (
     <DropdownMenu>
@@ -68,23 +70,38 @@ const ActionsCell = ({ row }: CellContext<SchemaT, unknown>) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {original.status === "PENDING" && (
-          <>
-            <DropdownMenuItem>
-              <Mail className="mr-2 h-4 w-4" />
-              {t("Resend Invitation")}
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-destructive">
-              <X className="mr-2 h-4 w-4" />
-              {t("Cancel Invitation")}
-            </DropdownMenuItem>
-          </>
-        )}
-        {original.status === "REJECTED" && (
-          <DropdownMenuItem className="text-destructive">
-            <X className="mr-2 h-4 w-4" />
-            {t("Remove Invitation")}
+          <DropdownMenuItem
+            onClick={async () => {
+              const res = await resendInvitation(original.id)
+              if (res.error) {
+                toast.error(res.error.message)
+              }
+              if (res.success) {
+                toast.success(t("Invitation resent"))
+                router.refresh()
+              }
+            }}
+          >
+            <Mail className="mr-2 h-4 w-4" />
+            {t("Resend Invitation")}
           </DropdownMenuItem>
         )}
+        <DropdownMenuItem
+          className="text-destructive"
+          onClick={async () => {
+            const res = await deleteInvitation(original.id)
+            if (res.error) {
+              toast.error(res.error.message)
+            }
+            if (res.success) {
+              toast.success(t("Invitation deleted"))
+              router.refresh()
+            }
+          }}
+        >
+          <TrashIcon className="mr-2 h-4 w-4" />
+          {t("Delete Invitation")}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

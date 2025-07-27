@@ -804,5 +804,12 @@
   "Go to homepage": "Shko te faqja kryesore",
   "Need help? Contact support or ask the person who invited you to send a new invitation": "Keni nevojë për ndihmë? Kontaktoni mbështetjen ose kërkoni nga personi që ju ftoi të dërgojë një ftesë të re",
   "Sign in with a different email": "Hyr me email tjetër",
-  "Invitation date": "Data e ftesës"
+  "Invitation date": "Data e ftesës",
+  "Cannot resend invitation that is not pending": "Nuk mund të ri-dërgohet ftesa që nuk është në gjendje e pranueshme",
+  "You don't have permission to delete this invitation": "Nuk keni leje të fshini këtë ftesë",
+  "You don't have permission to resend this invitation": "Nuk keni leje të ri-dërgojë këtë ftesë",
+  "Cannot delete invitation that is not pending": "Nuk mund të fshihet ftesa që nuk është në gjendje e pranueshme",
+  "Delete Invitation": "Fshij ftesën",
+  "Invitation resent": "Ftesa u dërgua përsëri",
+  "Invitation deleted": "Ftesa u fshi"
 }

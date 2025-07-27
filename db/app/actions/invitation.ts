@@ -249,4 +249,137 @@ const rejectInvitation = async (id: string): Promise<ResT<true>> => {
   }
 }
 
-export { acceptInvitation, createInvitation, rejectInvitation }
+const resendInvitation = async (id: string): Promise<ResT<true>> => {
+  const t = await getTranslations()
+  const authClient = await createAuthClient()
+  const {
+    data: { user: authUser },
+  } = await authClient.auth.getUser()
+
+  if (!authUser) {
+    return {
+      success: null,
+      error: { message: t("Unauthorized") },
+    }
+  }
+
+  const data = await db.query.invitation.findFirst({
+    where: eq(invitation.id, id),
+    with: {
+      organization: true,
+      user: true,
+    },
+  })
+
+  if (!data) {
+    return {
+      success: null,
+      error: { message: t("Invitation not found") },
+    }
+  }
+
+  const { status, email, orgId } = data
+
+  if (status !== "PENDING") {
+    return {
+      success: null,
+      error: {
+        message: t("Cannot resend invitation that is not pending"),
+      },
+    }
+  }
+
+  // Check if user has permission to resend invitation (should be org admin or the one who sent it)
+  const userMember = await db.query.orgMember.findFirst({
+    where: and(eq(orgMember.orgId, orgId), eq(orgMember.userId, authUser.id)),
+  })
+
+  if (
+    !userMember ||
+    (userMember.role !== "owner" && data.invitedBy !== authUser.id)
+  ) {
+    return {
+      success: null,
+      error: {
+        message: t("You don't have permission to resend this invitation"),
+      },
+    }
+  }
+
+  try {
+    await sendInvitationEmail({
+      email: data.email,
+      orgName: data.organization.name,
+      inviterName: data.user.email,
+      inviterEmail: data.user.email,
+      acceptUrl: `${APP_URL}/invitation/${data.id}`,
+      expiresAt: new Date().toISOString(),
+    })
+  } catch (error) {
+    console.warn(error)
+  }
+
+  return {
+    success: { data: true },
+    error: null,
+  }
+}
+
+const deleteInvitation = async (id: string): Promise<ResT<true>> => {
+  const t = await getTranslations()
+  const authClient = await createAuthClient()
+  const {
+    data: { user: authUser },
+  } = await authClient.auth.getUser()
+
+  if (!authUser) {
+    return {
+      success: null,
+      error: { message: t("Unauthorized") },
+    }
+  }
+
+  const data = await db.query.invitation.findFirst({
+    where: eq(invitation.id, id),
+  })
+
+  if (!data) {
+    return {
+      success: null,
+      error: { message: t("Invitation not found") },
+    }
+  }
+
+  const { status, orgId } = data
+
+  const userMember = await db.query.orgMember.findFirst({
+    where: and(eq(orgMember.orgId, orgId), eq(orgMember.userId, authUser.id)),
+  })
+
+  if (
+    !userMember ||
+    (userMember.role !== "owner" && data.invitedBy !== authUser.id)
+  ) {
+    return {
+      success: null,
+      error: {
+        message: t("You don't have permission to delete this invitation"),
+      },
+    }
+  }
+
+  await db.delete(invitation).where(eq(invitation.id, id))
+
+  return {
+    success: { data: true },
+    error: null,
+  }
+}
+
+export {
+  acceptInvitation,
+  createInvitation,
+  deleteInvitation,
+  rejectInvitation,
+  resendInvitation,
+}
