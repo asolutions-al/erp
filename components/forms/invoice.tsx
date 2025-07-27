@@ -60,7 +60,6 @@ import {
   ShoppingCartIcon,
   StarIcon,
   WarehouseIcon,
-  XIcon,
 } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
@@ -70,6 +69,7 @@ import { useEffect, useState } from "react"
 import { FieldErrors, get, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CustomerCommand, WarehouseCommand } from "../command"
+import { CashRegisterCommand } from "../command/cashRegister"
 import { CashRegisterCommand } from "../command/cashRegister"
 
 type SchemaT = InvoiceFormSchemaT
@@ -781,7 +781,7 @@ const CheckoutCard = ({ products }: { products: ProductSchemaT[] }) => {
                           className="text-destructive"
                           aria-label={t("Remove product")}
                         >
-                          <XIcon />
+                          <XCircleIcon />
                           <span className="sr-only sm:not-sr-only">
                             {t("Remove")}
                           </span>
@@ -903,5 +903,6 @@ const Summary = () => {
     </Card>
   )
 }
+export { Form as InvoiceForm }
 
 export { Form as InvoiceForm }

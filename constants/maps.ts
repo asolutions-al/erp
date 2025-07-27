@@ -1,4 +1,4 @@
-import { EntityStatusT, PayMethodT } from "@/types/enum"
+import { EntityStatusT, InvitationStatusT, PayMethodT } from "@/types/enum"
 import {
   endOfDay,
   endOfMonth,
@@ -20,11 +20,13 @@ import {
   CalendarIcon,
   CalendarRangeIcon,
   CircleCheckIcon,
+  ClockIcon,
   CoinsIcon,
   CreditCardIcon,
   FileIcon,
   HandCoinsIcon,
   LandmarkIcon,
+  XCircleIcon,
 } from "lucide-react"
 
 type IconT = typeof LandmarkIcon // temp solution, not sure how to get the type of the icon
@@ -54,6 +56,15 @@ const mapStatusIcon = (value: EntityStatusT) => {
     active: CircleCheckIcon,
     archived: ArchiveIcon,
     draft: FileIcon,
+  }
+  return MAP[value]
+}
+
+const mapInvitationStatusIcon = (value: InvitationStatusT) => {
+  const MAP: Record<InvitationStatusT, IconT> = {
+    ACCEPTED: CircleCheckIcon,
+    PENDING: ClockIcon,
+    REJECTED: XCircleIcon,
   }
   return MAP[value]
 }
@@ -111,6 +122,7 @@ const mapRangeToPrevStartEnd = (period: PeriodT) => {
 }
 
 export {
+  mapInvitationStatusIcon,
   mapPayMethodIcon,
   mapRangeIcon,
   mapRangeToPrevStartEnd,

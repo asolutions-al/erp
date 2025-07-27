@@ -25,7 +25,6 @@ import {
   CheckCircleIcon,
   EraserIcon,
   FilterIcon,
-  XIcon,
 } from "lucide-react"
 import { Messages, useTranslations } from "next-intl"
 import React, { useState } from "react"
@@ -62,7 +61,7 @@ const StringFilter = <TData, TValue>({
             onClick={() => column.setFilterValue("")}
             className="absolute right-1 h-6 w-6 p-0 hover:bg-muted"
           >
-            <XIcon className="h-3 w-3" />
+            <XCircleIcon className="h-3 w-3" />
           </Button>
         )}
       </div>

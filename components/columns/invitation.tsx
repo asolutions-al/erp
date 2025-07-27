@@ -6,6 +6,7 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
+import { mapInvitationStatusIcon } from "@/constants/maps"
 import { InvitationSchemaT } from "@/db/app/schema"
 import { formatDate } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
@@ -30,14 +31,25 @@ const RoleCell = ({ row }: CellContext<SchemaT, unknown>) => {
 
 const StatusCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
+  const { status } = original
   const t = useTranslations()
-  const variant =
-    original.status === "PENDING"
-      ? "secondary"
-      : original.status === "ACCEPTED"
-        ? "default"
-        : "destructive"
-  return <Badge variant={variant}>{t(original.status)}</Badge>
+
+  const Icon = mapInvitationStatusIcon(status)
+
+  return (
+    <Badge
+      variant={
+        status === "REJECTED"
+          ? "destructive"
+          : status === "ACCEPTED"
+            ? "default"
+            : "secondary"
+      }
+    >
+      <Icon className="mr-1" size={15} />
+      {t(status)}
+    </Badge>
+  )
 }
 
 const ActionsCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -124,3 +136,4 @@ const columns: ColumnDef<SchemaT>[] = [
 ]
 
 export { columns as invitationColumns, type SchemaT as InvitationColsT }
+
