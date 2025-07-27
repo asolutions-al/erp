@@ -15,6 +15,7 @@ import {
   CashRegisterSchemaT,
   CustomerSchemaT,
   InvoiceSchemaT,
+  UserSchemaT,
   WarehouseSchemaT,
 } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
@@ -179,6 +180,7 @@ const InvoicesSheetContent = ({
     (InvoiceSchemaT & {
       warehouse: WarehouseSchemaT | null
       cashRegister: CashRegisterSchemaT | null
+      user_createdBy: UserSchemaT | null
     })[]
   >([])
   const [loading, setLoading] = useState(false)

@@ -826,5 +826,6 @@
   "Demote to Admin": "Zbrit në Admin",
   "Joined date": "Data e bashkimit",
   "Promote to {role}": "Promovo në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
-  "Demote to {role}": "Zbrit në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}"
+  "Demote to {role}": "Zbrit në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
+  "Created by": "Krijuar nga"
 }

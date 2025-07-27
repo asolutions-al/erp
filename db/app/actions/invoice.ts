@@ -21,10 +21,12 @@ const create = async ({
   values,
   unitId,
   orgId,
+  userId,
 }: {
   values: FormSchemaT
   unitId: string
   orgId: string
+  userId: string
 }) => {
   const calcs = calcInvoiceForm(values)
 
@@ -38,6 +40,8 @@ const create = async ({
         tax: calcs.tax,
         total: calcs.total,
         subtotal: calcs.subtotal,
+        createdBy: userId,
+        updatedBy: userId,
       })
       .returning({
         id: invoice.id,

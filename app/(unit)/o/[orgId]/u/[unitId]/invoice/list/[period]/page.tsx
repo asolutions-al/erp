@@ -27,6 +27,7 @@ const Page = async (props: Props) => {
       customer: true,
       cashRegister: true,
       warehouse: true,
+      user_createdBy: true,
     },
   })
   return <DataTable columns={invoiceColumns} data={data} />

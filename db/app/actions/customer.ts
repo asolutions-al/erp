@@ -68,6 +68,7 @@ const getCustomerInvoices = async ({
       customer: true,
       warehouse: true,
       cashRegister: true,
+      user_createdBy: true,
     },
   })
 

@@ -22,6 +22,7 @@ import {
   CashRegisterSchemaT,
   InvoiceRowSchemaT,
   InvoiceSchemaT,
+  UserSchemaT,
   WarehouseSchemaT,
 } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
@@ -34,6 +35,7 @@ import { InvoiceReceipt } from "../invoice-receipt"
 type SchemaT = InvoiceSchemaT & {
   warehouse: WarehouseSchemaT | null
   cashRegister: CashRegisterSchemaT | null
+  user_createdBy: UserSchemaT | null
 }
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {

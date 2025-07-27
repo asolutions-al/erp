@@ -15,27 +15,6 @@ export const recordStatus = pgEnum("recordStatus", ['draft', 'completed'])
 export const role = pgEnum("role", ['admin', 'owner', 'member'])
 
 
-export const invitation = pgTable("invitation", {
-	id: uuid().defaultRandom().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	orgId: uuid().notNull(),
-	role: role().notNull(),
-	invitedBy: uuid().notNull(),
-	status: invitationStatus().notNull(),
-	email: text().notNull(),
-}, (table) => [
-	foreignKey({
-			columns: [table.invitedBy],
-			foreignColumns: [user.id],
-			name: "invitation_invitedBy_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-	foreignKey({
-			columns: [table.orgId],
-			foreignColumns: [organization.id],
-			name: "invitation_orgId_fkey"
-		}).onUpdate("cascade").onDelete("cascade"),
-]);
-
 export const customer = pgTable("customer", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -262,6 +241,27 @@ export const unit = pgTable("unit", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
+export const invitation = pgTable("invitation", {
+	id: uuid().defaultRandom().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	orgId: uuid().notNull(),
+	role: role().notNull(),
+	invitedBy: uuid().notNull(),
+	email: text().notNull(),
+	status: invitationStatus().notNull(),
+}, (table) => [
+	foreignKey({
+			columns: [table.invitedBy],
+			foreignColumns: [user.id],
+			name: "invitation_invitedBy_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.orgId],
+			foreignColumns: [organization.id],
+			name: "invitation_orgId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+]);
+
 export const category = pgTable("category", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -359,11 +359,18 @@ export const invoice = pgTable("invoice", {
 	customerIdType: idType().notNull(),
 	customerIdValue: text(),
 	warehouseId: uuid(),
+	createdBy: uuid(),
+	updatedBy: uuid(),
 }, (table) => [
 	foreignKey({
 			columns: [table.cashRegisterId],
 			foreignColumns: [cashRegister.id],
 			name: "invoice_cashRegisterId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.createdBy],
+			foreignColumns: [user.id],
+			name: "invoice_createdBy_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.customerId],
@@ -379,6 +386,11 @@ export const invoice = pgTable("invoice", {
 			columns: [table.unitId],
 			foreignColumns: [unit.id],
 			name: "invoice_unitId_fkey"
+		}).onUpdate("cascade").onDelete("cascade"),
+	foreignKey({
+			columns: [table.updatedBy],
+			foreignColumns: [user.id],
+			name: "invoice_updatedBy_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 	foreignKey({
 			columns: [table.warehouseId],

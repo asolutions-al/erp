@@ -48,6 +48,8 @@ const createSchema = ({
       total: true,
       subtotal: true,
       tax: true,
+      createdBy: true,
+      updatedBy: true,
     })
     .extend({
       rows: z.array(rowSchema).min(1),

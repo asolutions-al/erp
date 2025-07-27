@@ -847,5 +847,6 @@
   "Demote to Admin": "Demote to Admin",
   "Joined date": "Joined date",
   "Promote to {role}": "Promote to {role, select, owner {Owner} admin {Admin} member {Member} other {}}",
-  "Demote to {role}": "Demote to {role, select, owner {Owner} admin {Admin} member {Member} other {}}"
+  "Demote to {role}": "Demote to {role, select, owner {Owner} admin {Admin} member {Member} other {}}",
+  "Created by": "Created by"
 }

@@ -17,6 +17,7 @@ import { mapPayMethodIcon } from "@/constants/maps"
 import {
   CashRegisterSchemaT,
   InvoiceSchemaT,
+  UserSchemaT,
   WarehouseSchemaT,
 } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
@@ -26,6 +27,7 @@ import { useTranslations } from "next-intl"
 type SchemaT = InvoiceSchemaT & {
   warehouse: WarehouseSchemaT | null
   cashRegister: CashRegisterSchemaT | null
+  user_createdBy: UserSchemaT | null
 }
 
 const PayMethodCell = ({ row }: CellContext<SchemaT, unknown>) => {
@@ -102,6 +104,16 @@ const columns: ColumnDef<SchemaT>[] = [
       </div>
     ),
     cell: ({ row }) => row.original.cashRegister?.name || "-",
+  },
+  {
+    accessorKey: "user_createdBy.email",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Created by" column={column} />
+        <StringFilter title="Created by" column={column} />
+      </div>
+    ),
+    cell: ({ row }) => row.original.user_createdBy?.email || "-",
   },
   {
     id: "actions",
