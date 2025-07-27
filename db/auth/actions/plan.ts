@@ -1,11 +1,10 @@
 "use server"
 import "server-only"
 
+import { IS_DEV } from "@/contants/env"
 import { db } from "@/db/auth/instance"
 import { plan } from "@/orm/auth/schema"
 import { eq } from "drizzle-orm"
-
-const isDev = process.env.NODE_ENV === "development"
 
 /**
  * Get plan by PayPal plan ID
@@ -13,7 +12,7 @@ const isDev = process.env.NODE_ENV === "development"
  */
 export async function getPlanByPayPalId(id: string) {
   return await db.query.plan.findFirst({
-    where: eq(isDev ? plan.paypalSandboxPlanId : plan.paypalPlanId, id),
+    where: eq(IS_DEV ? plan.paypalSandboxPlanId : plan.paypalPlanId, id),
   })
 }
 

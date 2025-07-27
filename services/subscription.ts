@@ -1,6 +1,7 @@
 "use server"
 import "server-only"
 
+import { IS_DEV } from "@/contants/env"
 import {
   getSubscriptionByOrgId,
   updateSubscription,
@@ -9,8 +10,6 @@ import { getPlanById } from "@/db/auth/loaders"
 import { cancelPayPalSub, createPayPalSubs } from "@/lib/paypal"
 import { planId as planIdEnum } from "@/orm/app/schema"
 import { getTranslations } from "next-intl/server"
-
-const isDev = process.env.NODE_ENV === "development"
 
 /**
  * Creates a new subscription for an organization
@@ -61,7 +60,7 @@ const createSubscription = async (
 
   // Create a new PayPal subscription
   const newSubRes = await createPayPalSubs(
-    isDev ? planData.paypalSandboxPlanId : planData.paypalPlanId,
+    IS_DEV ? planData.paypalSandboxPlanId : planData.paypalPlanId,
     orgId // Use orgId as custom_id to link PayPal subscription to your org
   )
 

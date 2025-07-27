@@ -1,8 +1,7 @@
+import { DOMAIN } from "@/contants/env"
 import { getAuthUrl } from "@/lib/utils"
 import { createServerClient } from "@supabase/ssr"
 import { NextRequest, NextResponse } from "next/server"
-
-const isDev = process.env.NODE_ENV === "development"
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request })
@@ -23,7 +22,7 @@ export async function updateSession(request: NextRequest) {
           })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, {
-              domain: isDev ? "localhost" : ".asolutions.al", // https://github.com/supabase/supabase/issues/473#issuecomment-2543434925
+              domain: DOMAIN, // https://github.com/supabase/supabase/issues/473#issuecomment-2543434925
               ...options,
             })
           )

@@ -1,7 +1,6 @@
+import { DOMAIN } from "@/contants/env"
 import { createServerClient } from "@supabase/ssr"
 import { cookies } from "next/headers"
-
-const isDev = process.env.NODE_ENV === "development"
 
 export const createAuthClient = async () => {
   const cookieStore = await cookies()
@@ -16,7 +15,7 @@ export const createAuthClient = async () => {
           try {
             cookiesToSet.forEach(({ name, value, options }) => {
               cookieStore.set(name, value, {
-                domain: isDev ? "localhost" : ".asolutions.al", // https://github.com/supabase/supabase/issues/473#issuecomment-2543434925
+                domain: DOMAIN, // https://github.com/supabase/supabase/issues/473#issuecomment-2543434925
                 ...options,
               })
             })
