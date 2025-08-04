@@ -900,5 +900,6 @@
   "When you promote to {role}": "When you promote to {role, select, owner {Owner} admin {Admin} member {Member} other {}}",
   "When you remove a member": "When you remove a member",
   "The member will lose access to this organization": "The member will lose access to this organization",
-  "The member will be notified of their removal": "The member will be notified of their removal"
+  "The member will be notified of their removal": "The member will be notified of their removal",
+  "Closed by": "Closed by"
 }

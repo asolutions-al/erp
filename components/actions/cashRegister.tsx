@@ -23,7 +23,7 @@ import {
   closeCashRegister,
   markCashRegisterAsFavorite,
 } from "@/db/app/actions/cashRegister"
-import { CashRegisterSchemaT } from "@/db/app/schema"
+import { CashRegisterSchemaT, UserSchemaT } from "@/db/app/schema"
 import { CellContext } from "@tanstack/react-table"
 import {
   CheckCircleIcon,
@@ -40,7 +40,9 @@ import Link from "next/link"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
 
-type SchemaT = CashRegisterSchemaT
+type SchemaT = CashRegisterSchemaT & {
+  user_closedBy: UserSchemaT | null
+}
 
 const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row

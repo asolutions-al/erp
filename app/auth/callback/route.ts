@@ -61,6 +61,7 @@ export async function GET(request: Request) {
     await tx.insert(schUser).values({
       id: userId, // use same id as auth user
       email: user.email!, // TODO: are we sure email is always present?
+      displayName: user.email!.split("@")[0],
     })
     /**
      * 2. Create organization

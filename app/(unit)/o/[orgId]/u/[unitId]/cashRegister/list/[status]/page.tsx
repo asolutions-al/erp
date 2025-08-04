@@ -18,6 +18,9 @@ const Page = async ({ params }: Props) => {
       eq(cashRegister.status, status)
     ),
     orderBy: asc(cashRegister.name),
+    with: {
+      user_closedBy: true,
+    },
   })
 
   return <DataTable columns={cashRegisterColumns} data={data} />

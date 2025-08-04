@@ -885,5 +885,6 @@
   "The member will be notified of their new role": "Anëtari do të njoftohet për rolin e tij të ri",
   "The member will lose their current permissions and access rights": "Anëtari do të humbasë lejet dhe të drejtat aktuale të qasjes",
   "When you demote to {role}": "Kur ta zbritni në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
-  "When you promote to {role}": "Kur ta promovoni në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}"
+  "When you promote to {role}": "Kur ta promovoni në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
+  "Closed by": "Mbyllur nga"
 }

@@ -8,7 +8,7 @@ import {
   NumberFilter,
   StringFilter,
 } from "@/components/ui/data-table"
-import { CashRegisterSchemaT } from "@/db/app/schema"
+import { CashRegisterSchemaT, UserSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { CheckCircleIcon, XCircleIcon } from "lucide-react"
@@ -16,7 +16,9 @@ import { useTranslations } from "next-intl"
 import { FavoriteCell } from "../cell"
 import { Badge } from "../ui/badge"
 
-type SchemaT = CashRegisterSchemaT
+type SchemaT = CashRegisterSchemaT & {
+  user_closedBy: UserSchemaT | null
+}
 
 const IsOpenCell = ({ row }: CellContext<SchemaT, unknown>) => {
   const { original } = row
@@ -97,6 +99,19 @@ const columns: ColumnDef<SchemaT>[] = [
       return closedAt ? formatDate(new Date(closedAt)) : "-"
     },
     filterFn: "dateRange",
+  },
+  {
+    accessorKey: "user_closedBy.email",
+    header: ({ column }) => (
+      <div>
+        <SortBtn text="Closed by" column={column} />
+        <StringFilter title="Closed by" column={column} />
+      </div>
+    ),
+    cell: ({ row }) => {
+      const { user_closedBy } = row.original
+      return user_closedBy ? user_closedBy.email : "-"
+    },
   },
   {
     accessorKey: "closingBalanace",
