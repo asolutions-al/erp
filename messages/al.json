@@ -888,5 +888,7 @@
   "When you promote to {role}": "Kur ta promovoni në {role, select, owner {Pronar} admin {Admin} member {Anëtar} other {}}",
   "Closed by": "Mbyllur nga",
   "No warehouses added yet": "S'janë shtuar magazina",
-  "Add first warehouse": "Shtoni një magazinë"
+  "Add first warehouse": "Shtoni një magazinë",
+  "Add first category": "Shtoni një kategori",
+  "No categories added yet": "S'janë shtuar kategoritë"
 }

@@ -519,6 +519,7 @@ const InventoryTab = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
               variant="outline"
               size="sm"
               className="mt-2"
+              disabled={warehouses.length === 0}
               onClick={() =>
                 append({
                   warehouseId: "",
@@ -692,64 +693,96 @@ const CategoryTab = ({ categories }: { categories: CategorySchemaT[] }) => {
   })
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t("Category")}</CardTitle>
-        <CardDescription>{t("Manage product categories")}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {fields.map((field, index) => {
-          // prevent selecting the same category
-          const availableCategories = categories.filter(
-            (category) =>
-              !fields.some(
-                (f, i) => f.categoryId === category.id && i !== index
-              )
-          )
-          return (
-            <div key={field.id} className="flex items-end gap-2">
-              <div className="flex-1">
-                <FormField
-                  control={form.control}
-                  name={`categoryRows.${index}.categoryId`}
-                  render={({ field }) => (
-                    <FormItem className="col-span-2">
-                      <FormLabel>{t("Category")}</FormLabel>
-                      <CategoryCommand
-                        list={availableCategories}
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div>
-                <Button
-                  type="button"
-                  variant="destructive"
-                  size="icon"
-                  onClick={() => remove(index)}
-                >
-                  <TrashIcon />
-                </Button>
-              </div>
-            </div>
-          )
-        })}
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h3 className="text-lg font-semibold">{t("Category")}</h3>
+          <p className="text-sm text-muted-foreground">
+            {t("Manage product categories")}
+          </p>
+        </div>
         <Button
           type="button"
           variant="outline"
           size="sm"
-          className="mt-5"
+          disabled={fields.length >= categories.length}
           onClick={() => append({ categoryId: "" })}
         >
           <PlusIcon className="mr-2 h-4 w-4" />
           {t("Add category")}
         </Button>
-      </CardContent>
-    </Card>
+      </div>
+
+      {fields.length === 0 ? (
+        <Card className="border-dashed">
+          <CardContent className="flex flex-col items-center justify-center py-8">
+            <BriefcaseBusinessIcon className="mb-2 h-8 w-8 text-muted-foreground" />
+            <p className="text-center text-sm text-muted-foreground">
+              {t("No categories added yet")}
+            </p>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              className="mt-2"
+              disabled={categories.length === 0}
+              onClick={() => append({ categoryId: "" })}
+            >
+              <PlusIcon className="mr-2 h-4 w-4" />
+              {t("Add first category")}
+            </Button>
+          </CardContent>
+        </Card>
+      ) : (
+        <div className="grid gap-4">
+          {fields.map((field, index) => {
+            // prevent selecting the same category
+            const availableCategories = categories.filter(
+              (category) =>
+                !fields.some(
+                  (f, i) => f.categoryId === category.id && i !== index
+                )
+            )
+
+            return (
+              <Card key={field.id} className="relative">
+                <CardContent className="p-4">
+                  <div className="absolute right-3 top-3">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => remove(index)}
+                      className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                    >
+                      <TrashIcon className="h-4 w-4" />
+                    </Button>
+                  </div>
+
+                  <div className="pr-12">
+                    <FormField
+                      control={form.control}
+                      name={`categoryRows.${index}.categoryId`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t("Category")}</FormLabel>
+                          <CategoryCommand
+                            list={availableCategories}
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </CardContent>
+              </Card>
+            )
+          })}
+        </div>
+      )}
+    </div>
   )
 }
 
