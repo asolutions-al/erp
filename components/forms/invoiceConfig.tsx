@@ -31,7 +31,14 @@ import {
 } from "@/db/app/schema"
 import { payMethod } from "@/orm/app/schema"
 import { InvoiceConfigFormSchemaT } from "@/providers"
-import { EraserIcon } from "lucide-react"
+import {
+  BanknoteIcon,
+  ContactIcon,
+  CreditCardIcon,
+  EraserIcon,
+  SettingsIcon,
+  WarehouseIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext, useWatch } from "react-hook-form"
@@ -112,7 +119,10 @@ const PayMethodCard = () => {
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Pay method")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <CreditCardIcon size={20} />
+            {t("Pay method")}
+          </CardTitle>
           <CardDescription>{t("How the customer will pay")}</CardDescription>
         </div>
         <Button
@@ -170,7 +180,10 @@ const SettingsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Settings")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <SettingsIcon size={20} />
+          {t("Settings")}
+        </CardTitle>
         <CardDescription>{t("Configure additional settings")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -232,7 +245,10 @@ const WarehouseCard = ({ warehouses }: { warehouses: WarehouseSchemaT[] }) => {
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Warehouse")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <WarehouseIcon size={20} />
+            {t("Warehouse")}
+          </CardTitle>
           <CardDescription>
             {t("Where the products are stored")}
           </CardDescription>
@@ -288,7 +304,10 @@ const CashRegisterCard = ({
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Cash register")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <BanknoteIcon size={20} />
+            {t("Cash register")}
+          </CardTitle>
           <CardDescription>{t("Where cash is stored")}</CardDescription>
         </div>
         <Button
@@ -338,7 +357,10 @@ const CustomerCard = ({ customers }: { customers: CustomerSchemaT[] }) => {
     <Card>
       <CardHeader className="flex-row justify-between">
         <div className="space-y-1.5">
-          <CardTitle>{t("Customer")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <ContactIcon size={20} />
+            {t("Customer")}
+          </CardTitle>
           <CardDescription>
             {t("The person that will receive the invoice")}
           </CardDescription>

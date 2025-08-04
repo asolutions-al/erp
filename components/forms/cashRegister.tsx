@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { CashRegisterFormSchemaT } from "@/providers"
+import { CircleDashedIcon, InfoIcon, SettingsIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -88,7 +89,10 @@ const DetailsCard = ({ isUpdate }: { isUpdate?: boolean }) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Information")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Information")}
+        </CardTitle>
         <CardDescription>
           {t("Basic details of the cash register")}
         </CardDescription>
@@ -144,7 +148,10 @@ const StatusCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CircleDashedIcon size={20} />
+          {t("Status")}
+        </CardTitle>
         <CardDescription>
           {t("Set the status of the cash register")}
         </CardDescription>
@@ -175,7 +182,10 @@ const SettingsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Settings")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <SettingsIcon size={20} />
+          {t("Settings")}
+        </CardTitle>
         <CardDescription>
           {t("Additional settings for the cash register")}
         </CardDescription>

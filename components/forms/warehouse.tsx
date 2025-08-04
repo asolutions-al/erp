@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Switch } from "@/components/ui/switch"
 import { WarehouseFormSchemaT } from "@/providers"
+import { CircleDashedIcon, InfoIcon, SettingsIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -86,7 +87,10 @@ const DetailsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Information")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Information")}
+        </CardTitle>
         <CardDescription>{t("Basic details of warehouse")}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -115,7 +119,10 @@ const LocationCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Location")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Location")}
+        </CardTitle>
         <CardDescription>
           {t("Address details of the warehouse")}
         </CardDescription>
@@ -167,7 +174,10 @@ const StatusCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CircleDashedIcon size={20} />
+          {t("Status")}
+        </CardTitle>
         <CardDescription>{t("Active, inactive or archived")}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -196,7 +206,10 @@ const SettingsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Settings")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <SettingsIcon size={20} />
+          {t("Settings")}
+        </CardTitle>
         <CardDescription>{t("Additional settings")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

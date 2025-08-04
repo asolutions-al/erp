@@ -9,7 +9,7 @@ import {
 import { publicStorageUrl } from "@/constants/consts"
 import { createClient } from "@/db/app/client"
 import { cn } from "@/lib/utils"
-import { TrashIcon } from "lucide-react"
+import { ImageIcon, TrashIcon } from "lucide-react"
 import { nanoid } from "nanoid"
 import Image from "next/image"
 import { useState } from "react"
@@ -82,7 +82,10 @@ export function ImageUploader({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <ImageIcon size={20} />
+          {title}
+        </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
       <CardContent>

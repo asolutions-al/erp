@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { InvitationFormSchemaT } from "@/providers"
+import { UserPlusIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -56,7 +57,10 @@ const Form = ({ performAction }: Props) => {
     >
       <Card>
         <CardHeader>
-          <CardTitle>{t("Member Invitation")}</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <UserPlusIcon size={20} />
+            {t("Member Invitation")}
+          </CardTitle>
           <CardDescription>
             {t("Send an invitation to add a new member to your organization")}
           </CardDescription>

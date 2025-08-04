@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { UnitFormSchemaT } from "@/providers"
+import { CircleDashedIcon, InfoIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -67,7 +68,10 @@ const Form = ({ performAction }: Props) => {
       >
         <Card>
           <CardHeader>
-            <CardTitle>{t("Details")}</CardTitle>
+            <CardTitle className="flex items-center gap-2">
+              <InfoIcon size={20} />
+              {t("Details")}
+            </CardTitle>
             <CardDescription>{t("Information about the unit")}</CardDescription>
           </CardHeader>
           <CardContent className="grid grid-cols-2 gap-2">
@@ -116,7 +120,10 @@ const StatusCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CircleDashedIcon size={20} />
+          {t("Status")}
+        </CardTitle>
         <CardDescription>{t("Status of the unit")}</CardDescription>
       </CardHeader>
       <CardContent>

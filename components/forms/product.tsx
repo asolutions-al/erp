@@ -44,6 +44,8 @@ import {
   BriefcaseBusinessIcon,
   CheckCircleIcon,
   ChevronsUpDownIcon,
+  CircleDashedIcon,
+  DollarSignIcon,
   InfoIcon,
   PlusIcon,
   SettingsIcon,
@@ -190,7 +192,10 @@ const DetailsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Information")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Information")}
+        </CardTitle>
         <CardDescription>{t("Basic details of the product")}</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
@@ -281,7 +286,10 @@ const PriceCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Pricing")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <DollarSignIcon size={20} />
+          {t("Pricing")}
+        </CardTitle>
         <CardDescription>{t("Tax, price and other details")}</CardDescription>
       </CardHeader>
       <CardContent className="grid grid-cols-2 gap-2">
@@ -354,7 +362,10 @@ const ExtraDetailsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Additional")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Additional")}
+        </CardTitle>
         <CardDescription>
           {t("Extra details to better describe the product")}
         </CardDescription>
@@ -409,7 +420,10 @@ const StatusCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CircleDashedIcon size={20} />
+          {t("Status")}
+        </CardTitle>
         <CardDescription>{t("Status of the product")}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -438,7 +452,10 @@ const SettingsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Settings")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <SettingsIcon size={20} />
+          {t("Settings")}
+        </CardTitle>
         <CardDescription>
           {t("Configure additional product settings")}
         </CardDescription>

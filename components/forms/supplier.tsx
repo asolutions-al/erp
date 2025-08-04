@@ -29,7 +29,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { supplierImageBucket } from "@/constants/bucket"
 import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
-import { InfoIcon, SettingsIcon } from "lucide-react"
+import { CircleDashedIcon, InfoIcon, SettingsIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -149,7 +149,10 @@ const IdentityCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Identity")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Identity")}
+        </CardTitle>
         <CardDescription>{t("Basic details of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent>
@@ -220,7 +223,10 @@ const LocationCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Location")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Location")}
+        </CardTitle>
         <CardDescription>
           {t("Address details of the supplier")}
         </CardDescription>
@@ -272,7 +278,10 @@ const AdditionalCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Additional")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <InfoIcon size={20} />
+          {t("Additional")}
+        </CardTitle>
         <CardDescription>{t("Extra details of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-2">
@@ -324,7 +333,10 @@ const SettingsCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Settings")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <SettingsIcon size={20} />
+          {t("Settings")}
+        </CardTitle>
         <CardDescription>
           {t("Configure additional supplier settings")}
         </CardDescription>
@@ -363,7 +375,10 @@ const StatusCard = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Status")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CircleDashedIcon size={20} />
+          {t("Status")}
+        </CardTitle>
         <CardDescription>{t("Current status of the supplier")}</CardDescription>
       </CardHeader>
       <CardContent>

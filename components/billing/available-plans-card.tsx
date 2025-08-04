@@ -11,6 +11,7 @@ import {
 import { SubscriptionSchemaT } from "@/db/app/schema"
 import { PlanSchemaT } from "@/db/auth/schema"
 import { planId } from "@/orm/auth/schema"
+import { CreditCardIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -68,7 +69,10 @@ export const AvailablePlansCard = ({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t("Available Plans")}</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <CreditCardIcon size={20} />
+          {t("Available Plans")}
+        </CardTitle>
         <CardDescription>
           {subscription.status === "ACTIVE"
             ? subscription.plan === "INVOICE-STARTER"
