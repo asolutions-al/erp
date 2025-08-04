@@ -461,16 +461,6 @@ export const productInventory = pgTable("productInventory", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const user = pgTable("user", {
-	id: uuid().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	email: text().notNull(),
-	displayName: text(),
-	defaultOrgId: uuid(),
-	deleted: boolean(),
-	deletedAt: timestamp({ withTimezone: true, mode: 'string' }),
-});
-
 export const warehouse = pgTable("warehouse", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -493,6 +483,16 @@ export const warehouse = pgTable("warehouse", {
 			name: "warehouse_unitId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
+
+export const user = pgTable("user", {
+	id: uuid().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	email: text().notNull(),
+	displayName: text().notNull(),
+	defaultOrgId: uuid(),
+	deleted: boolean(),
+	deletedAt: timestamp({ withTimezone: true, mode: 'string' }),
+});
 
 export const orgMember = pgTable("orgMember", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
