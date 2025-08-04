@@ -27,7 +27,7 @@ const Layout = async (props: Props) => {
   return (
     <>
       <PageListHeader
-        title="Invoices"
+        title="Dashboard"
         button={{
           text: "New invoice",
           href: `/o/${orgId}/u/${unitId}/invoice/create`,
