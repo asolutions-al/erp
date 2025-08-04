@@ -50,6 +50,7 @@
   "Update product": "Update product",
   "New invoice": "New invoice",
   "View invoices": "View invoices",
+  "View": "View",
   "Total": "Total",
   "Date": "Date",
   "Currency": "Currency",
@@ -67,6 +68,9 @@
   "Create new unit": "Create new unit",
   "New unit": "New unit",
   "Create new invoice": "Create new invoice",
+  "Click on any unit below to enter and manage its operations": "Click on any unit below to enter and manage its operations",
+  "Click on a unit name or use the \"View\" button to enter and manage a unit": "Click on a unit name or use the \"View\" button to enter and manage a unit",
+  "Click to enter this unit": "Click to enter this unit",
   "Unit": "Unit",
   "Product images": "Product images",
   "Manage images of the product": "Manage images of the product",
@@ -910,5 +914,6 @@
   "Member Invitation": "Member Invitation",
   "Send an invitation to add a new member to your organization": "Send an invitation to add a new member to your organization",
   "Enter email address": "Enter email address",
-  "Email Address": "Email Address"
+  "Email Address": "Email Address",
+  "Click on any organization below to enter and manage its operations": "Click on any organization below to enter and manage its operations"
 }

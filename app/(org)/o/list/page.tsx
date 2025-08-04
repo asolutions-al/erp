@@ -66,6 +66,12 @@ const Page = async () => {
         }
         className="my-4"
       />
+
+      <div className="mb-4 text-center text-sm text-muted-foreground">
+        {t(
+          "Click on any organization below to enter and manage its operations"
+        )}
+      </div>
       <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
         {orgs.map(({ organization }) => (
           <Link key={organization.id} href={`/o/${organization.id}/overview`}>

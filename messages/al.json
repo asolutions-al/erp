@@ -52,6 +52,7 @@
   "Update product": "Përditëso produktin",
   "New invoice": "Faturë e re",
   "View invoices": "Shiko faturat",
+  "View": "Shiko",
   "Total": "Totali",
   "Date": "Data",
   "Currency": "Monedha",
@@ -69,6 +70,9 @@
   "Create new unit": "Krijo njësi të re",
   "New unit": "Njësi e re",
   "Create new invoice": "Krijo një faturë të re",
+  "Click on any unit below to enter and manage its operations": "Klikoni në çdo njësi më poshtë për të hyrë dhe menaxhuar operacionet e saj",
+  "Click on a unit name or use the \"View\" button to enter and manage a unit": "Klikoni në emrin e njësisë ose përdorni butonin \"Shiko\" për të hyrë dhe menaxhuar një njësi",
+  "Click to enter this unit": "Klikoni për të hyrë në këtë njësi",
   "Unit": "Njësi",
   "Product images": "Imazhet e produktit",
   "Manage images of the product": "Menaxho imazhet e produktit",
@@ -895,5 +899,6 @@
   "Member Invitation": "Ftesë për anëtar",
   "Send an invitation to add a new member to your organization": "Dërgo ftesë për të shtuar një anëtar të ri në organizën tuaj",
   "Enter email address": "Vendosni emailin",
-  "Email Address": "Emaili"
+  "Email Address": "Emaili",
+  "Click on any organization below to enter and manage its operations": "Kliko në një organizë të mëposhtme për të hyrë dhe menaxhuar veprimtaritë e saj"
 }

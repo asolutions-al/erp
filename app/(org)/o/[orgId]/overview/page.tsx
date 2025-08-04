@@ -31,16 +31,21 @@ const Page = async ({ params }: Props) => {
 
       <PageContent>
         {data.length > 0 ? (
-          <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
-            {data.map((unit) => (
-              <Link
-                key={unit.id}
-                href={`/o/${orgId}/u/${unit.id}/overview/dashboard/today`}
-              >
-                <UnitCard data={unit} />
-              </Link>
-            ))}
-          </div>
+          <>
+            <div className="mb-4 mt-2 text-center text-sm text-muted-foreground">
+              {t("Click on any unit below to enter and manage its operations")}
+            </div>
+            <div className="mx-auto grid max-w-4xl items-center gap-4 sm:grid-cols-2">
+              {data.map((unit) => (
+                <Link
+                  key={unit.id}
+                  href={`/o/${orgId}/u/${unit.id}/overview/dashboard/today`}
+                >
+                  <UnitCard data={unit} />
+                </Link>
+              ))}
+            </div>
+          </>
         ) : (
           <EmptyState
             icon={Building2}
