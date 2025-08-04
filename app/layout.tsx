@@ -2,6 +2,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { APP_URL } from "@/constants/env"
 import { ThemeProvider, TranslationProvider } from "@/providers"
+import { CrispWidget } from "@/widgets"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { GeistSans } from "geist/font/sans"
@@ -31,6 +32,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
             </ThemeProvider>
             <SpeedInsights debug={false} />
             <Analytics debug={false} />
+            <CrispWidget />
           </body>
         </TooltipProvider>
       </TranslationProvider>
