@@ -22,7 +22,7 @@ import { UnitFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter } from "next/navigation"
 import { toast } from "sonner"
-import { EntityStatusSelect } from "../select/entity-status"
+import { EntityStatusSelect } from "../select"
 
 type SchemaT = UnitFormSchemaT
 

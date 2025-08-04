@@ -905,5 +905,10 @@
   "Add first warehouse": "Add first warehouse",
   "No warehouses added yet": "No warehouses added yet",
   "Add first category": "Add first category",
-  "No categories added yet": "No categories added yet"
+  "No categories added yet": "No categories added yet",
+  "Select role": "Select role",
+  "Member Invitation": "Member Invitation",
+  "Send an invitation to add a new member to your organization": "Send an invitation to add a new member to your organization",
+  "Enter email address": "Enter email address",
+  "Email Address": "Email Address"
 }

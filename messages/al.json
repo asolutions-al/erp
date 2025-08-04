@@ -890,5 +890,10 @@
   "No warehouses added yet": "S'janë shtuar magazina",
   "Add first warehouse": "Shtoni një magazinë",
   "Add first category": "Shtoni një kategori",
-  "No categories added yet": "S'janë shtuar kategoritë"
+  "No categories added yet": "S'janë shtuar kategoritë",
+  "Select role": "Zgjidh rolin",
+  "Member Invitation": "Ftesë për anëtar",
+  "Send an invitation to add a new member to your organization": "Dërgo ftesë për të shtuar një anëtar të ri në organizën tuaj",
+  "Enter email address": "Vendosni emailin",
+  "Email Address": "Emaili"
 }

@@ -15,19 +15,12 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { role } from "@/orm/app/schema"
 import { InvitationFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useFormContext } from "react-hook-form"
 import { toast } from "sonner"
+import { RoleSelect } from "../select"
 
 type SchemaT = InvitationFormSchemaT
 
@@ -63,9 +56,9 @@ const Form = ({ performAction }: Props) => {
     >
       <Card>
         <CardHeader>
-          <CardTitle>Member Invitation</CardTitle>
+          <CardTitle>{t("Member Invitation")}</CardTitle>
           <CardDescription>
-            Send an invitation to add a new member to your organization
+            {t("Send an invitation to add a new member to your organization")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -74,10 +67,10 @@ const Form = ({ performAction }: Props) => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email Address</FormLabel>
+                <FormLabel>{t("Email Address")}</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="Enter email address"
+                    placeholder={t("Enter email address")}
                     type="email"
                     {...field}
                   />
@@ -92,24 +85,7 @@ const Form = ({ performAction }: Props) => {
             name="role"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Role</FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent>
-                    {role.enumValues.map((roleValue) => (
-                      <SelectItem key={roleValue} value={roleValue}>
-                        {t(roleValue)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <RoleSelect value={field.value} onChange={field.onChange} />
                 <FormMessage />
               </FormItem>
             )}

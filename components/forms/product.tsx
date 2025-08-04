@@ -56,7 +56,7 @@ import { useState } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
 import { CategoryCommand, WarehouseCommand } from "../command"
-import { EntityStatusSelect } from "../select/entity-status"
+import { EntityStatusSelect } from "../select"
 
 type SchemaT = ProductFormSchemaT
 
