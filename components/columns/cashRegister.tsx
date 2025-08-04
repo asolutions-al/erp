@@ -8,6 +8,7 @@ import {
   NumberFilter,
   StringFilter,
 } from "@/components/ui/data-table"
+import { EM_DASH } from "@/constants/consts"
 import { CashRegisterSchemaT, UserSchemaT } from "@/db/app/schema"
 import { formatDate, formatNumber } from "@/lib/utils"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
@@ -96,7 +97,7 @@ const columns: ColumnDef<SchemaT>[] = [
     ),
     cell: ({ row }) => {
       const { closedAt } = row.original
-      return closedAt ? formatDate(new Date(closedAt)) : "-"
+      return closedAt ? formatDate(new Date(closedAt)) : EM_DASH
     },
     filterFn: "dateRange",
   },
@@ -110,7 +111,7 @@ const columns: ColumnDef<SchemaT>[] = [
     ),
     cell: ({ row }) => {
       const { user_closedBy } = row.original
-      return user_closedBy ? user_closedBy.email : "-"
+      return user_closedBy ? user_closedBy.email : EM_DASH
     },
   },
   {
@@ -123,7 +124,7 @@ const columns: ColumnDef<SchemaT>[] = [
     ),
     cell: ({ row }) => {
       const { closingBalanace } = row.original
-      return closingBalanace ? formatNumber(closingBalanace) : "-"
+      return closingBalanace ? formatNumber(closingBalanace) : EM_DASH
     },
     filterFn: "numberRange",
   },

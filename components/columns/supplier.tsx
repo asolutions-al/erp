@@ -9,10 +9,11 @@ import {
   StringFilter,
 } from "@/components/ui/data-table"
 import { supplierImageBucket } from "@/constants/bucket"
-import { publicStorageUrl } from "@/constants/consts"
+import { EM_DASH, publicStorageUrl } from "@/constants/consts"
 import { SupplierSchemaT } from "@/db/app/schema"
 import { CellContext, ColumnDef } from "@tanstack/react-table"
 import { useTranslations } from "next-intl"
+import Link from "next/link"
 import { FavoriteCell } from "../cell"
 
 type SchemaT = SupplierSchemaT
@@ -88,6 +89,20 @@ const columns: ColumnDef<SchemaT>[] = [
         <StringFilter title="Email" column={column} />
       </div>
     ),
+    cell: ({ row }) => {
+      const { email } = row.original
+      if (!email) return EM_DASH
+
+      return (
+        <Link
+          href={`mailto:${email}`}
+          className="text-primary transition-colors hover:text-primary/80 hover:underline"
+          title={`Send email to ${email}`}
+        >
+          {email}
+        </Link>
+      )
+    },
   },
   {
     accessorKey: "isFavorite",

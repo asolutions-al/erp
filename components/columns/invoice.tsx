@@ -13,6 +13,7 @@ import {
   SelectFilter,
   StringFilter,
 } from "@/components/ui/data-table"
+import { EM_DASH } from "@/constants/consts"
 import { mapPayMethodIcon } from "@/constants/maps"
 import {
   CashRegisterSchemaT,
@@ -93,7 +94,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <SelectFilter title="Warehouse" column={column} isTranslated />
       </div>
     ),
-    cell: ({ row }) => row.original.warehouse?.name || "-",
+    cell: ({ row }) => row.original.warehouse?.name || EM_DASH,
   },
   {
     accessorKey: "cashRegister.name",
@@ -103,7 +104,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <SelectFilter title="Cash register" column={column} isTranslated />
       </div>
     ),
-    cell: ({ row }) => row.original.cashRegister?.name || "-",
+    cell: ({ row }) => row.original.cashRegister?.name || EM_DASH,
   },
   {
     accessorKey: "user_createdBy.email",
@@ -113,7 +114,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <StringFilter title="Created by" column={column} />
       </div>
     ),
-    cell: ({ row }) => row.original.user_createdBy?.email || "-",
+    cell: ({ row }) => row.original.user_createdBy?.email || EM_DASH,
   },
   {
     id: "actions",
