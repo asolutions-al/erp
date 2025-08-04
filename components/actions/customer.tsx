@@ -206,7 +206,7 @@ const InvoicesSheetContent = ({
     }
 
     fetchInvoices()
-  }, [customer, unitId, orgId, onClose])
+  }, [customer, unitId, orgId])
 
   return (
     <>
