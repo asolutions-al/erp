@@ -39,7 +39,8 @@ const Page = async (props: Props) => {
         where: and(
           eq(category.orgId, orgId),
           eq(category.unitId, unitId),
-          eq(category.status, "active")
+          eq(category.status, "active"),
+          eq(category.forProduct, true)
         ),
       }),
       db.query.productCategory.findMany({
