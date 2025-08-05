@@ -1208,19 +1208,15 @@ const Page = async (props: Props) => {
         <ProfitMarginCard invoiceRows={invoiceRows} />
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <ProductInsightsCard invoiceRows={invoiceRows} inventory={inventory} />
+        <SalesVelocityCard invoices={invoices} />
       </div>
 
       {/* Sales Analysis */}
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <PaymentMethodSalesCard invoices={invoices} />
         <SalesDistributionCard invoices={invoices} />
-      </div>
-
-      {/* Sales Velocity Analysis */}
-      <div className="grid grid-cols-1 gap-4">
-        <SalesVelocityCard invoices={invoices} />
       </div>
 
       {/* Product and Customer Analysis */}
