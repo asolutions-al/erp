@@ -82,8 +82,8 @@ const CustomerCommand = ({
               <Empty />
             </CommandEmpty>
             <CommandGroup>
-              {list.map((customer) => {
-                const { idType, idValue, id, name, imageBucketPath } = customer
+              {list.map((item) => {
+                const { idType, idValue, id, name, imageBucketPath } = item
                 return (
                   <CommandItem
                     key={id}

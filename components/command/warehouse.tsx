@@ -26,6 +26,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
+import { Avatar, AvatarFallback } from "../ui/avatar"
 
 const Empty = () => {
   const t = useTranslations()
@@ -79,8 +80,8 @@ const WarehouseCommand = ({
               <Empty />
             </CommandEmpty>
             <CommandGroup>
-              {list.map((customer) => {
-                const { id, name } = customer
+              {list.map((item) => {
+                const { id, name, city } = item
                 return (
                   <CommandItem
                     key={id}
@@ -90,7 +91,17 @@ const WarehouseCommand = ({
                       setPopOverOpen(false)
                     }}
                   >
-                    <span>{name}</span>
+                    <Avatar className="mr-2">
+                      <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span>{name}</span>
+                      {city && (
+                        <span className="text-sm text-muted-foreground">
+                          {t("City")}: {city}
+                        </span>
+                      )}
+                    </div>
                     <CheckCircleIcon
                       size={16}
                       className={cn(

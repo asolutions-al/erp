@@ -15,7 +15,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { CashRegisterSchemaT } from "@/db/app/schema"
-import { cn } from "@/lib/utils"
+import { cn, formatNumber } from "@/lib/utils"
 import {
   CheckCircleIcon,
   ChevronsUpDownIcon,
@@ -26,6 +26,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
+import { Avatar, AvatarFallback } from "../ui/avatar"
 
 const Empty = () => {
   const t = useTranslations()
@@ -80,7 +81,7 @@ const CashRegisterCommand = ({
             </CommandEmpty>
             <CommandGroup>
               {list.map((item) => {
-                const { id, name } = item
+                const { id, name, balance } = item
                 return (
                   <CommandItem
                     key={id}
@@ -90,7 +91,15 @@ const CashRegisterCommand = ({
                       setPopOverOpen(false)
                     }}
                   >
-                    <span>{name}</span>
+                    <Avatar className="mr-2">
+                      <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex flex-col">
+                      <span>{name}</span>
+                      <span className="text-sm text-muted-foreground">
+                        {t("Balance")}: {formatNumber(balance)}
+                      </span>
+                    </div>
                     <CheckCircleIcon
                       size={16}
                       className={cn(

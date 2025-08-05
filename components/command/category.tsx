@@ -26,6 +26,7 @@ import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 import { useState } from "react"
+import { Avatar, AvatarFallback } from "../ui/avatar"
 
 const Empty = () => {
   const t = useTranslations()
@@ -79,8 +80,8 @@ const CategoryCommand = ({
               <Empty />
             </CommandEmpty>
             <CommandGroup>
-              {list.map((customer) => {
-                const { id, name } = customer
+              {list.map((item) => {
+                const { id, name } = item
                 return (
                   <CommandItem
                     key={id}
@@ -90,6 +91,9 @@ const CategoryCommand = ({
                       setPopOverOpen(false)
                     }}
                   >
+                    <Avatar className="mr-2">
+                      <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+                    </Avatar>
                     <span>{name}</span>
                     <CheckCircleIcon
                       size={16}
