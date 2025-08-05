@@ -1,5 +1,6 @@
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
+import { sendWelcomeEmail } from "@/lib/resend"
 import { getAuthUrl } from "@/lib/utils"
 import {
   cashRegister,
@@ -216,6 +217,17 @@ export async function GET(request: Request) {
       customerId: customerRes.id,
       cashRegisterId: cashRegisterRes.id,
     })
+    // Send welcome email after successful user creation
+    try {
+      await sendWelcomeEmail({
+        displayName: user.email!.split("@")[0],
+        email: user.email!,
+        orgName: t("Demo organization"),
+        loginUrl: `${origin}/o/${orgRes.id}`,
+      })
+    } catch (error) {
+      console.warn("Failed to send welcome email:", error)
+    }
   })
 
   return NextResponse.redirect(returnToUrl.href)

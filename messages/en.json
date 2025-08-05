@@ -916,5 +916,19 @@
   "Enter email address": "Enter email address",
   "Email Address": "Email Address",
   "Click on any organization below to enter and manage its operations": "Click on any organization below to enter and manage its operations",
-  "New Invitation": "New Invitation"
+  "New Invitation": "New Invitation",
+  "Welcome to {orgName}!": "Welcome to {orgName}!",
+  "Hello {displayName}": "Hello {displayName}",
+  "Welcome to {orgName}! We're excited to have you on board": "Welcome to {orgName}! We're excited to have you on board",
+  "Your account has been successfully created and you now have access to all the features of our ERP system": "Your account has been successfully created and you now have access to all the features of our ERP system",
+  "We've set up a demo organization with sample data to help you get started": "We've set up a demo organization with sample data to help you get started",
+  "Here's what you can do to get started:": "Here's what you can do to get started:",
+  "Explore your dashboard to see key metrics and insights": "Explore your dashboard to see key metrics and insights",
+  "Create and manage products, customers, and suppliers": "Create and manage products, customers, and suppliers",
+  "Generate invoices and track payments": "Generate invoices and track payments",
+  "Manage your inventory and cash register": "Manage your inventory and cash register",
+  "If you have any questions or need assistance, don't hesitate to reach out to our support team": "If you have any questions or need assistance, don't hesitate to reach out to our support team",
+  "Best regards,": "Best regards,",
+  "The {orgName} Team": "The {orgName} Team",
+  "This email was sent to {email}": "This email was sent to {email}"
 }

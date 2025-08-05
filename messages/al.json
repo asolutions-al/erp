@@ -901,5 +901,19 @@
   "Enter email address": "Vendosni emailin",
   "Email Address": "Emaili",
   "Click on any organization below to enter and manage its operations": "Kliko në një organizë të mëposhtme për të hyrë dhe menaxhuar veprimtaritë e saj",
-  "New Invitation": "Ftesë e re"
+  "New Invitation": "Ftesë e re",
+  "Welcome to {orgName}!": "Mirë se vini në {orgName}!",
+  "Hello {displayName}": "Përshëndetje {displayName}",
+  "Welcome to {orgName}! We're excited to have you on board": "Mirë se vini në {orgName}! Jemi të entuziazmuar që ju kemi me ne",
+  "Your account has been successfully created and you now have access to all the features of our ERP system": "Llogaria juaj u krijua me sukses dhe tani keni qasje në të gjitha veçoritë e sistemit tonë ERP",
+  "We've set up a demo organization with sample data to help you get started": "Kemi krijuar një organizë demo me të dhëna shembull për t'ju ndihmuar të filloni",
+  "Here's what you can do to get started:": "Ja çfarë mund të bëni për të filluar:",
+  "Explore your dashboard to see key metrics and insights": "Eksploroni panelin tuaj për të parë metrikat dhe njohuritë kryesore",
+  "Create and manage products, customers, and suppliers": "Krijoni dhe menaxhoni produkte, klientë dhe furnitorë",
+  "Generate invoices and track payments": "Gjeneroni faturat dhe ndiqni pagesat",
+  "Manage your inventory and cash register": "Menaxhoni inventarin dhe kazanë tuaj",
+  "If you have any questions or need assistance, don't hesitate to reach out to our support team": "Nëse keni pyetje ose keni nevojë për ndihmë, mos hezitoni të kontaktoni ekipin tonë të mbështetjes",
+  "Best regards,": "Përshëndetje të mira,",
+  "The {orgName} Team": "Ekipi {orgName}",
+  "This email was sent to {email}": "Ky email u dërgua në {email}"
 }
