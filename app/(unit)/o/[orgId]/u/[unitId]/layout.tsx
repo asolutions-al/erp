@@ -17,7 +17,7 @@ const Layout = async (props: Props) => {
     <WithOrg {...props}>
       <SidebarProvider>
         <UnitSidebar {...props} />
-        <SidebarInset className="w-full">
+        <SidebarInset className="overflow-x-auto">
           <DemoBanner />
           {children}
         </SidebarInset>
