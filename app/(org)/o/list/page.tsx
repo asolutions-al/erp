@@ -7,7 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { orgMember } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { PlusCircle } from "lucide-react"
@@ -16,11 +16,7 @@ import Link from "next/link"
 
 const Page = async () => {
   const t = await getTranslations()
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  const userId = user!.id
+  const userId = await getUserId()
 
   const orgs = await db.query.orgMember.findMany({
     where: eq(orgMember.userId, userId),

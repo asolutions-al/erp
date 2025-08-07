@@ -24,6 +24,11 @@ type GlobalParamsT = {
   unitId: string
 }
 
+type GlobalTableMetaT = {
+  userId: string
+  role: "owner" | "admin" | "member"
+}
+
 type GrowthT = {
   diff: number
   diffPercent: number

@@ -1,13 +1,10 @@
 import { invitationColumns } from "@/components/columns/invitation"
-import {
-  orgMemberColumns,
-  OrgMemberTableMeta,
-} from "@/components/columns/orgMember"
+import { orgMemberColumns } from "@/components/columns/orgMember"
 import { PageContent, PageListHeader } from "@/components/layout"
 import { DataTable } from "@/components/ui/data-table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { invitation, orgMember } from "@/orm/app/schema"
 import { and, eq } from "drizzle-orm"
 import { UserPlus, Users } from "lucide-react"
@@ -21,11 +18,7 @@ const Page = async ({ params }: Props) => {
   const { orgId } = await params
   const t = await getTranslations()
 
-  const authClient = await createAuthClient()
-  const {
-    data: { user: authUser },
-  } = await authClient.auth.getUser()
-  const userId = authUser!.id
+  const userId = await getUserId()
 
   const [members, invitations, currentMember] = await Promise.all([
     db.query.orgMember.findMany({
@@ -43,7 +36,7 @@ const Page = async ({ params }: Props) => {
     }),
   ])
 
-  const meta: OrgMemberTableMeta = {
+  const meta: GlobalTableMetaT = {
     userId,
     role: currentMember?.role ?? "member",
   }

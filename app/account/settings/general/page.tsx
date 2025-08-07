@@ -1,7 +1,7 @@
 import { UserForm } from "@/components/forms"
 import { PageContent, PageFormHeader } from "@/components/layout"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { orgMember, user } from "@/orm/app/schema"
 import { UserFormProvider } from "@/providers"
 import { eq } from "drizzle-orm"
@@ -9,12 +9,7 @@ import { eq } from "drizzle-orm"
 type Props = {}
 
 const Page = async (props: Props) => {
-  const client = await createAuthClient()
-  const {
-    data: { user: clientUser },
-  } = await client.auth.getUser()
-
-  const userId = clientUser?.id
+  const userId = await getUserId()
 
   if (!userId) return null
 

@@ -2,7 +2,7 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { cashRegister, invoiceConfig } from "@/orm/app/schema"
 import { CashRegisterFormSchemaT } from "@/providers"
 import { eq } from "drizzle-orm"
@@ -18,11 +18,8 @@ const create = async ({
   unitId: string
   orgId: string
 }) => {
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  if (!user) return // user not found
+  const userId = await getUserId()
+
   await db.insert(cashRegister).values({
     ...values,
     unitId,
@@ -30,7 +27,7 @@ const create = async ({
     balance: values.openingBalance,
     isOpen: true, // all new cash registers are open by default
     openedAt: new Date().toISOString(),
-    openedBy: user.id,
+    openedBy: userId,
   })
 }
 
@@ -49,11 +46,7 @@ const update = async ({ values, id }: { values: FormSchemaT; id: string }) => {
 }
 
 const close = async (id: string) => {
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  if (!user) return // user not found
+  const userId = await getUserId()
 
   await db.transaction(async (tx) => {
     await tx
@@ -61,7 +54,7 @@ const close = async (id: string) => {
       .set({
         isOpen: false,
         closedAt: new Date().toISOString(),
-        closedBy: user.id,
+        closedBy: userId,
         closingBalanace: cashRegister.balance,
         status: "archived",
       })

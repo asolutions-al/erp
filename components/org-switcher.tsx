@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { getTranslations } from "next-intl/server"
@@ -25,11 +25,7 @@ type Props = {
 const OrgSwitcher = async (props: Props) => {
   const t = await getTranslations()
   const { orgId } = await props.params
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-  const userId = user?.id
+  const userId = await getUserId()
 
   if (!userId) return null
 

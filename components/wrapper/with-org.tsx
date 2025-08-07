@@ -1,5 +1,5 @@
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { orgMember } from "@/orm/app/schema"
 import { and, eq } from "drizzle-orm"
 import { redirect } from "next/navigation"
@@ -12,12 +12,7 @@ type Props = PropsWithChildren<{
 const WithOrg = async ({ children, ...props }: PropsWithChildren<Props>) => {
   const { orgId } = await props.params
 
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-
-  const userId = user!.id
+  const userId = await getUserId()
 
   const org = await db.query.orgMember.findFirst({
     where: and(eq(orgMember.userId, userId), eq(orgMember.orgId, orgId)),

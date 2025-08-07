@@ -3,21 +3,16 @@ import { PageListHeader } from "@/components/layout"
 import { Loading } from "@/components/layout/loading"
 import { DataTable } from "@/components/ui/data-table"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import { organization } from "@/orm/app/schema"
 import { eq } from "drizzle-orm"
 import { Suspense } from "react"
 
 const List = async () => {
-  const client = await createAuthClient()
-  const {
-    data: { user },
-  } = await client.auth.getUser()
-
-  if (!user) return null
+  const userId = await getUserId()
 
   const data = await db.query.organization.findMany({
-    where: eq(organization.ownerId, user.id),
+    where: eq(organization.ownerId, userId),
   })
 
   return <DataTable columns={orgColumns} data={data} />

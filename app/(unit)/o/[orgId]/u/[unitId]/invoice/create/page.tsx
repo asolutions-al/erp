@@ -14,6 +14,7 @@ import { WithSubscription } from "@/components/wrapper"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
 import { createAuthClient } from "@/db/auth/client"
+import { getUserId } from "@/db/auth/loaders"
 import {
   cashRegister,
   customer,
@@ -38,7 +39,7 @@ const Page = async (props: Props) => {
   const {
     data: { user },
   } = await authClient.auth.getUser()
-  const userId = user!.id
+  const userId = await getUserId()
   const { orgId, unitId } = await params
 
   const [

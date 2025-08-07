@@ -50,11 +50,6 @@ type SchemaT = OrgMemberSchemaT & {
   user: UserSchemaT
 }
 
-type TableMeta = {
-  userId: string
-  role: "owner" | "admin" | "member"
-}
-
 type ConfirmationDialog = {
   action: "promote" | "demote" | "delete"
   newRole: OrgMemberRoleT
@@ -333,7 +328,7 @@ const DeleteAlertContent = ({
 const ActionsCell = (props: CellContext<SchemaT, unknown>) => {
   const { row, table } = props
   const { original } = row
-  const { userId, role } = table.options.meta as TableMeta
+  const { userId, role } = table.options.meta as GlobalTableMetaT
   const t = useTranslations()
   const [confirmationDialog, setConfirmationDialog] =
     useState<ConfirmationDialog | null>(null)
@@ -487,4 +482,4 @@ const columns: ColumnDef<SchemaT>[] = [
   },
 ]
 
-export { columns as orgMemberColumns, type TableMeta as OrgMemberTableMeta }
+export { columns as orgMemberColumns }
