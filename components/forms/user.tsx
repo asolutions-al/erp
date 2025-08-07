@@ -28,6 +28,7 @@ import {
 import { OrgSchemaT } from "@/db/app/schema"
 import { UserFormSchemaT } from "@/providers"
 import { useTranslations } from "next-intl"
+import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 type SchemaT = UserFormSchemaT
@@ -42,11 +43,13 @@ const formId: FormIdT = "user"
 const Form = ({ performAction, orgs }: Props) => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
+  const router = useRouter()
 
   const onValid = async (values: SchemaT) => {
     try {
       await performAction(values)
       toast.success(t("User saved successfully"))
+      router.refresh()
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
