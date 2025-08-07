@@ -107,14 +107,14 @@ const columns: ColumnDef<SchemaT>[] = [
     cell: ({ row }) => row.original.cashRegister?.name || EM_DASH,
   },
   {
-    accessorKey: "user_createdBy.email",
+    accessorKey: "user_createdBy.displayName",
     header: ({ column }) => (
       <div>
         <SortBtn text="Created by" column={column} />
         <StringFilter title="Created by" column={column} />
       </div>
     ),
-    cell: ({ row }) => row.original.user_createdBy?.email || EM_DASH,
+    cell: ({ row }) => row.original.user_createdBy?.displayName || EM_DASH,
   },
   {
     id: "actions",

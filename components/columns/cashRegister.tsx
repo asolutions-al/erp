@@ -102,7 +102,7 @@ const columns: ColumnDef<SchemaT>[] = [
     filterFn: "dateRange",
   },
   {
-    accessorKey: "user_closedBy.email",
+    accessorKey: "user_closedBy.displayName",
     header: ({ column }) => (
       <div>
         <SortBtn text="Closed by" column={column} />
@@ -111,7 +111,7 @@ const columns: ColumnDef<SchemaT>[] = [
     ),
     cell: ({ row }) => {
       const { user_closedBy } = row.original
-      return user_closedBy ? user_closedBy.email : EM_DASH
+      return user_closedBy ? user_closedBy.displayName : EM_DASH
     },
   },
   {
