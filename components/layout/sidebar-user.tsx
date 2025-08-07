@@ -11,23 +11,21 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { createAuthClient } from "@/db/auth/client"
+import { getUser } from "@/db/app/loaders"
+import { getUserId } from "@/db/auth/loaders"
 import { ChevronsUpDown } from "lucide-react"
-import { getTranslations } from "next-intl/server"
 import { LogOutBtn } from "../button"
 import { LanguageSwitcher } from "../language-switcher"
 import { ThemeSwitcher } from "../theme-switcher"
 import { SidebarUserSetting } from "./sidebar-user-setting"
 
 const SidebarUser = async () => {
-  const t = await getTranslations()
-  const client = await createAuthClient()
-  const { data } = await client.auth.getUser()
+  const userId = await getUserId()
+  const user = await getUser({ id: userId })
 
-  const email = data.user?.email || ""
-  const name = email.split("@")[0]
+  if (!user) return null
 
-  const avatarFallback = name.slice(0, 2).toUpperCase()
+  const avatarFallback = user.displayName.slice(0, 2).toUpperCase()
 
   return (
     <SidebarMenu>
@@ -45,8 +43,10 @@ const SidebarUser = async () => {
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{name}</span>
-                <span className="truncate text-xs">{email}</span>
+                <span className="truncate font-semibold">
+                  {user.displayName}
+                </span>
+                <span className="truncate text-xs">{user.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -64,8 +64,10 @@ const SidebarUser = async () => {
                   </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{name}</span>
-                  <span className="truncate text-xs">{email}</span>
+                  <span className="truncate font-semibold">
+                    {user.displayName}
+                  </span>
+                  <span className="truncate text-xs">{user.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
