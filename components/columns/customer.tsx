@@ -80,6 +80,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <StringFilter title="Address" column={column} />
       </div>
     ),
+    cell: ({ row }) => row.original.address || EM_DASH,
   },
   {
     accessorKey: "email",

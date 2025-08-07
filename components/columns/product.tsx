@@ -11,7 +11,7 @@ import {
   StringFilter,
 } from "@/components/ui/data-table"
 import { productImagesBucket } from "@/constants/bucket"
-import { publicStorageUrl } from "@/constants/consts"
+import { EM_DASH, publicStorageUrl } from "@/constants/consts"
 import {
   CategorySchemaT,
   ProductCategorySchemaT,
@@ -130,6 +130,7 @@ const columns: ColumnDef<SchemaT>[] = [
         <StringFilter title="Barcode" column={column} />
       </div>
     ),
+    cell: ({ row }) => row.original.barcode || EM_DASH,
   },
 
   {
