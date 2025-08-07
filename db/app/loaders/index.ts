@@ -1,5 +1,6 @@
 export * from "./customer"
 export * from "./invoice"
 export * from "./invoiceRow"
+export * from "./orgMember"
 export * from "./product"
 export * from "./unit"
