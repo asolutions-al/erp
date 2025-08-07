@@ -16,6 +16,7 @@ import {
   ProductInventorySchemaT,
   ProductSchemaT,
 } from "@/db/app/schema"
+import { canEdit } from "@/lib/utils"
 import { CellContext } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
@@ -36,9 +37,10 @@ type SchemaT = ProductSchemaT & {
   })[]
 }
 
-const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
+const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
   const { original } = row
   const t = useTranslations()
+  const { role } = table.options.meta as GlobalTableMetaT
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
 
@@ -54,15 +56,17 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
         <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
 
         <DropdownMenuSeparator />
-        <Link
-          href={`/o/${orgId}/u/${unitId}/product/update/${original.id}`}
-          passHref
-        >
-          <DropdownMenuItem>
-            <EditIcon />
-            {t("Edit")}
-          </DropdownMenuItem>
-        </Link>
+        {canEdit(role) && (
+          <Link
+            href={`/o/${orgId}/u/${unitId}/product/update/${original.id}`}
+            passHref
+          >
+            <DropdownMenuItem>
+              <EditIcon />
+              {t("Edit")}
+            </DropdownMenuItem>
+          </Link>
+        )}
         <Link
           href={`/o/${orgId}/u/${unitId}/product/duplicate/${original.id}`}
           passHref

@@ -10,14 +10,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { UnitSchemaT } from "@/db/app/schema"
+import { canEdit } from "@/lib/utils"
 import { CellContext } from "@tanstack/react-table"
 import { CopyPlusIcon, EditIcon, MoreHorizontalIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import Link from "next/link"
 import { useParams } from "next/navigation"
 
-const Actions = ({ row }: CellContext<UnitSchemaT, unknown>) => {
+const Actions = ({ row, table }: CellContext<UnitSchemaT, unknown>) => {
   const { original } = row
+  const { role } = table.options.meta as GlobalTableMetaT
   const t = useTranslations()
   const { orgId } = useParams()
 
@@ -32,12 +34,14 @@ const Actions = ({ row }: CellContext<UnitSchemaT, unknown>) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href={`/o/${orgId}/unit/update/${original.id}`} passHref>
-          <DropdownMenuItem>
-            <EditIcon />
-            {t("Edit")}
-          </DropdownMenuItem>
-        </Link>
+        {canEdit(role) && (
+          <Link href={`/o/${orgId}/unit/update/${original.id}`} passHref>
+            <DropdownMenuItem>
+              <EditIcon />
+              {t("Edit")}
+            </DropdownMenuItem>
+          </Link>
+        )}
         <Link href={`/o/${orgId}/unit/duplicate/${original.id}`} passHref>
           <DropdownMenuItem>
             <CopyPlusIcon />

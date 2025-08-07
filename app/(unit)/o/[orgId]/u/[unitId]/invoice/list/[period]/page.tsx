@@ -2,7 +2,7 @@ import { invoiceColumns } from "@/components/columns/invoice"
 import { DataTable } from "@/components/ui/data-table"
 import { mapRangeToStartEnd } from "@/constants/maps"
 import { db } from "@/db/app/instance"
-import { getOrgMember } from "@/db/app/loaders"
+import { getOrgMember, getRole } from "@/db/app/loaders"
 import { getUserId } from "@/db/auth/loaders"
 import { invoice } from "@/orm/app/schema"
 import { and, desc, eq, gte, lte } from "drizzle-orm"
@@ -15,7 +15,11 @@ const Page = async (props: Props) => {
   const { params } = props
   const { orgId, unitId, period } = await params
   const userId = await getUserId()
-
+  const role = await getRole({ userId, orgId })
+  const meta: GlobalTableMetaT = {
+    role,
+    userId,
+  }
   const [start, end] = mapRangeToStartEnd(period)
 
   const orgUser = await getOrgMember({ userId, orgId })
@@ -38,7 +42,7 @@ const Page = async (props: Props) => {
     }),
   ])
   console.log("orgUser", orgUser)
-  return <DataTable columns={invoiceColumns} data={data} />
+  return <DataTable columns={invoiceColumns} data={data} meta={meta} />
 }
 
 export default Page

@@ -34,3 +34,7 @@ export const formatDate = (date: Date) =>
 
 export const formatNumber = (num: number) =>
   new Intl.NumberFormat("en-US").format(num)
+
+export const canEdit = (role: GlobalTableMetaT["role"]) =>
+  role === "owner" || role === "admin"
+export const canDelete = (role: GlobalTableMetaT["role"]) => role === "owner"

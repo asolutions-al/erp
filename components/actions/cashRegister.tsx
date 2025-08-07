@@ -24,6 +24,7 @@ import {
   markCashRegisterAsFavorite,
 } from "@/db/app/actions/cashRegister"
 import { CashRegisterSchemaT, UserSchemaT } from "@/db/app/schema"
+import { canEdit } from "@/lib/utils"
 import { CellContext } from "@tanstack/react-table"
 import {
   CheckCircleIcon,
@@ -44,8 +45,9 @@ type SchemaT = CashRegisterSchemaT & {
   user_closedBy: UserSchemaT | null
 }
 
-const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
+const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
   const { original } = row
+  const { role } = table.options.meta as GlobalTableMetaT
   const t = useTranslations()
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
@@ -64,15 +66,17 @@ const Actions = ({ row }: CellContext<SchemaT, unknown>) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
-            <Link
-              href={`/o/${orgId}/u/${unitId}/cashRegister/${original.id}/update`}
-              passHref
-            >
-              <DropdownMenuItem>
-                <EditIcon />
-                {t("Edit")}
-              </DropdownMenuItem>
-            </Link>
+            {canEdit(role) && (
+              <Link
+                href={`/o/${orgId}/u/${unitId}/cashRegister/${original.id}/update`}
+                passHref
+              >
+                <DropdownMenuItem>
+                  <EditIcon />
+                  {t("Edit")}
+                </DropdownMenuItem>
+              </Link>
+            )}
             <Link
               href={`/o/${orgId}/u/${unitId}/cashRegister/${original.id}/duplicate`}
               passHref

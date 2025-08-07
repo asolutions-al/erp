@@ -224,7 +224,7 @@ const DemoteAlertContent = ({
           onClick={async () => {
             const res = await updateOrgMemberRole({
               id,
-              role,
+              role: newRole,
             })
             if (res.error) {
               toast.error(res.error.message)
