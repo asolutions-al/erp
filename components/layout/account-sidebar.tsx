@@ -1,4 +1,4 @@
-import { SidebarItemCollapsible } from "@/components/buttons"
+import { SidebarItemSimple } from "@/components/buttons"
 import {
   Sidebar,
   SidebarContent,
@@ -9,13 +9,7 @@ import {
   SidebarMenuButton,
   SidebarRail,
 } from "@/components/ui/sidebar"
-import {
-  ArrowLeftIcon,
-  BrickWallIcon,
-  IdCardIcon,
-  SettingsIcon,
-  StoreIcon,
-} from "lucide-react"
+import { ArrowLeftIcon, SettingsIcon, StoreIcon } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import Link from "next/link"
 import { PropsWithChildren, Suspense } from "react"
@@ -40,29 +34,17 @@ const AccountSidebar = async (props: Props) => {
         <SidebarGroup>
           <SidebarGroupLabel>{t("Menu")}</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarItemCollapsible
-              text="Overview"
+            <SidebarItemSimple
+              text="Organizations"
+              icon={<StoreIcon />}
               href="/account/overview/orgs"
-              icon={<BrickWallIcon />}
-              subItems={[
-                {
-                  href: "/account/overview/orgs",
-                  text: "Organizations",
-                  icon: <StoreIcon />,
-                },
-              ]}
+              activeHref="/account/overview/orgs"
             />
-            <SidebarItemCollapsible
+            <SidebarItemSimple
               text="Settings"
-              href="/account/settings/general"
               icon={<SettingsIcon />}
-              subItems={[
-                {
-                  href: "/account/settings/general",
-                  text: "General",
-                  icon: <IdCardIcon />,
-                },
-              ]}
+              href="/account/settings/general"
+              activeHref="/account/settings/general"
             />
           </SidebarMenu>
         </SidebarGroup>
