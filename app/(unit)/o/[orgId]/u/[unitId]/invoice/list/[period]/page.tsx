@@ -41,7 +41,6 @@ const Page = async (props: Props) => {
       },
     }),
   ])
-  console.log("orgUser", orgUser)
   return <DataTable columns={invoiceColumns} data={data} meta={meta} />
 }
 

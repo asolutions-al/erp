@@ -1,5 +1,6 @@
 "use client"
 
+import { ImageBucketUploader } from "@/components/image-bucket-uploader"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -9,14 +10,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command"
-import {
   FormControl,
   FormDescription,
   FormField,
@@ -24,28 +17,18 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { ImageUploader } from "@/components/ui/image-uploader"
 import { Input } from "@/components/ui/input"
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover"
 import { Switch } from "@/components/ui/switch"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
-import { productImagesBucket } from "@/constants/bucket"
 import type { CategorySchemaT, WarehouseSchemaT } from "@/db/app/schema"
-
-import { cn } from "@/lib/utils"
 import { productUnit } from "@/orm/app/schema"
 import type { ProductFormSchemaT } from "@/providers"
 import {
   BriefcaseBusinessIcon,
-  CheckCircleIcon,
-  ChevronsUpDownIcon,
   CircleDashedIcon,
   DollarSignIcon,
+  ImageIcon,
   InfoIcon,
   PlusIcon,
   SettingsIcon,
@@ -57,7 +40,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
 import { useFieldArray, useFormContext } from "react-hook-form"
 import { toast } from "sonner"
-import { CategoryCommand, WarehouseCommand } from "../command"
+import { CategoryCommand, UnitCommand, WarehouseCommand } from "../command"
 import { EntityStatusSelect } from "../select"
 
 type SchemaT = ProductFormSchemaT
@@ -66,13 +49,22 @@ type Props = {
   performAction: (values: SchemaT) => Promise<void>
   warehouses: WarehouseSchemaT[]
   categories: CategorySchemaT[]
+
+  flow?: {
+    redirectAfterAction?: boolean
+  }
 }
 
 type TabT = "info" | "inv" | "cat" | "config"
 
 const formId: FormIdT = "product"
 
-const Form = ({ performAction, warehouses, categories }: Props) => {
+const Form = ({
+  performAction,
+  warehouses,
+  categories,
+  flow = { redirectAfterAction: true },
+}: Props) => {
   const t = useTranslations()
   const router = useRouter()
   const { orgId, unitId } = useParams<GlobalParamsT>()
@@ -92,8 +84,10 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
     try {
       await performAction(values)
       toast.success(t("Product saved successfully"))
-      router.prefetch(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
-      router.push(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
+      if (flow.redirectAfterAction) {
+        router.prefetch(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
+        router.push(`/o/${orgId}/u/${unitId}/product/list/${values.status}`)
+      }
     } catch (error) {
       console.error("error", error)
       toast.error(t("An error occurred"))
@@ -168,14 +162,34 @@ const Form = ({ performAction, warehouses, categories }: Props) => {
 }
 
 const ImageCard = () => {
-  // Remove the old ImageCard implementation and use the reusable component
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
   return (
-    <ImageUploader
-      bucket={productImagesBucket}
-      field="imageBucketPath"
-      title="Images"
-      description="Upload and manage product image"
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <ImageIcon size={20} />
+          {t("Images")}
+        </CardTitle>
+        <CardDescription>
+          {t("Upload and manage product image")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="imageBucketPath"
+          render={({ field }) => (
+            <ImageBucketUploader
+              bucket="productImages"
+              path={field.value}
+              setPath={field.onChange}
+            />
+          )}
+        />
+      </CardContent>
+    </Card>
   )
 }
 
@@ -219,56 +233,7 @@ const DetailsCard = () => {
             return (
               <FormItem className="flex flex-col justify-end">
                 <FormLabel>{t("Unit")}</FormLabel>
-                <Popover open={popOverOpen} onOpenChange={setPopOverOpen}>
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={popOverOpen}
-                      className="justify-between"
-                    >
-                      {field.value
-                        ? productUnitList.find(
-                            (unit) => unit.value === field.value
-                          )?.label
-                        : `${t("Select unit")}...`}
-                      <ChevronsUpDownIcon className="opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="p-0">
-                    <Command>
-                      <CommandInput placeholder={t("Search unit") + "..."} />
-                      <CommandList>
-                        <CommandEmpty>{t("No unit found")}.</CommandEmpty>
-                        <CommandGroup>
-                          {productUnitList.map((unit) => {
-                            const { value, label } = unit
-                            const isActive = field.value === value
-                            return (
-                              <CommandItem
-                                key={value}
-                                value={label}
-                                onSelect={() => {
-                                  field.onChange(value)
-                                  setPopOverOpen(false)
-                                }}
-                              >
-                                <span>{label}</span>
-                                <CheckCircleIcon
-                                  size={16}
-                                  className={cn(
-                                    "ml-auto",
-                                    isActive ? "opacity-100" : "opacity-0"
-                                  )}
-                                />
-                              </CommandItem>
-                            )
-                          })}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <UnitCommand value={field.value} onChange={field.onChange} />
                 <FormMessage />
               </FormItem>
             )

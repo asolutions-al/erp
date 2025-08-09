@@ -1,3 +1,4 @@
+import { AiItemImportBtn } from "@/components/button"
 import { PageContent, PageListHeader } from "@/components/layout"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapStatusIcon } from "@/constants/maps"
@@ -27,7 +28,9 @@ const Layout = async (props: Props) => {
           text: "New product",
           href: `/o/${orgId}/u/${unitId}/product/create`,
         }}
-      />
+      >
+        <AiItemImportBtn />
+      </PageListHeader>
       <PageContent>
         <Tabs defaultValue={statusParam} className="pb-1.5">
           <TabsList>

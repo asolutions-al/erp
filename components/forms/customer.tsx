@@ -1,5 +1,6 @@
 "use client"
 
+import { ImageBucketUploader } from "@/components/image-bucket-uploader"
 import {
   Card,
   CardContent,
@@ -15,7 +16,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { ImageUploader } from "@/components/ui/image-uploader"
 import { Input } from "@/components/ui/input"
 import {
   Select,
@@ -26,10 +26,14 @@ import {
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
 import { Textarea } from "@/components/ui/textarea"
-import { customerImageBucket } from "@/constants/bucket"
 import { idType } from "@/orm/app/schema"
 import { CustomerFormSchemaT } from "@/providers"
-import { CircleDashedIcon, InfoIcon, SettingsIcon } from "lucide-react"
+import {
+  CircleDashedIcon,
+  ImageIcon,
+  InfoIcon,
+  SettingsIcon,
+} from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useFormContext } from "react-hook-form"
@@ -131,14 +135,34 @@ const Form = ({ performAction }: Props) => {
 }
 
 const ImageCard = () => {
-  // Remove the old ImageCard implementation and use the reusable component
+  const t = useTranslations()
+  const form = useFormContext<SchemaT>()
+
   return (
-    <ImageUploader
-      bucket={customerImageBucket}
-      field="imageBucketPath"
-      title="Images"
-      description="Appealing images of the customer"
-    />
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <ImageIcon size={20} />
+          {t("Images")}
+        </CardTitle>
+        <CardDescription>
+          {t("Appealing images of the customer")}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={form.control}
+          name="imageBucketPath"
+          render={({ field }) => (
+            <ImageBucketUploader
+              bucket="customerImages"
+              path={field.value}
+              setPath={field.onChange}
+            />
+          )}
+        />
+      </CardContent>
+    </Card>
   )
 }
 

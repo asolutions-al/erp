@@ -63,7 +63,15 @@ const createSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
   return schema
 }
 
+const createBulkSchema = ({ t }: { t: ReturnType<typeof useTranslations> }) => {
+  const schema = createSchema({ t })
+  return z.object({
+    list: z.array(schema),
+  })
+}
+
 type SchemaT = z.infer<ReturnType<typeof createSchema>>
+type BulkSchemaT = z.infer<ReturnType<typeof createBulkSchema>>
 
 const defaultValues: SchemaT = {
   name: "",
@@ -78,6 +86,10 @@ const defaultValues: SchemaT = {
   inventoryRows: [],
   categoryRows: [],
   taxPercentage: 0,
+}
+
+const defaultBulkValues: BulkSchemaT = {
+  list: [],
 }
 
 const Provider = (
@@ -95,4 +107,23 @@ const Provider = (
   return <Form {...form}>{props.children}</Form>
 }
 
-export { Provider as ProductFormProvider, type SchemaT as ProductFormSchemaT }
+const BulkProvider = (
+  props: PropsWithChildren<{ defaultValues?: Partial<BulkSchemaT> }>
+) => {
+  const t = useTranslations()
+  const schema = createBulkSchema({ t })
+  const form = useForm<BulkSchemaT>({
+    resolver: zodResolver(schema),
+    defaultValues: { ...defaultBulkValues, ...props.defaultValues },
+  })
+
+  return <Form {...form}>{props.children}</Form>
+}
+
+export {
+  BulkProvider as ProductBulkFormProvider,
+  defaultValues as productDefaultValues,
+  Provider as ProductFormProvider,
+  type BulkSchemaT as ProductBulkFormSchemaT,
+  type SchemaT as ProductFormSchemaT,
+}

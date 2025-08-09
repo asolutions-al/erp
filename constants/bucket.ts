@@ -1,5 +1,11 @@
 const productImagesBucket = "productImages"
 const customerImageBucket = "customerImage"
 const supplierImageBucket = "supplier"
+const aiAnalysisBucket = "ai-analysis"
 
-export { customerImageBucket, productImagesBucket, supplierImageBucket }
+export {
+  aiAnalysisBucket,
+  customerImageBucket,
+  productImagesBucket,
+  supplierImageBucket,
+}

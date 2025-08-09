@@ -71,6 +71,31 @@ const create = async ({
   })
 }
 
+const createBulk = async ({
+  values,
+  unitId,
+  orgId,
+}: {
+  values: ProductFormSchemaT[]
+  unitId: string
+  orgId: string
+}) => {
+  await db.transaction(async (tx) => {
+    const [res] = await tx
+      .insert(product)
+      .values(
+        values.map((item) => ({
+          ...item,
+          unitId,
+          orgId,
+        }))
+      )
+      .returning({
+        id: product.id,
+      })
+  })
+}
+
 const update = async ({
   values,
   id,
@@ -124,6 +149,7 @@ const markAsFavorite = async ({
 
 export {
   create as createProduct,
+  createBulk as createProducts,
   markAsFavorite as markProductAsFavorite,
   update as updateProduct,
 }

@@ -11,12 +11,14 @@ import { SidebarTrigger } from "../ui/sidebar"
 const PageListHeader = async ({
   title,
   button,
+  children,
 }: {
   title: keyof Messages
   button?: {
     href: string
     text: keyof Messages
   }
+  children?: React.ReactNode
 }) => {
   const t = await getTranslations()
   return (
@@ -27,14 +29,17 @@ const PageListHeader = async ({
         <h1 className="text-xl font-semibold">{t(title)}</h1>
       </div>
 
-      {button && (
-        <Link href={button.href} passHref>
-          <Button size="sm">
-            <PlusCircleIcon />
-            <span className="sr-only sm:not-sr-only">{t(button.text)}</span>
-          </Button>
-        </Link>
-      )}
+      <div className="flex items-center gap-2">
+        {children}
+        {button && (
+          <Link href={button.href} passHref>
+            <Button size="sm">
+              <PlusCircleIcon />
+              <span className="sr-only sm:not-sr-only">{t(button.text)}</span>
+            </Button>
+          </Link>
+        )}
+      </div>
     </header>
   )
 }
