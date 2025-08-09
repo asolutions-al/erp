@@ -169,7 +169,13 @@ const AnalyzingStep = () => {
   )
 }
 
-const ReviewStep = ({ onBack }: { onBack: () => void }) => {
+const ReviewStep = ({
+  onBack,
+  onNext: onComplete,
+}: {
+  onBack: () => void
+  onNext: () => void
+}) => {
   const t = useTranslations()
   const form = useFormContext<ProductBulkFormSchemaT>()
   const [isLoading, setIsLoading] = useState(false)
@@ -192,6 +198,7 @@ const ReviewStep = ({ onBack }: { onBack: () => void }) => {
       setIsLoading(false)
       toast.success(t("Products created successfully"))
       router.refresh()
+      onComplete()
     } catch (error) {
       toast.error(t("Failed to create products"))
     }
@@ -382,7 +389,12 @@ const Content = () => {
         <UploadStep path={path} setPath={setPath} onNext={handleAnalyzeImage} />
       )}
       {currentStep === "analyzing" && <AnalyzingStep />}
-      {currentStep === "review" && <ReviewStep onBack={handleBackToUpload} />}
+      {currentStep === "review" && (
+        <ReviewStep
+          onBack={handleBackToUpload}
+          onNext={() => setCurrentStep("complete")}
+        />
+      )}
       {currentStep === "complete" && <CompleteStep onStartOver={resetFlow} />}
     </div>
   )
