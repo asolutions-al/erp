@@ -180,7 +180,7 @@ const ImageBucketUploader = ({
         )}
       </div>
 
-      {aiGeneration && (
+      {/* {aiGeneration && (
         <div className="space-y-2">
           <div className="text-center text-xs text-muted-foreground">
             {t("or")}
@@ -191,7 +191,7 @@ const ImageBucketUploader = ({
             onImageGenerated={upload}
           />
         </div>
-      )}
+      )} */}
     </div>
   )
 }
