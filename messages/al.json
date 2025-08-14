@@ -70,7 +70,7 @@
   "Create new unit": "Krijo njësi të re",
   "New unit": "Njësi e re",
   "Create new invoice": "Krijo një faturë të re",
-  "Click on any unit below to enter and manage its operations": "Klikoni në çdo njësi më poshtë për të hyrë dhe menaxhuar operacionet e saj",
+  "Click on any unit below to enter and manage its operations": "Klikoni në një njësi më poshtë për të hyrë dhe menaxhuar operacionet e saj",
   "Click on a unit name or use the \"View\" button to enter and manage a unit": "Klikoni në emrin e njësisë ose përdorni butonin \"Shiko\" për të hyrë dhe menaxhuar një njësi",
   "Click to enter this unit": "Klikoni për të hyrë në këtë njësi",
   "Unit": "Njësi",
@@ -1001,5 +1001,13 @@
   "Product removed successfully": "Produkti u heq me sukses",
   "Are you sure you want to remove this product": "Jeni të sigurt që dëshironi të hiqni këtë produkt",
   "Remove Product": "Hiq produktin",
-  "Products created successfully": "Produktet u krijuan me sukses"
+  "Products created successfully": "Produktet u krijuan me sukses",
+  "Please enter a product name first": "Ju lutemi shkruani emrin e produktit së pari",
+  "Image generated successfully!": "Fotografia u krijua me sukses!",
+  "Failed to generate image": "Krijimi i fotografisë dështoi",
+  "Generating": "Duke krijuar",
+  "Generate with AI": "Krijo me AI",
+  "Upload image or generate with AI": "Ngarko foto ose krijo me AI",
+  "or": "ose",
+  "Please provide a name for the image": "Ju lutemi, jepni një emër për imazhin"
 }

@@ -1,6 +1,5 @@
 "use client"
 
-import { ImageBucketUploader } from "@/components/image-bucket-uploader"
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -38,9 +37,10 @@ import {
 import { useTranslations } from "next-intl"
 import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { useState } from "react"
-import { useFieldArray, useFormContext } from "react-hook-form"
+import { useFieldArray, useFormContext, useWatch } from "react-hook-form"
 import { toast } from "sonner"
 import { CategoryCommand, UnitCommand, WarehouseCommand } from "../command"
+import { ImageBucketUploader } from "../image-bucket-uploader"
 import { EntityStatusSelect } from "../select"
 
 type SchemaT = ProductFormSchemaT
@@ -165,6 +165,11 @@ const ImageCard = () => {
   const t = useTranslations()
   const form = useFormContext<SchemaT>()
 
+  const [name, description] = useWatch({
+    control: form.control,
+    name: ["name", "description"],
+  })
+
   return (
     <Card>
       <CardHeader>
@@ -173,7 +178,7 @@ const ImageCard = () => {
           {t("Images")}
         </CardTitle>
         <CardDescription>
-          {t("Upload and manage product image")}
+          {t("Upload image or generate with AI")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -185,6 +190,10 @@ const ImageCard = () => {
               bucket="productImages"
               path={field.value}
               setPath={field.onChange}
+              aiGeneration={{
+                name,
+                description,
+              }}
             />
           )}
         />

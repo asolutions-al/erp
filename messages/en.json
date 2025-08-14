@@ -995,5 +995,13 @@
   "Product removed successfully": "Product removed successfully",
   "Are you sure you want to remove this product": "Are you sure you want to remove this product",
   "Remove Product": "Remove Product",
-  "Products created successfully": "Products created successfully"
+  "Products created successfully": "Products created successfully",
+  "Please enter a product name first": "Please enter a product name first",
+  "Image generated successfully!": "Image generated successfully!",
+  "Generating": "Generating",
+  "Failed to generate image": "Failed to generate image",
+  "Generate with AI": "Generate with AI",
+  "Upload image or generate with AI": "Upload image or generate with AI",
+  "or": "or",
+  "Please provide a name for the image": "Please provide a name for the image"
 }

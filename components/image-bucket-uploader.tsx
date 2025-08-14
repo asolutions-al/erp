@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button"
 import { publicStorageUrl } from "@/constants/consts"
 import { createClient } from "@/db/app/client"
+import { generateAiImage } from "@/lib/ai"
 import { cn } from "@/lib/utils"
-import { TrashIcon } from "lucide-react"
+import { LoaderIcon, TrashIcon, Wand2Icon } from "lucide-react"
 import { nanoid } from "nanoid"
 import { useTranslations } from "next-intl"
 import Image from "next/image"
@@ -13,9 +14,19 @@ interface Props {
   bucket: "productImages" | "customerImages" | "supplier" | "ai-analysis"
   path: string | null | undefined
   setPath: (path: string | null) => void
+
+  aiGeneration?: {
+    name: string
+    description?: string | null
+  }
 }
 
-const ImageBucketUploader = ({ bucket, path, setPath }: Props) => {
+const ImageBucketUploader = ({
+  bucket,
+  path,
+  setPath,
+  aiGeneration,
+}: Props) => {
   const t = useTranslations()
   const id = useId()
   const [isDragging, setIsDragging] = useState(false)
@@ -168,7 +179,67 @@ const ImageBucketUploader = ({ bucket, path, setPath }: Props) => {
           </div>
         )}
       </div>
+
+      {aiGeneration && (
+        <div className="space-y-2">
+          <div className="text-center text-xs text-muted-foreground">
+            {t("or")}
+          </div>
+          <AiGeneratorBtn
+            name={aiGeneration.name}
+            description={aiGeneration.description}
+            onImageGenerated={upload}
+          />
+        </div>
+      )}
     </div>
+  )
+}
+
+const AiGeneratorBtn = ({
+  name,
+  description,
+  onImageGenerated,
+}: {
+  name: string
+  description?: string | null
+  onImageGenerated: (imageFile: File) => void
+}) => {
+  const t = useTranslations()
+  const [isGenerating, setIsGenerating] = useState(false)
+
+  const handleGenerateImage = async () => {
+    setIsGenerating(true)
+
+    const result = await generateAiImage({
+      name,
+      description,
+    })
+
+    if (result.error) return toast.error(result.error.message)
+
+    if (result.success) {
+      onImageGenerated(result.success.data.file)
+      toast.success(t("Image generated successfully!"))
+    }
+    setIsGenerating(false)
+  }
+
+  const Icon = isGenerating ? LoaderIcon : Wand2Icon
+  const text = isGenerating ? t("Generating") : t("Generate with AI")
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      size="sm"
+      onClick={handleGenerateImage}
+      disabled={isGenerating || !name.trim()}
+      className="w-full"
+    >
+      <Icon className={cn(isGenerating && "animate-spin")} />
+      {text}
+    </Button>
   )
 }
 
