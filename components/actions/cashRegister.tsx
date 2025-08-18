@@ -104,7 +104,9 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
                     isFavorite: !original.isFavorite,
                   })
                   toast.success(t("Cash register saved successfully"))
-                  router.refresh()
+                  const path = `/o/${orgId}/u/${unitId}/cashRegister/list/archived`
+                  router.prefetch(path)
+                  router.push(path)
                 } catch (error) {
                   toast.error(t("An error occurred"))
                 }
