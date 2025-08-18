@@ -9,7 +9,7 @@ import {
   warehouse,
 } from "@/orm/app/schema"
 import { InvoiceConfigFormProvider } from "@/providers"
-import { and, eq } from "drizzle-orm"
+import { and, eq, isNull } from "drizzle-orm"
 
 type Props = {
   params: Promise<GlobalParamsT>
@@ -31,7 +31,8 @@ const Page = async ({ params }: Props) => {
     db.query.cashRegister.findMany({
       where: and(
         eq(cashRegister.unitId, unitId),
-        eq(cashRegister.status, "active")
+        eq(cashRegister.status, "active"),
+        isNull(cashRegister.closedBy)
       ),
     }),
   ])
