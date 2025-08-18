@@ -1,4 +1,4 @@
-import { AiItemImportBtn } from "@/components/button"
+import { AiItemImportBtn, ExcelImportBtn } from "@/components/button"
 import { PageContent, PageListHeader } from "@/components/layout"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { mapStatusIcon } from "@/constants/maps"
@@ -29,6 +29,7 @@ const Layout = async (props: Props) => {
           href: `/o/${orgId}/u/${unitId}/product/create`,
         }}
       >
+        <ExcelImportBtn />
         <AiItemImportBtn />
       </PageListHeader>
       <PageContent>

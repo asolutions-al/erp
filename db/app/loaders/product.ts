@@ -3,7 +3,7 @@ import "server-only"
 
 import { db } from "@/db/app/instance"
 import { product } from "@/orm/app/schema"
-import { and, count, eq } from "drizzle-orm"
+import { and, count, eq, inArray } from "drizzle-orm"
 
 const getCount = async ({
   orgId,
@@ -19,4 +19,33 @@ const getCount = async ({
   return result.count
 }
 
-export { getCount as getProductCount }
+const checkDuplicates = async ({
+  orgId,
+  unitId,
+  productNames,
+}: {
+  orgId: string
+  unitId: string
+  productNames: string[]
+}) => {
+  if (productNames.length === 0) return []
+
+  const existingProducts = await db.query.product.findMany({
+    where: and(
+      eq(product.orgId, orgId),
+      eq(product.unitId, unitId),
+      inArray(product.name, productNames)
+    ),
+    columns: {
+      name: true,
+      barcode: true,
+    },
+  })
+
+  return existingProducts
+}
+
+export {
+  checkDuplicates as checkProductDuplicates,
+  getCount as getProductCount,
+}
