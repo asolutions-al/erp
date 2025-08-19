@@ -33,15 +33,15 @@ export async function updateSession(request: NextRequest) {
 
   // SESSION VALIDATION //
   const {
-    data: { user },
-  } = await supabase.auth.getUser()
+    data: { session },
+  } = await supabase.auth.getSession()
 
   // ROUTE PROTECTION //
   const isAtProtectedRoutes = !["/auth", "/invitation"].some((route) =>
     pathname.startsWith(route)
   )
 
-  if (!user && isAtProtectedRoutes)
+  if (!session?.user && isAtProtectedRoutes)
     return NextResponse.redirect(
       getAuthUrl({ returnTo: pathname, page: "/login" })
     )
