@@ -120,13 +120,13 @@ const defaultValues: Partial<SchemaT> = {
   customerId: "",
   customerName: "",
   customerIdType: "id",
-  customerIdValue: "",
+  customerIdValue: null,
   discountType: "value",
   discountValue: 0,
   // payMethod: undefined,
   status: "completed",
   cashRegisterId: null,
-  notes: "",
+  notes: null,
   warehouseId: null,
 }
 

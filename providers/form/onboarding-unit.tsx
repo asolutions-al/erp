@@ -8,23 +8,31 @@ import { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-const schema = createInsertSchema(unit, {
-  name: (sch) => sch.name.min(1),
-}).omit({
-  id: true,
-  orgId: true,
-  createdAt: true,
-})
+const createSchema = () => {
+  const schema = createInsertSchema(unit, {
+    name: (sch) => sch.name.min(1),
+  }).omit({
+    id: true,
+    orgId: true,
+    createdAt: true,
+    status: true,
+  })
 
-type SchemaT = z.infer<typeof schema>
+  return schema
+}
+
+type SchemaT = z.infer<ReturnType<typeof createSchema>>
 
 const defaultValues: SchemaT = {
   name: "",
   description: null,
-  status: "active",
 }
 
-const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
+const Provider = (
+  props: PropsWithChildren<{ defaultValues?: Partial<SchemaT> }>
+) => {
+  const schema = createSchema()
+
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),
     defaultValues: { ...defaultValues, ...props.defaultValues },
@@ -33,4 +41,7 @@ const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
   return <Form {...form}>{props.children}</Form>
 }
 
-export { Provider as UnitFormProvider, type SchemaT as UnitFormSchemaT }
+export {
+  Provider as OnboardingUnitFormProvider,
+  type SchemaT as OnboardingUnitFormSchemaT,
+}

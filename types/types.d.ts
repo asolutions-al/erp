@@ -19,6 +19,13 @@ type PeriodT =
   | "this_month"
   | "last_month"
 
+type OnboardingStepT =
+  | "welcome"
+  | "organization"
+  | "unit"
+  | "setup"
+  | "complete"
+
 type GlobalParamsT = {
   orgId: string
   unitId: string

@@ -16,8 +16,7 @@ export const getAuthUrl = ({
   const url = new URL(AUTH_URL)
   url.pathname = page
   const redirectUrl = new URL(APP_URL)
-  redirectUrl.pathname = "/auth/callback"
-  redirectUrl.searchParams.set("returnTo", returnTo)
+  redirectUrl.pathname = returnTo
   url.searchParams.set("redirectUrl", redirectUrl.href)
   return url
 }

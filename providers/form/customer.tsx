@@ -21,14 +21,14 @@ type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
   name: "",
-  email: "",
-  address: "",
+  email: null,
+  address: null,
   status: "active",
-  city: "",
-  description: "",
+  city: null,
+  description: null,
   idType: "id",
-  idValue: "",
-  imageBucketPath: "",
+  idValue: null,
+  imageBucketPath: null,
   isFavorite: false,
 }
 

@@ -1,5 +1,6 @@
 export * from "./back"
 export * from "./form-actions"
+export * from "./onboarding-actions"
 export * from "./sidebar-item-collapsible"
 export * from "./sidebar-item-simple"
 export * from "./sort"

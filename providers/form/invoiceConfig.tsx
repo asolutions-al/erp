@@ -18,9 +18,9 @@ const schema = createInsertSchema(invoiceConfig).omit({
 type SchemaT = z.infer<typeof schema>
 
 const defaultValues: SchemaT = {
-  payMethod: "cash",
-  warehouseId: "",
-  customerId: "",
+  payMethod: null,
+  warehouseId: null,
+  customerId: null,
   triggerCashOnInvoice: true,
   triggerInventoryOnInvoice: true,
 }

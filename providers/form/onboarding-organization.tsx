@@ -1,30 +1,36 @@
 "use client"
 
 import { Form } from "@/components/ui/form"
-import { unit } from "@/orm/app/schema"
+import { organization } from "@/orm/app/schema"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { createInsertSchema } from "drizzle-zod"
 import { PropsWithChildren } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-const schema = createInsertSchema(unit, {
-  name: (sch) => sch.name.min(1),
-}).omit({
-  id: true,
-  orgId: true,
-  createdAt: true,
-})
+const createSchema = () => {
+  const schema = createInsertSchema(organization, {
+    name: (sch) => sch.name.min(1),
+  }).omit({
+    id: true,
+    createdAt: true,
+    ownerId: true,
+  })
+  return schema
+}
 
-type SchemaT = z.infer<typeof schema>
+type SchemaT = z.infer<ReturnType<typeof createSchema>>
 
 const defaultValues: SchemaT = {
   name: "",
   description: null,
-  status: "active",
 }
 
-const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
+const Provider = (
+  props: PropsWithChildren<{ defaultValues?: Partial<SchemaT> }>
+) => {
+  const schema = createSchema()
+
   const form = useForm<SchemaT>({
     resolver: zodResolver(schema),
     defaultValues: { ...defaultValues, ...props.defaultValues },
@@ -33,4 +39,7 @@ const Provider = (props: PropsWithChildren<{ defaultValues?: SchemaT }>) => {
   return <Form {...form}>{props.children}</Form>
 }
 
-export { Provider as UnitFormProvider, type SchemaT as UnitFormSchemaT }
+export {
+  Provider as OnboardingOrgFormProvider,
+  type SchemaT as OnboardingOrgFormSchemaT,
+}

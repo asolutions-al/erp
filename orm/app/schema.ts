@@ -1,4 +1,4 @@
-import { pgTable, foreignKey, uuid, timestamp, text, boolean, doublePrecision, bigint, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, foreignKey, uuid, timestamp, text, boolean, doublePrecision, bigint, smallint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const invitationStatus = pgEnum("INVITATION_STATUS", ['PENDING', 'ACCEPTED', 'REJECTED'])
@@ -484,16 +484,6 @@ export const warehouse = pgTable("warehouse", {
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
 
-export const user = pgTable("user", {
-	id: uuid().primaryKey().notNull(),
-	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
-	email: text().notNull(),
-	displayName: text().notNull(),
-	defaultOrgId: uuid(),
-	deleted: boolean(),
-	deletedAt: timestamp({ withTimezone: true, mode: 'string' }),
-});
-
 export const orgMember = pgTable("orgMember", {
 	id: uuid().defaultRandom().primaryKey().notNull(),
 	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
@@ -512,3 +502,14 @@ export const orgMember = pgTable("orgMember", {
 			name: "orgMember_userId_fkey"
 		}).onUpdate("cascade").onDelete("cascade"),
 ]);
+
+export const user = pgTable("user", {
+	id: uuid().primaryKey().notNull(),
+	createdAt: timestamp({ withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	email: text().notNull(),
+	displayName: text().notNull(),
+	defaultOrgId: uuid().notNull(),
+	deleted: boolean(),
+	deletedAt: timestamp({ withTimezone: true, mode: 'string' }),
+	onboardingStep: smallint().notNull(),
+});

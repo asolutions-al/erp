@@ -1,4 +1,4 @@
-import { UnitForm } from "@/components/forms/unit"
+import { UnitForm } from "@/components/forms"
 import { PageContent, PageFormHeader } from "@/components/layout"
 import { WithSubscription } from "@/components/wrapper"
 import { createUnit } from "@/db/app/actions/unit"
