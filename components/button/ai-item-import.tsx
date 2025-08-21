@@ -290,7 +290,6 @@ const Content = () => {
     setCurrentStep("analyzing")
 
     const response = await analyzeImageProducts(path)
-    console.log("response", response)
 
     if (response.error) {
       toast.error(response.error.message)

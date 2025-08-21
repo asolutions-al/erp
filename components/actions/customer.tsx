@@ -19,7 +19,7 @@ import {
   WarehouseSchemaT,
 } from "@/db/app/schema"
 import { canEdit } from "@/lib/utils"
-import { CellContext } from "@tanstack/react-table"
+import { CellContext, Row } from "@tanstack/react-table"
 import {
   CopyPlusIcon,
   EditIcon,
@@ -51,8 +51,7 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const { unitId, orgId } = useParams<GlobalParamsT>()
   const router = useRouter()
-  const [selectedCustomer, setSelectedCustomer] =
-    useState<CustomerSchemaT | null>(null)
+  const [invoicesSheetOpen, setInvoicesSheetOpen] = useState(false)
 
   return (
     <>
@@ -86,7 +85,7 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
             </DropdownMenuItem>
           </Link>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => setSelectedCustomer(original)}>
+          <DropdownMenuItem onClick={() => setInvoicesSheetOpen(true)}>
             <FileTextIcon />
             {t("View invoices")}
           </DropdownMenuItem>
@@ -113,10 +112,9 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
       </DropdownMenu>
 
       <InvoicesSheet
-        customer={selectedCustomer}
-        onOpenChange={(open) => {
-          if (!open) setSelectedCustomer(null)
-        }}
+        open={invoicesSheetOpen}
+        onOpenChange={setInvoicesSheetOpen}
+        row={row}
       />
     </>
   )
@@ -150,36 +148,30 @@ const TableSkeleton = () => {
   )
 }
 
-const InvoicesSheet = ({
-  customer,
-  onOpenChange,
-}: {
-  customer: CustomerSchemaT | null
+type InvoicesSheetProps = {
+  open: boolean
   onOpenChange: (open: boolean) => void
-}) => {
+  row: Row<SchemaT>
+}
+
+const InvoicesSheet = ({ open, onOpenChange, row }: InvoicesSheetProps) => {
   return (
     <>
-      <Sheet open={!!customer} onOpenChange={onOpenChange}>
+      <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent className="flex min-w-[800px] flex-col sm:max-w-[800px]">
-          {customer && (
-            <InvoicesSheetContent
-              customer={customer}
-              onClose={() => onOpenChange(false)}
-            />
-          )}
+          <InvoicesSheetContent
+            open={open}
+            onOpenChange={onOpenChange}
+            row={row}
+          />
         </SheetContent>
       </Sheet>
     </>
   )
 }
 
-const InvoicesSheetContent = ({
-  customer,
-  onClose,
-}: {
-  customer: CustomerSchemaT
-  onClose: () => void
-}) => {
+const InvoicesSheetContent = ({ row }: InvoicesSheetProps) => {
+  const { original } = row
   const [invoices, setInvoices] = useState<
     (InvoiceSchemaT & {
       warehouse: WarehouseSchemaT | null
@@ -196,27 +188,26 @@ const InvoicesSheetContent = ({
       setLoading(true)
       try {
         const result = await getCustomerInvoices({
-          customerId: customer.id,
+          customerId: original.id,
           unitId,
           orgId,
         })
         setInvoices(result)
       } catch (error) {
         toast.error("Failed to load customer invoices")
-        onClose()
       } finally {
         setLoading(false)
       }
     }
 
     fetchInvoices()
-  }, [customer, unitId, orgId])
+  }, [original, unitId, orgId])
 
   return (
     <>
       <SheetHeader className="mb-4">
         <SheetTitle>
-          {t("Invoices for {name}", { name: customer.name })}
+          {t("Invoices for {name}", { name: original.name })}
         </SheetTitle>
         {loading ? (
           <Skeleton className="h-4 w-32" />

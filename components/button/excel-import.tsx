@@ -1106,7 +1106,6 @@ const Content = () => {
         p._validationErrors.filter((e) => e.severity === "error").length ===
           0 && p._duplicateAction !== "skip"
     )
-    console.log("validProducts", validProducts)
 
     if (validProducts.length === 0) {
       toast.error(t("No valid products to import"))
@@ -1132,7 +1131,7 @@ const Content = () => {
         const cleanBatch = batch.map(
           ({ _rowIndex, _validationErrors, ...product }) => product
         )
-        console.log("cleanBatch", cleanBatch)
+
         await createProducts({
           values: cleanBatch,
           unitId,

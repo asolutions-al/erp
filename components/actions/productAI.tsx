@@ -23,7 +23,7 @@ import {
   ProductSchemaT,
 } from "@/db/app/schema"
 import { ProductBulkFormSchemaT, ProductFormProvider } from "@/providers"
-import { CellContext } from "@tanstack/react-table"
+import { CellContext, Row } from "@tanstack/react-table"
 import {
   CheckCircleIcon,
   EditIcon,
@@ -59,7 +59,7 @@ type SchemaT = ProductSchemaT & {
 const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
   const t = useTranslations()
   const form = useFormContext<ProductBulkFormSchemaT>()
-  const [isEditing, setIsEditing] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const { index } = row
 
@@ -83,7 +83,7 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
             <DropdownMenuLabel>{t("Actions")}</DropdownMenuLabel>
 
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => setIsEditing(true)}>
+            <DropdownMenuItem onClick={() => setEditDialogOpen(true)}>
               <EditIcon />
               {t("Edit")}
             </DropdownMenuItem>
@@ -125,38 +125,70 @@ const Actions = ({ row, table }: CellContext<SchemaT, unknown>) => {
         </AlertDialogContent>
       </AlertDialog>
 
-      <Dialog open={isEditing} onOpenChange={setIsEditing}>
-        <DialogContent className="sm:max-w-4xl">
-          <DialogHeader className="flex-row justify-between">
-            <div>
-              <DialogTitle>{t("Edit Product")}</DialogTitle>
-              <DialogDescription>
-                {t("Update the product information before creating")}
-              </DialogDescription>
-            </div>
-            <FormActionBtns formId="product" />
-          </DialogHeader>
-          <ProductFormProvider defaultValues={row.original}>
-            <div className="min-h-[80vh]">
-              <ProductForm
-                categories={[]}
-                warehouses={[]}
-                performAction={async (values) => {
-                  const existing = form.getValues("list")
-                  const updated = existing.map((item, i) =>
-                    i === index ? values : item
-                  )
-                  form.setValue("list", updated)
-                  setIsEditing(false)
-                }}
-                flow={{
-                  redirectAfterAction: false,
-                }}
-              />
-            </div>
-          </ProductFormProvider>
-        </DialogContent>
-      </Dialog>
+      <EditProductDialog
+        open={editDialogOpen}
+        onOpenChange={setEditDialogOpen}
+        row={row}
+      />
+    </>
+  )
+}
+
+type EditDialogProps = {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+  row: Row<SchemaT>
+}
+
+const EditProductDialog = ({ open, onOpenChange, row }: EditDialogProps) => {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-4xl">
+        <EditProductDialogContent
+          open={open}
+          onOpenChange={onOpenChange}
+          row={row}
+        />
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+const EditProductDialogContent = ({ onOpenChange, row }: EditDialogProps) => {
+  const t = useTranslations()
+  const { original, index } = row
+  const form = useFormContext<ProductBulkFormSchemaT>()
+
+  return (
+    <>
+      <DialogHeader className="flex-row justify-between">
+        <div>
+          <DialogTitle>{t("Edit Product")}</DialogTitle>
+          <DialogDescription>
+            {t("Update the product information before creating")}
+          </DialogDescription>
+        </div>
+        <FormActionBtns formId="product" />
+      </DialogHeader>
+      <ProductFormProvider defaultValues={original}>
+        <div className="min-h-[80vh]">
+          <ProductForm
+            categories={[]}
+            warehouses={[]}
+            performAction={async (values) => {
+              const existing = form.getValues("list")
+              const updated = existing.map((item, i) =>
+                i === index ? values : item
+              )
+              form.setValue("list", updated)
+              onOpenChange(false)
+            }}
+            flow={{
+              redirectAfterAction: false,
+            }}
+          />
+        </div>
+      </ProductFormProvider>
     </>
   )
 }
