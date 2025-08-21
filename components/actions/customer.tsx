@@ -160,7 +160,7 @@ const InvoicesSheet = ({
   return (
     <>
       <Sheet open={!!customer} onOpenChange={onOpenChange}>
-        <SheetContent className="min-w-[800px] sm:max-w-[800px]">
+        <SheetContent className="flex min-w-[800px] flex-col sm:max-w-[800px]">
           {customer && (
             <InvoicesSheetContent
               customer={customer}

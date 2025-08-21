@@ -2,9 +2,14 @@
 import "server-only"
 
 import { db } from "@/db/app/instance"
-import { invoiceConfig, warehouse } from "@/orm/app/schema"
+import {
+  invoiceConfig,
+  product,
+  productInventory,
+  warehouse,
+} from "@/orm/app/schema"
 import { WarehouseFormSchemaT } from "@/providers"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 
 type FormSchemaT = WarehouseFormSchemaT
 
@@ -48,8 +53,38 @@ const markAsFavorite = async ({
   await db.update(warehouse).set({ isFavorite }).where(eq(warehouse.id, id))
 }
 
+const getWarehouseProducts = async ({
+  warehouseId,
+  unitId,
+}: {
+  warehouseId: string
+  unitId: string
+}) => {
+  const products = await db.query.product.findMany({
+    where: and(eq(product.unitId, unitId), eq(product.status, "active")),
+    orderBy: product.createdAt,
+    with: {
+      productInventories: {
+        where: eq(productInventory.warehouseId, warehouseId),
+        with: {
+          warehouse: true,
+        },
+      },
+      productCategories: {
+        with: {
+          category: true,
+        },
+      },
+    },
+  })
+
+  // Filter products that have inventory in this warehouse
+  return products.filter((product) => product.productInventories.length > 0)
+}
+
 export {
   create as createWarehouse,
+  getWarehouseProducts,
   markAsFavorite as markWarehouseAsFavorite,
   update as updateWarehouse,
 }

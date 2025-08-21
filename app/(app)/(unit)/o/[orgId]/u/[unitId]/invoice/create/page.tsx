@@ -13,7 +13,6 @@ import {
 import { WithSubscription } from "@/components/wrapper"
 import { createInvoice } from "@/db/app/actions"
 import { db } from "@/db/app/instance"
-import { createAuthClient } from "@/db/auth/client"
 import { getUserId } from "@/db/auth/loaders"
 import {
   cashRegister,
@@ -35,10 +34,6 @@ type Props = {
 const Page = async (props: Props) => {
   const { params } = props
   const t = await getTranslations()
-  const authClient = await createAuthClient()
-  const {
-    data: { user },
-  } = await authClient.auth.getUser()
   const userId = await getUserId()
   const { orgId, unitId } = await params
 
