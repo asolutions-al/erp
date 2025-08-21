@@ -139,7 +139,7 @@ const NumberFilter = <TData, TValue>({
         <div className="space-y-4">
           <div>
             <h4 className="text-sm font-medium leading-none">
-              {t("Filter by")} {title}
+              {t("Filter by")} {t(title)}
             </h4>
             <p className="text-xs text-muted-foreground">
               {t("Set the numeric range for this column")}
@@ -259,7 +259,7 @@ const DateFilter = <TData, TValue>({
         <div className="space-y-4 p-4">
           <div>
             <h4 className="text-sm font-medium leading-none">
-              {t("Filter by")} {title}
+              {t("Filter by")} {t(title)}
             </h4>
             <p className="text-xs text-muted-foreground">
               {t("Pick a date range")}
@@ -343,7 +343,7 @@ const BooleanFilter = <TData, TValue>({
         <div className="space-y-3">
           <div className="space-y-1">
             <h4 className="text-sm font-medium leading-none">
-              {t("Filter by")} {title}
+              {t("Filter by")} {t(title)}
             </h4>
           </div>
           <div className="space-y-1">
