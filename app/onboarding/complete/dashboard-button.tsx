@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ArrowRight, Loader2 } from "lucide-react"
+import { ArrowRight, LoaderIcon } from "lucide-react"
 import { useTranslations } from "next-intl"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -28,7 +28,7 @@ const DashboardBtn = ({ onComplete }: { onComplete: () => Promise<void> }) => {
       className="min-w-48"
       size="lg"
     >
-      {isLoading ? <Loader2 className="animate-spin" /> : <ArrowRight />}
+      {isLoading ? <LoaderIcon className="animate-spin" /> : <ArrowRight />}
       {t("Go to dashboard")}
     </Button>
   )
